@@ -2,7 +2,7 @@
 
 **AI-ассистент для запуска малого бизнеса и персонального подбора банковских сервисов ВТБ.** Пользователь описывает бизнес-идею, система уточняет вводные, сравнивает геолокации, показывает финансовые сценарии и предлагает релевантные услуги банка. Заявка передаётся только по отдельному согласию.
 
-**Текущее состояние:** проект на этапе планирования / старта разработки. **Работающее приложение ещё не создано.**
+**Текущее состояние:** создан технический скелет `BA-001`: React → FastAPI `/healthz` → PostgreSQL/PostGIS. Бизнес-функции, AI-диалог, карта и банковские интеграции ещё не реализованы.
 
 ## Главные документы
 
@@ -18,10 +18,79 @@
 - Оценка потребностей клиента не равна банковскому кредитному скорингу.
 - До доступа к ВТБ реальные заявки и банковские интеграции не заявляются как работающие.
 
-## С чего начать разработчику
+## Запуск на Windows / PowerShell
 
-1. Прочитай `docs/HANDOFF.md` и соответствующую часть `docs/PROJECT_PLAN.md`.
-2. Выполни следующую указанную задачу: первоначально это `BA-001` — базовая структура проекта, PostgreSQL/PostGIS, FastAPI и React.
-3. Обнови `HANDOFF.md` и передай задачу следующему участнику через Git.
+Нужны Git и Docker Desktop с Linux containers и WSL2 backend (включите WSL2 в настройках Docker Desktop). Для запуска контейнеров локальные Python и Node.js не требуются. Команды выполняются из корня репозитория.
 
-Команды запуска появятся после выполнения `BA-001`. До этого README не утверждает существование работающего окружения.
+```powershell
+git clone https://github.com/1nc-0gn1t0/Business_AI.git
+cd Business_AI
+docker version
+docker compose up --build
+```
+
+Если репозиторий уже клонирован, начните с перехода в его папку. В `docker version` должна отображаться секция Server. При ошибке соединения запустите Docker Desktop и дождитесь готовности движка.
+
+Первый запуск скачивает образы и зависимости. Compose ждёт готовности БД и API. После запуска:
+
+- Веб-страница: http://localhost:5173 — показывает результат проверки API и PostGIS.
+- API readiness: http://localhost:8000/healthz — `200` с версией PostGIS либо `503`, если БД/расширение недоступны.
+- OpenAPI: http://localhost:8000/docs.
+
+Frontend обращается к `/healthz` на своём origin, nginx проксирует запрос к API. PostgreSQL доступен только внутри сети Compose; HTTP-порты привязаны к loopback компьютера.
+
+`.env` необязателен: для локального запуска предусмотрены демонстрационные значения. Для других портов/локальных реквизитов скопируйте `.env.example` в `.env` и измените его. Это окружение разработки, не production-конфигурация. Не используйте демонстрационный пароль вне локальной машины. Переменные `POSTGRES_*` инициализируют БД только при первом создании volume: изменение пароля в `.env` не изменяет уже созданного пользователя PostgreSQL.
+
+```powershell
+# В другом окне PowerShell, после запуска
+docker compose ps
+powershell -NoProfile -File scripts/smoke.ps1
+
+# Фоновый запуск с ожиданием готовности
+docker compose up --build --detach --wait --wait-timeout 180
+
+# Остановить сервисы, сохранив данные
+docker compose down
+```
+
+Если порты заняты, задайте `API_PORT`/`WEB_PORT` в `.env`. Для smoke-проверки нестандартных портов:
+
+```powershell
+powershell -NoProfile -File scripts/smoke.ps1 -ApiUrl http://127.0.0.1:8001 -WebUrl http://127.0.0.1:5174
+```
+
+В WSL2 команды Docker выполняются так же, если включена интеграция дистрибутива в Docker Desktop. PowerShell smoke-скрипт запускайте с Windows или через `pwsh`, если он установлен в WSL.
+
+## Локальные проверки и разработка
+
+Для работы вне контейнеров нужны Node.js 24 LTS, `uv` и `prek`. `uv` подбирает Python 3.12. Зависимости зафиксированы в `apps/api/uv.lock`, `apps/api/requirements.txt` (экспорт для Docker) и `apps/web/package-lock.json`.
+
+```powershell
+uv sync --locked --project apps/api
+uv run --locked --project apps/api pytest apps/api/tests
+uv run --locked --project apps/api ruff check apps/api
+uv run --locked --project apps/api ruff format --check apps/api
+npm --prefix apps/web ci
+npm --prefix apps/web run build
+prek run --all-files
+```
+
+При изменении Python-зависимостей обновляйте lock и экспорт вместе:
+
+```powershell
+cd apps/api
+uv lock
+uv export --no-dev --no-hashes --no-emit-project --format requirements-txt --output-file requirements.txt
+```
+
+Для frontend с hot reload при запущенном Compose: `npm --prefix apps/web run dev`. Откройте адрес, напечатанный Vite (если 5173 занят, он выберет следующий порт). `/healthz` проксируется к API на `127.0.0.1:8000`; при смене API-порта измените локальную настройку `apps/web/vite.config.ts`.
+
+## Структура и продолжение
+
+- `apps/api`: API, проверка БД, тесты, зависимости и Dockerfile.
+- `apps/web`: React/TypeScript, Vite и nginx-конфигурация.
+- `infra/docker`: многоэтапная сборка frontend.
+- `scripts/smoke.ps1`: проверка API, PostGIS и собранной страницы через HTTP.
+- `data/synthetic`, `docs/adr`: места для будущих данных и решений.
+
+Перед разработкой прочитайте `docs/HANDOFF.md` и соответствующие разделы `docs/PROJECT_PLAN.md`. Следующая задача — `BA-002` (полный CI и проверки), затем `BA-003` (доменные DTO/миграции/provenance). Переход — по согласованию с владельцем проекта.

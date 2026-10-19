@@ -1,0 +1,26 @@
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = 'api-lint'
+name = 'API lint'
+entry = 'uv run --locked --project apps/api ruff check apps/api'
+language = "system"
+pass_filenames = false
+always_run = true
+
+[[repos.hooks]]
+id = 'api-format'
+name = 'API formatting'
+entry = 'uv run --locked --project apps/api ruff format --check apps/api'
+language = "system"
+pass_filenames = false
+always_run = true
+
+[[repos.hooks]]
+id = 'web-typecheck'
+name = 'Web TypeScript'
+entry = 'node apps/web/node_modules/typescript/bin/tsc --project apps/web/tsconfig.json --noEmit'
+language = "system"
+pass_filenames = false
+always_run = true
