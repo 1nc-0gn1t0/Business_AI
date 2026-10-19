@@ -2,10 +2,10 @@
 
 ## Состояние на 19.10.2026
 
-- Фаза F0. Текущая задача BA-002: CI и проверки реализованы; локально PASS, запуск в GitHub Actions ещё ожидается.
+- Фаза F0. BA-002 завершена: CI и проверки реализованы, локально и в GitHub Actions PASS.
 - Ветка: feat/BA-002-ci. main синхронизирован с origin/main (62b2ba4) и не изменялся.
 - В main ещё нет BA-001. Ветка BA-002 включает завершённую BA-001 (aa78db6) через fast-forward только feature-ветки. При review учитывать эту зависимость.
-- Фактический HEAD, результат push и ссылка на CI будут указаны в итоговом сообщении и дополнены здесь после проверки.
+- Реализация CI: 96c2e62, исправление action-тега: 7b37866; оба коммита отправлены в origin/feat/BA-002-ci. Фактический HEAD после обновления HANDOFF указан в итоговом сообщении.
 - BA-003 не начиналась. Слияние с main запрещено до проверки владельцем.
 
 ## Сделано в BA-002
@@ -29,7 +29,8 @@
 - npm --prefix apps/web run build: PASS, tsc и Vite.
 - В apps/api: uv export --no-dev --no-hashes --no-emit-project --format requirements-txt --output-file requirements.txt; git diff --exit-code -- requirements.txt: PASS.
 - docker compose config --quiet: PASS.
-- GitHub Actions: ещё не проверено. До успешного запуска критерий приёмки BA-002 не считается подтверждённым.
+- GitHub Actions для 7b37866: PASS, Checks (ubuntu-latest), Checks (windows-latest), Compose smoke. Запуск: https://github.com/1nc-0gn1t0/Business_AI/actions/runs/39182945060. Установка из lock, экспорт requirements, все prek checks, сборка frontend и реальный Compose smoke прошли на чистых runners.
+- Исправлена обнаруженная CI-ошибка: major-тег setup-uv@v10 отсутствовал; используется опубликованный точный тег v10.3.0. После исправления все jobs прошли.
 
 ## Сохранившийся результат BA-001
 
@@ -42,5 +43,5 @@ React → FastAPI /healthz → PostgreSQL 17/PostGIS 3.5; Compose, lock-файл
 - Локальное окружение разработки, демонстрационные реквизиты БД; внешние API/секреты не нужны.
 - Бизнес-модули, AI-диалог, аналитика, карта и банковские интеграции ещё не реализованы.
 - CI не включает настройки branch protection: их определяет владелец репозитория.
-- Следующий шаг сейчас: дождаться Actions для BA-002, исправить возможные ошибки, записать фактические результаты и подтвердить push.
-- После завершения BA-002 — review владельца. Только с его разрешения BA-003: доменные DTO, миграции и provenance enum.
+- Блокеров BA-002 нет. Следующий шаг — review владельца; ветка не объединена с main.
+- Только с разрешения владельца BA-003: доменные DTO, миграции и provenance enum.
