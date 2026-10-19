@@ -70,7 +70,9 @@ uv sync --locked --project apps/api
 uv run --locked --project apps/api pytest apps/api/tests
 uv run --locked --project apps/api ruff check apps/api
 uv run --locked --project apps/api ruff format --check apps/api
+uv run --locked --project apps/api mypy --config-file apps/api/pyproject.toml apps/api/app apps/api/tests
 npm --prefix apps/web ci
+npm --prefix apps/web run lint
 npm --prefix apps/web run build
 prek run --all-files
 ```
@@ -85,6 +87,20 @@ uv export --no-dev --no-hashes --no-emit-project --format requirements-txt --out
 
 Для frontend с hot reload при запущенном Compose: `npm --prefix apps/web run dev`. Откройте адрес, напечатанный Vite (если 5173 занят, он выберет следующий порт). `/healthz` проксируется к API на `127.0.0.1:8000`; при смене API-порта измените локальную настройку `apps/web/vite.config.ts`.
 
+## CI и проверки перед коммитом
+
+`.github/workflows/ci.yml` запускается при push в любую ветку, PR в `main` и вручную через GitHub Actions. Job `Checks` выполняет одни и те же prek-проверки на Ubuntu и Windows (Python 3.12, Node.js 24, uv 0.13.1, prek 0.5.4), проверяет соответствие Docker requirements lock-файлу и собирает frontend. Job `Compose smoke` на Ubuntu собирает контейнеры, ждёт готовности трёх сервисов и проверяет HTTP через `scripts/smoke.ps1`. При ошибке сохраняет диагностику в логах job, затем удаляет тестовое окружение. Внешние LLM/банковские ключи не нужны.
+
+`prek run --all-files` запускает Ruff lint/format, строгий mypy для API и тестов, pytest, ESLint с правилами React Hooks и TypeScript. Зависимости сначала установите командами выше. Для установки автоматической проверки перед каждым коммитом:
+
+```powershell
+# Если prek ещё не установлен
+uv tool install prek==0.5.4
+prek install
+```
+
+В CI используется закреплённый `uv tool run --from prek==0.5.4 prek run --all-files`. Полная сборка и Compose smoke выполняются отдельно от commit hook. Проверки Actions сами по себе не настраивают защиту ветки или обязательность checks для merge.
+
 ## Структура и продолжение
 
 - `apps/api`: API, проверка БД, тесты, зависимости и Dockerfile.
@@ -93,4 +109,4 @@ uv export --no-dev --no-hashes --no-emit-project --format requirements-txt --out
 - `scripts/smoke.ps1`: проверка API, PostGIS и собранной страницы через HTTP.
 - `data/synthetic`, `docs/adr`: места для будущих данных и решений.
 
-Перед разработкой прочитайте `docs/HANDOFF.md` и соответствующие разделы `docs/PROJECT_PLAN.md`. Следующая задача — `BA-002` (полный CI и проверки), затем `BA-003` (доменные DTO/миграции/provenance). Переход — по согласованию с владельцем проекта.
+Перед разработкой прочитайте `docs/HANDOFF.md` и соответствующие разделы `docs/PROJECT_PLAN.md`. Следующая задача после проверки `BA-002` — `BA-003` (доменные DTO/миграции/provenance). Переход — по согласованию с владельцем проекта.
