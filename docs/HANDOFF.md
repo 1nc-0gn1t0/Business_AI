@@ -3,9 +3,10 @@
 ## Состояние на 19.10.2026
 
 - Фаза: F0 — основание проекта.
-- Задача: BA-001 — технический скелет реализован; финальная проверка чистого клона и push ещё предстоят.
+- Задача: BA-001 завершена — технический скелет реализован и проверен из чистого клона.
 - Ветка: feat/BA-001-project-skeleton.
-- Базовый коммит: 62b2ba4. Фактический HEAD реализации будет указан в итоговом сообщении; push пока не выполнен.
+- Коммит реализации: f2ffb4b (база: 62b2ba4). Фактический HEAD после обновления HANDOFF указан в итоговом сообщении.
+- Push НЕ выполнен: Git Credential Manager потребовал интерактивную авторизацию; неинтерактивный повтор вернул Cannot prompt / could not read Username. Передача через GitHub ещё не завершена. Владелец должен выполнить из корня git push --set-upstream origin feat/BA-001-project-skeleton и пройти вход GitHub в окне менеджера учётных данных. Не отправлять токены в чат.
 - Бизнес-модули, AI-диалог, карта, аналитика и банковская интеграция ещё не реализованы.
 
 ## Что сделано
@@ -29,6 +30,7 @@
 - docker compose config --quiet: PASS.
 - docker compose up --build --detach --wait --wait-timeout 180: PASS, три сервиса healthy, новый volume без .env.
 - powershell -NoProfile -File scripts/smoke.ps1: PASS, API напрямую, API через nginx и собранная React-страница.
+- Чистый локальный клон коммита f2ffb4b, без .env, node_modules/.venv и старой БД: docker compose -p business-ai-ba001-clean up --build --detach --wait --wait-timeout 180 (из клона, с API_PORT=18000 и WEB_PORT=15173): PASS, три сервиса healthy. scripts/smoke.ps1 на этих портах: PASS. Временные контейнеры и отдельный volume удалены после проверки; основное окружение сохранено.
 - docker compose exec -T db psql -U business_ai -d business_ai -c "SELECT PostGIS_Version(), ST_AsText(ST_SetSRID(ST_MakePoint(49.1,55.8),4326));": PASS, PostGIS 3.5 и POINT(49.1 55.8). Это проверка геометрии, а не бизнес-данные.
 - Реальная остановка db: /healthz вернул 503; после docker compose up --detach --wait --wait-timeout 90 smoke снова PASS.
 - Playwright: страница отображает успешный статус и версию БД, штатная консоль без ошибок/предупреждений. При подставленном HTTP 503 показывает ошибку; после снятия подстановки и reload — успешный статус.
