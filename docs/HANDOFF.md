@@ -3,8 +3,8 @@
 ## Состояние на 20.10.2026
 
 - BA-003 объединена в main через PR #3 (merge d1962ed), подтверждено GitHub API.
-- BA-004 реализована в feat/BA-004-conversation-state от синхронизированного чистого main d1962ed. Локальные проверки PASS; интеграционный CI ещё ожидается.
-- Самостоятельное слияние запрещено. Ссылка на PR, фактический HEAD и push будут подтверждены в итоговом сообщении.
+- BA-004 реализована в feat/BA-004-conversation-state от синхронизированного чистого main d1962ed. Локальные проверки и GitHub CI PASS, реализация готова к review.
+- Коммит реализации 109b7a6 отправлен в origin/feat/BA-004-conversation-state. Самостоятельное слияние запрещено; ссылка на PR и фактический HEAD после обновления HANDOFF — в итоговом сообщении.
 - BA-005 не начиналась, требуется отдельное разрешение владельца.
 
 ## Сделано в BA-004
@@ -24,12 +24,14 @@
 - uv tool run --from prek==0.5.4 prek run --all-files: PASS, Ruff lint/format, строгий mypy, pytest, ESLint и TypeScript.
 - npm --prefix apps/web run build: PASS, tsc и Vite.
 - Интеграционные тесты: добавлены реальные HTTP multi-turn, подтверждение/снятие подтверждения, auth/изоляция, история/пагинация, rollback, конкурентные и устаревшие правки, новый FK и сохранность legacy-профилей при upgrade/downgrade. Общие фикстуры вынесены для использования во временных БД.
-- Локальный Docker Engine недоступен (pipe отсутствует). Новые PostgreSQL-сценарии должны быть подтверждены в GitHub CI; системные настройки не менялись.
+- GitHub CI для 109b7a6: PASS, Checks (ubuntu-latest), Checks (windows-latest), Compose smoke. https://github.com/1nc-0gn1t0/Business_AI/actions/runs/39360361948.
+- Интеграционные PostgreSQL-тесты: 26 passed, включая реальные multi-turn HTTP, конкурентные правки и миграцию legacy-профилей. Миграции и smoke прошли на чистом runner.
+- Локальный Docker Engine недоступен (pipe отсутствует); локальные DB-тесты не выполнены. Все PostgreSQL-сценарии подтверждены в GitHub CI, системные настройки не менялись.
 
 ## Запуск и продолжение
 
 - docker compose up --build: DB → migrate → API → web. OpenAPI http://localhost:8000/docs, web http://localhost:5173.
 - docker compose --profile test run --build --rm db-tests: DB/API tests в отдельных временных БД; БД приложения не откатывается.
 - Пример работы с токеном, версией и исправлениями — docs/CONVERSATION_API.md. Потерянный гостевой токен публичным API не восстанавливается.
-- Следующий шаг сейчас: проверить CI, исправить ошибки, открыть PR BA-004 → main и оставить на review без merge.
+- Блокирующих проблем реализации не обнаружено. Следующий шаг — review PR BA-004 → main владельцем; без автоматического merge.
 - После принятия BA-004 только по разрешению владельца — BA-005: LLM adapter и deterministic stub. Не выдавать текущие правила за подключённую модель.

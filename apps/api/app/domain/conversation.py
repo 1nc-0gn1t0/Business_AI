@@ -6,7 +6,7 @@ from app.api.schemas import BusinessProfile
 from app.domain.enums import ConfirmationState, ConversationState, Funding
 
 QUESTIONS = {
-    "category": "Какой бизнес вы хотите открыть?",
+    "category": "Какой бизнес вы хотите открыть? Можно написать «бизнес: ...».",
     "city": "В каком городе планируете открыть бизнес? Можно написать «город: ...».",
     "budget": "Какой общий бюджет запуска в рублях? Например: «бюджет: 2 млн».",
     "preferences.format": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
