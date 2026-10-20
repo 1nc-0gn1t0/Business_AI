@@ -27,3 +27,14 @@ class Funding(StrEnum):
 class ConfirmationState(StrEnum):
     DRAFT = "draft"
     CONFIRMED = "confirmed"
+
+
+class ConversationState(StrEnum):
+    COLLECTING = "collecting"
+    AWAITING_CONFIRMATION = "awaiting_confirmation"
+    CONFIRMED = "confirmed"
+
+
+class MessageRole(StrEnum):
+    USER = "user"
+    ASSISTANT = "assistant"
