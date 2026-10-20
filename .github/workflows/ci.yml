@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Checks (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: "0.13.1"
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: apps/api/uv.lock
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Install API dependencies from lock
+        run: uv sync --locked --project apps/api
+      - name: Install web dependencies from lock
+        run: npm --prefix apps/web ci
+      - name: Check Docker requirements match the lock
+        working-directory: apps/api
+        shell: bash
+        run: |
+          uv export --no-dev --no-hashes --no-emit-project --format requirements-txt --output-file requirements.txt
+          git diff --exit-code -- requirements.txt
+      - name: Lint, formatting, type checks and API tests
+        run: uv tool run --from prek==0.5.4 prek run --all-files
+      - name: Build web
+        run: npm --prefix apps/web run build
+
+  compose:
+    name: Compose smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      COMPOSE_PROJECT_NAME: business-ai-ci
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate Compose
+        run: docker compose config --quiet
+      - name: Build and wait for healthy services
+        run: docker compose up --build --detach --wait --wait-timeout 180
+      - name: Check API, PostGIS and web
+        shell: pwsh
+        run: ./scripts/smoke.ps1
+      - name: Service diagnostics on failure
+        if: failure()
+        run: |
+          docker compose ps --all
+          docker compose logs --no-color --tail 100
+      - name: Stop test environment
+        if: always()
+        run: docker compose down --volumes --remove-orphans

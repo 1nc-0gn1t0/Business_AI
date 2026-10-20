@@ -18,6 +18,30 @@ pass_filenames = false
 always_run = true
 
 [[repos.hooks]]
+id = 'api-typecheck'
+name = 'API mypy'
+entry = 'uv run --locked --project apps/api mypy --config-file apps/api/pyproject.toml apps/api/app apps/api/tests'
+language = "system"
+pass_filenames = false
+always_run = true
+
+[[repos.hooks]]
+id = 'api-tests'
+name = 'API pytest'
+entry = 'uv run --locked --project apps/api pytest apps/api/tests'
+language = "system"
+pass_filenames = false
+always_run = true
+
+[[repos.hooks]]
+id = 'web-lint'
+name = 'Web ESLint'
+entry = 'node apps/web/node_modules/eslint/bin/eslint.js --config apps/web/eslint.config.js apps/web --max-warnings 0'
+language = "system"
+pass_filenames = false
+always_run = true
+
+[[repos.hooks]]
 id = 'web-typecheck'
 name = 'Web TypeScript'
 entry = 'node apps/web/node_modules/typescript/bin/tsc --project apps/web/tsconfig.json --noEmit'
