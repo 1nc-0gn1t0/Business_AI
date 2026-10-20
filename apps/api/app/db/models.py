@@ -8,7 +8,14 @@ import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-from app.domain.enums import Confidence, ConfirmationState, DataOrigin, Funding
+from app.domain.enums import (
+    Confidence,
+    ConfirmationState,
+    ConversationState,
+    DataOrigin,
+    Funding,
+    MessageRole,
+)
 
 
 def enum_values(enum: type[Enum]) -> list[str]:
@@ -17,6 +24,67 @@ def enum_values(enum: type[Enum]) -> list[str]:
 
 class Base(DeclarativeBase):
     pass
+
+
+class ConversationRecord(Base):
+    __tablename__ = "conversations"
+    __table_args__ = (
+        sa.CheckConstraint("version >= 0", name="ck_conversation_version"),
+        sa.CheckConstraint("token_hash ~ '^[0-9a-f]{64}$'", name="ck_conversation_token_hash"),
+    )
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    token_hash: Mapped[str] = mapped_column(sa.String(64))
+    state: Mapped[ConversationState] = mapped_column(
+        sa.Enum(ConversationState, name="conversation_state", values_callable=enum_values)
+    )
+    version: Mapped[int] = mapped_column(server_default="0")
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    updated_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+
+
+class MessageRecord(Base):
+    __tablename__ = "messages"
+    __table_args__ = (
+        sa.UniqueConstraint("conversation_id", "version", "role"),
+        sa.CheckConstraint("version >= 0", name="ck_message_version"),
+        sa.CheckConstraint("length(btrim(content)) BETWEEN 1 AND 4000", name="ck_message_content"),
+    )
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    conversation_id: Mapped[UUID] = mapped_column(
+        sa.ForeignKey("conversations.id", ondelete="CASCADE")
+    )
+    version: Mapped[int]
+    role: Mapped[MessageRole] = mapped_column(
+        sa.Enum(MessageRole, name="message_role", values_callable=enum_values)
+    )
+    content: Mapped[str] = mapped_column(sa.Text)
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+
+
+class ProfileRevisionRecord(Base):
+    __tablename__ = "profile_revisions"
+    __table_args__ = (
+        sa.UniqueConstraint("conversation_id", "version"),
+        sa.CheckConstraint("version >= 0", name="ck_revision_version"),
+        sa.CheckConstraint(
+            "jsonb_typeof(profile_snapshot) = 'object'", name="ck_revision_snapshot"
+        ),
+        sa.CheckConstraint(
+            "source IN ('created', 'message', 'patch', 'confirmation', 'legacy_import')",
+            name="ck_revision_source",
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    conversation_id: Mapped[UUID] = mapped_column(
+        sa.ForeignKey("conversations.id", ondelete="CASCADE")
+    )
+    version: Mapped[int]
+    source: Mapped[str] = mapped_column(sa.Text)
+    profile_snapshot: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
 
 
 class BusinessProfileRecord(Base):
@@ -31,7 +99,10 @@ class BusinessProfileRecord(Base):
     )
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
-    conversation_id: Mapped[UUID] = mapped_column(unique=True)
+    conversation_id: Mapped[UUID] = mapped_column(
+        sa.ForeignKey("conversations.id", ondelete="CASCADE", name="fk_profile_conversation"),
+        unique=True,
+    )
     city: Mapped[str | None] = mapped_column(sa.Text)
     category: Mapped[str | None] = mapped_column(sa.Text)
     budget: Mapped[Decimal | None] = mapped_column(sa.Numeric(18, 2))

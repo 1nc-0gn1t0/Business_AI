@@ -1,10 +1,6 @@
 import os
-import subprocess
-import sys
-from collections.abc import Iterator
 from datetime import UTC, datetime
 from decimal import Decimal
-from pathlib import Path
 from typing import Any
 from uuid import UUID, uuid4
 
@@ -16,67 +12,29 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 
-from app.api.schemas import AnalysisRun, BusinessProfile, MetricWithProvenance
-from app.db.models import AnalysisRunRecord, BusinessProfileRecord, LocationMetricRecord
-from app.domain.enums import Confidence, DataOrigin
+from app.api.schemas import BusinessProfile, MetricWithProvenance
+from app.db.models import (
+    AnalysisRunRecord,
+    BusinessProfileRecord,
+    ConversationRecord,
+    LocationMetricRecord,
+)
+from app.domain.enums import Confidence, ConversationState, DataOrigin
+
+from .support import migrate
 
 pytestmark = pytest.mark.skipif(
     os.environ.get("BA_RUN_DB_TESTS") != "1", reason="Run with Docker Compose test profile"
 )
-CONFIG = Path(__file__).resolve().parents[2] / "alembic.ini"
-TABLES = {"business_profiles", "analysis_runs", "location_metrics"}
 
-
-def migrate(database: str, *arguments: str) -> str:
-    result = subprocess.run(
-        [sys.executable, "-m", "alembic", "-c", str(CONFIG), *arguments],
-        env={**os.environ, "PGDATABASE": database},
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-    assert result.returncode == 0, result.stdout + result.stderr
-    return result.stdout + result.stderr
-
-
-@pytest.fixture(scope="module")
-def temporary_database() -> Iterator[str]:
-    # Never downgrade the application's database. Only our newly created DB is dropped.
-    name = "ba003_test_" + uuid4().hex
-    with psycopg.connect(dbname="postgres", autocommit=True) as admin:
-        admin.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(name)))
-        try:
-            yield name
-        finally:
-            admin.execute(sql.SQL("DROP DATABASE {} WITH (FORCE)").format(sql.Identifier(name)))
-
-
-@pytest.fixture(scope="module")
-def migrated_database(temporary_database: str) -> Iterator[tuple[Engine, UUID]]:
-    migrate(temporary_database, "upgrade", "head")
-    engine = sa.create_engine("postgresql+psycopg://", connect_args={"dbname": temporary_database})
-    run = AnalysisRun(
-        profile_snapshot=BusinessProfile(conversation_id=uuid4()),
-        dataset_versions={"seed": "v1"},
-        algorithm_version="test-v1",
-        tool_trace_id=uuid4(),
-    )
-    with Session(engine) as session:
-        session.add(
-            AnalysisRunRecord(
-                **run.model_dump(mode="json")
-                | {
-                    "id": run.id,
-                    "tool_trace_id": run.tool_trace_id,
-                    "created_at": run.created_at,
-                }
-            )
-        )
-        session.commit()
-    try:
-        yield engine, run.id
-    finally:
-        engine.dispose()
+TABLES = {
+    "business_profiles",
+    "analysis_runs",
+    "location_metrics",
+    "conversations",
+    "messages",
+    "profile_revisions",
+}
 
 
 def test_upgrade_is_repeatable_and_matches_models(temporary_database: str) -> None:
@@ -101,7 +59,8 @@ def test_downgrade_and_reupgrade_do_not_drop_postgis() -> None:
                 assert connection.execute("SELECT PostGIS_Version()").fetchone()
                 enums = connection.execute(
                     "SELECT typname FROM pg_type WHERE typname IN "
-                    "('data_origin', 'confidence', 'funding', 'confirmation_state')"
+                    "('data_origin', 'confidence', 'funding', 'confirmation_state', "
+                    "'conversation_state', 'message_role')"
                 ).fetchall()
                 assert enums == []
             migrate(name, "upgrade", "head")
@@ -131,6 +90,17 @@ def test_orm_round_trip_retains_provenance_and_snapshot(
     )
     record = LocationMetricRecord(analysis_run_id=run_id, candidate_id=uuid4(), **dto.model_dump())
     with Session(engine) as session:
+        session.add(
+            ConversationRecord(
+                id=profile.conversation_id,
+                token_hash="0" * 64,
+                state=ConversationState.COLLECTING,
+                version=0,
+                created_at=datetime.now(UTC),
+                updated_at=datetime.now(UTC),
+            )
+        )
+        session.flush()
         session.add(BusinessProfileRecord(**profile.model_dump()))
         session.add(record)
         session.commit()
