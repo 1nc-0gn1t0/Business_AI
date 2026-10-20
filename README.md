@@ -70,7 +70,7 @@ uv sync --locked --project apps/api
 uv run --locked --project apps/api pytest apps/api/tests
 uv run --locked --project apps/api ruff check apps/api
 uv run --locked --project apps/api ruff format --check apps/api
-uv run --locked --project apps/api mypy --config-file apps/api/pyproject.toml apps/api/app apps/api/tests
+uv run --locked --project apps/api mypy --config-file apps/api/pyproject.toml apps/api/app apps/api/tests apps/api/migrations
 npm --prefix apps/web ci
 npm --prefix apps/web run lint
 npm --prefix apps/web run build
@@ -89,9 +89,9 @@ uv export --no-dev --no-hashes --no-emit-project --format requirements-txt --out
 
 ## CI и проверки перед коммитом
 
-`.github/workflows/ci.yml` запускается при push в любую ветку, PR в `main` и вручную через GitHub Actions. Job `Checks` выполняет одни и те же prek-проверки на Ubuntu и Windows (Python 3.12, Node.js 24, uv 0.13.1, prek 0.5.4), проверяет соответствие Docker requirements lock-файлу и собирает frontend. Job `Compose smoke` на Ubuntu собирает контейнеры, ждёт готовности трёх сервисов и проверяет HTTP через `scripts/smoke.ps1`. При ошибке сохраняет диагностику в логах job, затем удаляет тестовое окружение. Внешние LLM/банковские ключи не нужны.
+`.github/workflows/ci.yml` запускается при push в любую ветку, PR в `main` и вручную через GitHub Actions. Job `Checks` выполняет одни и те же prek-проверки на Ubuntu и Windows (Python 3.12, Node.js 24, uv 0.13.1, prek 0.5.4), проверяет соответствие Docker requirements lock-файлу и собирает frontend. Job `Compose smoke` на Ubuntu собирает контейнеры, применяет миграции, ждёт готовности сервисов, проверяет HTTP и запускает интеграционные тесты БД. При ошибке сохраняет диагностику в логах job, затем удаляет тестовое окружение. Внешние LLM/банковские ключи не нужны.
 
-`prek run --all-files` запускает Ruff lint/format, строгий mypy для API и тестов, pytest, ESLint с правилами React Hooks и TypeScript. Зависимости сначала установите командами выше. Для установки автоматической проверки перед каждым коммитом:
+`prek run --all-files` запускает Ruff lint/format, строгий mypy для API/миграций/тестов, pytest без БД, ESLint с правилами React Hooks и TypeScript. Зависимости сначала установите командами выше. Для установки автоматической проверки перед каждым коммитом:
 
 ```powershell
 # Если prek ещё не установлен
@@ -109,4 +109,12 @@ prek install
 - `scripts/smoke.ps1`: проверка API, PostGIS и собранной страницы через HTTP.
 - `data/synthetic`, `docs/adr`: места для будущих данных и решений.
 
-Перед разработкой прочитайте `docs/HANDOFF.md` и соответствующие разделы `docs/PROJECT_PLAN.md`. Следующая задача после проверки `BA-002` — `BA-003` (доменные DTO/миграции/provenance). Переход — по согласованию с владельцем проекта.
+Контракты `BusinessProfile`, `MetricWithProvenance`, `AnalysisRun` и первая Alembic-ревизия описаны в [docs/DATA_CONTRACTS.md](docs/DATA_CONTRACTS.md). Compose выполняет `migrate` до старта API. Интеграционные тесты миграций и ограничений запускаются отдельно:
+
+```powershell
+docker compose --profile test run --build --rm db-tests
+```
+
+Обычный pytest не требует БД и пропускает эти integration tests. Тестовый профиль создаёт отдельные временные базы; основная БД приложения не откатывается.
+
+Перед разработкой прочитайте `docs/HANDOFF.md` и соответствующие разделы `docs/PROJECT_PLAN.md`. Следующая задача после проверки и слияния `BA-003` — `BA-004` (состояние диалога и извлечение профиля). Переход — только по разрешению владельца проекта.

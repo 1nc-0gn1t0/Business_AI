@@ -2,46 +2,45 @@
 
 ## Состояние на 20.10.2026
 
-- Фаза F0. BA-002 завершена: CI и проверки реализованы, локально и в GitHub Actions PASS.
-- Ветка для продолжения после интеграции: main. Источники реализации: feat/BA-001-project-skeleton (aa78db6) и feat/BA-002-ci; BA-001 является предком BA-002.
-- Последовательная интеграция: BA-001 → main через https://github.com/1nc-0gn1t0/Business_AI/pull/1 (merge c0dba59), затем BA-002 → main через https://github.com/1nc-0gn1t0/Business_AI/pull/2. Используются merge commits с сохранением истории, без force push и удаления веток.
-- Реализация CI: 96c2e62, исправление action-тега: 7b37866; оба коммита отправлены в origin/feat/BA-002-ci. Фактический HEAD после обновления HANDOFF указан в итоговом сообщении.
-- Владелец разрешил последовательное слияние PR #1 и #2 после проверки изменений и CI. BA-003 не начиналась и требует отдельного разрешения.
+- Фаза F0, BA-003 реализована и проверена: DTO, ORM и миграции. Локальные проверки и GitHub CI PASS; требуется review без самостоятельного merge.
+- Ветка feat/BA-003-data-contracts создана от синхронизированного main/origin/main dad73d7, рабочее дерево перед началом было чистым.
+- BA-001 и BA-002 ранее интегрированы последовательно через PR #1 и #2. Их история сохранена.
+- Коммит реализации 96f4881 отправлен в origin/feat/BA-003-data-contracts. Ссылка на PR и фактический HEAD после обновления HANDOFF указаны в итоговом сообщении. Самостоятельный merge запрещён.
+- BA-004 не начиналась, требуется отдельное разрешение владельца.
 
-## Сделано в BA-002
+## Что сделано в BA-003
 
-- .github/workflows/ci.yml: push во все ветки, PR в main, ручной запуск; contents: read, отмена устаревших запусков, таймауты.
-- Checks на Ubuntu и Windows: Python 3.12, Node.js 24, uv 0.13.1, prek 0.5.4; установка из lock-файлов, Ruff lint/format, строгий mypy (API и тесты), pytest, ESLint TypeScript/React Hooks, tsc и Vite build.
-- Проверка соответствия apps/api/requirements.txt экспорту uv.lock, чтобы Docker не использовал устаревшие зависимости.
-- Compose smoke на Ubuntu: сборка трёх контейнеров, ожидание healthcheck, scripts/smoke.ps1 с реальным PostGIS. При сбое — диагностика; очистка тестовых контейнеров/volume выполняется всегда.
-- prek.toml содержит те же lint/typecheck/unit checks; hook установлен в текущем клоне через prek install. Другие клоны устанавливают hook отдельно по README.
-- Добавлены mypy и ESLint-зависимости, обновлены lock-файлы, аннотации двух существующих тестов, исключения .mypy_cache. Архитектура и бизнес-логика не менялись.
-- README описывает CI, локальные команды и установку hook. Полный список файлов — git diff aa78db6...HEAD.
+- app/api/schemas.py: BusinessProfile, BusinessPreferences, MetricWithProvenance, AnalysisRun. Неизвестные поля запрещены, поля DTO frozen; денежные значения Decimal, даты с timezone, конечные значения метрик.
+- app/domain/enums.py: DataOrigin из шести значений, Confidence, Funding, ConfirmationState. Origin/источник/версия/даты/confidence/limitations у метрики обязательны; synthetic требует явных ограничений и confidence=not_applicable.
+- app/db/models.py: SQLAlchemy-модели business_profiles, analysis_runs, location_metrics. Native PostgreSQL enums, NOT NULL/CHECK/FK, индекс анализа, JSONB снимков/предпочтений, Numeric бюджета.
+- Alembic 0001_contracts: воспроизводимый upgrade/downgrade и PostGIS. Credentials через libpq PG*, без секретов в URL/ini. PostGIS сохраняется при downgrade и исключён из autogenerate удаления.
+- Compose запускает migrate до API; Dockerfile имеет отдельную test-стадию. Профиль test создаёт временные БД для интеграционных тестов, не откатывая БД приложения.
+- CI Compose smoke запускает интеграционные тесты; mypy/prek проверяет также миграции. Зависимости и lock/requirements обновлены вместе.
+- docs/DATA_CONTRACTS.md описывает контракты, ограничения, команды миграций и тестов; README актуализирован.
+- HTTP endpoints диалога/аналитики, LLM и геосервисы не добавлены. Проверка FastAPI 422 выполняется тестовым маршрутом, без создания фиктивного product API.
 
-## Проверки BA-002
+## Проверки
 
-Из корня репозитория, если не указано иное. Доступ к зависимостям/локальному обмену разрешался вне песочницы.
-
-- uv sync --locked --project apps/api: PASS.
-- uv tool run --from prek==0.5.4 prek run --all-files: PASS, все 6 hooks (Ruff lint, Ruff format, mypy, pytest, ESLint, TypeScript).
-- mypy: PASS, 5 файлов; pytest: 2 существующих теста (200 с PostGIS и 503 без утечки реквизитов).
-- npm --prefix apps/web run lint: PASS, без предупреждений ESLint.
-- npm --prefix apps/web run build: PASS, tsc и Vite.
-- В apps/api: uv export --no-dev --no-hashes --no-emit-project --format requirements-txt --output-file requirements.txt; git diff --exit-code -- requirements.txt: PASS.
+- pytest apps/api/tests: 43 passed, 20 skipped (интеграционные тесты требуют отдельный test-профиль).
+- uv tool run --from prek==0.5.4 prek run --all-files: PASS, все 6 hooks (Ruff lint/format, mypy, pytest, ESLint, TypeScript).
+- mypy API/тестов/миграций: PASS, 14 файлов.
+- Alembic upgrade head --sql: PASS, SQL генерируется без подключения к БД.
 - docker compose config --quiet: PASS.
-- GitHub Actions для 7b37866: PASS, Checks (ubuntu-latest), Checks (windows-latest), Compose smoke. Запуск: https://github.com/1nc-0gn1t0/Business_AI/actions/runs/39182945060. Установка из lock, экспорт requirements, все prek checks, сборка frontend и реальный Compose smoke прошли на чистых runners.
-- Исправлена обнаруженная CI-ошибка: major-тег setup-uv@v10 отсутствовал; используется опубликованный точный тег v10.3.0. После исправления все jobs прошли.
+- GitHub CI 96f4881: PASS, Checks (ubuntu-latest), Checks (windows-latest), Compose smoke. https://github.com/1nc-0gn1t0/Business_AI/actions/runs/39355091502.
+- Облачный Compose применил миграцию, запустил API/web, прошёл HTTP smoke; интеграционные PostgreSQL-тесты: 20 passed (подтверждено job log). Upgrade/check/downgrade/reupgrade, сохранение PostGIS, ORM round trips всех origin и SQL-ограничения проверены на реальной БД.
+- Локальные Docker smoke/DB-тесты не выполнены: Docker Desktop установлен, но Engine не ответил после попыток запуска. Системные настройки не менялись. Это ограничение локальной проверки, интеграция подтверждена в CI.
 
-## Сохранившийся результат BA-001
+## Запуск
 
-React → FastAPI /healthz → PostgreSQL 17/PostGIS 3.5; Compose, lock-файлы и Windows/WSL2 инструкции. Проверены чистый клон с новой БД, smoke, пространственный запрос, отказ/восстановление БД и браузерные статусы. Коммиты f2ffb4b, 3bc62e5, aa78db6 отправлены в origin/feat/BA-001-project-skeleton.
+- docker compose up --build: DB → migrate → API → web.
+- http://localhost:5173; http://localhost:8000/healthz; http://localhost:8000/docs.
+- docker compose run --rm migrate alembic current (или check).
+- docker compose --profile test run --build --rm db-tests: PostgreSQL-тесты во временных БД ba003_test_*.
+- Для локальных Python-команд и настроек PG* см. docs/DATA_CONTRACTS.md. Не запускать downgrade основной БД ради теста.
 
-Запуск: docker compose up --build. Веб http://localhost:5173; readiness http://localhost:8000/healthz; OpenAPI http://localhost:8000/docs. Smoke: powershell -NoProfile -File scripts/smoke.ps1. Остановка с сохранением данных: docker compose down.
+## Границы и следующий шаг
 
-## Ограничения и следующий шаг
-
-- Локальное окружение разработки, демонстрационные реквизиты БД; внешние API/секреты не нужны.
-- Бизнес-модули, AI-диалог, аналитика, карта и банковские интеграции ещё не реализованы.
-- CI не включает настройки branch protection: их определяет владелец репозитория.
-- Блокеров BA-002 нет. Перед новой задачей синхронизировать main через git pull --ff-only и проверить актуальный CI main. Фактические merge SHA и итоговый CI приведены в отчёте интеграции; состояние PR доступно по ссылкам выше.
-- Только с разрешения владельца BA-003: доменные DTO, миграции и provenance enum.
+- Пока provenance хранится в самой метрике; справочник SourceRecord и геотаблицы относятся к будущим провайдерам/геоданным. UUID conversation_id/candidate_id пока без FK к ещё не существующим таблицам; FK метрики к AnalysisRun уже обязателен.
+- Подтверждение профиля не означает готовность анализа; полнота и multi-turn логика — BA-004.
+- Блокирующих проблем реализации BA-003 не обнаружено. Следующий шаг — review PR BA-003 → main владельцем, без автоматического merge.
+- После принятия BA-003 только по разрешению владельца — BA-004: conversation state и extract profile.
