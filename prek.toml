@@ -20,7 +20,7 @@ always_run = true
 [[repos.hooks]]
 id = 'api-typecheck'
 name = 'API mypy'
-entry = 'uv run --locked --project apps/api mypy --config-file apps/api/pyproject.toml apps/api/app apps/api/tests'
+entry = 'uv run --locked --project apps/api mypy --config-file apps/api/pyproject.toml apps/api/app apps/api/tests apps/api/migrations'
 language = "system"
 pass_filenames = false
 always_run = true
