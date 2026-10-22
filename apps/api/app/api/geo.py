@@ -1,0 +1,69 @@
+from typing import Annotated, Any
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import ValidationError
+from sqlalchemy.orm import Session
+
+from app.db.session import get_session
+from app.geo.schemas import (
+    Bounds,
+    CategoriesView,
+    DatasetView,
+    DistrictCollection,
+    POICollection,
+    Slug,
+    SpatialQuery,
+)
+from app.geo.service import GeoData
+
+router = APIRouter(prefix="/api/v1/geo", tags=["geo"])
+Database = Annotated[Session, Depends(get_session, scope="function")]
+Version = Annotated[str | None, Query(pattern=r"^[0-9a-f]{64}$")]
+
+
+@router.get("/datasets", response_model=list[DatasetView])
+def datasets(session: Database) -> list[dict[str, Any]]:
+    return GeoData(session).datasets()
+
+
+@router.get("/{slug}/pois", response_model=POICollection)
+def pois(
+    slug: Slug,
+    session: Database,
+    bbox: str | None = None,
+    longitude: float | None = None,
+    latitude: float | None = None,
+    radius_m: float | None = None,
+    district_id: int | None = None,
+    category: str | None = None,
+    limit: int = 100,
+    offset: int = 0,
+    data_version: Version = None,
+) -> dict[str, Any]:
+    try:
+        query = SpatialQuery(
+            bbox=Bounds.parse(bbox) if bbox is not None else None,
+            longitude=longitude,
+            latitude=latitude,
+            radius_m=radius_m,
+            district_id=district_id,
+            category=category,
+            limit=limit,
+            offset=offset,
+            data_version=data_version,
+        )
+        if offset and not data_version:
+            raise ValueError("Pagination must pin data_version")
+    except (ValueError, ValidationError):
+        raise HTTPException(422, detail={"code": "invalid_geo_query"}) from None
+    return GeoData(session).pois(slug, query)
+
+
+@router.get("/{slug}/districts", response_model=DistrictCollection)
+def districts(slug: Slug, session: Database, data_version: Version = None) -> dict[str, Any]:
+    return GeoData(session).districts(slug, data_version)
+
+
+@router.get("/{slug}/categories", response_model=CategoriesView)
+def categories(slug: Slug, session: Database) -> dict[str, Any]:
+    return GeoData(session).categories(slug)

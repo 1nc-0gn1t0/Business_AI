@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "kazan-fixture",
+  "city": "Kazan",
+  "bbox": {
+    "west": 49.115,
+    "south": 55.785,
+    "east": 49.12,
+    "north": 55.79
+  },
+  "source_url": "https://overpass-api.de/api/interpreter",
+  "query": "[out:json][timeout:90][maxsize:134217728];(nwr[\"amenity\"](55.785,49.115,55.79,49.12);nwr[\"shop\"](55.785,49.115,55.79,49.12);nwr[\"highway\"=\"bus_stop\"](55.785,49.115,55.79,49.12);)->.poi;rel[\"boundary\"=\"administrative\"][\"admin_level\"~\"^(8|9|10)$\"](55.785,49.115,55.79,49.12)->.districts;.poi out meta center;.districts out meta geom;",
+  "sha256": "57a045c95fce2bc452d5053deb063bbfde29a7b276293ebf3d8441edcafff237",
+  "fetched_at": "2026-10-22T20:30:25.861767Z",
+  "osm_base": "2026-10-22T20:28:36Z",
+  "origin": "open_data",
+  "source_name": "OpenStreetMap via Overpass API",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "source_sha256": "8f073e34f841e91b1ba1a518a95efbabdc3925a6ef14e8e6ce95b490579ddfb8",
+  "normalization": "poi_minimal_v1"
+}
