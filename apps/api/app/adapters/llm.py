@@ -215,11 +215,12 @@ class OllamaLLM:
             headers={"Content-Type": "application/json"},
             method="POST",
         )
-        deadline = time.monotonic() + self.settings.timeout
+        started = time.monotonic()
         for attempt in range(2):
             try:
                 with build_opener(NoRedirect()).open(
-                    request, timeout=max(0.01, deadline - time.monotonic())
+                    request,
+                    timeout=max(0.01, self.settings.timeout - (time.monotonic() - started)),
                 ) as response:
                     raw = response.read(65537)
                 if len(raw) > 65536:

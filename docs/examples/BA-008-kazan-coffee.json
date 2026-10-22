@@ -1,0 +1,1901 @@
+{
+  "source": "OpenStreetMap via Overpass API / ODbL-1.0",
+  "checks": {
+    "original_ids_preserved": true,
+    "edge_scores_withheld": true,
+    "five_covered_zones_ranked": true,
+    "pinned_replay": true
+  },
+  "scenarios": {
+    "original_BA007_zones": {
+      "request": {
+        "candidates": {
+          "profile": {
+            "id": "00000000-0000-0000-0000-000000000007",
+            "conversation_id": "00000000-0000-0000-0000-000000000007",
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000",
+            "preferences": {
+              "format": "навынос"
+            },
+            "confirmation_state": "confirmed"
+          },
+          "cell_size_m": 500,
+          "min_separation_m": 1000,
+          "limit": 5,
+          "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447"
+        }
+      },
+      "response": {
+        "status": "insufficient_data",
+        "reasons": [
+          "relative_geographic_proxies_not_profitability",
+          "straight_line_not_walking",
+          "incomplete_or_insufficient_comparison"
+        ],
+        "source_geometry_archive": "BA-007-kazan-coffee.json",
+        "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+        "evaluations": [
+          {
+            "candidate_id": "2512fc79d4b3c81f41756b35f9ceb09d5693ca4e46752fd0597130228edc479d",
+            "score": null,
+            "rank": null,
+            "status": "outside_coverage",
+            "coverage_margin_m": 372.02616018,
+            "fully_covered": false
+          },
+          {
+            "candidate_id": "32ec33dd38af00ab0c91f726ea2f6d74814e3fa955bb168a6c1dbda1368aa7f1",
+            "score": null,
+            "rank": null,
+            "status": "insufficient_data",
+            "coverage_margin_m": 6012.37837085,
+            "fully_covered": true
+          },
+          {
+            "candidate_id": "601c361c713ee5fa1b9086a1954dc1f33285ea9960ac4cefb8c5a59b536bbdeb",
+            "score": null,
+            "rank": null,
+            "status": "outside_coverage",
+            "coverage_margin_m": 186.04575614,
+            "fully_covered": false
+          },
+          {
+            "candidate_id": "80d6841dd4a14ab33d9fdb426c297208d100af95544a6d903c52ba4ec3bffacd",
+            "score": null,
+            "rank": null,
+            "status": "outside_coverage",
+            "coverage_margin_m": 146.93189181,
+            "fully_covered": false
+          },
+          {
+            "candidate_id": "e2b066f3e5c0991a797b20eedaef97ce659f2cbc5d60f53b0bed8ef78ea95144",
+            "score": null,
+            "rank": null,
+            "status": "outside_coverage",
+            "coverage_margin_m": 331.34609834,
+            "fully_covered": false
+          }
+        ]
+      },
+      "http_seconds": 0.372
+    },
+    "covered_BA007_zones": {
+      "request": {
+        "candidates": {
+          "profile": {
+            "id": "00000000-0000-0000-0000-000000000007",
+            "conversation_id": "00000000-0000-0000-0000-000000000007",
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000",
+            "preferences": {
+              "format": "навынос"
+            },
+            "confirmation_state": "confirmed"
+          },
+          "cell_size_m": 500,
+          "min_separation_m": 1000,
+          "limit": 5,
+          "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+          "search_bbox": {
+            "west": 49.065,
+            "south": 55.71,
+            "east": 49.235,
+            "north": 55.84
+          }
+        }
+      },
+      "response": {
+        "status": "ok",
+        "reasons": [
+          "relative_geographic_proxies_not_profitability",
+          "straight_line_not_walking"
+        ],
+        "candidates": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "id": "615b4ad59094fa5db097b577c61ff7e024dc537512245d8e165be044fe4743ac",
+              "geometry": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                  [
+                    [
+                      [
+                        49.158044767553555,
+                        55.7878157337789
+                      ],
+                      [
+                        49.158256657380456,
+                        55.7833257858834
+                      ],
+                      [
+                        49.15028903659375,
+                        55.783206140058304
+                      ],
+                      [
+                        49.15007623137559,
+                        55.78769606790526
+                      ],
+                      [
+                        49.158044767553555,
+                        55.7878157337789
+                      ]
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "origin": "modelled",
+                "kind": "geographic_zone_not_premises",
+                "is_actual_listing": false,
+                "grid_i": 768,
+                "grid_j": 12367,
+                "area_m2": 249960.00160050113,
+                "representative_point": {
+                  "type": "Point",
+                  "coordinates": [
+                    49.15416666735782,
+                    55.78551092689433
+                  ]
+                },
+                "anchor": {
+                  "type": "Feature",
+                  "id": "node/11687380247",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      49.1557823,
+                      55.7858859
+                    ]
+                  },
+                  "properties": {
+                    "osm_type": "node",
+                    "osm_id": 11687380247,
+                    "osm_version": 1,
+                    "observed_at": "2024-03-03T09:02:17Z",
+                    "name": "Кулинария",
+                    "categories": [
+                      "amenity:cafe"
+                    ],
+                    "tags": {
+                      "name": "Кулинария",
+                      "amenity": "cafe",
+                      "addr:street": "Товарищеская улица",
+                      "opening_hours": "Mo-Sa 09:00-17:00",
+                      "addr:housenumber": "30Б"
+                    },
+                    "representation": "osm_node",
+                    "distance_m": 109.62200919
+                  }
+                },
+                "requirements": []
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "b7eb6174e11453166c1f55d91f5e022ff649c27d5c5a87739a1695a96fe72929",
+              "geometry": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                  [
+                    [
+                      [
+                        49.10574746089709,
+                        55.71512406018112
+                      ],
+                      [
+                        49.10596477205214,
+                        55.710634192575526
+                      ],
+                      [
+                        49.09801218829985,
+                        55.710511263519166
+                      ],
+                      [
+                        49.09779396604766,
+                        55.71500111054724
+                      ],
+                      [
+                        49.10574746089709,
+                        55.71512406018112
+                      ]
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "origin": "modelled",
+                "kind": "geographic_zone_not_premises",
+                "is_actual_listing": false,
+                "grid_i": 761,
+                "grid_j": 12351,
+                "area_m2": 249960.00159965717,
+                "representative_point": {
+                  "type": "Point",
+                  "coordinates": [
+                    49.10187959083005,
+                    55.71281765156138
+                  ]
+                },
+                "anchor": {
+                  "type": "Feature",
+                  "id": "node/1003659912",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      49.1013023,
+                      55.7135436
+                    ]
+                  },
+                  "properties": {
+                    "osm_type": "node",
+                    "osm_id": 1003659912,
+                    "osm_version": 10,
+                    "observed_at": "2026-05-25T07:14:46Z",
+                    "name": "Магазин",
+                    "categories": [
+                      "highway:bus_stop"
+                    ],
+                    "tags": {
+                      "name": "Магазин",
+                      "highway": "bus_stop",
+                      "name:ru": "Магазин"
+                    },
+                    "representation": "osm_node",
+                    "distance_m": 88.5958691
+                  }
+                },
+                "requirements": []
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "466d7eb1889a463db0b39ce3e9da04e45253f20842a4ca94405dba49dd9ac360",
+              "geometry": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                  [
+                    [
+                      [
+                        49.06794130174735,
+                        55.83586191072606
+                      ],
+                      [
+                        49.065000474191976,
+                        55.835815681355115
+                      ],
+                      [
+                        49.065000319309426,
+                        55.839999820549295
+                      ],
+                      [
+                        49.06526426837163,
+                        55.84
+                      ],
+                      [
+                        49.067736029902775,
+                        55.84
+                      ],
+                      [
+                        49.06794130174735,
+                        55.83586191072606
+                      ]
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "origin": "modelled",
+                "kind": "geographic_zone_not_premises",
+                "is_actual_listing": false,
+                "grid_i": 757,
+                "grid_j": 12379,
+                "area_m2": 82368.5586022193,
+                "representative_point": {
+                  "type": "Point",
+                  "coordinates": [
+                    49.06641953308551,
+                    55.837930865637674
+                  ]
+                },
+                "anchor": {
+                  "type": "Feature",
+                  "id": "node/11909516831",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      49.066411,
+                      55.8381253
+                    ]
+                  },
+                  "properties": {
+                    "osm_type": "node",
+                    "osm_id": 11909516831,
+                    "osm_version": 3,
+                    "observed_at": "2026-07-31T20:09:58Z",
+                    "name": null,
+                    "categories": [
+                      "amenity:cafe"
+                    ],
+                    "tags": {
+                      "amenity": "cafe",
+                      "operator": "ООО \"Акб-пэймент\"",
+                      "wheelchair": "no",
+                      "opening_hours": "09:00-21:00"
+                    },
+                    "representation": "osm_node",
+                    "distance_m": 21.654705
+                  }
+                },
+                "requirements": []
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "24dc1c84f2730b8d28245a220839498f2295f69c42c3599afed066db796f6818",
+              "geometry": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                  [
+                    [
+                      [
+                        49.22404751159035,
+                        55.73935923193618
+                      ],
+                      [
+                        49.22425144067854,
+                        55.73486908496386
+                      ],
+                      [
+                        49.21629340204493,
+                        55.73475378151322
+                      ],
+                      [
+                        49.216088560224904,
+                        55.73924390917682
+                      ],
+                      [
+                        49.22404751159035,
+                        55.73935923193618
+                      ]
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "origin": "modelled",
+                "kind": "geographic_zone_not_premises",
+                "is_actual_listing": false,
+                "grid_i": 776,
+                "grid_j": 12356,
+                "area_m2": 249960.00160119956,
+                "representative_point": {
+                  "type": "Point",
+                  "coordinates": [
+                    49.220170222988706,
+                    55.73705649707034
+                  ]
+                },
+                "anchor": {
+                  "type": "Feature",
+                  "id": "node/977360337",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      49.2187093,
+                      55.7392115
+                    ]
+                  },
+                  "properties": {
+                    "osm_type": "node",
+                    "osm_id": 977360337,
+                    "osm_version": 10,
+                    "observed_at": "2023-10-17T11:11:15Z",
+                    "name": "улица Дубравная, д.11",
+                    "categories": [
+                      "highway:bus_stop"
+                    ],
+                    "tags": {
+                      "name": "улица Дубравная, д.11",
+                      "highway": "bus_stop",
+                      "name:ru": "улица Дубравная, д.11"
+                    },
+                    "representation": "osm_node",
+                    "distance_m": 256.88185806
+                  }
+                },
+                "requirements": []
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "65b711f4cdfa490c8b9ecf48b727e92b9d3d05ca00b5c9ccfa94969c6467a5b0",
+              "geometry": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                  [
+                    [
+                      [
+                        49.20358663590484,
+                        55.837917733412695
+                      ],
+                      [
+                        49.19560765453361,
+                        55.83780095014859
+                      ],
+                      [
+                        49.19550578144357,
+                        55.84
+                      ],
+                      [
+                        49.20349059969194,
+                        55.84
+                      ],
+                      [
+                        49.20358663590484,
+                        55.837917733412695
+                      ]
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "origin": "modelled",
+                "kind": "geographic_zone_not_premises",
+                "is_actual_listing": false,
+                "grid_i": 774,
+                "grid_j": 12379,
+                "area_m2": 119170.94579851099,
+                "representative_point": {
+                  "type": "Point",
+                  "coordinates": [
+                    49.19954631536936,
+                    55.83895886670635
+                  ]
+                },
+                "anchor": {
+                  "type": "Feature",
+                  "id": "node/986420542",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      49.1985213,
+                      55.8391241
+                    ]
+                  },
+                  "properties": {
+                    "osm_type": "node",
+                    "osm_id": 986420542,
+                    "osm_version": 14,
+                    "observed_at": "2025-08-17T19:16:20Z",
+                    "name": "жилой массив Карьер",
+                    "categories": [
+                      "highway:bus_stop"
+                    ],
+                    "tags": {
+                      "name": "жилой массив Карьер",
+                      "highway": "bus_stop",
+                      "name:ru": "жилой массив Карьер"
+                    },
+                    "representation": "osm_node",
+                    "distance_m": 66.80222796
+                  }
+                },
+                "requirements": []
+              }
+            }
+          ],
+          "status": "ok",
+          "reasons": [
+            "saved_bbox_only",
+            "geographic_dispersion_not_ranking"
+          ],
+          "dataset": {
+            "slug": "kazan-centre",
+            "city": "Kazan",
+            "bbox": {
+              "west": 49.05,
+              "south": 55.7,
+              "east": 49.25,
+              "north": 55.85
+            },
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "license": "ODbL-1.0",
+            "license_url": "https://www.openstreetmap.org/copyright",
+            "attribution": "© OpenStreetMap contributors",
+            "osm_base": "2026-10-22T20:27:36Z",
+            "fetched_at": "2026-10-22T20:28:58.496357Z",
+            "imported_at": "2026-10-22T20:29:55.989925Z",
+            "age_days": 0,
+            "stale": false,
+            "stale_after_days": 30,
+            "poi_count": 23852,
+            "district_count": 8,
+            "diagnostics": {
+              "pois": 23852,
+              "districts": 8,
+              "unnamed_pois": 9540,
+              "center_outside_bbox": 17
+            },
+            "limitations": [
+              "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+              "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+              "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+              "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+              "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+              "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+              "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+            ]
+          },
+          "profile_snapshot": {
+            "id": "00000000-0000-0000-0000-000000000007",
+            "conversation_id": "00000000-0000-0000-0000-000000000007",
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000",
+            "funding": null,
+            "preferences": {
+              "format": "навынос",
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "confirmed"
+          },
+          "request_snapshot": {
+            "profile": {
+              "id": "00000000-0000-0000-0000-000000000007",
+              "conversation_id": "00000000-0000-0000-0000-000000000007",
+              "city": "Казань",
+              "category": "кофейня",
+              "budget": "2000000",
+              "funding": null,
+              "preferences": {
+                "format": "навынос",
+                "preferred_districts": [],
+                "constraints": []
+              },
+              "confirmation_state": "confirmed"
+            },
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "search_bbox": {
+              "west": 49.065,
+              "south": 55.71,
+              "east": 49.235,
+              "north": 55.84
+            },
+            "district_ids": [],
+            "excluded_district_ids": [],
+            "cell_size_m": 500,
+            "min_separation_m": 1000,
+            "limit": 5,
+            "requirements": []
+          },
+          "algorithm_version": "utm-grid-dispersion-v1",
+          "policy_version": "osm-anchor-policy-v1",
+          "request_fingerprint": "3e8509f9083e74a0c9a91c4fa56dd7bd02d993d3d3c2cc1374a64b3eecfe0ef0",
+          "metric_srid": 32639,
+          "geometry_srid": 4326,
+          "spatial_runtime": "POSTGIS=\"3.5.2 dea6d0a\" [EXTENSION] PGSQL=\"170\" GEOS=\"3.9.0-CAPI-1.16.2\" PROJ=\"7.2.1 NETWORK_ENABLED=OFF URL_ENDPOINT=https://cdn.proj.org USER_WRITABLE_DIRECTORY=/var/lib/postgresql/.local/share/proj DATABASE_PATH=/usr/share/proj/proj.db\" (compiled against PROJ 7.2.1) LIBXML=\"2.9.10\" LIBJSON=\"0.15\" LIBPROTOBUF=\"1.3.3\" WAGYU=\"0.5.0 (Internal)\" TOPOLOGY",
+          "eligible_count": 339,
+          "requested_count": 5,
+          "coverage": "saved_bbox_only",
+          "not_evaluated": [
+            "Zones are geographic search areas, not available premises or buildable parcels.",
+            "Budget, funding and business format are preserved, but affordability, floor area and legal suitability cannot be checked with OSM POI data.",
+            "No ranking, measured traffic, demand, rent, revenue or profitability is calculated.",
+            "OSM presence is evidence of mapped context only; missing objects do not prove absence.",
+            "Proximity uses straight-line distances from a representative point, not walking routes or a guarantee for every location inside the zone."
+          ]
+        },
+        "evaluations": [
+          {
+            "candidate_id": "615b4ad59094fa5db097b577c61ff7e024dc537512245d8e165be044fe4743ac",
+            "algorithm_version": "osm-cohort-minmax-v1",
+            "policy_fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+            "origin": "modelled",
+            "rank": 1,
+            "score": 85.608954,
+            "status": "ranked",
+            "raw": {
+              "coverage_margin_m": 6012.37837085,
+              "fully_covered": true,
+              "mapped_poi_count": 375,
+              "transit_count": 9,
+              "nearest_transit_m": 253.82729876,
+              "competitor_count": 14,
+              "nearest_competitor_m": 109.62200919,
+              "competitor_features_per_km2": 17.82535362629228,
+              "infrastructure_count": 87,
+              "infrastructure_categories": [
+                "amenity:atm",
+                "amenity:bank",
+                "amenity:bicycle_parking",
+                "amenity:clinic",
+                "amenity:hospital",
+                "amenity:parking",
+                "amenity:pharmacy",
+                "amenity:post_office"
+              ],
+              "complementary_count": 34,
+              "category_counts": {
+                "shop:games": 1,
+                "shop:shoes": 2,
+                "amenity:atm": 9,
+                "amenity:bar": 1,
+                "shop:bakery": 7,
+                "shop:beauty": 6,
+                "shop:fabric": 1,
+                "shop:sports": 1,
+                "shop:tailor": 2,
+                "amenity:bank": 7,
+                "amenity:cafe": 14,
+                "shop:alcohol": 8,
+                "shop:butcher": 2,
+                "shop:chemist": 5,
+                "shop:clothes": 13,
+                "shop:florist": 10,
+                "shop:jewelry": 1,
+                "shop:lottery": 1,
+                "shop:massage": 2,
+                "shop:outpost": 23,
+                "shop:tobacco": 8,
+                "shop:computer": 1,
+                "shop:copyshop": 6,
+                "shop:hardware": 1,
+                "shop:optician": 4,
+                "amenity:clinic": 5,
+                "amenity:police": 1,
+                "amenity:school": 3,
+                "shop:beverages": 1,
+                "shop:bookmaker": 1,
+                "shop:car_parts": 2,
+                "shop:cosmetics": 2,
+                "shop:furniture": 1,
+                "shop:houseware": 1,
+                "shop:newsagent": 1,
+                "amenity:dentist": 6,
+                "amenity:doctors": 4,
+                "amenity:library": 1,
+                "amenity:parking": 40,
+                "shop:car_repair": 1,
+                "shop:stationery": 2,
+                "amenity:car_wash": 1,
+                "amenity:hospital": 2,
+                "amenity:pharmacy": 17,
+                "amenity:post_box": 1,
+                "highway:bus_stop": 9,
+                "shop:convenience": 13,
+                "shop:e-cigarette": 1,
+                "shop:electronics": 1,
+                "shop:greengrocer": 3,
+                "shop:hairdresser": 12,
+                "shop:power_tools": 1,
+                "shop:second_hand": 1,
+                "shop:shoe_repair": 3,
+                "shop:supermarket": 11,
+                "amenity:dormitory": 4,
+                "amenity:fast_food": 9,
+                "amenity:recycling": 1,
+                "shop:doityourself": 1,
+                "shop:dry_cleaning": 1,
+                "shop:mobile_phone": 2,
+                "amenity:courthouse": 1,
+                "amenity:restaurant": 1,
+                "amenity:veterinary": 2,
+                "shop:confectionery": 2,
+                "shop:radiotechnics": 1,
+                "shop:travel_agency": 3,
+                "amenity:post_office": 3,
+                "shop:medical_supply": 5,
+                "amenity:kindergarten": 3,
+                "amenity:parcel_locker": 6,
+                "shop:department_store": 1,
+                "amenity:driving_school": 1,
+                "amenity:waste_disposal": 8,
+                "amenity:bicycle_parking": 4,
+                "amenity:language_school": 1,
+                "amenity:public_bookcase": 1,
+                "amenity:vending_machine": 13,
+                "shop:musical_instrument": 2,
+                "amenity:parking_entrance": 12,
+                "amenity:payment_terminal": 1,
+                "amenity:place_of_worship": 2
+              }
+            },
+            "provenance": {
+              "origin": "open_data",
+              "source_name": "OpenStreetMap via Overpass API",
+              "source_url": "https://overpass-api.de/api/interpreter",
+              "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+              "observed_at": "2026-10-22T20:27:36Z",
+              "generated_at": "2026-10-22T22:01:14.652509Z",
+              "license": "ODbL-1.0",
+              "confidence": "low",
+              "limitations": [
+                "Comparative mapped geographic context only; not a forecast of business profitability.",
+                "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+                "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+                "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+                "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+                "Budget, funding and format have no numerical effect without premises/cost data.",
+                "Scores depend on the compared candidates and cannot be compared across requests or radii.",
+                "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+                "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+                "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+                "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+                "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+                "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+                "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+              ]
+            },
+            "components": [
+              {
+                "criterion": "transit",
+                "raw_value": 0.49234540248,
+                "unit": "proximity_fraction",
+                "normalized": 0.5682686226217925,
+                "normalization_min": 0.0,
+                "normalization_max": 0.86639554408,
+                "weight": 0.3333333333333333,
+                "contribution": 18.942287420726412,
+                "status": "available"
+              },
+              {
+                "criterion": "infrastructure",
+                "raw_value": 8.0,
+                "unit": "mapped_category_count",
+                "normalized": 1.0,
+                "normalization_min": 2.0,
+                "normalization_max": 8.0,
+                "weight": 0.3333333333333333,
+                "contribution": 33.33333333333333,
+                "status": "available"
+              },
+              {
+                "criterion": "complementary",
+                "raw_value": 34.0,
+                "unit": "mapped_feature_count",
+                "normalized": 1.0,
+                "normalization_min": 1.0,
+                "normalization_max": 34.0,
+                "weight": 0.3333333333333333,
+                "contribution": 33.33333333333333,
+                "status": "available"
+              },
+              {
+                "criterion": "competitors",
+                "raw_value": 14.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 14.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              }
+            ],
+            "explanations": [
+              {
+                "criterion": "transit",
+                "effect": "neutral",
+                "text": "Выгрузка содержит 9 остановок в радиусе наблюдения. Ближайшая — 253.8 м по прямой. Относительный показатель 0.568; вклад 18.942 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "infrastructure",
+                "effect": "strength",
+                "text": "Найдено 8 категорий инфраструктуры (87 OSM-объектов). Относительный показатель 1.000; вклад 33.333 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "complementary",
+                "effect": "strength",
+                "text": "Найдено 34 OSM-объектов из списка отраслевого окружения. Это не измеренная аудитория или спрос. Относительный показатель 1.000; вклад 33.333 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "competitors",
+                "effect": "neutral",
+                "text": "Найдено 14 потенциально конкурирующих OSM-объектов; 17.8 объектов/км² круга наблюдения. Количество не доказывает насыщение или спрос. Вес равен нулю; в итоговый балл не входит."
+              }
+            ],
+            "missing_data": [
+              "premises_availability",
+              "rent_and_budget_feasibility",
+              "floor_area_and_land_use",
+              "walking_network_and_barriers",
+              "measured_traffic",
+              "measured_demand",
+              "purchasing_power",
+              "revenue_and_profitability"
+            ]
+          },
+          {
+            "candidate_id": "65b711f4cdfa490c8b9ecf48b727e92b9d3d05ca00b5c9ccfa94969c6467a5b0",
+            "algorithm_version": "osm-cohort-minmax-v1",
+            "policy_fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+            "origin": "modelled",
+            "rank": 2,
+            "score": 44.444444,
+            "status": "ranked",
+            "raw": {
+              "coverage_margin_m": 1229.30881754,
+              "fully_covered": true,
+              "mapped_poi_count": 55,
+              "transit_count": 4,
+              "nearest_transit_m": 66.80222796,
+              "competitor_count": 2,
+              "nearest_competitor_m": 190.67867678,
+              "competitor_features_per_km2": 2.5464790894703255,
+              "infrastructure_count": 10,
+              "infrastructure_categories": [
+                "amenity:atm",
+                "amenity:parking",
+                "amenity:pharmacy",
+                "amenity:post_office"
+              ],
+              "complementary_count": 1,
+              "category_counts": {
+                "shop:car": 11,
+                "shop:yes": 1,
+                "shop:doors": 1,
+                "amenity:atm": 1,
+                "amenity:cafe": 2,
+                "amenity:fuel": 3,
+                "shop:furnace": 1,
+                "shop:outpost": 3,
+                "shop:flooring": 1,
+                "shop:car_parts": 1,
+                "amenity:dentist": 1,
+                "amenity:parking": 7,
+                "shop:car_repair": 7,
+                "amenity:car_wash": 1,
+                "amenity:pharmacy": 1,
+                "highway:bus_stop": 4,
+                "shop:supermarket": 1,
+                "amenity:fast_food": 1,
+                "amenity:recycling": 2,
+                "shop:doityourself": 1,
+                "amenity:post_office": 1,
+                "amenity:parcel_locker": 1,
+                "amenity:place_of_worship": 2,
+                "amenity:vehicle_inspection": 1
+              }
+            },
+            "provenance": {
+              "origin": "open_data",
+              "source_name": "OpenStreetMap via Overpass API",
+              "source_url": "https://overpass-api.de/api/interpreter",
+              "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+              "observed_at": "2026-10-22T20:27:36Z",
+              "generated_at": "2026-10-22T22:01:14.652509Z",
+              "license": "ODbL-1.0",
+              "confidence": "low",
+              "limitations": [
+                "Comparative mapped geographic context only; not a forecast of business profitability.",
+                "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+                "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+                "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+                "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+                "Budget, funding and format have no numerical effect without premises/cost data.",
+                "Scores depend on the compared candidates and cannot be compared across requests or radii.",
+                "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+                "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+                "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+                "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+                "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+                "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+                "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+              ]
+            },
+            "components": [
+              {
+                "criterion": "transit",
+                "raw_value": 0.86639554408,
+                "unit": "proximity_fraction",
+                "normalized": 1.0,
+                "normalization_min": 0.0,
+                "normalization_max": 0.86639554408,
+                "weight": 0.3333333333333333,
+                "contribution": 33.33333333333333,
+                "status": "available"
+              },
+              {
+                "criterion": "infrastructure",
+                "raw_value": 4.0,
+                "unit": "mapped_category_count",
+                "normalized": 0.3333333333333333,
+                "normalization_min": 2.0,
+                "normalization_max": 8.0,
+                "weight": 0.3333333333333333,
+                "contribution": 11.111111111111109,
+                "status": "available"
+              },
+              {
+                "criterion": "complementary",
+                "raw_value": 1.0,
+                "unit": "mapped_feature_count",
+                "normalized": 0.0,
+                "normalization_min": 1.0,
+                "normalization_max": 34.0,
+                "weight": 0.3333333333333333,
+                "contribution": 0.0,
+                "status": "available"
+              },
+              {
+                "criterion": "competitors",
+                "raw_value": 2.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 14.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              }
+            ],
+            "explanations": [
+              {
+                "criterion": "transit",
+                "effect": "strength",
+                "text": "Выгрузка содержит 4 остановок в радиусе наблюдения. Ближайшая — 66.8 м по прямой. Относительный показатель 1.000; вклад 33.333 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "infrastructure",
+                "effect": "neutral",
+                "text": "Найдено 4 категорий инфраструктуры (10 OSM-объектов). Относительный показатель 0.333; вклад 11.111 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "complementary",
+                "effect": "weakness",
+                "text": "Найдено 1 OSM-объектов из списка отраслевого окружения. Это не измеренная аудитория или спрос. Относительный показатель 0.000; вклад 0.000 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "competitors",
+                "effect": "neutral",
+                "text": "Найдено 2 потенциально конкурирующих OSM-объектов; 2.5 объектов/км² круга наблюдения. Количество не доказывает насыщение или спрос. Вес равен нулю; в итоговый балл не входит."
+              }
+            ],
+            "missing_data": [
+              "premises_availability",
+              "rent_and_budget_feasibility",
+              "floor_area_and_land_use",
+              "walking_network_and_barriers",
+              "measured_traffic",
+              "measured_demand",
+              "purchasing_power",
+              "revenue_and_profitability"
+            ]
+          },
+          {
+            "candidate_id": "466d7eb1889a463db0b39ce3e9da04e45253f20842a4ca94405dba49dd9ac360",
+            "algorithm_version": "osm-cohort-minmax-v1",
+            "policy_fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+            "origin": "modelled",
+            "rank": 3,
+            "score": 34.343434,
+            "status": "ranked",
+            "raw": {
+              "coverage_margin_m": 1028.74318731,
+              "fully_covered": true,
+              "mapped_poi_count": 163,
+              "transit_count": 0,
+              "nearest_transit_m": null,
+              "competitor_count": 3,
+              "nearest_competitor_m": 21.654705,
+              "competitor_features_per_km2": 3.819718634205488,
+              "infrastructure_count": 23,
+              "infrastructure_categories": [
+                "amenity:atm",
+                "amenity:bicycle_parking",
+                "amenity:clinic",
+                "amenity:hospital",
+                "amenity:parking",
+                "amenity:pharmacy"
+              ],
+              "complementary_count": 13,
+              "category_counts": {
+                "shop:books": 1,
+                "amenity:atm": 2,
+                "amenity:bar": 1,
+                "shop:bakery": 2,
+                "shop:beauty": 1,
+                "shop:tailor": 1,
+                "amenity:cafe": 3,
+                "shop:alcohol": 1,
+                "shop:butcher": 1,
+                "shop:outpost": 8,
+                "amenity:bench": 42,
+                "amenity:clinic": 4,
+                "amenity:police": 3,
+                "amenity:school": 3,
+                "shop:beverages": 1,
+                "amenity:dentist": 1,
+                "amenity:library": 1,
+                "amenity:lounger": 2,
+                "amenity:parking": 6,
+                "amenity:toilets": 1,
+                "shop:car_repair": 3,
+                "amenity:car_wash": 2,
+                "amenity:hospital": 5,
+                "amenity:pharmacy": 5,
+                "amenity:training": 1,
+                "shop:convenience": 3,
+                "shop:electronics": 1,
+                "shop:hairdresser": 2,
+                "shop:supermarket": 3,
+                "amenity:fast_food": 4,
+                "amenity:recycling": 2,
+                "amenity:university": 2,
+                "amenity:arts_centre": 1,
+                "shop:medical_supply": 3,
+                "amenity:kindergarten": 1,
+                "amenity:music_school": 1,
+                "amenity:waste_basket": 15,
+                "amenity:dressing_room": 1,
+                "amenity:parcel_locker": 1,
+                "amenity:parking_space": 2,
+                "amenity:bicycle_rental": 1,
+                "amenity:waste_disposal": 9,
+                "amenity:bicycle_parking": 1,
+                "amenity:vending_machine": 8,
+                "amenity:motorcycle_parking": 1,
+                "amenity:research_institute": 1
+              }
+            },
+            "provenance": {
+              "origin": "open_data",
+              "source_name": "OpenStreetMap via Overpass API",
+              "source_url": "https://overpass-api.de/api/interpreter",
+              "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+              "observed_at": "2026-10-22T20:27:36Z",
+              "generated_at": "2026-10-22T22:01:14.652509Z",
+              "license": "ODbL-1.0",
+              "confidence": "low",
+              "limitations": [
+                "Comparative mapped geographic context only; not a forecast of business profitability.",
+                "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+                "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+                "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+                "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+                "Budget, funding and format have no numerical effect without premises/cost data.",
+                "Scores depend on the compared candidates and cannot be compared across requests or radii.",
+                "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+                "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+                "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+                "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+                "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+                "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+                "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+              ]
+            },
+            "components": [
+              {
+                "criterion": "transit",
+                "raw_value": 0.0,
+                "unit": "proximity_fraction",
+                "normalized": 0.0,
+                "normalization_min": 0.0,
+                "normalization_max": 0.86639554408,
+                "weight": 0.3333333333333333,
+                "contribution": 0.0,
+                "status": "available"
+              },
+              {
+                "criterion": "infrastructure",
+                "raw_value": 6.0,
+                "unit": "mapped_category_count",
+                "normalized": 0.6666666666666666,
+                "normalization_min": 2.0,
+                "normalization_max": 8.0,
+                "weight": 0.3333333333333333,
+                "contribution": 22.222222222222218,
+                "status": "available"
+              },
+              {
+                "criterion": "complementary",
+                "raw_value": 13.0,
+                "unit": "mapped_feature_count",
+                "normalized": 0.36363636363636365,
+                "normalization_min": 1.0,
+                "normalization_max": 34.0,
+                "weight": 0.3333333333333333,
+                "contribution": 12.12121212121212,
+                "status": "available"
+              },
+              {
+                "criterion": "competitors",
+                "raw_value": 3.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 14.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              }
+            ],
+            "explanations": [
+              {
+                "criterion": "transit",
+                "effect": "weakness",
+                "text": "Выгрузка содержит 0 остановок в радиусе наблюдения. Расстояние до остановки неизвестно. Относительный показатель 0.000; вклад 0.000 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "infrastructure",
+                "effect": "neutral",
+                "text": "Найдено 6 категорий инфраструктуры (23 OSM-объектов). Относительный показатель 0.667; вклад 22.222 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "complementary",
+                "effect": "neutral",
+                "text": "Найдено 13 OSM-объектов из списка отраслевого окружения. Это не измеренная аудитория или спрос. Относительный показатель 0.364; вклад 12.121 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "competitors",
+                "effect": "neutral",
+                "text": "Найдено 3 потенциально конкурирующих OSM-объектов; 3.8 объектов/км² круга наблюдения. Количество не доказывает насыщение или спрос. Вес равен нулю; в итоговый балл не входит."
+              }
+            ],
+            "missing_data": [
+              "premises_availability",
+              "rent_and_budget_feasibility",
+              "floor_area_and_land_use",
+              "walking_network_and_barriers",
+              "measured_traffic",
+              "measured_demand",
+              "purchasing_power",
+              "revenue_and_profitability"
+            ]
+          },
+          {
+            "candidate_id": "b7eb6174e11453166c1f55d91f5e022ff649c27d5c5a87739a1695a96fe72929",
+            "algorithm_version": "osm-cohort-minmax-v1",
+            "policy_fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+            "origin": "modelled",
+            "rank": 4,
+            "score": 33.676577,
+            "status": "ranked",
+            "raw": {
+              "coverage_margin_m": 1427.0721699,
+              "fully_covered": true,
+              "mapped_poi_count": 20,
+              "transit_count": 4,
+              "nearest_transit_m": 88.5958691,
+              "competitor_count": 1,
+              "nearest_competitor_m": 136.07752496,
+              "competitor_features_per_km2": 1.2732395447351628,
+              "infrastructure_count": 3,
+              "infrastructure_categories": [
+                "amenity:parking",
+                "amenity:pharmacy"
+              ],
+              "complementary_count": 3,
+              "category_counts": {
+                "amenity:cafe": 1,
+                "shop:alcohol": 1,
+                "amenity:school": 1,
+                "amenity:parking": 1,
+                "amenity:pharmacy": 2,
+                "highway:bus_stop": 4,
+                "shop:convenience": 1,
+                "shop:greengrocer": 1,
+                "shop:supermarket": 1,
+                "amenity:waste_disposal": 2,
+                "amenity:vending_machine": 2,
+                "amenity:community_centre": 1,
+                "amenity:place_of_worship": 2
+              }
+            },
+            "provenance": {
+              "origin": "open_data",
+              "source_name": "OpenStreetMap via Overpass API",
+              "source_url": "https://overpass-api.de/api/interpreter",
+              "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+              "observed_at": "2026-10-22T20:27:36Z",
+              "generated_at": "2026-10-22T22:01:14.652509Z",
+              "license": "ODbL-1.0",
+              "confidence": "low",
+              "limitations": [
+                "Comparative mapped geographic context only; not a forecast of business profitability.",
+                "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+                "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+                "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+                "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+                "Budget, funding and format have no numerical effect without premises/cost data.",
+                "Scores depend on the compared candidates and cannot be compared across requests or radii.",
+                "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+                "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+                "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+                "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+                "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+                "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+                "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+              ]
+            },
+            "components": [
+              {
+                "criterion": "transit",
+                "raw_value": 0.8228082618,
+                "unit": "proximity_fraction",
+                "normalized": 0.9496912437075331,
+                "normalization_min": 0.0,
+                "normalization_max": 0.86639554408,
+                "weight": 0.3333333333333333,
+                "contribution": 31.6563747902511,
+                "status": "available"
+              },
+              {
+                "criterion": "infrastructure",
+                "raw_value": 2.0,
+                "unit": "mapped_category_count",
+                "normalized": 0.0,
+                "normalization_min": 2.0,
+                "normalization_max": 8.0,
+                "weight": 0.3333333333333333,
+                "contribution": 0.0,
+                "status": "available"
+              },
+              {
+                "criterion": "complementary",
+                "raw_value": 3.0,
+                "unit": "mapped_feature_count",
+                "normalized": 0.06060606060606061,
+                "normalization_min": 1.0,
+                "normalization_max": 34.0,
+                "weight": 0.3333333333333333,
+                "contribution": 2.02020202020202,
+                "status": "available"
+              },
+              {
+                "criterion": "competitors",
+                "raw_value": 1.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 14.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              }
+            ],
+            "explanations": [
+              {
+                "criterion": "transit",
+                "effect": "strength",
+                "text": "Выгрузка содержит 4 остановок в радиусе наблюдения. Ближайшая — 88.6 м по прямой. Относительный показатель 0.950; вклад 31.656 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "infrastructure",
+                "effect": "weakness",
+                "text": "Найдено 2 категорий инфраструктуры (3 OSM-объектов). Относительный показатель 0.000; вклад 0.000 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "complementary",
+                "effect": "weakness",
+                "text": "Найдено 3 OSM-объектов из списка отраслевого окружения. Это не измеренная аудитория или спрос. Относительный показатель 0.061; вклад 2.020 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "competitors",
+                "effect": "neutral",
+                "text": "Найдено 1 потенциально конкурирующих OSM-объектов; 1.3 объектов/км² круга наблюдения. Количество не доказывает насыщение или спрос. Вес равен нулю; в итоговый балл не входит."
+              }
+            ],
+            "missing_data": [
+              "premises_availability",
+              "rent_and_budget_feasibility",
+              "floor_area_and_land_use",
+              "walking_network_and_barriers",
+              "measured_traffic",
+              "measured_demand",
+              "purchasing_power",
+              "revenue_and_profitability"
+            ]
+          },
+          {
+            "candidate_id": "24dc1c84f2730b8d28245a220839498f2295f69c42c3599afed066db796f6818",
+            "algorithm_version": "osm-cohort-minmax-v1",
+            "policy_fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+            "origin": "modelled",
+            "rank": 5,
+            "score": 22.747652,
+            "status": "ranked",
+            "raw": {
+              "coverage_margin_m": 1873.77890124,
+              "fully_covered": true,
+              "mapped_poi_count": 49,
+              "transit_count": 3,
+              "nearest_transit_m": 256.88185806,
+              "competitor_count": 2,
+              "nearest_competitor_m": 323.43292198,
+              "competitor_features_per_km2": 2.5464790894703255,
+              "infrastructure_count": 8,
+              "infrastructure_categories": [
+                "amenity:clinic",
+                "amenity:parking"
+              ],
+              "complementary_count": 5,
+              "category_counts": {
+                "shop:pet": 1,
+                "shop:doors": 1,
+                "shop:kiosk": 1,
+                "amenity:bar": 1,
+                "shop:beauty": 1,
+                "amenity:cafe": 2,
+                "amenity:fuel": 1,
+                "shop:alcohol": 1,
+                "shop:outpost": 3,
+                "amenity:clinic": 1,
+                "amenity:dentist": 2,
+                "amenity:parking": 7,
+                "amenity:theatre": 1,
+                "amenity:toilets": 1,
+                "amenity:car_wash": 1,
+                "highway:bus_stop": 3,
+                "shop:convenience": 3,
+                "shop:supermarket": 2,
+                "amenity:childcare": 2,
+                "amenity:fast_food": 1,
+                "amenity:recycling": 1,
+                "amenity:veterinary": 1,
+                "amenity:water_point": 1,
+                "amenity:events_venue": 1,
+                "amenity:kindergarten": 1,
+                "amenity:bicycle_rental": 1,
+                "amenity:dancing_school": 1,
+                "amenity:drinking_water": 1,
+                "amenity:driving_school": 1,
+                "amenity:waste_disposal": 1,
+                "shop:funeral_directors": 1,
+                "amenity:language_school": 1,
+                "amenity:parking_entrance": 1,
+                "amenity:place_of_worship": 2
+              }
+            },
+            "provenance": {
+              "origin": "open_data",
+              "source_name": "OpenStreetMap via Overpass API",
+              "source_url": "https://overpass-api.de/api/interpreter",
+              "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+              "observed_at": "2026-10-22T20:27:36Z",
+              "generated_at": "2026-10-22T22:01:14.652509Z",
+              "license": "ODbL-1.0",
+              "confidence": "low",
+              "limitations": [
+                "Comparative mapped geographic context only; not a forecast of business profitability.",
+                "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+                "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+                "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+                "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+                "Budget, funding and format have no numerical effect without premises/cost data.",
+                "Scores depend on the compared candidates and cannot be compared across requests or radii.",
+                "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+                "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+                "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+                "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+                "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+                "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+                "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+              ]
+            },
+            "components": [
+              {
+                "criterion": "transit",
+                "raw_value": 0.48623628387999995,
+                "unit": "proximity_fraction",
+                "normalized": 0.5612174337719154,
+                "normalization_min": 0.0,
+                "normalization_max": 0.86639554408,
+                "weight": 0.3333333333333333,
+                "contribution": 18.707247792397176,
+                "status": "available"
+              },
+              {
+                "criterion": "infrastructure",
+                "raw_value": 2.0,
+                "unit": "mapped_category_count",
+                "normalized": 0.0,
+                "normalization_min": 2.0,
+                "normalization_max": 8.0,
+                "weight": 0.3333333333333333,
+                "contribution": 0.0,
+                "status": "available"
+              },
+              {
+                "criterion": "complementary",
+                "raw_value": 5.0,
+                "unit": "mapped_feature_count",
+                "normalized": 0.12121212121212122,
+                "normalization_min": 1.0,
+                "normalization_max": 34.0,
+                "weight": 0.3333333333333333,
+                "contribution": 4.04040404040404,
+                "status": "available"
+              },
+              {
+                "criterion": "competitors",
+                "raw_value": 2.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 14.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              }
+            ],
+            "explanations": [
+              {
+                "criterion": "transit",
+                "effect": "neutral",
+                "text": "Выгрузка содержит 3 остановок в радиусе наблюдения. Ближайшая — 256.9 м по прямой. Относительный показатель 0.561; вклад 18.707 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "infrastructure",
+                "effect": "weakness",
+                "text": "Найдено 2 категорий инфраструктуры (8 OSM-объектов). Относительный показатель 0.000; вклад 0.000 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "complementary",
+                "effect": "weakness",
+                "text": "Найдено 5 OSM-объектов из списка отраслевого окружения. Это не измеренная аудитория или спрос. Относительный показатель 0.121; вклад 4.040 балла из 100 по явной настройке, только среди сравниваемых зон."
+              },
+              {
+                "criterion": "competitors",
+                "effect": "neutral",
+                "text": "Найдено 2 потенциально конкурирующих OSM-объектов; 2.5 объектов/км² круга наблюдения. Количество не доказывает насыщение или спрос. Вес равен нулю; в итоговый балл не входит."
+              }
+            ],
+            "missing_data": [
+              "premises_availability",
+              "rent_and_budget_feasibility",
+              "floor_area_and_land_use",
+              "walking_network_and_barriers",
+              "measured_traffic",
+              "measured_demand",
+              "purchasing_power",
+              "revenue_and_profitability"
+            ]
+          }
+        ],
+        "algorithm_version": "osm-cohort-minmax-v1",
+        "score_semantics": "comparative_mapped_geographic_context",
+        "tie_breaker": "score_desc_then_candidate_id_asc",
+        "policy": {
+          "version": "osm-business-context-v1",
+          "fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+          "business": "coffee",
+          "config": {
+            "version": "osm-relative-v1",
+            "radius_m": 500,
+            "weights": {
+              "transit": 1.0,
+              "infrastructure": 1.0,
+              "complementary": 1.0,
+              "competitors": 0.0
+            },
+            "competitor_mode": "neutral"
+          },
+          "competitors": [
+            "amenity:cafe"
+          ],
+          "infrastructure": [
+            "amenity:bank",
+            "amenity:atm",
+            "amenity:post_office",
+            "amenity:pharmacy",
+            "amenity:clinic",
+            "amenity:hospital",
+            "amenity:parking",
+            "amenity:bicycle_parking"
+          ],
+          "complementary": [
+            "amenity:university",
+            "amenity:college",
+            "amenity:school",
+            "shop:bakery",
+            "shop:supermarket",
+            "shop:convenience"
+          ],
+          "transit": [
+            "highway:bus_stop"
+          ],
+          "weight_rationale": "Default weights give equal influence to three distinct observable dimensions (transport proximity, service diversity, complementary POI). No empirical evidence justifies preferring one. Competition is neutral by default. Overrides are explicit caller hypotheses; their exact values and modes are hashed, not validated by data."
+        },
+        "request_fingerprint": "8a9be1e252fd79bcd96a2bed032e937df3b9d554121c699a496d8fed61b6e165",
+        "comparison_ids": [
+          "24dc1c84f2730b8d28245a220839498f2295f69c42c3599afed066db796f6818",
+          "466d7eb1889a463db0b39ce3e9da04e45253f20842a4ca94405dba49dd9ac360",
+          "615b4ad59094fa5db097b577c61ff7e024dc537512245d8e165be044fe4743ac",
+          "65b711f4cdfa490c8b9ecf48b727e92b9d3d05ca00b5c9ccfa94969c6467a5b0",
+          "b7eb6174e11453166c1f55d91f5e022ff649c27d5c5a87739a1695a96fe72929"
+        ],
+        "missing_data": [
+          "premises_availability",
+          "rent_and_budget_feasibility",
+          "floor_area_and_land_use",
+          "walking_network_and_barriers",
+          "measured_traffic",
+          "measured_demand",
+          "purchasing_power",
+          "revenue_and_profitability"
+        ],
+        "limitations": [
+          "Comparative mapped geographic context only; not a forecast of business profitability.",
+          "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+          "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+          "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+          "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+          "Budget, funding and format have no numerical effect without premises/cost data.",
+          "Scores depend on the compared candidates and cannot be compared across requests or radii."
+        ]
+      },
+      "http_seconds": 0.242
+    },
+    "pinned_replay": {
+      "checks": "same_fingerprint_raw_components_scores_ranks"
+    },
+    "explicit_transit_weight_only": {
+      "request": {
+        "candidates": {
+          "profile": {
+            "id": "00000000-0000-0000-0000-000000000007",
+            "conversation_id": "00000000-0000-0000-0000-000000000007",
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000",
+            "preferences": {
+              "format": "навынос"
+            },
+            "confirmation_state": "confirmed"
+          },
+          "cell_size_m": 500,
+          "min_separation_m": 1000,
+          "limit": 5,
+          "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+          "search_bbox": {
+            "west": 49.065,
+            "south": 55.71,
+            "east": 49.235,
+            "north": 55.84
+          }
+        },
+        "scoring": {
+          "weights": {
+            "transit": 1,
+            "infrastructure": 0,
+            "complementary": 0,
+            "competitors": 0
+          }
+        }
+      },
+      "response": {
+        "status": "ok",
+        "policy": {
+          "version": "osm-business-context-v1",
+          "fingerprint": "204a6a6bf9d1955b13364ff78e3d392d3fa661143ef026c8baef9f24eeab1e98",
+          "business": "coffee",
+          "config": {
+            "version": "osm-relative-v1",
+            "radius_m": 500,
+            "weights": {
+              "transit": 1.0,
+              "infrastructure": 0.0,
+              "complementary": 0.0,
+              "competitors": 0.0
+            },
+            "competitor_mode": "neutral"
+          },
+          "competitors": [
+            "amenity:cafe"
+          ],
+          "infrastructure": [
+            "amenity:bank",
+            "amenity:atm",
+            "amenity:post_office",
+            "amenity:pharmacy",
+            "amenity:clinic",
+            "amenity:hospital",
+            "amenity:parking",
+            "amenity:bicycle_parking"
+          ],
+          "complementary": [
+            "amenity:university",
+            "amenity:college",
+            "amenity:school",
+            "shop:bakery",
+            "shop:supermarket",
+            "shop:convenience"
+          ],
+          "transit": [
+            "highway:bus_stop"
+          ],
+          "weight_rationale": "Default weights give equal influence to three distinct observable dimensions (transport proximity, service diversity, complementary POI). No empirical evidence justifies preferring one. Competition is neutral by default. Overrides are explicit caller hypotheses; their exact values and modes are hashed, not validated by data."
+        },
+        "request_fingerprint": "7f0f4dfe22f22a1f3a9628b3600a3f24a3ae2214e0d277586297152de514851f",
+        "evaluations": [
+          {
+            "candidate_id": "65b711f4cdfa490c8b9ecf48b727e92b9d3d05ca00b5c9ccfa94969c6467a5b0",
+            "rank": 1,
+            "score": 100.0,
+            "components": [
+              {
+                "criterion": "transit",
+                "raw_value": 0.86639554408,
+                "unit": "proximity_fraction",
+                "normalized": 1.0,
+                "normalization_min": 0.0,
+                "normalization_max": 0.86639554408,
+                "weight": 1.0,
+                "contribution": 100.0,
+                "status": "available"
+              },
+              {
+                "criterion": "infrastructure",
+                "raw_value": 4.0,
+                "unit": "mapped_category_count",
+                "normalized": null,
+                "normalization_min": 2.0,
+                "normalization_max": 8.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              },
+              {
+                "criterion": "complementary",
+                "raw_value": 1.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 34.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              },
+              {
+                "criterion": "competitors",
+                "raw_value": 2.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 14.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              }
+            ]
+          },
+          {
+            "candidate_id": "b7eb6174e11453166c1f55d91f5e022ff649c27d5c5a87739a1695a96fe72929",
+            "rank": 2,
+            "score": 94.969124,
+            "components": [
+              {
+                "criterion": "transit",
+                "raw_value": 0.8228082618,
+                "unit": "proximity_fraction",
+                "normalized": 0.9496912437075331,
+                "normalization_min": 0.0,
+                "normalization_max": 0.86639554408,
+                "weight": 1.0,
+                "contribution": 94.9691243707533,
+                "status": "available"
+              },
+              {
+                "criterion": "infrastructure",
+                "raw_value": 2.0,
+                "unit": "mapped_category_count",
+                "normalized": null,
+                "normalization_min": 2.0,
+                "normalization_max": 8.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              },
+              {
+                "criterion": "complementary",
+                "raw_value": 3.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 34.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              },
+              {
+                "criterion": "competitors",
+                "raw_value": 1.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 14.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              }
+            ]
+          },
+          {
+            "candidate_id": "615b4ad59094fa5db097b577c61ff7e024dc537512245d8e165be044fe4743ac",
+            "rank": 3,
+            "score": 56.826862,
+            "components": [
+              {
+                "criterion": "transit",
+                "raw_value": 0.49234540248,
+                "unit": "proximity_fraction",
+                "normalized": 0.5682686226217925,
+                "normalization_min": 0.0,
+                "normalization_max": 0.86639554408,
+                "weight": 1.0,
+                "contribution": 56.82686226217925,
+                "status": "available"
+              },
+              {
+                "criterion": "infrastructure",
+                "raw_value": 8.0,
+                "unit": "mapped_category_count",
+                "normalized": null,
+                "normalization_min": 2.0,
+                "normalization_max": 8.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              },
+              {
+                "criterion": "complementary",
+                "raw_value": 34.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 34.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              },
+              {
+                "criterion": "competitors",
+                "raw_value": 14.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 14.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              }
+            ]
+          },
+          {
+            "candidate_id": "24dc1c84f2730b8d28245a220839498f2295f69c42c3599afed066db796f6818",
+            "rank": 4,
+            "score": 56.121743,
+            "components": [
+              {
+                "criterion": "transit",
+                "raw_value": 0.48623628387999995,
+                "unit": "proximity_fraction",
+                "normalized": 0.5612174337719154,
+                "normalization_min": 0.0,
+                "normalization_max": 0.86639554408,
+                "weight": 1.0,
+                "contribution": 56.121743377191535,
+                "status": "available"
+              },
+              {
+                "criterion": "infrastructure",
+                "raw_value": 2.0,
+                "unit": "mapped_category_count",
+                "normalized": null,
+                "normalization_min": 2.0,
+                "normalization_max": 8.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              },
+              {
+                "criterion": "complementary",
+                "raw_value": 5.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 34.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              },
+              {
+                "criterion": "competitors",
+                "raw_value": 2.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 14.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              }
+            ]
+          },
+          {
+            "candidate_id": "466d7eb1889a463db0b39ce3e9da04e45253f20842a4ca94405dba49dd9ac360",
+            "rank": 5,
+            "score": 0.0,
+            "components": [
+              {
+                "criterion": "transit",
+                "raw_value": 0.0,
+                "unit": "proximity_fraction",
+                "normalized": 0.0,
+                "normalization_min": 0.0,
+                "normalization_max": 0.86639554408,
+                "weight": 1.0,
+                "contribution": 0.0,
+                "status": "available"
+              },
+              {
+                "criterion": "infrastructure",
+                "raw_value": 6.0,
+                "unit": "mapped_category_count",
+                "normalized": null,
+                "normalization_min": 2.0,
+                "normalization_max": 8.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              },
+              {
+                "criterion": "complementary",
+                "raw_value": 13.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 34.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              },
+              {
+                "criterion": "competitors",
+                "raw_value": 3.0,
+                "unit": "mapped_feature_count",
+                "normalized": null,
+                "normalization_min": 1.0,
+                "normalization_max": 14.0,
+                "weight": 0.0,
+                "contribution": 0.0,
+                "status": "disabled"
+              }
+            ]
+          }
+        ]
+      },
+      "http_seconds": 0.208
+    }
+  }
+}

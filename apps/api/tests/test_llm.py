@@ -80,6 +80,18 @@ def test_real_adapter_contract_and_payload(monkeypatch: pytest.MonkeyPatch) -> N
     assert "funding" not in call.arguments.model_fields_set
 
 
+def test_timeout_cannot_exceed_budget_after_clock_rounding(monkeypatch: pytest.MonkeyPatch) -> None:
+    # Adding 120 to this counter then subtracting it yields 120.00000000000001.
+    monkeypatch.setattr("app.adapters.llm.time.monotonic", lambda: 8.002)
+
+    def send(request: Any, timeout: float) -> io.BytesIO:
+        assert 0 < timeout <= 120
+        return io.BytesIO(response({"city": "Казань"}, evidence="Казань"))
+
+    transport(monkeypatch, send)
+    assert OllamaLLM(LLMSettings()).extract("Казань", profile(), ()).arguments.city == "Казань"
+
+
 @pytest.mark.parametrize(
     "arguments",
     [
