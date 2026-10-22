@@ -5,6 +5,8 @@ from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from app.db.session import get_session
+from app.geo.candidate_schemas import CandidateCollection, CandidateRequest
+from app.geo.candidates import generate
 from app.geo.schemas import (
     Bounds,
     CategoriesView,
@@ -19,6 +21,11 @@ from app.geo.service import GeoData
 router = APIRouter(prefix="/api/v1/geo", tags=["geo"])
 Database = Annotated[Session, Depends(get_session, scope="function")]
 Version = Annotated[str | None, Query(pattern=r"^[0-9a-f]{64}$")]
+
+
+@router.post("/{slug}/candidates", response_model=CandidateCollection)
+def candidates(slug: Slug, request: CandidateRequest, session: Database) -> CandidateCollection:
+    return generate(session, slug, request)
 
 
 @router.get("/datasets", response_model=list[DatasetView])

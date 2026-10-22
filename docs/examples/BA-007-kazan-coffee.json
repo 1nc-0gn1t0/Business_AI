@@ -1,0 +1,515 @@
+{
+  "request": {
+    "profile": {
+      "id": "00000000-0000-0000-0000-000000000007",
+      "conversation_id": "00000000-0000-0000-0000-000000000007",
+      "city": "Казань",
+      "category": "кофейня",
+      "budget": "2000000",
+      "preferences": {
+        "format": "навынос"
+      }
+    },
+    "cell_size_m": 500,
+    "min_separation_m": 1000,
+    "limit": 5,
+    "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447"
+  },
+  "response": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "id": "32ec33dd38af00ab0c91f726ea2f6d74814e3fa955bb168a6c1dbda1368aa7f1",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  49.158044767553555,
+                  55.7878157337789
+                ],
+                [
+                  49.158256657380456,
+                  55.7833257858834
+                ],
+                [
+                  49.15028903659375,
+                  55.783206140058304
+                ],
+                [
+                  49.15007623137559,
+                  55.78769606790526
+                ],
+                [
+                  49.158044767553555,
+                  55.7878157337789
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "origin": "modelled",
+          "kind": "geographic_zone_not_premises",
+          "is_actual_listing": false,
+          "grid_i": 768,
+          "grid_j": 12367,
+          "area_m2": 249960.00160050113,
+          "representative_point": {
+            "type": "Point",
+            "coordinates": [
+              49.15416666735782,
+              55.78551092689433
+            ]
+          },
+          "anchor": {
+            "type": "Feature",
+            "id": "node/11687380247",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                49.1557823,
+                55.7858859
+              ]
+            },
+            "properties": {
+              "osm_type": "node",
+              "osm_id": 11687380247,
+              "osm_version": 1,
+              "observed_at": "2024-03-03T09:02:17Z",
+              "name": "Кулинария",
+              "categories": [
+                "amenity:cafe"
+              ],
+              "tags": {
+                "name": "Кулинария",
+                "amenity": "cafe",
+                "addr:street": "Товарищеская улица",
+                "opening_hours": "Mo-Sa 09:00-17:00",
+                "addr:housenumber": "30Б"
+              },
+              "representation": "osm_node",
+              "distance_m": 109.62200919
+            }
+          },
+          "requirements": []
+        }
+      },
+      {
+        "type": "Feature",
+        "id": "2512fc79d4b3c81f41756b35f9ceb09d5693ca4e46752fd0597130228edc479d",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  49.07437319187757,
+                  55.70564884119981
+                ],
+                [
+                  49.07459402263779,
+                  55.70115904865513
+                ],
+                [
+                  49.066643508629745,
+                  55.701034102527856
+                ],
+                [
+                  49.06642176738268,
+                  55.705523874160484
+                ],
+                [
+                  49.07437319187757,
+                  55.70564884119981
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "origin": "modelled",
+          "kind": "geographic_zone_not_premises",
+          "is_actual_listing": false,
+          "grid_i": 757,
+          "grid_j": 12349,
+          "area_m2": 249960.0016002683,
+          "representative_point": {
+            "type": "Point",
+            "coordinates": [
+              49.07050811654743,
+              55.7033414614078
+            ]
+          },
+          "anchor": {
+            "type": "Feature",
+            "id": "node/1003659755",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                49.0674817,
+                55.701476
+              ]
+            },
+            "properties": {
+              "osm_type": "node",
+              "osm_id": 1003659755,
+              "osm_version": 7,
+              "observed_at": "2025-09-17T12:37:49Z",
+              "name": "жилой массив Старое Победилово",
+              "categories": [
+                "highway:bus_stop"
+              ],
+              "tags": {
+                "name": "жилой массив Старое Победилово",
+                "highway": "bus_stop",
+                "name:ru": "жилой массив Старое Победилово"
+              },
+              "representation": "osm_node",
+              "distance_m": 281.67577532
+            }
+          },
+          "requirements": []
+        }
+      },
+      {
+        "type": "Feature",
+        "id": "601c361c713ee5fa1b9086a1954dc1f33285ea9960ac4cefb8c5a59b536bbdeb",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  49.22567746028748,
+                  55.70343507585846
+                ],
+                [
+                  49.225832330368256,
+                  55.70001748573541
+                ],
+                [
+                  49.217875914357926,
+                  55.70002214228801
+                ],
+                [
+                  49.21772580414595,
+                  55.70331990745763
+                ],
+                [
+                  49.22567746028748,
+                  55.70343507585846
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "origin": "modelled",
+          "kind": "geographic_zone_not_premises",
+          "is_actual_listing": false,
+          "grid_i": 776,
+          "grid_j": 12348,
+          "area_m2": 186916.21749019367,
+          "representative_point": {
+            "type": "Point",
+            "coordinates": [
+              49.22177912926705,
+              55.70167102487282
+            ]
+          },
+          "anchor": {
+            "type": "Feature",
+            "id": "node/13361068343",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                49.2240051,
+                55.7021313
+              ]
+            },
+            "properties": {
+              "osm_type": "node",
+              "osm_id": 13361068343,
+              "osm_version": 1,
+              "observed_at": "2025-12-08T09:17:06Z",
+              "name": null,
+              "categories": [
+                "highway:bus_stop"
+              ],
+              "tags": {
+                "highway": "bus_stop"
+              },
+              "representation": "osm_node",
+              "distance_m": 149.0387216
+            }
+          },
+          "requirements": []
+        }
+      },
+      {
+        "type": "Feature",
+        "id": "e2b066f3e5c0991a797b20eedaef97ce659f2cbc5d60f53b0bed8ef78ea95144",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  49.06727293171825,
+                  55.849331645336406
+                ],
+                [
+                  49.06749577304626,
+                  55.84484197715467
+                ],
+                [
+                  49.05951599314113,
+                  55.844716359405865
+                ],
+                [
+                  49.05929223305213,
+                  55.849206006521534
+                ],
+                [
+                  49.06727293171825,
+                  55.849331645336406
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "origin": "modelled",
+          "kind": "geographic_zone_not_premises",
+          "is_actual_listing": false,
+          "grid_i": 757,
+          "grid_j": 12381,
+          "area_m2": 249960.00159959897,
+          "representative_point": {
+            "type": "Point",
+            "coordinates": [
+              49.06339422656693,
+              55.8470239918381
+            ]
+          },
+          "anchor": {
+            "type": "Feature",
+            "id": "node/1003526262",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                49.0669941,
+                55.8493001
+              ]
+            },
+            "properties": {
+              "osm_type": "node",
+              "osm_id": 1003526262,
+              "osm_version": 9,
+              "observed_at": "2026-07-18T20:08:32Z",
+              "name": "улица Белинского",
+              "categories": [
+                "highway:bus_stop"
+              ],
+              "tags": {
+                "name": "улица Белинского",
+                "highway": "bus_stop",
+                "name:ru": "улица Белинского"
+              },
+              "representation": "osm_node",
+              "distance_m": 339.2129928
+            }
+          },
+          "requirements": []
+        }
+      },
+      {
+        "type": "Feature",
+        "id": "80d6841dd4a14ab33d9fdb426c297208d100af95544a6d903c52ba4ec3bffacd",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  49.23509875977492,
+                  55.84736064171764
+                ],
+                [
+                  49.22711770713147,
+                  55.84724588911306
+                ],
+                [
+                  49.226992302987,
+                  55.85
+                ],
+                [
+                  49.234979122007665,
+                  55.85
+                ],
+                [
+                  49.23509875977492,
+                  55.84736064171764
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "origin": "modelled",
+          "kind": "geographic_zone_not_premises",
+          "is_actual_listing": false,
+          "grid_i": 778,
+          "grid_j": 12381,
+          "area_m2": 150125.51094757806,
+          "representative_point": {
+            "type": "Point",
+            "coordinates": [
+              49.23104566670504,
+              55.84868032085882
+            ]
+          },
+          "anchor": {
+            "type": "Feature",
+            "id": "node/986552271",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                49.227404,
+                55.8492507
+              ]
+            },
+            "properties": {
+              "osm_type": "node",
+              "osm_id": 986552271,
+              "osm_version": 9,
+              "observed_at": "2023-02-26T14:37:14Z",
+              "name": "Таёжная улица",
+              "categories": [
+                "highway:bus_stop"
+              ],
+              "tags": {
+                "name": "Таёжная улица",
+                "highway": "bus_stop"
+              },
+              "representation": "osm_node",
+              "distance_m": 236.77435368
+            }
+          },
+          "requirements": []
+        }
+      }
+    ],
+    "status": "ok",
+    "reasons": [
+      "saved_bbox_only",
+      "geographic_dispersion_not_ranking"
+    ],
+    "dataset": {
+      "slug": "kazan-centre",
+      "city": "Kazan",
+      "bbox": {
+        "west": 49.05,
+        "south": 55.7,
+        "east": 49.25,
+        "north": 55.85
+      },
+      "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+      "origin": "open_data",
+      "source_name": "OpenStreetMap via Overpass API",
+      "source_url": "https://overpass-api.de/api/interpreter",
+      "license": "ODbL-1.0",
+      "license_url": "https://www.openstreetmap.org/copyright",
+      "attribution": "© OpenStreetMap contributors",
+      "osm_base": "2026-10-22T20:27:36Z",
+      "fetched_at": "2026-10-22T20:28:58.496357Z",
+      "imported_at": "2026-10-22T20:29:55.989925Z",
+      "age_days": 0,
+      "stale": false,
+      "stale_after_days": 30,
+      "poi_count": 23852,
+      "district_count": 8,
+      "diagnostics": {
+        "pois": 23852,
+        "districts": 8,
+        "unnamed_pois": 9540,
+        "center_outside_bbox": 17
+      },
+      "limitations": [
+        "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+        "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+        "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+        "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+        "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+        "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+        "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+      ]
+    },
+    "profile_snapshot": {
+      "id": "00000000-0000-0000-0000-000000000007",
+      "conversation_id": "00000000-0000-0000-0000-000000000007",
+      "city": "Казань",
+      "category": "кофейня",
+      "budget": "2000000",
+      "funding": null,
+      "preferences": {
+        "format": "навынос",
+        "preferred_districts": [],
+        "constraints": []
+      },
+      "confirmation_state": "draft"
+    },
+    "request_snapshot": {
+      "profile": {
+        "id": "00000000-0000-0000-0000-000000000007",
+        "conversation_id": "00000000-0000-0000-0000-000000000007",
+        "city": "Казань",
+        "category": "кофейня",
+        "budget": "2000000",
+        "funding": null,
+        "preferences": {
+          "format": "навынос",
+          "preferred_districts": [],
+          "constraints": []
+        },
+        "confirmation_state": "draft"
+      },
+      "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+      "search_bbox": null,
+      "district_ids": [],
+      "excluded_district_ids": [],
+      "cell_size_m": 500,
+      "min_separation_m": 1000,
+      "limit": 5,
+      "requirements": []
+    },
+    "algorithm_version": "utm-grid-dispersion-v1",
+    "policy_version": "osm-anchor-policy-v1",
+    "request_fingerprint": "3d8da376f21aaec0d7e90ba6394688a03e7af06b4b87e4349ff7d01348c56d36",
+    "metric_srid": 32639,
+    "geometry_srid": 4326,
+    "spatial_runtime": "POSTGIS=\"3.5.2 dea6d0a\" [EXTENSION] PGSQL=\"170\" GEOS=\"3.9.0-CAPI-1.16.2\" PROJ=\"7.2.1 NETWORK_ENABLED=OFF URL_ENDPOINT=https://cdn.proj.org USER_WRITABLE_DIRECTORY=/var/lib/postgresql/.local/share/proj DATABASE_PATH=/usr/share/proj/proj.db\" (compiled against PROJ 7.2.1) LIBXML=\"2.9.10\" LIBJSON=\"0.15\" LIBPROTOBUF=\"1.3.3\" WAGYU=\"0.5.0 (Internal)\" TOPOLOGY",
+    "eligible_count": 394,
+    "requested_count": 5,
+    "coverage": "saved_bbox_only",
+    "not_evaluated": [
+      "Zones are geographic search areas, not available premises or buildable parcels.",
+      "Budget, funding and business format are preserved, but affordability, floor area and legal suitability cannot be checked with OSM POI data.",
+      "No ranking, measured traffic, demand, rent, revenue or profitability is calculated.",
+      "OSM presence is evidence of mapped context only; missing objects do not prove absence.",
+      "Proximity uses straight-line distances from a representative point, not walking routes or a guarantee for every location inside the zone."
+    ]
+  },
+  "http_seconds": [
+    0.322,
+    0.247
+  ],
+  "checks": {
+    "five_zones": true,
+    "unique_ids": true,
+    "pinned_replay": true
+  }
+}

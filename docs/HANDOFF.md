@@ -1,70 +1,87 @@
 # Business AI — HANDOFF
 
-## Состояние на 22.10.2026
+## Состояние на 23.10.2026
 
-- PR #5 BA-005 объединён, merge 4c34f1389633399f388021bcc5215f600d2b79df.
-  Перед BA-006 main синхронизирован с origin/main, дерево было чистым.
-- BA-006 реализована в codex/BA-006-osm-postgis от 4c34f13. Итоговый коммит,
-  PR и статус GitHub CI после push — в итоговом сообщении. Не объединять автоматически.
-- BA-007 не начиналась. LLM-модуль BA-005 не изменён.
+- PR #6 BA-006 объединён, merge `49669dd3807e0e03a972a375327831cef6e1ad4e`.
+  Перед BA-007 main синхронизирован с origin/main, дерево было чистым.
+- BA-007 реализована в `codex/BA-007-candidate-zones` от `49669dd`.
+  Фактические HEAD, ссылка PR и статус CI после push — в итоговом сообщении.
+  PR автоматически не объединять. BA-008 не начиналась.
+- Существующие LLM/диалоги, подтверждение профиля и optimistic locking сохранены.
 
-## Сделано в BA-006
+## Сделано в BA-007
 
-- app/geo: сменный OSMProvider/OverpassProvider, operator-only CLI fetch/import,
-  проверяемый snapshot с manifest, точным bbox/запросом, URL, OSM/fetch датами,
-  исходным и нормализованным SHA256. poi_minimal_v1 удаляет редакторские идентификаторы
-  и ненужные/контактные теги, не меняет геометрию/OSM ID/version/timestamp.
-- Миграция 0004_osm_geo: geo_datasets, geo_pois, geo_districts, GiST/GIN,
-  geometry(POINT/ MULTIPOLYGON,4326), PostgreSQL provenance/версии отдельно от метрик.
-- Атомарный полный snapshot update, advisory lock на slug, идемпотентность,
-  защита от старых snapshots и случайной пустой замены. История не удаляется.
-- GeoJSON API /api/v1/geo: datasets, {slug}/pois, districts, categories;
-  bbox/category/радиус в метрах/район, data_version для безопасной пагинации.
-  Ограничения запросов и параметризованный SQL. HTTP не вызывает Overpass/LLM.
-- Корректные null/диагностика для неизвестных имён/геометрии. Way/relation POI —
-  явно обозначенный OSM bbox center. Административные полигоны собираются только
-  из полных замкнутых линий, неполные/вложенные relation не достраиваются догадками.
-- README, GEO_DATA.md, ADR-0003; две небольшие реальные OSM fixtures с ODbL
-  и manifest для офлайн CI. Новых Python-зависимостей нет.
+- `app/geo/candidate_schemas.py`, `candidate_policy.py`, `candidates.py`:
+  типизированный read-only инструмент `POST /api/v1/geo/{slug}/candidates`.
+  Принимает снимок BusinessProfile, не читает приватную беседу по переданному ID,
+  не подтверждает/не меняет профиль и не создаёт AnalysisRun.
+- Метрическая UTM-сетка, обрезка по версии покрытия, bbox, выбранным и
+  исключённым районам; геометрический порог площади, внутренний отступ 2 cm,
+  валидные MultiPolygon GeoJSON EPSG:4326 и точки внутри зон. Для Казани EPSG:32639.
+- Версионированная отраслевая политика OSM anchors; положительные proximity
+  constraints в метрах, exact-name предпочтения районов. Неизвестные районы,
+  категории, город и несвязанные текстовые constraints не игнорируются.
+- Детерминированная выборка по географическому разнесению, без score/весов.
+  Нет дублей; IDs зависят от SHA256 запроса, snapshot, версий алгоритма/политики
+  и индексов сетки. Полный request/profile snapshot, source/version/date/license,
+  runtime PostGIS/GEOS/PROJ и OSM evidence возвращаются в ответе.
+- Явные статусы неполного покрытия/нехватки данных/пустого результата;
+  невычисляемые критерии отдельно. Ограничены шаг сетки, размер пула/ответа,
+  фильтры и время SQL. Новых зависимостей и миграций нет.
+- `docs/CANDIDATE_ZONES.md`, ADR-0004, README; read-only
+  `scripts/eval_candidate_zones.py`, архив реального запроса/GeoJSON
+  `docs/examples/BA-007-kazan-coffee.json`.
 
-## Реальные локальные данные и проверки
+## Проверки и реальные примеры
 
-- Источник: https://overpass-api.de/api/interpreter, OpenStreetMap / ODbL-1.0,
-  © OpenStreetMap contributors. Bbox 49.05,55.70,49.25,55.85, часть Казани.
-  osm_base 2026-10-22T20:27:36Z. data_version
-  44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447.
-- В БД приложения активен kazan-centre: 23852 POI, 8 административных полигонов.
-  17 центров вне bbox исключены; 9540 POI без имени сохранены с null.
-  Кеш data/osm/kazan-20261022.raw.json и .raw.manifest.json исключён из Git.
-- В отдельной временной БД импорт 2.739 s, replay 0.006 s, три таблицы с индексами
-  11837440 bytes, Python peak RSS 164.4 MiB. EXPLAIN ANALYZE подтвердил GiST:
-  bbox 0.427 ms, radius 12.662 ms, район 6.585 ms. Это один запуск, не SLA.
-- Реальные HTTP bbox/category/radius/district/districts и nginx proxy: 200,
-  около 32–94 ms в локальной проверке; существующий scripts/smoke.ps1 PASS.
-- pytest apps/api/tests -q: 114 passed, 37 skipped (БД отдельно).
-- docker compose --profile test run --build --rm db-tests: 37 passed.
-  Миграции upgrade/check/downgrade, реальные OSM spatial queries, provenance,
-  cache replay, пустой/старый snapshot, rollback, удаление из активного слоя,
-  конкурентный импорт, неполные границы; прежние conversation tests PASS.
-- prek --all-files: Ruff lint/format, strict mypy, pytest, ESLint, TypeScript PASS.
-  npm --prefix apps/web run build PASS. CI использует cached real fixtures,
-  не нуждается в Overpass/Ollama/GPU. Фактический статус Actions — в итоговом отчёте.
-- Docker и localhost проверялись вне песочницы. Для локального pytest использован
-  отдельный PYTEST_DEBUG_TEMPROOT: старый системный pytest temp недоступен.
-  Системные ACL/настройки не менялись. Удалялись только созданные временные test-БД;
-  существующие данные/volumes сохранены.
+- Unit `uv run --locked --project apps/api pytest apps/api/tests/test_candidate_policy.py -q`:
+  12 passed; проекции, политика, fingerprint, разнесение, валидация.
+- `docker compose --profile test run --build --rm db-tests`: **44 passed**,
+  в том числе 7 новых BA-007 PostGIS-тестов на реальных cached OSM fixtures:
+  несколько геометрий, containment, воспроизводимость, расстояния и независимый
+  SQL-пересчёт proximity, районы/исключения, ограничения профиля, пустые данные,
+  отсутствие/смена версии набора, API и ресурсный предел сетки.
+  Прежние миграции, provenance, геоданные, диалоги/конкурентность — PASS.
+- `uv tool run --from prek==0.5.4 prek run --all-files`: Ruff lint/format,
+  strict mypy, pytest, ESLint, TypeScript PASS.
+- `npm --prefix apps/web run build`, Compose build/up healthy,
+  `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke.ps1`: PASS.
+- Реальный read-only eval через API :8000 и nginx :5173: 5 зон из 394
+  допустимых ячеек, pinned replay с теми же ID/геометриями. Итоговый прямой
+  HTTP запуск 0.322/0.247 s, proxy 0.283/0.256 s; один локальный запуск, не SLA.
+- Независимая проверка сохранённого GeoJSON SQL/PostGIS: все 5 геометрий валидны,
+  внутри bbox, каждый реальный anchor внутри своей зоны. На полном наборе
+  включение района 2133462 → 5 зон, partial; исключение → 5 зон, ok;
+  SQL ST_Covers/ST_Disjoint подтвердили соблюдение ограничения.
+- CI уже включает новый тестовый файл автоматически, без Overpass/Ollama/GPU.
+  Фактический статус GitHub Actions фиксируется после push в итоговом отчёте.
 
-## Ограничения и продолжение
+## Данные и ограничения
 
-- Покрытие ограничено bbox и выбранными тегами, не весь город/весь OSM.
-  Boundary bbox в Overpass выбирает member nodes: охватывающий район может отсутствовать.
-  Полигон может выходить за POI coverage. Пустой список не означает отсутствия бизнеса.
-- OSM timestamp не доказывает физическую актуальность организации. Через 30 дней
-  stale=true — технический сигнал, не гарантия качества. Возможны дубль node+way,
-  пропуски, устаревшие теги. Дистанции прямые, без дорожного catchment.
-- Нет трафика/спроса/аренды/дохода, synthetic или банковских условий.
-  Большие территории требуют другого импорта (PBF), retention и тайлов.
-- Обновление: новые fetch + import по GEO_DATA.md; работа без сети — import кеша.
-  Администратор должен следить за свежестью, автообновление не настроено.
-- Следующий шаг — review PR BA-006 владельцем. После разрешения — BA-007
-  (candidate generation), без автоматического перехода/слияния.
+- Активен `kazan-centre`: 23852 OSM POI, 8 административных полигонов,
+  bbox 49.05,55.70,49.25,55.85 — **часть Казани**. OSM/Overpass, ODbL-1.0,
+  © OpenStreetMap contributors, osm_base `2026-10-22T20:27:36Z`.
+  data_version `44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447`.
+  Кеш `data/osm/kazan-20261022.raw.json`/manifest не в Git; импорт/обновление:
+  `docs/GEO_DATA.md`. Автообновления нет; версии snapshots сохраняются в БД.
+- Зоны — modelled, anchors — open_data. Не объявления, не свободные помещения,
+  не гарантированно пригодные участки. Нет спроса, измеренного трафика, аренды,
+  прибыли, цен и банковских условий. Бюджет/формат не доказывают доступность.
+- Только положительные условия по известным POI. Текстовые hard constraints
+  нужно явно структурировать/согласовать; неподдерживаемые блокируют выдачу.
+  OSM неполон, node/way могут описывать один бизнес; centers не равны входам.
+  Proximity от представительной точки по прямой, не пешеходная маршрутизация.
+- Разнесение может выбирать периферийные ячейки; это не «лучшие места».
+  Границы сетки не учитывают кварталы, воду, право использования земли.
+  Исторический pin после обновления активного набора даёт 409, а не старую выдачу.
+- Docker/localhost проверены вне песочницы штатным механизмом разрешений;
+  для pytest — отдельный `PYTEST_DEBUG_TEMPROOT`. ACL и настройки системы
+  не менялись, данные/volumes приложения сохранены.
+
+## Следующий шаг
+
+1. Проверить PR BA-007 и CI, объединить только по решению владельца.
+2. После отдельного разрешения — BA-008: факторы и объяснимое ранжирование
+   с явной обработкой отсутствующих метрик, поверх этих валидных зон.
+3. Не считать географическое разнесение коммерческим score. Карта/сохранение
+   анализа/автовызов инструмента из чата должны реализовываться по своему плану.

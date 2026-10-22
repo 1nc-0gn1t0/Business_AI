@@ -14,6 +14,8 @@ dist/
 Thumbs.db
 .playwright-cli/
 local-llm-eval.json
+local-candidate-eval.json
+local-candidate-proxy-eval.json
 *.gguf
 .ollama/
 data/osm/*.raw.json
