@@ -7,6 +7,8 @@ from sqlalchemy.orm import Session
 from app.db.session import get_session
 from app.geo.candidate_schemas import CandidateCollection, CandidateRequest
 from app.geo.candidates import generate
+from app.geo.ranking import rank_candidates
+from app.geo.ranking_schemas import RankingCollection, RankingRequest
 from app.geo.schemas import (
     Bounds,
     CategoriesView,
@@ -21,6 +23,11 @@ from app.geo.service import GeoData
 router = APIRouter(prefix="/api/v1/geo", tags=["geo"])
 Database = Annotated[Session, Depends(get_session, scope="function")]
 Version = Annotated[str | None, Query(pattern=r"^[0-9a-f]{64}$")]
+
+
+@router.post("/{slug}/rankings", response_model=RankingCollection)
+def rankings(slug: Slug, request: RankingRequest, session: Database) -> RankingCollection:
+    return rank_candidates(session, slug, request)
 
 
 @router.post("/{slug}/candidates", response_model=CandidateCollection)

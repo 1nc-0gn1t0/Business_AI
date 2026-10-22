@@ -16,6 +16,8 @@ Thumbs.db
 local-llm-eval.json
 local-candidate-eval.json
 local-candidate-proxy-eval.json
+local-ranking-eval.json
+local-ranking-proxy-eval.json
 *.gguf
 .ollama/
 data/osm/*.raw.json
