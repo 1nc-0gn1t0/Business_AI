@@ -16,3 +16,6 @@ Thumbs.db
 local-llm-eval.json
 *.gguf
 .ollama/
+data/osm/*.raw.json
+data/osm/*.manifest.json
+data/osm/*.osm.pbf

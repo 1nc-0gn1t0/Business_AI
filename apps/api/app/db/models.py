@@ -5,9 +5,10 @@ from typing import Any, Literal
 from uuid import UUID, uuid4
 
 import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+from app.db.spatial import Geometry
 from app.domain.enums import (
     Confidence,
     ConfirmationState,
@@ -24,6 +25,72 @@ def enum_values(enum: type[Enum]) -> list[str]:
 
 class Base(DeclarativeBase):
     pass
+
+
+class GeoDatasetRecord(Base):
+    __tablename__ = "geo_datasets"
+    __table_args__ = (
+        sa.UniqueConstraint("slug", "data_version"),
+        sa.Index("ix_geo_active_slug", "slug", unique=True, postgresql_where=sa.text("active")),
+        sa.CheckConstraint("data_version ~ '^[0-9a-f]{64}$'", name="ck_geo_version"),
+        sa.CheckConstraint("osm_base <= fetched_at", name="ck_geo_dates"),
+        sa.CheckConstraint("poi_count >= 0 AND district_count >= 0", name="ck_geo_counts"),
+    )
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    slug: Mapped[str] = mapped_column(sa.Text)
+    city: Mapped[str] = mapped_column(sa.Text)
+    bbox: Mapped[dict[str, float]] = mapped_column(JSONB)
+    source_url: Mapped[str] = mapped_column(sa.Text)
+    query: Mapped[str] = mapped_column(sa.Text)
+    data_version: Mapped[str] = mapped_column(sa.String(64))
+    osm_base: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    fetched_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    imported_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    active: Mapped[bool] = mapped_column(server_default=sa.false())
+    poi_count: Mapped[int] = mapped_column(server_default="0")
+    district_count: Mapped[int] = mapped_column(server_default="0")
+    diagnostics: Mapped[dict[str, int]] = mapped_column(JSONB)
+
+
+class GeoPOIRecord(Base):
+    __tablename__ = "geo_pois"
+    __table_args__ = (
+        sa.CheckConstraint("osm_type IN ('node', 'way', 'relation')", name="ck_poi_osm_type"),
+        sa.CheckConstraint("osm_id > 0 AND osm_version > 0", name="ck_poi_identity"),
+        sa.CheckConstraint("cardinality(categories) > 0", name="ck_poi_categories"),
+        sa.Index("ix_geo_poi_geom", "geom", postgresql_using="gist"),
+        sa.Index("ix_geo_poi_geography", sa.text("(geom::geography)"), postgresql_using="gist"),
+        sa.Index("ix_geo_poi_categories", "categories", postgresql_using="gin"),
+    )
+
+    dataset_id: Mapped[UUID] = mapped_column(sa.ForeignKey("geo_datasets.id"), primary_key=True)
+    osm_type: Mapped[str] = mapped_column(sa.Text, primary_key=True)
+    osm_id: Mapped[int] = mapped_column(sa.BigInteger, primary_key=True)
+    osm_version: Mapped[int]
+    observed_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    name: Mapped[str | None] = mapped_column(sa.Text)
+    categories: Mapped[list[str]] = mapped_column(ARRAY(sa.Text))
+    tags: Mapped[dict[str, str]] = mapped_column(JSONB)
+    representation: Mapped[str] = mapped_column(sa.Text)
+    geom: Mapped[str] = mapped_column(Geometry())
+
+
+class GeoDistrictRecord(Base):
+    __tablename__ = "geo_districts"
+    __table_args__ = (
+        sa.CheckConstraint("osm_id > 0 AND osm_version > 0", name="ck_district_identity"),
+        sa.CheckConstraint("ST_IsValid(geom) AND NOT ST_IsEmpty(geom)", name="ck_district_geom"),
+        sa.Index("ix_geo_district_geom", "geom", postgresql_using="gist"),
+    )
+
+    dataset_id: Mapped[UUID] = mapped_column(sa.ForeignKey("geo_datasets.id"), primary_key=True)
+    osm_id: Mapped[int] = mapped_column(sa.BigInteger, primary_key=True)
+    osm_version: Mapped[int]
+    observed_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    name: Mapped[str | None] = mapped_column(sa.Text)
+    admin_level: Mapped[int]
+    geom: Mapped[str] = mapped_column(Geometry("MULTIPOLYGON"))
 
 
 class ConversationRecord(Base):

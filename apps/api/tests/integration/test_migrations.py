@@ -28,6 +28,9 @@ pytestmark = pytest.mark.skipif(
 )
 
 TABLES = {
+    "geo_datasets",
+    "geo_pois",
+    "geo_districts",
     "business_profiles",
     "analysis_runs",
     "location_metrics",
