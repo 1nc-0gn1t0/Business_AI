@@ -21,7 +21,7 @@
 
 ## Первые технологии и архитектура
 
-Модульный монолит: **React+TypeScript/MapLibre → FastAPI/Python → Postgres+PostGIS**. Модули: диалог/состояние профиля, LLM adapter, источники геоданных, ранжирование, финансирование, каталог банковских продуктов, consent/лиды. OSM/GHSL — open data; для missing traffic/spend/rent допускаются синтетические наборы с маркировкой. LLM переключаема (Yandex AI Studio, GigaChat, совместимая локальная модель), с fake/stub provider для тестов. Compose для Windows/WSL2, pytest, lint/typecheck, GitHub CI, project `prek.toml`.
+Модульный монолит: **React+TypeScript/MapLibre → FastAPI/Python → Postgres+PostGIS**. Модули: диалог/состояние профиля, LLM adapter, источники геоданных, ранжирование, финансирование, каталог банковских продуктов, consent/лиды. OSM/GHSL — open data; для missing traffic/spend/rent допускаются синтетические наборы с маркировкой. Для MVP LLM — локальная Qwen через Ollama, без платных облачных API и обучения; сменный адаптер и явный stub для тестов (ADR-0002). Compose для Windows/WSL2, pytest, lint/typecheck, GitHub CI, project `prek.toml`.
 
 ## Основной demo flow
 

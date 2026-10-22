@@ -45,7 +45,7 @@ class ConversationView(Contract):
     profile: BusinessProfile
     missing_fields: tuple[str, ...]
     assistant_message: str
-    extraction_mode: Literal["rules"] = "rules"
+    extraction_mode: Literal["rules", "stub", "ollama"] = "rules"
     created_at: AwareDatetime
     updated_at: AwareDatetime
 

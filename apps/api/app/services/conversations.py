@@ -7,6 +7,7 @@ from uuid import UUID, uuid4
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
 
+from app.adapters.llm import DialogueLLM, LLMError, Mode, ProfileToolCall, Turn, get_llm
 from app.api.conversation_schemas import (
     ConversationCreated,
     ConversationView,
@@ -25,7 +26,6 @@ from app.domain.conversation import (
     CONFIRMATIONS,
     apply_patch,
     confirm,
-    extract_business_profile,
     missing_fields,
     reply_for,
     state_for,
@@ -48,15 +48,16 @@ class IncompleteProfile(Exception):
 
 
 class Conversations:
-    def __init__(self, session: Session):
+    def __init__(self, session: Session, llm: DialogueLLM | None = None):
         self.session = session
+        self.llm = llm
 
     def _authorise(
         self, conversation_id: UUID, token: str, *, lock: bool = False
     ) -> ConversationRecord:
         query = sa.select(ConversationRecord).where(ConversationRecord.id == conversation_id)
         if lock:
-            query = query.with_for_update()
+            query = query.with_for_update().execution_options(populate_existing=True)
         record = self.session.scalar(query)
         digest = hashlib.sha256(token.encode()).hexdigest()
         if record is None or not hmac.compare_digest(record.token_hash, digest):
@@ -77,13 +78,21 @@ class Conversations:
 
     def _view(self, record: ConversationRecord) -> ConversationView:
         profile = self._profile(record.id)
+        answer = self.session.scalar(
+            sa.select(MessageRecord.content).where(
+                MessageRecord.conversation_id == record.id,
+                MessageRecord.version == record.version,
+                MessageRecord.role == MessageRole.ASSISTANT,
+            )
+        )
         return ConversationView(
             id=record.id,
             version=record.version,
             state=state_for(profile),
             profile=profile,
             missing_fields=missing_fields(profile),
-            assistant_message=reply_for(profile),
+            assistant_message=answer or reply_for(profile),
+            extraction_mode=record.extraction_mode,
             created_at=record.created_at,
             updated_at=record.updated_at,
         )
@@ -111,7 +120,11 @@ class Conversations:
         return self._view(self._authorise(conversation_id, token))
 
     def _save_event(
-        self, record: ConversationRecord, profile: BusinessProfile, source: str
+        self,
+        record: ConversationRecord,
+        profile: BusinessProfile,
+        source: str,
+        answer: str | None = None,
     ) -> None:
         self.session.add(
             ProfileRevisionRecord(
@@ -127,7 +140,7 @@ class Conversations:
                 conversation_id=record.id,
                 version=record.version,
                 role=MessageRole.ASSISTANT,
-                content=reply_for(profile),
+                content=answer or reply_for(profile),
                 created_at=record.updated_at,
             )
         )
@@ -142,19 +155,63 @@ class Conversations:
         patch: ProfilePatch | None = None,
         confirmation: bool = False,
     ) -> ConversationView:
-        record = self._authorise(conversation_id, token, lock=True)
+        # Inference holds no row lock. Re-check the version under lock before any write.
+        record = self._authorise(conversation_id, token)
         if record.version != expected_version:
             raise VersionConflict(record.version)
         profile = self._profile(record.id)
         source = "patch"
+        answer = None
+        mode: Mode | None = None
         if content is not None:
             source = "message"
-            if content.casefold().strip(" .!") in CONFIRMATIONS and not missing_fields(profile):
-                confirmation = True
+            if content.casefold().strip(" .!") in CONFIRMATIONS:
+                confirmation = not missing_fields(profile)
             else:
-                patch = extract_business_profile(content, profile)
+                llm = self.llm or get_llm()
+                recent = list(
+                    self.session.scalars(
+                        sa.select(MessageRecord)
+                        .where(MessageRecord.conversation_id == record.id)
+                        .order_by(MessageRecord.version.desc(), MessageRecord.role.desc())
+                        .limit(4)
+                    )
+                )
+                history = tuple(Turn(row.role.value, row.content) for row in reversed(recent))
+                call = llm.extract(content, profile, history)
+                # Validate even custom/mock adapter output at the service boundary.
+                try:
+                    call = ProfileToolCall.model_validate(call.model_dump(exclude_unset=True))
+                except ValueError:
+                    raise LLMError("llm_invalid_response", 502) from None
+                patch = call.arguments
+                mode = llm.mode
+                if call.intent == "analytics":
+                    answer = "Аналитика, финансовые расчёты и продукты ВТБ ещё не подключены. "
+                elif call.intent == "unrelated":
+                    answer = "Помогу собрать вводные для запуска бизнеса. "
+                if call.intent != "profile":
+                    patch = ProfilePatch()
+                if call.clarification:
+                    answer = {
+                        "city": "Уточните один город, который выбираете для запуска.",
+                        "category": "Уточните один тип бизнеса, который хотите открыть.",
+                        "budget": "Уточните общий бюджет запуска в рублях одной суммой.",
+                        "funding": "Уточните способ финансирования: свои, кредит или смешанное?",
+                        "preferences.format": "Уточните один выбранный формат бизнеса.",
+                    }[call.clarification]
+                elif answer:
+                    answer += reply_for(profile)
+        record = self._authorise(conversation_id, token, lock=True)
+        if record.version != expected_version:
+            raise VersionConflict(record.version)
         if patch is not None:
-            profile = apply_patch(profile, patch)
+            try:
+                profile = apply_patch(profile, patch)
+            except ValueError:
+                if mode == "ollama":
+                    raise LLMError("llm_invalid_response", 502) from None
+                raise
         if confirmation:
             if missing_fields(profile):
                 raise IncompleteProfile(missing_fields(profile))
@@ -163,6 +220,8 @@ class Conversations:
         record.version += 1
         record.updated_at = datetime.now(UTC)
         record.state = state_for(profile)
+        if mode:
+            record.extraction_mode = mode
         values = profile.model_dump()
         values.pop("id")
         values.pop("conversation_id")
@@ -181,7 +240,7 @@ class Conversations:
                     created_at=record.updated_at,
                 )
             )
-        self._save_event(record, profile, source)
+        self._save_event(record, profile, source, answer)
         self.session.flush()
         return self._view(record)
 

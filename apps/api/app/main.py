@@ -6,6 +6,7 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ValidationError
 
+from app.adapters.llm import LLMError
 from app.api.conversations import error_detail, router
 from app.db.health import check_postgis
 from app.services.conversations import ConversationNotFound, IncompleteProfile, VersionConflict
@@ -16,11 +17,19 @@ app.include_router(router)
 
 
 async def conversation_error(request: Request, error: Exception) -> JSONResponse:
+    if isinstance(error, LLMError):
+        logger.warning("Local LLM failed code=%s trace_id=%s", error.code, error.trace_id)
     status, detail = error_detail(error)
     return JSONResponse(status_code=status, content={"detail": detail})
 
 
-for error_type in (ConversationNotFound, IncompleteProfile, VersionConflict, ValidationError):
+for error_type in (
+    ConversationNotFound,
+    IncompleteProfile,
+    VersionConflict,
+    ValidationError,
+    LLMError,
+):
     app.add_exception_handler(error_type, conversation_error)
 
 

@@ -13,3 +13,6 @@ dist/
 .DS_Store
 Thumbs.db
 .playwright-cli/
+local-llm-eval.json
+*.gguf
+.ollama/

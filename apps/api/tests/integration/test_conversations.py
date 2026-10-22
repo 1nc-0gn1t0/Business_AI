@@ -23,7 +23,10 @@ pytestmark = pytest.mark.skipif(
 
 
 @pytest.fixture
-def client(migrated_database: tuple[Engine, UUID]) -> Iterator[TestClient]:
+def client(
+    migrated_database: tuple[Engine, UUID], monkeypatch: pytest.MonkeyPatch
+) -> Iterator[TestClient]:
+    monkeypatch.setenv("LLM_PROVIDER", "stub")
     engine, _ = migrated_database
 
     def session() -> Iterator[Session]:
@@ -44,6 +47,147 @@ def create(client: TestClient) -> tuple[dict[str, Any], dict[str, str], str]:
     body = response.json()
     headers = {"X-Conversation-Token": body["access_token"]}
     return body, headers, "/api/v1/conversations/" + body["id"]
+
+
+def test_llm_result_persists_with_safe_questions(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from app.adapters.llm import Mode, ProfileToolCall, Turn
+    from app.api.schemas import BusinessProfile
+
+    class MockLLM:
+        mode: Mode = "ollama"
+
+        def extract(
+            self, content: str, profile: BusinessProfile, history: tuple[Turn, ...]
+        ) -> ProfileToolCall:
+            assert history[-1].role == "assistant"
+            return ProfileToolCall.model_validate(
+                {
+                    "tool": "extract_business_profile",
+                    "arguments": {"category": "кофейня", "budget": "2000000"},
+                    "clarification": "city",
+                }
+            )
+
+    monkeypatch.setattr("app.services.conversations.get_llm", MockLLM)
+    _, headers, url = create(client)
+    result = client.post(
+        url + "/messages",
+        headers=headers,
+        json={
+            "expected_version": 0,
+            "content": "Кофейня, 2 млн, Казань или Самара",
+        },
+    )
+    assert result.status_code == 200
+    body = result.json()
+    assert body["extraction_mode"] == "ollama"
+    assert body["profile"]["city"] is None
+    assert Decimal(body["profile"]["budget"]) == 2000000
+    assert "Уточните один город" in body["assistant_message"]
+    assert client.get(url, headers=headers).json() == body
+    messages = client.get(url + "/messages", headers=headers).json()
+    assert (
+        messages[-2]["content"] == body["assistant_message"]
+        or messages[-1]["content"] == body["assistant_message"]
+    )
+    assert len(client.get(url + "/history", headers=headers).json()) == 2
+
+
+@pytest.mark.parametrize(
+    "code,status",
+    [
+        ("llm_unavailable", 503),
+        ("llm_timeout", 504),
+        ("llm_invalid_response", 502),
+    ],
+)
+def test_model_failure_does_not_write_partial_state(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch, code: str, status: int
+) -> None:
+    from app.adapters.llm import LLMError, Mode, ProfileToolCall, Turn
+    from app.api.schemas import BusinessProfile
+
+    class FailingLLM:
+        mode: Mode = "ollama"
+
+        def extract(
+            self, content: str, profile: BusinessProfile, history: tuple[Turn, ...]
+        ) -> ProfileToolCall:
+            raise LLMError(code, status)
+
+    monkeypatch.setattr("app.services.conversations.get_llm", FailingLLM)
+    before, headers, url = create(client)
+    result = client.post(
+        url + "/messages",
+        headers=headers,
+        json={
+            "expected_version": 0,
+            "content": "Хочу кофейню",
+        },
+    )
+    assert result.status_code == status
+    assert result.json()["detail"]["code"] == code
+    assert result.json()["detail"]["trace_id"]
+    assert client.get(url, headers=headers).json()["profile"] == before["profile"]
+    assert client.get(url, headers=headers).json()["version"] == 0
+    assert len(client.get(url + "/messages", headers=headers).json()) == 1
+    assert len(client.get(url + "/history", headers=headers).json()) == 1
+
+
+def test_edit_during_inference_wins_without_lost_update(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from threading import Event
+
+    from app.adapters.llm import Mode, ProfileToolCall, Turn
+    from app.api.schemas import BusinessProfile
+
+    started, proceed = Event(), Event()
+
+    class SlowLLM:
+        mode: Mode = "ollama"
+
+        def extract(
+            self, content: str, profile: BusinessProfile, history: tuple[Turn, ...]
+        ) -> ProfileToolCall:
+            started.set()
+            assert proceed.wait(10)
+            return ProfileToolCall.model_validate(
+                {
+                    "tool": "extract_business_profile",
+                    "arguments": {"city": "Казань"},
+                }
+            )
+
+    monkeypatch.setattr("app.services.conversations.get_llm", SlowLLM)
+    _, headers, url = create(client)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        pending = pool.submit(
+            client.post,
+            url + "/messages",
+            headers=headers,
+            json={
+                "expected_version": 0,
+                "content": "В Казани",
+            },
+        )
+        try:
+            assert started.wait(5)
+            edit = client.patch(
+                url + "/profile",
+                headers=headers,
+                json={
+                    "expected_version": 0,
+                    "patch": {"city": "Самара"},
+                },
+            )
+            assert edit.status_code == 200
+        finally:
+            proceed.set()
+        assert pending.result().status_code == 409
+    assert client.get(url, headers=headers).json()["profile"]["city"] == "Самара"
 
 
 def test_real_multi_turn_correction_confirmation_and_history(client: TestClient) -> None:

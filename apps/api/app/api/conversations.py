@@ -6,6 +6,7 @@ from fastapi.security import APIKeyHeader
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
+from app.adapters.llm import LLMError
 from app.api.conversation_schemas import (
     ConfirmRequest,
     ConversationCreated,
@@ -102,6 +103,8 @@ def history(
 
 # Error handlers are installed on the application so every route shares stable codes.
 def error_detail(error: Exception) -> tuple[int, dict[str, object]]:
+    if isinstance(error, LLMError):
+        return error.status, {"code": error.code, "trace_id": error.trace_id}
     if isinstance(error, ConversationNotFound):
         return 404, {"code": "conversation_not_found"}
     if isinstance(error, VersionConflict):
