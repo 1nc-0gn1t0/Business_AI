@@ -18,6 +18,8 @@ local-candidate-eval.json
 local-candidate-proxy-eval.json
 local-ranking-eval.json
 local-ranking-proxy-eval.json
+local-finance-eval.json
+local-finance-proxy-eval.json
 *.gguf
 .ollama/
 data/osm/*.raw.json

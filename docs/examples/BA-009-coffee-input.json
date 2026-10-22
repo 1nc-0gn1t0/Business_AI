@@ -1,0 +1,285 @@
+{
+  "profile": {
+    "id": "00000000-0000-0000-0000-000000000009",
+    "conversation_id": "00000000-0000-0000-0000-000000000009",
+    "city": "Казань",
+    "category": "кофейня",
+    "budget": "2000000.00",
+    "funding": "own_funds",
+    "confirmation_state": "confirmed"
+  },
+  "startup": {
+    "equipment": {
+      "value": "700000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    },
+    "renovation": {
+      "value": "400000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    },
+    "rent_deposit": {
+      "value": "160000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    },
+    "initial_inventory": {
+      "value": "100000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    },
+    "registration": {
+      "value": "40000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    },
+    "other": {
+      "value": "100000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    },
+    "working_capital_reserve": {
+      "value": "300000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    }
+  },
+  "monthly_fixed_costs": {
+    "rent": {
+      "value": "80000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    },
+    "payroll": {
+      "value": "180000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    },
+    "utilities": {
+      "value": "20000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    },
+    "other": {
+      "value": "20000.00",
+      "source": {
+        "origin": "synthetic",
+        "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+        "data_version": "coffee-finance-demo-v1",
+        "confidence": "not_applicable",
+        "limitations": [
+          "Invented scenario input, not a market quote, measured demand or available premises."
+        ]
+      }
+    }
+  },
+  "working_days_per_month": {
+    "value": 30,
+    "source": {
+      "origin": "synthetic",
+      "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+      "data_version": "coffee-finance-demo-v1",
+      "confidence": "not_applicable",
+      "limitations": [
+        "Invented scenario input, not a market quote, measured demand or available premises."
+      ]
+    }
+  },
+  "scenarios": {
+    "conservative": {
+      "average_check": {
+        "value": "250.00",
+        "source": {
+          "origin": "synthetic",
+          "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+          "data_version": "coffee-finance-demo-v1",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Invented scenario input, not a market quote, measured demand or available premises."
+          ]
+        }
+      },
+      "sales_per_day": {
+        "value": 60,
+        "source": {
+          "origin": "synthetic",
+          "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+          "data_version": "coffee-finance-demo-v1",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Invented scenario input, not a market quote, measured demand or available premises."
+          ]
+        }
+      },
+      "variable_cost_ratio": {
+        "value": "0.40",
+        "source": {
+          "origin": "synthetic",
+          "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+          "data_version": "coffee-finance-demo-v1",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Invented scenario input, not a market quote, measured demand or available premises."
+          ]
+        }
+      }
+    },
+    "base": {
+      "average_check": {
+        "value": "300.00",
+        "source": {
+          "origin": "synthetic",
+          "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+          "data_version": "coffee-finance-demo-v1",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Invented scenario input, not a market quote, measured demand or available premises."
+          ]
+        }
+      },
+      "sales_per_day": {
+        "value": 100,
+        "source": {
+          "origin": "synthetic",
+          "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+          "data_version": "coffee-finance-demo-v1",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Invented scenario input, not a market quote, measured demand or available premises."
+          ]
+        }
+      },
+      "variable_cost_ratio": {
+        "value": "0.35",
+        "source": {
+          "origin": "synthetic",
+          "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+          "data_version": "coffee-finance-demo-v1",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Invented scenario input, not a market quote, measured demand or available premises."
+          ]
+        }
+      }
+    },
+    "optimistic": {
+      "average_check": {
+        "value": "350.00",
+        "source": {
+          "origin": "synthetic",
+          "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+          "data_version": "coffee-finance-demo-v1",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Invented scenario input, not a market quote, measured demand or available premises."
+          ]
+        }
+      },
+      "sales_per_day": {
+        "value": 130,
+        "source": {
+          "origin": "synthetic",
+          "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+          "data_version": "coffee-finance-demo-v1",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Invented scenario input, not a market quote, measured demand or available premises."
+          ]
+        }
+      },
+      "variable_cost_ratio": {
+        "value": "0.32",
+        "source": {
+          "origin": "synthetic",
+          "source_name": "Explicit editable coffee demonstration; not Kazan market data",
+          "data_version": "coffee-finance-demo-v1",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Invented scenario input, not a market quote, measured demand or available premises."
+          ]
+        }
+      }
+    }
+  },
+  "sensitivity_changes": [
+    "-0.10",
+    "0.10"
+  ],
+  "selected_zone": {
+    "dataset_slug": "kazan-centre",
+    "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+    "candidate_id": "615b4ad59094fa5db097b577c61ff7e024dc537512245d8e165be044fe4743ac",
+    "ranking_fingerprint": "8a9be1e252fd79bcd96a2bed032e937df3b9d554121c699a496d8fed61b6e165"
+  }
+}

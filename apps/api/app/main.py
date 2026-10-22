@@ -8,6 +8,7 @@ from pydantic import BaseModel, ValidationError
 
 from app.adapters.llm import LLMError
 from app.api.conversations import error_detail, router
+from app.api.finance import router as finance_router
 from app.api.geo import router as geo_router
 from app.db.health import check_postgis
 from app.services.conversations import ConversationNotFound, IncompleteProfile, VersionConflict
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(title="Business AI", version="0.1.0")
 app.include_router(router)
 app.include_router(geo_router)
+app.include_router(finance_router)
 
 
 async def conversation_error(request: Request, error: Exception) -> JSONResponse:
