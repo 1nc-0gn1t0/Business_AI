@@ -2,108 +2,86 @@
 
 ## Состояние на 23.10.2026
 
-- PR #7 BA-007 объединён, merge `5719699da0bed8f70b23152d61a948ad061b6817`.
-  Перед BA-008 main синхронизирован с origin/main, рабочее дерево было чистым.
-- BA-008 реализована в `codex/BA-008-zone-ranking` от `5719699`.
-  Итоговые commit SHA, PR и фактический статус GitHub CI — в финальном сообщении
-  после push. PR не объединять автоматически. BA-009 не начиналась.
-- BA-003…BA-007 сохранены: LLM/диалоги, подтверждение и optimistic locking,
-  импорт/версии геоданных и генерация кандидатов не переписывались.
+- PR #8 BA-008 объединён, merge `486018b1497b8fc94dcc410941e16950e8abc2b1`.
+  Перед BA-009 main синхронизирован с origin/main, рабочее дерево было чистым.
+- BA-009 реализована в `codex/BA-009-financial-engine` от `486018b`.
+  Фактический HEAD, PR и статус GitHub CI после push — в итоговом сообщении.
+  Не объединять автоматически. BA-010 не начиналась.
+- LLM/диалоги и геомодули BA-003…BA-008 сохранены; миграций/зависимостей не добавлено.
 
-## Сделано в BA-008
+## Сделано в BA-009
 
-- `app/geo/ranking_schemas.py`, `scoring.py`, `ranking.py` и route
-  `POST /api/v1/geo/{slug}/rankings`: read-only инструмент над BA-007.
-  Принимает CandidateRequest + ScoringConfig, повторяет генерацию на сервере.
-  Произвольные клиентские геометрии/баллы не принимаются.
-- Нужен переданный снимок профиля с confirmation_state=confirmed; иначе
-  needs_confirmation. Это утверждение вызывающего клиента, не авторизация:
-  инструмент не читает/не подтверждает приватную беседу по UUID и не создаёт
-  сохранённый AnalysisRun. Будущий оркестратор получает профиль через защищённый
-  API диалогов. В сценарном eval подтверждение в БД не меняется.
-- Реальные counts/категории и ближайшие расстояния до конкурентов, bus_stop,
-  инфраструктуры и отраслевого окружения в фиксированном геодезическом радиусе.
-  Бюджет/format/funding не дают фиктивных поправок без данных о помещениях.
-- Полностью покрытая сравнимая группа, min-max, явные нормированные веса,
-  вклад каждого критерия, четыре объяснения, missing_data/provenance.
-  Default: равные веса транспорта, разнообразия инфраструктуры и окружения;
-  конкуренты нейтральны. Cluster/separation включаются явно, с весом >0.
-- Частичные круги не ранжируются. Нужно ≥2 покрытых кандидата; отсутствие
-  наблюдаемого активного сигнала во всей группе блокирует итоговые баллы.
-  Нет скрытого перераспределения весов и экстраполяции counts на неизвестную площадь.
-- Алгоритм `osm-cohort-minmax-v1`, политика `osm-business-context-v1`, настройки
-  `osm-relative-v1` + SHA256 полной эффективной конфигурации/категорий.
-  Snapshot BA-007, data_version и GIS runtime входят в trace/fingerprint.
-  Score округляется до 6 decimals, ties → candidate_id ascending.
-- DTO ответа сохраняет CandidateCollection/GeoJSON и отдельные evaluations по ID
-  для будущей карты. Миграций/новых зависимостей/внешних вызовов нет.
-- README, `docs/ZONE_RANKING.md`, ADR-0005, ссылка из CANDIDATE_ZONES.md;
-  read-only `scripts/eval_zone_ranking.py`, архив реального результата
-  `docs/examples/BA-008-kazan-coffee.json`.
+- `app/finance/schemas.py`, `engine.py`; `app/api/finance.py`, route
+  POST `/api/v1/finance/calculate` и подключение router в main.py.
+- Чистый Decimal-движок: отдельный Context(prec=64, HALF_UP), без float,
+  независим от внешнего precision/rounding/traps. Новые money/ratio inputs —
+  decimal strings/integers; float/bool отклоняются. Вычисленные деньги/counts — строки.
+- Стартовая потребность: оборудование, ремонт, депозит, запас, организационные,
+  прочие расходы и резерв. Это использования денег, не всё является expense/CAPEX.
+  Сравнение с budget BusinessProfile: остаток/дефицит либо budget_unknown.
+- Месячные fixed/variable costs, revenue, точная/display unit margin,
+  monthly contribution, operating result, ceil BE по неокруглённой марже.
+  Variable costs округляются за месяц до копеек перед вычитанием; строки сходятся.
+- Три явно заданных сценария; optional полный override fixed costs сценария,
+  сравнение с base, one-at-a-time sensitivity чека/продаж/аренды/ratio.
+  Выход perturbation за домен → outside_domain/null, без скрытого clamp.
+- У каждой существенной вводной origin/source/version/confidence/limitations.
+  Документированные факты требуют caller attestation + evidence_ref/date;
+  это не независимая проверка документа сервисом. Демо-вводные только synthetic,
+  бюджет user_input, расчёты modelled; формулы/input_paths/algorithm/version/hash видны.
+- Снимок профиля/зоны передаёт клиент; приватная беседа по ID не читается,
+  профиль не подтверждается/не меняется, AnalysisRun не создаётся.
+  Draft разрешён для моделирования с warning. Зона — непроверенная context reference,
+  OSM-score не принимается и не влияет на финансовую математику.
+- README, FINANCE_ENGINE.md, ADR-0006, явный редактируемый demo input/result JSON,
+  `scripts/eval_finance.py` для HTTP + независимого integer/Fraction эталона.
 
 ## Проверки
 
-- 14 новых unit-тестов: min-max/константы, веса/изменение предпочтений,
-  нейтральность конкурентов, пропуски/неполное покрытие, профильная категория,
-  конфигурация/версии/сериализация fingerprint — PASS.
-- `docker compose --profile test run --build --rm db-tests`: **49 passed**,
-  в том числе 5 новых BA-008 PostGIS-тестов: независимый SQL counts/distances,
-  типизированный API/provenance, повторяемость/pinning, бюджет без выдуманных
-  эффектов, категории/подтверждение, пустое/неполное покрытие, веса и режимы.
-  Один тест явно использует synthetic tags только во временной test-БД с rollback;
-  реальные отчёты/БД приложения не содержат этих изменений.
-  Прежние миграции, диалоги/конкурентность, геоимпорт и BA-007 — PASS.
+- `uv run --locked --project apps/api pytest apps/api/tests/test_finance.py -q`:
+  **34 passed**, включая HTTP TestClient integration без зависимости от БД.
+  Формулы/3 сценария, округление/копеечная маржа, zero sales/fixed,
+  отрицательные результаты, денежные лимиты, invalid ratio/check/days/count,
+  provenance/факты/синтетика, budget unknown/shortfall, override/sensitivity,
+  пересчёт, source paths, реплей/Decimal context и независимость от зоны.
 - `uv tool run --from prek==0.5.4 prek run --all-files`: Ruff lint/format,
-  strict mypy, pytest, ESLint, TypeScript PASS.
-- `npm --prefix apps/web run build`, Compose build/up healthy,
-  `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke.ps1`: PASS.
-- Реальный eval через API :8000 и nginx :5173: PASS. Полный pinned replay
-  воспроизвёл raw/components/score/rank и fingerprints, explicit transit-only
-  изменил баллы/порядок и hash. Прямой запуск: исходные зоны 0.372 s,
-  покрытая группа 0.242 s, transit-only 0.208 s; proxy 0.220/0.208/0.200 s.
-  Один локальный запуск, не SLA.
-- Независимая сверка пяти реальных зон с сырыми PostGIS-строками:
-  общее число POI, все четыре группы counts, ближайшие расстояния,
-  разнообразие инфраструктуры, density и сумма вкладов — PASS.
-- CI уже запускает новый интеграционный файл автоматически, без Overpass/LLM/GPU.
-  Финальный статус Actions проверяется после push и сообщается отдельно.
-- В первом PR CI Windows выявлено старое округление timeout Ollama:
-  абсолютный deadline иногда давал 120.00000000000003 вместо ≤120.
-  Отдельный regression воспроизвёл FAIL до исправления; расчёт через elapsed
-  сохраняет общий бюджет повторов без превышения из-за сложения float.
-  `pytest apps/api/tests/test_llm.py -q`: 27 passed, включая regression.
-  Это точечная поправка таймера, не смена LLM-архитектуры/диалоговой логики.
+  strict mypy, pytest, ESLint, TypeScript PASS; `npm --prefix apps/web run build` PASS.
+- `docker compose --profile test run --build --rm db-tests`: **49 passed**,
+  регрессия миграций, диалогов/конкурентности, геоимпорта, BA-007/BA-008.
+  Новые финансовые тесты не требуют PostGIS и включены в обычный CI pytest.
+- Compose healthy; `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke.ps1`: PASS.
+- Реальный HTTP eval API :8000 и nginx :5173: PASS. Сверка трёх сценариев
+  независимым Fraction/целыми копейками (без Decimal/engine helpers), startup/budget,
+  полный identical replay, редактирование/recalculate, исключение зоны без изменения
+  экономики. Прямой запуск 0.084/0.029/0.030/0.009 s, proxy
+  0.087/0.028/0.015/0.029 s, один локальный запуск, не SLA.
+- Docker/localhost проверены штатными разрешениями вне песочницы; для pytest —
+  отдельный PYTEST_DEBUG_TEMPROOT. Настройки системы/ACL/volumes не менялись.
+  Статус GitHub Actions подтверждается после push и сообщается в итоговом отчёте.
 
-## Реальный рейтинг и ограничения
+## Демо и ограничения
 
-- Активен `kazan-centre`: 23852 OSM POI, 8 административных полигонов,
-  bbox 49.05,55.70,49.25,55.85 — часть Казани. OSM/Overpass, ODbL-1.0,
-  © OpenStreetMap contributors, osm_base `2026-10-22T20:27:36Z`.
-  data_version `44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447`.
-  Кеш data/osm не в Git; загрузка/обновление — GEO_DATA.md. Автообновления нет.
-- Четыре из пяти исходных зон BA-007 имеют неполный круг 500 m. Их ID сохранены,
-  но score/rank=null; одна покрытая зона не образует сравнение (insufficient_data).
-- Отдельный явный search_bbox 49.065,55.71,49.235,55.84 создаёт пять BA-007 зон
-  с полными кругами 500 m. Кофейня, бюджет 2 млн, default weights:
-  768/12367 → 85.609; 774/12379 → 44.444; 757/12379 → 34.343;
-  761/12351 → 33.677; 776/12356 → 22.748. Таблица raw/normalized в ZONE_RANKING.md,
-  полные geometries/components/конфигурация — в архиве JSON.
-- Только сравнительная привлекательность по картированным геопризнакам.
-  Не прогноз прибыли/спроса, не свободные помещения и не лучший участок города.
-  Прямые расстояния от представительной точки, не пешеходная доступность.
-  Полный bbox не гарантирует полноту OSM; coarse теги и node/way дубли возможны.
-- Нет измеренных трафика/спроса, доходов, населения, аренды, площади/землепользования,
-  наличия помещения, барьеров и условий ВТБ. Достаточность бюджета не проверяется.
-  Экспертной полевой валидации и доказанной точности по прибыли нет.
-- Score несопоставим между разными группами/радиусами/весами. Default weights —
-  объяснённые начальные гипотезы, не обученная модель. Stale snapshot даёт warning,
-  не скрытую поправку. `generated_at`/age меняются, числа/порядок воспроизводимы.
-- Docker/localhost проверены вне песочницы штатными разрешениями. Для pytest —
-  отдельный PYTEST_DEBUG_TEMPROOT, ACL/системные настройки не менялись.
-  Данные и volumes приложения сохранены.
+- `docs/examples/BA-009-coffee-input.json` — открытая synthetic-модель кофейни,
+  не реальные цены Казани. Бюджет пользователя 2000000; startup без резерва 1500000,
+  резерв 300000, всего 1800000, модельный остаток 200000 ₽.
+- Fixed: аренда 80000, payroll 180000, utilities 20000, other 20000 ₽/месяц;
+  30 дней. Check/sales/day/ratio: 250/60/0.40; 300/100/0.35; 350/130/0.32.
+  Revenue: 450000/900000/1365000; variable: 180000/315000/436800;
+  operating result: −30000/285000/628200 ₽; BE: 67/52/43 продаж в день.
+- Input содержит настоящую архивную ссылку на зону BA-008; цены/продажи из OSM
+  не выводятся. Geo dataset/version и реальные карты — в GEO_DATA/CANDIDATE_ZONES/
+  ZONE_RANKING.md и прежних примерах. Повторный импорт для BA-009 не требовался.
+- Operating result до неучтённых налогов/амортизации/процентов/прочих статей,
+  не чистая прибыль/денежный поток. Нет payback/loan/cashflow schedule,
+  сезонности/ликвидности/оборота запасов, верифицированных помещений и спроса.
+  Payroll/ratio/other включают лишь явно принятые расходы; пропуски не становятся
+  нулевыми реальными обязательствами. Budget fit — только сравнение модели.
+- Нет скрытых rent/demand defaults и банковских условий. Независимая сверка
+  доказывает арифметику, не коммерческую достоверность допущений.
 
 ## Следующий шаг
 
-1. Проверить PR BA-008 и CI; объединить только по решению владельца.
-2. После отдельного разрешения — BA-009 (финансовая модель), по PROJECT_PLAN.md.
-3. Не выдавать OSM-рейтинг за оценку кредитного риска, спроса или доходности.
+1. Проверить PR BA-009 и CI; объединить только по решению владельца.
+2. После отдельного разрешения — BA-010 по PROJECT_PLAN.md, frontend поверх DTO.
+3. Для реальных решений заменить synthetic-вводные проверенными источниками
+   и расширить финансовую модель явно, не маскируя отсутствующие статьи.
