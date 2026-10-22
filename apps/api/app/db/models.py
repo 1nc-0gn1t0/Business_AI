@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import Any
+from typing import Any, Literal
 from uuid import UUID, uuid4
 
 import sqlalchemy as sa
@@ -31,6 +31,9 @@ class ConversationRecord(Base):
     __table_args__ = (
         sa.CheckConstraint("version >= 0", name="ck_conversation_version"),
         sa.CheckConstraint("token_hash ~ '^[0-9a-f]{64}$'", name="ck_conversation_token_hash"),
+        sa.CheckConstraint(
+            "extraction_mode IN ('rules', 'stub', 'ollama')", name="ck_conversation_mode"
+        ),
     )
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
@@ -39,6 +42,9 @@ class ConversationRecord(Base):
         sa.Enum(ConversationState, name="conversation_state", values_callable=enum_values)
     )
     version: Mapped[int] = mapped_column(server_default="0")
+    extraction_mode: Mapped[Literal["rules", "stub", "ollama"]] = mapped_column(
+        sa.Text, server_default="rules"
+    )
     created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
     updated_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
 

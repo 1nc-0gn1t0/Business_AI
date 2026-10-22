@@ -2,7 +2,7 @@
 
 **AI-ассистент для запуска малого бизнеса и персонального подбора банковских сервисов ВТБ.** Пользователь описывает бизнес-идею, система уточняет вводные, сравнивает геолокации, показывает финансовые сценарии и предлагает релевантные услуги банка. Заявка передаётся только по отдельному согласию.
 
-**Текущее состояние:** создан технический скелет `BA-001`: React → FastAPI `/healthz` → PostgreSQL/PostGIS. Бизнес-функции, AI-диалог, карта и банковские интеграции ещё не реализованы.
+**Текущее состояние:** React → FastAPI → PostgreSQL/PostGIS; API диалогов, редактируемый бизнес-профиль и локальная LLM через Ollama. Frontend-чат, карта, аналитика и банковские интеграции ещё не реализованы.
 
 ## Главные документы
 
@@ -117,8 +117,87 @@ docker compose --profile test run --build --rm db-tests
 
 Обычный pytest не требует БД и пропускает эти integration tests. Тестовый профиль создаёт отдельные временные базы; основная БД приложения не откатывается.
 
-API беседы BA-004 описан в [docs/CONVERSATION_API.md](docs/CONVERSATION_API.md): создание гостевой беседы, multi-turn сообщения, PATCH профиля, подтверждение и история. Сейчас извлечение работает по ограниченным правилам, без LLM. API доступен также через `/api/` на веб-порту; отдельный frontend-чат ещё не реализован. Токен доступа возвращается один раз при создании; последующие запросы требуют `X-Conversation-Token`, записи — `expected_version`.
+API беседы описан в [docs/CONVERSATION_API.md](docs/CONVERSATION_API.md): создание гостевой беседы, multi-turn сообщения, PATCH профиля, подтверждение и история. BA-005 добавляет извлечение свободного русского текста локальной Qwen. API доступен также через `/api/` на веб-порту; отдельный frontend-чат ещё не реализован. Токен доступа возвращается один раз при создании; последующие запросы требуют `X-Conversation-Token`, записи — `expected_version`.
 
 Решения о состояниях, подтверждении и защите от конфликтующих правок: [ADR-0001](docs/adr/ADR-0001-conversation-state.md). Новая ревизия `0002_conversations` сохраняет ранее созданные профили и добавляет историю/сообщения.
 
-Перед разработкой прочитайте `docs/HANDOFF.md` и соответствующие разделы `docs/PROJECT_PLAN.md`. Следующая задача после проверки и слияния `BA-004` — `BA-005` (LLM adapter и deterministic stub). Переход — только по разрешению владельца проекта.
+## Локальная Qwen через Ollama (BA-005)
+
+Облачные LLM API, ключи и обучение не требуются. Выбран точный тег
+`qwen3:4b-instruct-2507-q4_K_M` (4.02B, Q4_K_M, около 2.5 GB весов, Apache 2.0).
+Веса хранятся в Ollama, не в репозитории. Контекст по умолчанию 4096, ответ до 384 токенов.
+Реальные результаты на RTX 3050 Ti 4 GB: [LLM_EVALUATION](docs/LLM_EVALUATION.md).
+
+Вариант 1 — Ollama в Windows: установите [официальный Ollama](https://ollama.com/download/windows),
+затем загрузите **одну** модель:
+
+```powershell
+ollama pull qwen3:4b-instruct-2507-q4_K_M
+ollama list
+```
+
+Для доступа из Docker закройте Ollama в tray и запустите сервер в отдельном PowerShell:
+
+```powershell
+$env:OLLAMA_HOST = '0.0.0.0:11434'
+$env:OLLAMA_NO_CLOUD = '1'
+$env:OLLAMA_NUM_PARALLEL = '1'
+$env:OLLAMA_MAX_LOADED_MODELS = '1'
+ollama serve
+```
+
+Переменные здесь действуют только в этом окне. Не открывайте порт Ollama в интернет:
+у API нет авторизации. Не меняйте firewall автоматически; доступ к серверу должен
+быть ограничен локальной машиной/Docker. Если Windows блокирует соединение,
+можно использовать контейнерный вариант ниже с привязкой порта к loopback.
+
+Вариант 2 — Ollama в отдельном контейнере Docker Desktop/WSL2 с NVIDIA GPU
+(именно этот вариант используется для локальной проверки BA-005):
+
+```powershell
+docker run -d --name business-ai-ollama --gpus all -p 127.0.0.1:11434:11434 -e OLLAMA_NO_CLOUD=1 -e OLLAMA_NUM_PARALLEL=1 -e OLLAMA_MAX_LOADED_MODELS=1 -v business-ai_ollama_data:/root/.ollama ollama/ollama:0.40.8
+docker exec business-ai-ollama ollama pull qwen3:4b-instruct-2507-q4_K_M
+# При следующем запуске существующего контейнера:
+docker start business-ai-ollama
+```
+
+Не запускайте оба варианта одновременно на одном порту. Не удаляйте volume с весами.
+Для контейнерного варианта нужны рабочий NVIDIA driver и GPU support Docker Desktop.
+
+Настройки API в `.env` (пример в `.env.example`):
+
+```dotenv
+LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=http://host.docker.internal:11434
+OLLAMA_MODEL=qwen3:4b-instruct-2507-q4_K_M
+LLM_TIMEOUT_SECONDS=120
+OLLAMA_NUM_CTX=4096
+```
+
+Для API вне Docker используйте `OLLAMA_BASE_URL=http://127.0.0.1:11434`.
+После изменения `.env` пересоздайте API командой `docker compose up --build --detach --wait`.
+Затем выполните:
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:11434/api/tags
+docker compose up --build --detach --wait
+# Пример API с сообщениями, токеном и подтверждением — docs/CONVERSATION_API.md
+uv run --locked --project apps/api python scripts/eval_local_llm.py --output local-llm-eval.json
+# GPU-размещение после реального сообщения:
+docker exec business-ai-ollama ollama ps
+```
+
+Eval создаёт анонимные тестовые беседы в БД приложения и проверяет сохранение
+профиля/истории; его JSON не содержит токенов. Не добавляйте личные переписки в Git.
+`/healthz` проверяет БД/PostGIS, а не загруженную модель. Проверка Ollama — реальный
+POST `/messages` и `extraction_mode=ollama`; доступный `/api/tags` сам по себе недостаточен.
+
+Для CI/демо без модели явно задайте `LLM_PROVIDER=stub`. Интеграционный test-профиль
+Compose уже использует stub: GPU, Ollama и веса ему не нужны. В stub понимаются
+только правила BA-004; это не настоящая LLM. При сбое Ollama скрытого fallback нет:
+503 — недоступность/конфигурация, 504 — таймаут, 502 — некорректный ответ;
+профиль и история не меняются. PATCH и явное подтверждение доступны без LLM.
+
+Решение и границы инструментов: [ADR-0002](docs/adr/ADR-0002-local-llm.md).
+Перед разработкой прочитайте `docs/HANDOFF.md` и релевантный раздел плана.
+Следующая задача после принятия BA-005 — BA-006, только по разрешению владельца.
