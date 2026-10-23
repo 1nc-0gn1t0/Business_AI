@@ -1,0 +1,30 @@
+{
+  "checked_at": "2026-10-23T20:34:35.082Z",
+  "services": "real Qwen/Ollama, PostGIS, ranking, finance, catalogue, consent, mock lead; no route mocks",
+  "profile_version": 3,
+  "selected_product_ids": [
+    "vtb-merchant-acquiring",
+    "vtb-rko"
+  ],
+  "payload_fields": {
+    "city": "Казань",
+    "category": "кофейня",
+    "budget": "2000000.00",
+    "funding": "own_funds",
+    "format": "навынос"
+  },
+  "consent_versions": [
+    {
+      "purpose": "assistant",
+      "text_version": "assistant-demo-v1"
+    },
+    {
+      "purpose": "demo_lead",
+      "text_version": "demo-lead-v1"
+    }
+  ],
+  "sent_to_bank": false,
+  "receipt_message": "Демонстрационная заявка создана. Данные в ВТБ не отправлены",
+  "restored_after_reload": true,
+  "browser_errors": []
+}

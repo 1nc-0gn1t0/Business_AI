@@ -1,5 +1,4 @@
 import os
-from collections.abc import Iterator
 from concurrent.futures import ThreadPoolExecutor
 from decimal import Decimal
 from typing import Any
@@ -10,10 +9,6 @@ import pytest
 import sqlalchemy as sa
 from fastapi.testclient import TestClient
 from sqlalchemy.engine import Engine
-from sqlalchemy.orm import Session
-
-from app.db.session import get_session
-from app.main import app
 
 from .support import isolated_database, migrate
 
@@ -22,30 +17,17 @@ pytestmark = pytest.mark.skipif(
 )
 
 
-@pytest.fixture
-def client(
-    migrated_database: tuple[Engine, UUID], monkeypatch: pytest.MonkeyPatch
-) -> Iterator[TestClient]:
-    monkeypatch.setenv("LLM_PROVIDER", "stub")
-    engine, _ = migrated_database
-
-    def session() -> Iterator[Session]:
-        with Session(engine, expire_on_commit=False) as db, db.begin():
-            yield db
-
-    app.dependency_overrides[get_session] = session
-    try:
-        with TestClient(app) as test_client:
-            yield test_client
-    finally:
-        app.dependency_overrides.pop(get_session)
-
-
 def create(client: TestClient) -> tuple[dict[str, Any], dict[str, str], str]:
     response = client.post("/api/v1/conversations")
     assert response.status_code == 201, response.text
     body = response.json()
     headers = {"X-Conversation-Token": body["access_token"]}
+    consent = client.put(
+        "/api/v1/conversations/" + body["id"] + "/consents/assistant",
+        headers=headers,
+        json={"expected_revision": 0, "text_version": "assistant-demo-v1", "decision": "grant"},
+    )
+    assert consent.status_code == 200, consent.text
     return body, headers, "/api/v1/conversations/" + body["id"]
 
 

@@ -14,6 +14,10 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
   });
   await page.goto("/");
   await expect(page.getByText("API и PostGIS доступны")).toBeVisible();
+  await page.locator(".assistant-consent>summary").click();
+  await page
+    .getByLabel("Согласен на использование ассистента", { exact: true })
+    .check();
   const prompt = "Хочу открыть кофейню в Казани. Бюджет — 2 миллиона рублей";
   await page.getByLabel("Сообщение помощнику").fill(prompt);
   const turnResponse = page.waitForResponse(
@@ -176,7 +180,7 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
   ).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
-    path: "../../docs/screenshots/BA-011-bank.png",
+    path: `${directory}/BA-011-bank.png`,
     fullPage: true,
   });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -186,11 +190,11 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     ),
   ).toBe(true);
   await page.screenshot({
-    path: "../../docs/screenshots/BA-011-bank-mobile.png",
+    path: `${directory}/BA-011-bank-mobile.png`,
     fullPage: true,
   });
   await writeFile(
-    "../../docs/screenshots/BA-011-verification.json",
+    `${directory}/BA-011-verification.json`,
     JSON.stringify(
       {
         checked_at: new Date().toISOString(),
@@ -203,6 +207,101 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
         recommended_ids: bank.recommended_ids,
         demonstration_ids: bank.demonstration_ids,
         credit_decision: bank.credit_decision,
+        browser_errors: errors,
+      },
+      null,
+      2,
+    ),
+  );
+  await page.setViewportSize({ width: 1440, height: 1050 });
+  const lead = page.getByRole("region", { name: "Демонстрационная заявка" });
+  await lead
+    .getByRole("button", {
+      name: "Отказаться: Маркетинговые рекомендации",
+      exact: true,
+    })
+    .click();
+  await expect(lead.getByText("Отказ", { exact: true })).toBeVisible();
+  await lead.getByRole("checkbox", { name: /Расчётно-кассовое/ }).check();
+  await lead.getByRole("checkbox", { name: /Торговый эквайринг/ }).check();
+  await expect(
+    lead.getByRole("button", { name: "Подготовить демо-черновик →" }),
+  ).toBeDisabled();
+  await lead
+    .getByRole("button", {
+      name: "Согласиться: Подготовка и демонстрационная передача",
+      exact: true,
+    })
+    .click();
+  const draftResponse = page.waitForResponse(
+    (r) => r.url().endsWith("/leads/drafts") && r.request().method() === "POST",
+  );
+  await lead
+    .getByRole("button", { name: "Подготовить демо-черновик →" })
+    .click();
+  const draftHttp = await draftResponse;
+  expect(draftHttp.ok()).toBe(true);
+  const draft = (await draftHttp.json()) as Schemas["LeadDraft"];
+  expect(Number(draft.payload.fields.budget)).toBe(2_000_000);
+  await lead.getByLabel("Я проверил все поля и выбранные продукты").check();
+  await lead
+    .getByRole("button", { name: "Подтвердить состав заявки", exact: true })
+    .click();
+  await lead
+    .getByLabel(
+      "Подтверждаю создание демонстрационной заявки без отправки в банк",
+    )
+    .check();
+  await lead.scrollIntoViewIfNeeded();
+  await lead.screenshot({ path: "../../docs/screenshots/BA-012-preview.png" });
+  const receiptResponse = page.waitForResponse((r) =>
+    r.url().endsWith("/submit"),
+  );
+  await lead
+    .getByRole("button", { name: "Создать демонстрационную заявку →" })
+    .click();
+  const receiptHttp = await receiptResponse;
+  expect(receiptHttp.ok()).toBe(true);
+  const receipt = (await receiptHttp.json()) as Schemas["LeadReceipt"];
+  expect(receipt.sent_to_bank).toBe(false);
+  await expect(
+    lead.getByRole("heading", {
+      name: "Демонстрационная заявка создана. Данные в ВТБ не отправлены",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await lead
+    .locator(".lead-receipt")
+    .screenshot({ path: "../../docs/screenshots/BA-012-receipt.png" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await lead.screenshot({ path: "../../docs/screenshots/BA-012-mobile.png" });
+  await page.reload();
+  await page.getByRole("button", { name: "◇ Продукты ВТБ" }).click();
+  await expect(
+    page.getByRole("heading", { name: receipt.message, exact: true }),
+  ).toBeVisible();
+  await writeFile(
+    "../../docs/screenshots/BA-012-verification.json",
+    JSON.stringify(
+      {
+        checked_at: new Date().toISOString(),
+        services:
+          "real Qwen/Ollama, PostGIS, ranking, finance, catalogue, consent, mock lead; no route mocks",
+        profile_version: receipt.profile_version,
+        selected_product_ids: receipt.payload.products.map((p) => p.product.id),
+        payload_fields: receipt.payload.fields,
+        consent_versions: receipt.consents.map((c) => ({
+          purpose: c.purpose,
+          text_version: c.text_version,
+        })),
+        sent_to_bank: receipt.sent_to_bank,
+        receipt_message: receipt.message,
+        restored_after_reload: true,
         browser_errors: errors,
       },
       null,

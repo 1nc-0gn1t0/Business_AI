@@ -3,13 +3,35 @@ from uuid import UUID, uuid4
 
 import pytest
 import sqlalchemy as sa
+from fastapi.testclient import TestClient
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
 from app.api.schemas import AnalysisRun, BusinessProfile
 from app.db.models import AnalysisRunRecord
+from app.db.session import get_session
+from app.main import app
 
 from .support import isolated_database, migrate
+
+
+@pytest.fixture
+def client(
+    migrated_database: tuple[Engine, UUID], monkeypatch: pytest.MonkeyPatch
+) -> Iterator[TestClient]:
+    monkeypatch.setenv("LLM_PROVIDER", "stub")
+    engine, _ = migrated_database
+
+    def session() -> Iterator[Session]:
+        with Session(engine, expire_on_commit=False) as db, db.begin():
+            yield db
+
+    app.dependency_overrides[get_session] = session
+    try:
+        with TestClient(app) as test_client:
+            yield test_client
+    finally:
+        app.dependency_overrides.pop(get_session)
 
 
 @pytest.fixture(scope="module")

@@ -1,7 +1,9 @@
 # BA-004: беседа и профиль
 
 OpenAPI: http://localhost:8000/docs. API prefix: /api/v1/conversations.
-Compose nginx и Vite проксируют /api/ через веб-порт. Frontend-чат — будущая BA-010.
+Compose nginx и Vite проксируют /api/ через веб-порт. Чат реализован в BA-010.
+BA-012 требует отдельное действующее согласие assistant для POST messages/PATCH/confirm.
+GET истории и базовые расчёты не блокируются. Контракт: [CONSENT_LEADS.md](CONSENT_LEADS.md).
 Решения: adr/ADR-0001-conversation-state.md.
 
 | Метод | Путь относительно prefix | Назначение |
@@ -33,6 +35,13 @@ $base = 'http://localhost:8000/api/v1/conversations'
 $view = Invoke-RestMethod -Method Post -Uri $base
 $headers = @{ 'X-Conversation-Token' = $view.access_token }
 $url = "$base/$($view.id)"
+# Прочитайте текст и получите явное согласие пользователя перед PUT:
+$consents = Invoke-RestMethod -Uri "$url/consents" -Headers $headers
+$text = $consents.texts | Where-Object purpose -eq 'assistant'
+$text.text
+# Следующий запрос выполняется только после отдельного согласия:
+$consentBody = @{ expected_revision = 0; text_version = $text.version; decision = 'grant' } | ConvertTo-Json
+Invoke-RestMethod -Method Put -Uri "$url/consents/assistant" -Headers $headers -ContentType 'application/json' -Body $consentBody
 foreach ($text in @('Хочу кофейню в Казани с бюджетом 2 млн', 'навынос', 'свои средства', 'Подтверждаю')) {
     $body = @{ content = $text; expected_version = $view.version } | ConvertTo-Json
     $view = Invoke-RestMethod -Method Post -Uri "$url/messages" -Headers $headers -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($body))

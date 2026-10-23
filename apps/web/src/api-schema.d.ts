@@ -261,6 +261,160 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/conversations/{conversation_id}/consents": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Consents */
+    get: operations["consents_api_v1_conversations__conversation_id__consents_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/consents/{purpose}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Decide */
+    put: operations["decide_api_v1_conversations__conversation_id__consents__purpose__put"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/leads": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Workspace */
+    get: operations["workspace_api_v1_conversations__conversation_id__leads_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/leads/drafts": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Prepare */
+    post: operations["prepare_api_v1_conversations__conversation_id__leads_drafts_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/leads/drafts/{draft_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Draft */
+    get: operations["draft_api_v1_conversations__conversation_id__leads_drafts__draft_id__get"];
+    /** Edit */
+    put: operations["edit_api_v1_conversations__conversation_id__leads_drafts__draft_id__put"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/leads/drafts/{draft_id}/confirm": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Confirm */
+    post: operations["confirm_api_v1_conversations__conversation_id__leads_drafts__draft_id__confirm_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/leads/drafts/{draft_id}/submit": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Submit */
+    post: operations["submit_api_v1_conversations__conversation_id__leads_drafts__draft_id__submit_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/audit": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Audit */
+    get: operations["audit_api_v1_conversations__conversation_id__audit_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/consent-texts": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Texts */
+    get: operations["texts_api_v1_consent_texts_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/healthz": {
     parameters: {
       query?: never;
@@ -293,6 +447,38 @@ export interface components {
       /** Value */
       value: string;
       source: components["schemas"]["InputSource"];
+    };
+    /** AuditView */
+    AuditView: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /** Action */
+      action: string;
+      /**
+       * Object Id
+       * Format: uuid
+       */
+      object_id: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /**
+       * Outcome
+       * @default recorded
+       * @constant
+       */
+      outcome: "recorded";
+      /**
+       * Actor
+       * @default guest_session
+       * @constant
+       */
+      actor: "guest_session";
     };
     /** BankingNeeds */
     BankingNeeds: {
@@ -642,6 +828,80 @@ export interface components {
      * @enum {string}
      */
     ConfirmationState: "draft" | "confirmed";
+    /** ConsentDecision */
+    ConsentDecision: {
+      /** Expected Revision */
+      expected_revision: number;
+      /** Text Version */
+      text_version: string;
+      /**
+       * Decision
+       * @enum {string}
+       */
+      decision: "grant" | "decline" | "withdraw";
+    };
+    /** ConsentState */
+    ConsentState: {
+      /** Texts */
+      texts: components["schemas"]["ConsentText"][];
+      /** Consents */
+      consents: components["schemas"]["ConsentView"][];
+    };
+    /** ConsentText */
+    ConsentText: {
+      /**
+       * Purpose
+       * @enum {string}
+       */
+      purpose: "assistant" | "marketing" | "demo_lead";
+      /** Version */
+      version: string;
+      /** Title */
+      title: string;
+      /** Text */
+      text: string;
+      /**
+       * Recipient
+       * @default Business AI (локальный демонстрационный сервис); ВТБ данные не получает
+       */
+      recipient: string;
+      /**
+       * Legally Approved
+       * @default false
+       * @constant
+       */
+      legally_approved: false;
+    };
+    /** ConsentView */
+    ConsentView: {
+      /** Id */
+      id?: string | null;
+      /**
+       * Purpose
+       * @enum {string}
+       */
+      purpose: "assistant" | "marketing" | "demo_lead";
+      /**
+       * Revision
+       * @default 0
+       */
+      revision: number;
+      /** Text Version */
+      text_version: string;
+      /**
+       * Status
+       * @default not_given
+       * @enum {string}
+       */
+      status: "not_given" | "granted" | "declined" | "withdrawn";
+      /** Given At */
+      given_at?: string | null;
+      /** Withdrawn At */
+      withdrawn_at?: string | null;
+      /** Recorded At */
+      recorded_at?: string | null;
+      text_snapshot?: components["schemas"]["ConsentText"] | null;
+    };
     /** ConversationCreated */
     ConversationCreated: {
       /**
@@ -823,6 +1083,40 @@ export interface components {
       name: string | null;
       /** Admin Level */
       admin_level: number;
+    };
+    /** DraftAction */
+    DraftAction: {
+      /** Expected Revision */
+      expected_revision: number;
+      /**
+       * Confirmed
+       * @constant
+       */
+      confirmed: true;
+      /** Payload Fingerprint */
+      payload_fingerprint: string;
+    };
+    /** DraftEdit */
+    DraftEdit: {
+      /** Expected Profile Version */
+      expected_profile_version: number;
+      /** Catalogue Fingerprint */
+      catalogue_fingerprint: string;
+      /** Product Ids */
+      product_ids: string[];
+      fields: components["schemas"]["LeadFields-Input"];
+      /** Expected Revision */
+      expected_revision: number;
+    };
+    /** DraftInput */
+    DraftInput: {
+      /** Expected Profile Version */
+      expected_profile_version: number;
+      /** Catalogue Fingerprint */
+      catalogue_fingerprint: string;
+      /** Product Ids */
+      product_ids: string[];
+      fields: components["schemas"]["LeadFields-Input"];
     };
     /** EligibilityRule */
     EligibilityRule: {
@@ -1054,6 +1348,148 @@ export interface components {
        * @default false
        */
       source_attested: boolean;
+    };
+    /** LeadDraft */
+    LeadDraft: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /** Revision */
+      revision: number;
+      /** Profile Version */
+      profile_version: number;
+      profile_snapshot: components["schemas"]["BusinessProfile-Output"];
+      /** Consents */
+      consents: components["schemas"]["ConsentView"][];
+      payload: components["schemas"]["LeadPayload"];
+      /** Payload Fingerprint */
+      payload_fingerprint: string;
+      /**
+       * State
+       * @enum {string}
+       */
+      state: "draft" | "confirmed" | "submitted";
+      /**
+       * Stale
+       * @default false
+       */
+      stale: boolean;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /**
+       * Updated At
+       * Format: date-time
+       */
+      updated_at: string;
+      /** Confirmed At */
+      confirmed_at?: string | null;
+    };
+    /** LeadFields */
+    "LeadFields-Input": {
+      /** City */
+      city: string;
+      /** Category */
+      category: string;
+      /** Budget */
+      budget?: number | string | null;
+      funding?: components["schemas"]["Funding"] | null;
+      /** Format */
+      format?: string | null;
+    };
+    /** LeadFields */
+    "LeadFields-Output": {
+      /** City */
+      city: string;
+      /** Category */
+      category: string;
+      /** Budget */
+      budget?: string | null;
+      funding?: components["schemas"]["Funding"] | null;
+      /** Format */
+      format?: string | null;
+    };
+    /** LeadPayload */
+    LeadPayload: {
+      /**
+       * Mode
+       * @default demonstration
+       * @constant
+       */
+      mode: "demonstration";
+      /**
+       * Recipient
+       * @default local_mock_only
+       * @constant
+       */
+      recipient: "local_mock_only";
+      fields: components["schemas"]["LeadFields-Output"];
+      /** Products */
+      products: components["schemas"]["ProductView"][];
+      /** Catalogue Version */
+      catalogue_version: string;
+      /** Catalogue Fingerprint */
+      catalogue_fingerprint: string;
+      /** Field Origins */
+      field_origins: {
+        [key: string]: "confirmed_profile" | "draft_user_input";
+      };
+    };
+    /** LeadReceipt */
+    LeadReceipt: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Draft Id
+       * Format: uuid
+       */
+      draft_id: string;
+      /** Draft Revision */
+      draft_revision: number;
+      /** Profile Version */
+      profile_version: number;
+      /** Payload Fingerprint */
+      payload_fingerprint: string;
+      payload: components["schemas"]["LeadPayload"];
+      /** Consents */
+      consents: components["schemas"]["ConsentView"][];
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /**
+       * Status
+       * @default demo_created
+       * @constant
+       */
+      status: "demo_created";
+      /**
+       * Sent To Bank
+       * @default false
+       * @constant
+       */
+      sent_to_bank: false;
+      /**
+       * Message
+       * @default Демонстрационная заявка создана. Данные в ВТБ не отправлены
+       * @constant
+       */
+      message: "Демонстрационная заявка создана. Данные в ВТБ не отправлены";
+    };
+    /** LeadWorkspace */
+    LeadWorkspace: {
+      /** Drafts */
+      drafts: components["schemas"]["LeadDraft"][];
+      /** Receipts */
+      receipts: components["schemas"]["LeadReceipt"][];
     };
     /** MatchRequest */
     MatchRequest: {
@@ -1771,6 +2207,23 @@ export interface components {
       /** Formula */
       formula: string;
     };
+    /** SubmitRequest */
+    SubmitRequest: {
+      /** Expected Revision */
+      expected_revision: number;
+      /**
+       * Confirmed
+       * @constant
+       */
+      confirmed: true;
+      /** Payload Fingerprint */
+      payload_fingerprint: string;
+      /**
+       * Idempotency Key
+       * Format: uuid
+       */
+      idempotency_key: string;
+    };
     /** ValidationError */
     ValidationError: {
       /** Location */
@@ -2376,6 +2829,333 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  consents_api_v1_conversations__conversation_id__consents_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConsentState"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  decide_api_v1_conversations__conversation_id__consents__purpose__put: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+        purpose: "assistant" | "marketing" | "demo_lead";
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ConsentDecision"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConsentState"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  workspace_api_v1_conversations__conversation_id__leads_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["LeadWorkspace"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  prepare_api_v1_conversations__conversation_id__leads_drafts_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DraftInput"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["LeadDraft"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  draft_api_v1_conversations__conversation_id__leads_drafts__draft_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+        draft_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["LeadDraft"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  edit_api_v1_conversations__conversation_id__leads_drafts__draft_id__put: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+        draft_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DraftEdit"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["LeadDraft"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  confirm_api_v1_conversations__conversation_id__leads_drafts__draft_id__confirm_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+        draft_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DraftAction"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["LeadDraft"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  submit_api_v1_conversations__conversation_id__leads_drafts__draft_id__submit_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+        draft_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SubmitRequest"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["LeadReceipt"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  audit_api_v1_conversations__conversation_id__audit_get: {
+    parameters: {
+      query?: {
+        offset?: number;
+        limit?: number;
+      };
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AuditView"][];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  texts_api_v1_consent_texts_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConsentText"][];
         };
       };
     };
