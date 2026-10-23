@@ -1,0 +1,4173 @@
+{
+  "checked_at": "2026-10-23T21:21:05.487875+00:00",
+  "source": "Real local PostGIS API",
+  "excerpt_notice": "Geometry limited to first 20 segments, POI to first 10; counts are from full responses. Re-run saved requests to retrieve complete GeoJSON.",
+  "cases": [
+    {
+      "request": {
+        "longitude": 49.119,
+        "latitude": 55.788,
+        "distance_m": 600,
+        "max_snap_m": 30
+      },
+      "http_elapsed_ms": 423.602,
+      "response_excerpt": {
+        "status": "ok",
+        "reasons": [
+          "bounded_network_with_modelled_connectors_not_verified_entrances"
+        ],
+        "algorithm_version": "osm-foot-dijkstra-segments-v1",
+        "request_fingerprint": "b70d60a37226543462220a61825be902557900f8095311edd81698c363ed2ea2",
+        "request_snapshot": {
+          "longitude": 49.119,
+          "latitude": 55.788,
+          "distance_m": 600,
+          "max_snap_m": 30,
+          "data_version": null,
+          "graph_version": null
+        },
+        "graph": {
+          "id": "03af3943-bd2f-5d99-b4ca-48f0f79704b3",
+          "manifest": {
+            "slug": "kazan-centre",
+            "city": "Казань",
+            "bbox": {
+              "west": 49.08,
+              "south": 55.76,
+              "east": 49.18,
+              "north": 55.82
+            },
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "query": "[out:json][timeout:90][maxsize:134217728];way[\"highway\"](55.76,49.08,55.82,49.18)->.roads;(.roads;node(w.roads);rel(bw.roads)[\"type\"=\"restriction\"];);out meta;",
+            "sha256": "c688d0dfd37dcf8fbef4536321271e85f335f9eec85cbc2fe75efed4b71a827e",
+            "source_sha256": "6d51c56b38147b9cd46bb2200b973d5ff6228b3482c671c83b811f381cc8726b",
+            "osm_base": "2026-10-23T21:04:36Z",
+            "fetched_at": "2026-10-23T21:06:13.009074Z",
+            "normalization": "walking_minimal_v1",
+            "license": "ODbL-1.0",
+            "attribution": "© OpenStreetMap contributors"
+          },
+          "graph_version": "a63822aec055fe6fc4190edd6ed424ffa9bbf0ef2657b6fe970b3232d91ce045",
+          "build_version": "osm-foot-node-topology-v2-components",
+          "spatial_runtime": "POSTGIS=\"3.5.2 dea6d0a\" [EXTENSION] PGSQL=\"170\" GEOS=\"3.9.0-CAPI-1.16.2\" PROJ=\"7.2.1 NETWORK_ENABLED=OFF URL_ENDPOINT=https://cdn.proj.org USER_WRITABLE_DIRECTORY=/var/lib/postgresql/.local/share/proj DATABASE_PATH=/usr/share/proj/proj.db\" (compiled against PROJ 7.2.1) LIBXML=\"2.9.10\" LIBJSON=\"0.15\" LIBPROTOBUF=\"1.3.3\" WAGYU=\"0.5.0 (Internal)\" TOPOLOGY",
+          "metric_crs": 32639,
+          "edge_count": 41640,
+          "node_count": 36496,
+          "component_count": 612,
+          "diagnostics": {
+            "excluded_ways": 1439,
+            "blocked_segments": 3191,
+            "boundary_segments_excluded": 1720
+          },
+          "imported_at": "2026-10-23T21:20:28.126983Z"
+        },
+        "poi_data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+        "origin": "modelled",
+        "distance_method": "directed_osm_network_plus_explicit_snap_connectors",
+        "source_snap_m": 0.08,
+        "coverage_margin_m": 2446.621,
+        "fully_covered": true,
+        "network": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.119610540193534,
+                    55.79192041421733
+                  ],
+                  [
+                    49.1195963,
+                    55.7919103
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 108,
+                "reachable_length_m": 1.437
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1195963,
+                    55.7919103
+                  ],
+                  [
+                    49.1185904,
+                    55.7911964
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 109,
+                "reachable_length_m": 101.485
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1185904,
+                    55.7911964
+                  ],
+                  [
+                    49.1179064,
+                    55.790711
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 110,
+                "reachable_length_m": 69.005
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1179064,
+                    55.790711
+                  ],
+                  [
+                    49.1178416,
+                    55.790665
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 111,
+                "reachable_length_m": 6.539
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1178416,
+                    55.790665
+                  ],
+                  [
+                    49.1177275,
+                    55.790584
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 112,
+                "reachable_length_m": 11.513
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1177275,
+                    55.790584
+                  ],
+                  [
+                    49.1176496,
+                    55.7905324
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 113,
+                "reachable_length_m": 7.542
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1176496,
+                    55.7905324
+                  ],
+                  [
+                    49.1175587,
+                    55.7904666
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 114,
+                "reachable_length_m": 9.284
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1175587,
+                    55.7904666
+                  ],
+                  [
+                    49.116871,
+                    55.7899688
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 115,
+                "reachable_length_m": 70.234
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.116871,
+                    55.7899688
+                  ],
+                  [
+                    49.1166756,
+                    55.7898273
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 116,
+                "reachable_length_m": 19.961
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1231823,
+                    55.790276
+                  ],
+                  [
+                    49.1231479,
+                    55.7900852
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 202,
+                "reachable_length_m": 21.353
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1231479,
+                    55.7900852
+                  ],
+                  [
+                    49.1230765,
+                    55.7898726
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 203,
+                "reachable_length_m": 24.09
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1230765,
+                    55.7898726
+                  ],
+                  [
+                    49.1229713,
+                    55.7897348
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 204,
+                "reachable_length_m": 16.701
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1229713,
+                    55.7897348
+                  ],
+                  [
+                    49.1227978,
+                    55.7895677
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 205,
+                "reachable_length_m": 21.554
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1227978,
+                    55.7895677
+                  ],
+                  [
+                    49.1222442,
+                    55.7891726
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 206,
+                "reachable_length_m": 56.046
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1222442,
+                    55.7891726
+                  ],
+                  [
+                    49.1221936,
+                    55.7891364
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 207,
+                "reachable_length_m": 5.13
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1221936,
+                    55.7891364
+                  ],
+                  [
+                    49.1217608,
+                    55.7888272
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 208,
+                "reachable_length_m": 43.844
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1217608,
+                    55.7888272
+                  ],
+                  [
+                    49.1216485,
+                    55.788747
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 209,
+                "reachable_length_m": 11.374
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1216485,
+                    55.788747
+                  ],
+                  [
+                    49.121604,
+                    55.7887169
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 210,
+                "reachable_length_m": 4.362
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.121604,
+                    55.7887169
+                  ],
+                  [
+                    49.1215651,
+                    55.7886867
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 211,
+                "reachable_length_m": 4.155
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1216095,
+                    55.787351
+                  ],
+                  [
+                    49.1214386,
+                    55.7874431
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 544,
+                "reachable_length_m": 14.836
+              }
+            }
+          ]
+        },
+        "pois": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "id": "node/698271118",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1180013,
+                  55.788984
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 698271118,
+                "name": "Вкусно — и точка",
+                "categories": [
+                  "amenity:fast_food"
+                ],
+                "network_distance_m": 190.146,
+                "straight_line_distance_m": 126.206,
+                "connector_m": 9.528,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/986420592",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1216426,
+                  55.7854659
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 986420592,
+                "name": "Сквер имени Габдуллы Тукая",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 553.623,
+                "straight_line_distance_m": 327.244,
+                "connector_m": 5.904,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/991095696",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1160578,
+                  55.7856151
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 991095696,
+                "name": "Комбинат «Здоровье»",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 568.093,
+                "straight_line_distance_m": 323.383,
+                "connector_m": 0.0,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/991254383",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1222959,
+                  55.786992
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 991254383,
+                "name": "станция метро «Площадь Габдуллы Тукая»",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 360.555,
+                "straight_line_distance_m": 235.262,
+                "connector_m": 0.0,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/991254408",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1217468,
+                  55.7872734
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 991254408,
+                "name": "станция метро «Площадь Габдуллы Тукая»",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 270.218,
+                "straight_line_distance_m": 190.364,
+                "connector_m": 0.0,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1219532683",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1193957,
+                  55.7868005
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1219532683,
+                "name": "Дублин",
+                "categories": [
+                  "amenity:pub"
+                ],
+                "network_distance_m": 287.496,
+                "straight_line_distance_m": 135.837,
+                "connector_m": 4.383,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1699758788",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1213615,
+                  55.7869731
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1699758788,
+                "name": "Hop-on Hop-off Площадь Габдуллы Тукая",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 253.896,
+                "straight_line_distance_m": 187.136,
+                "connector_m": 0.0,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1902422484",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1208555,
+                  55.7879178
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1902422484,
+                "name": "Старая проломная аптека",
+                "categories": [
+                  "amenity:pharmacy"
+                ],
+                "network_distance_m": 160.465,
+                "straight_line_distance_m": 116.762,
+                "connector_m": 11.579,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1924771225",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1236912,
+                  55.7890072
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1924771225,
+                "name": "Chafalls",
+                "categories": [
+                  "amenity:cafe"
+                ],
+                "network_distance_m": 453.536,
+                "straight_line_distance_m": 314.935,
+                "connector_m": 7.385,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1925190441",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1181003,
+                  55.7889164
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1925190441,
+                "name": null,
+                "categories": [
+                  "amenity:atm"
+                ],
+                "network_distance_m": 186.145,
+                "straight_line_distance_m": 116.601,
+                "connector_m": 5.527,
+                "representation": "osm_node"
+              }
+            }
+          ]
+        },
+        "category_counts": {
+          "amenity:arts_centre": 1,
+          "amenity:atm": 15,
+          "amenity:bank": 9,
+          "amenity:bar": 26,
+          "amenity:bench": 35,
+          "amenity:bicycle_parking": 14,
+          "amenity:cafe": 75,
+          "amenity:car_wash": 2,
+          "amenity:charging_station": 1,
+          "amenity:clinic": 4,
+          "amenity:clock": 2,
+          "amenity:college": 1,
+          "amenity:community_centre": 1,
+          "amenity:coworking_space": 1,
+          "amenity:dentist": 2,
+          "amenity:events_venue": 1,
+          "amenity:fast_food": 33,
+          "amenity:fountain": 5,
+          "amenity:hookah_lounge": 3,
+          "amenity:hospital": 1,
+          "amenity:luggage_locker": 1,
+          "amenity:music_school": 1,
+          "amenity:nightclub": 2,
+          "amenity:parcel_locker": 2,
+          "amenity:parking": 11,
+          "amenity:parking_entrance": 9,
+          "amenity:payment_terminal": 1,
+          "amenity:pharmacy": 9,
+          "amenity:place_of_worship": 2,
+          "amenity:police": 3,
+          "amenity:post_office": 1,
+          "amenity:pub": 4,
+          "amenity:recycling": 1,
+          "amenity:restaurant": 21,
+          "amenity:studio": 2,
+          "amenity:toilets": 1,
+          "amenity:university": 1,
+          "amenity:vending_machine": 5,
+          "amenity:waste_basket": 17,
+          "amenity:waste_disposal": 2,
+          "highway:bus_stop": 9,
+          "shop:alcohol": 5,
+          "shop:anime": 1,
+          "shop:bag": 4,
+          "shop:bakery": 1,
+          "shop:bathroom_furnishing": 1,
+          "shop:beauty": 11,
+          "shop:bookmaker": 2,
+          "shop:books": 2,
+          "shop:car": 1,
+          "shop:chemist": 2,
+          "shop:clothes": 40,
+          "shop:confectionery": 8,
+          "shop:convenience": 12,
+          "shop:copyshop": 9,
+          "shop:cosmetics": 10,
+          "shop:craft": 1,
+          "shop:curtain": 1,
+          "shop:dry_cleaning": 2,
+          "shop:e-cigarette": 3,
+          "shop:electronics": 1,
+          "shop:fashion_accessories": 2,
+          "shop:florist": 9,
+          "shop:furniture": 1,
+          "shop:games": 2,
+          "shop:gift": 25,
+          "shop:hairdresser": 3,
+          "shop:hairdresser_supply": 1,
+          "shop:hardware": 1,
+          "shop:household_linen": 1,
+          "shop:houseware": 1,
+          "shop:jewelry": 9,
+          "shop:kiosk": 1,
+          "shop:lighting": 1,
+          "shop:lottery": 1,
+          "shop:mall": 4,
+          "shop:medical_supply": 1,
+          "shop:mobile_phone": 7,
+          "shop:newsagent": 1,
+          "shop:nutrition_supplements": 1,
+          "shop:optician": 4,
+          "shop:outpost": 2,
+          "shop:pastry": 1,
+          "shop:pawnbroker": 3,
+          "shop:perfumery": 1,
+          "shop:pet": 1,
+          "shop:pyrotechnics": 1,
+          "shop:second_hand": 1,
+          "shop:sewing": 1,
+          "shop:shoes": 7,
+          "shop:supermarket": 5,
+          "shop:tattoo": 1,
+          "shop:tea": 1,
+          "shop:ticket": 1,
+          "shop:tobacco": 7,
+          "shop:travel_agency": 4,
+          "shop:variety_store": 1,
+          "shop:watches": 2
+        },
+        "reachable_poi_count": 569,
+        "straight_line_poi_count": 1089,
+        "unsnapped_poi_count": 52,
+        "no_route_in_loaded_graph_count": 438,
+        "visited_nodes": 784,
+        "loaded_edges": 2539,
+        "source_component_nodes": 32135,
+        "on_largest_component": true,
+        "runtime_ms": 335.007,
+        "limitations": [
+          "OSM network and POI mapping may be incomplete/outdated; no route is not proof of physical inaccessibility.",
+          "Directed OSM-node topology only; geometric intersections without shared nodes never connect.",
+          "Origin and POI connectors are straight-line modelling assumptions, not verified entrances or paths across barriers; max_snap_m bounds them.",
+          "Only ground-level non-bridge/non-tunnel edges accept connectors. Bridges and tunnels can be traversed through real shared nodes.",
+          "Reachable segments are a network visualization, not an exact walkable-area polygon or measured pedestrian traffic.",
+          "Costs are metres along WGS84 edges plus connectors; not walking time, wheelchair accessibility, demand or profitability.",
+          "Conditional access and foot turn restrictions are conservatively excluded; general vehicle one-way does not imply foot one-way.",
+          "POI centers may not be entrances. Counts describe features, not people or businesses."
+        ]
+      }
+    },
+    {
+      "request": {
+        "longitude": 49.132,
+        "latitude": 55.789,
+        "distance_m": 600,
+        "max_snap_m": 30
+      },
+      "http_elapsed_ms": 190.54,
+      "response_excerpt": {
+        "status": "ok",
+        "reasons": [
+          "bounded_network_with_modelled_connectors_not_verified_entrances"
+        ],
+        "algorithm_version": "osm-foot-dijkstra-segments-v1",
+        "request_fingerprint": "b76ae619d34ed389533c32ff238039dad6fd9105e8a9e7a673782d4b78260b3e",
+        "request_snapshot": {
+          "longitude": 49.132,
+          "latitude": 55.789,
+          "distance_m": 600,
+          "max_snap_m": 30,
+          "data_version": null,
+          "graph_version": null
+        },
+        "graph": {
+          "id": "03af3943-bd2f-5d99-b4ca-48f0f79704b3",
+          "manifest": {
+            "slug": "kazan-centre",
+            "city": "Казань",
+            "bbox": {
+              "west": 49.08,
+              "south": 55.76,
+              "east": 49.18,
+              "north": 55.82
+            },
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "query": "[out:json][timeout:90][maxsize:134217728];way[\"highway\"](55.76,49.08,55.82,49.18)->.roads;(.roads;node(w.roads);rel(bw.roads)[\"type\"=\"restriction\"];);out meta;",
+            "sha256": "c688d0dfd37dcf8fbef4536321271e85f335f9eec85cbc2fe75efed4b71a827e",
+            "source_sha256": "6d51c56b38147b9cd46bb2200b973d5ff6228b3482c671c83b811f381cc8726b",
+            "osm_base": "2026-10-23T21:04:36Z",
+            "fetched_at": "2026-10-23T21:06:13.009074Z",
+            "normalization": "walking_minimal_v1",
+            "license": "ODbL-1.0",
+            "attribution": "© OpenStreetMap contributors"
+          },
+          "graph_version": "a63822aec055fe6fc4190edd6ed424ffa9bbf0ef2657b6fe970b3232d91ce045",
+          "build_version": "osm-foot-node-topology-v2-components",
+          "spatial_runtime": "POSTGIS=\"3.5.2 dea6d0a\" [EXTENSION] PGSQL=\"170\" GEOS=\"3.9.0-CAPI-1.16.2\" PROJ=\"7.2.1 NETWORK_ENABLED=OFF URL_ENDPOINT=https://cdn.proj.org USER_WRITABLE_DIRECTORY=/var/lib/postgresql/.local/share/proj DATABASE_PATH=/usr/share/proj/proj.db\" (compiled against PROJ 7.2.1) LIBXML=\"2.9.10\" LIBJSON=\"0.15\" LIBPROTOBUF=\"1.3.3\" WAGYU=\"0.5.0 (Internal)\" TOPOLOGY",
+          "metric_crs": 32639,
+          "edge_count": 41640,
+          "node_count": 36496,
+          "component_count": 612,
+          "diagnostics": {
+            "excluded_ways": 1439,
+            "blocked_segments": 3191,
+            "boundary_segments_excluded": 1720
+          },
+          "imported_at": "2026-10-23T21:20:28.126983Z"
+        },
+        "poi_data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+        "origin": "modelled",
+        "distance_method": "directed_osm_network_plus_explicit_snap_connectors",
+        "source_snap_m": 3.227,
+        "coverage_margin_m": 3011.149,
+        "fully_covered": true,
+        "network": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.137649819567,
+                    55.787792445568186
+                  ],
+                  [
+                    49.1375178,
+                    55.7879625
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 54,
+                "reachable_length_m": 20.666
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1375178,
+                    55.7879625
+                  ],
+                  [
+                    49.1374277,
+                    55.7880786
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 55,
+                "reachable_length_m": 14.108
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1374277,
+                    55.7880786
+                  ],
+                  [
+                    49.1372215,
+                    55.7883429
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 56,
+                "reachable_length_m": 32.144
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1372215,
+                    55.7883429
+                  ],
+                  [
+                    49.1371328,
+                    55.7884566
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 57,
+                "reachable_length_m": 13.828
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1371328,
+                    55.7884566
+                  ],
+                  [
+                    49.136851,
+                    55.7888177
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 58,
+                "reachable_length_m": 43.919
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.136851,
+                    55.7888177
+                  ],
+                  [
+                    49.1368118,
+                    55.7888683
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 59,
+                "reachable_length_m": 6.147
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1368118,
+                    55.7888683
+                  ],
+                  [
+                    49.1364969,
+                    55.7892746
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 60,
+                "reachable_length_m": 49.362
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1364969,
+                    55.7892746
+                  ],
+                  [
+                    49.1364228,
+                    55.7893736
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 61,
+                "reachable_length_m": 11.963
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1357303,
+                    55.7865776
+                  ],
+                  [
+                    49.1356861,
+                    55.7866356
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 62,
+                "reachable_length_m": 7.028
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1356861,
+                    55.7866356
+                  ],
+                  [
+                    49.1355643,
+                    55.7867955
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 63,
+                "reachable_length_m": 19.374
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1355643,
+                    55.7867955
+                  ],
+                  [
+                    49.1352327,
+                    55.7872251
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 64,
+                "reachable_length_m": 52.159
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1352327,
+                    55.7872251
+                  ],
+                  [
+                    49.1352152,
+                    55.7872537
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 65,
+                "reachable_length_m": 3.368
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1352152,
+                    55.7872537
+                  ],
+                  [
+                    49.1349763,
+                    55.7875635
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 66,
+                "reachable_length_m": 37.608
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1370018027718,
+                    55.78696663857335
+                  ],
+                  [
+                    49.1369563,
+                    55.7869542
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 594,
+                "reachable_length_m": 3.173
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1369563,
+                    55.7869542
+                  ],
+                  [
+                    49.1366257,
+                    55.7868646
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 595,
+                "reachable_length_m": 23.015
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1366257,
+                    55.7868646
+                  ],
+                  [
+                    49.1360281,
+                    55.7867015
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 596,
+                "reachable_length_m": 41.657
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1360281,
+                    55.7867015
+                  ],
+                  [
+                    49.1359488,
+                    55.7866685
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 597,
+                "reachable_length_m": 6.185
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1359488,
+                    55.7866685
+                  ],
+                  [
+                    49.1357303,
+                    55.7865776
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 598,
+                "reachable_length_m": 17.039
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1357303,
+                    55.7865776
+                  ],
+                  [
+                    49.1356457,
+                    55.7865328
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 599,
+                "reachable_length_m": 7.283
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1356457,
+                    55.7865328
+                  ],
+                  [
+                    49.1354234,
+                    55.786366
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 600,
+                "reachable_length_m": 23.225
+              }
+            }
+          ]
+        },
+        "pois": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "id": "node/617015815",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1346261,
+                  55.788628
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 617015815,
+                "name": "Библиотека КГМА",
+                "categories": [
+                  "amenity:library"
+                ],
+                "network_distance_m": 288.481,
+                "straight_line_distance_m": 169.869,
+                "connector_m": 22.62,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1027869942",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1371462,
+                  55.7894901
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1027869942,
+                "name": "улица Толстого",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 464.295,
+                "straight_line_distance_m": 327.41,
+                "connector_m": 0.528,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1027869977",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.138365,
+                  55.7899574
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1027869977,
+                "name": "улица Толстого",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 559.325,
+                "straight_line_distance_m": 413.27,
+                "connector_m": 2.415,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1757056050",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.13279,
+                  55.7921028
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1757056050,
+                "name": "Марусовка",
+                "categories": [
+                  "amenity:cafe"
+                ],
+                "network_distance_m": 499.566,
+                "straight_line_distance_m": 348.996,
+                "connector_m": 13.042,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1792942041",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1299288,
+                  55.7920067
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1792942041,
+                "name": null,
+                "categories": [
+                  "amenity:parking"
+                ],
+                "network_distance_m": 541.893,
+                "straight_line_distance_m": 359.089,
+                "connector_m": 29.653,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/2047580552",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1333482,
+                  55.7902617
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 2047580552,
+                "name": "Маяковский. Жёлтая кофта",
+                "categories": [
+                  "amenity:restaurant"
+                ],
+                "network_distance_m": 248.712,
+                "straight_line_distance_m": 163.97,
+                "connector_m": 20.437,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/3821908615",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1370366,
+                  55.7896743
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 3821908615,
+                "name": "Трафик",
+                "categories": [
+                  "shop:convenience"
+                ],
+                "network_distance_m": 470.131,
+                "straight_line_distance_m": 324.752,
+                "connector_m": 6.761,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/3821908618",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1359588,
+                  55.7915805
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 3821908618,
+                "name": "Денс",
+                "categories": [
+                  "amenity:dentist"
+                ],
+                "network_distance_m": 576.87,
+                "straight_line_distance_m": 379.759,
+                "connector_m": 16.939,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/4208762598",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1345783,
+                  55.7924427
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 4208762598,
+                "name": null,
+                "categories": [
+                  "amenity:bench"
+                ],
+                "network_distance_m": 530.588,
+                "straight_line_distance_m": 416.029,
+                "connector_m": 1.084,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/4208796493",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1341738,
+                  55.7920636
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 4208796493,
+                "name": null,
+                "categories": [
+                  "amenity:bench"
+                ],
+                "network_distance_m": 510.405,
+                "straight_line_distance_m": 367.342,
+                "connector_m": 3.689,
+                "representation": "osm_node"
+              }
+            }
+          ]
+        },
+        "category_counts": {
+          "amenity:arts_centre": 1,
+          "amenity:atm": 2,
+          "amenity:bar": 2,
+          "amenity:bench": 12,
+          "amenity:bicycle_parking": 1,
+          "amenity:cafe": 14,
+          "amenity:clinic": 7,
+          "amenity:clock": 1,
+          "amenity:college": 2,
+          "amenity:dancing_school": 1,
+          "amenity:dentist": 7,
+          "amenity:driving_school": 2,
+          "amenity:fast_food": 2,
+          "amenity:language_school": 1,
+          "amenity:library": 1,
+          "amenity:music_school": 2,
+          "amenity:parcel_locker": 2,
+          "amenity:parking": 9,
+          "amenity:parking_entrance": 3,
+          "amenity:pharmacy": 3,
+          "amenity:public_bookcase": 1,
+          "amenity:research_institute": 1,
+          "amenity:restaurant": 4,
+          "amenity:theatre": 1,
+          "amenity:university": 1,
+          "amenity:vending_machine": 4,
+          "highway:bus_stop": 4,
+          "shop:alcohol": 2,
+          "shop:bakery": 1,
+          "shop:bathroom_furnishing": 1,
+          "shop:beauty": 7,
+          "shop:books": 1,
+          "shop:chemist": 1,
+          "shop:clothes": 12,
+          "shop:convenience": 5,
+          "shop:copyshop": 3,
+          "shop:dry_cleaning": 1,
+          "shop:e-cigarette": 1,
+          "shop:electronics": 2,
+          "shop:fabric": 1,
+          "shop:florist": 7,
+          "shop:greengrocer": 1,
+          "shop:hairdresser": 2,
+          "shop:houseware": 1,
+          "shop:jewelry": 2,
+          "shop:massage": 3,
+          "shop:outpost": 4,
+          "shop:photo": 1,
+          "shop:sports": 1,
+          "shop:supermarket": 2,
+          "shop:travel_agency": 5,
+          "shop:wine": 1
+        },
+        "reachable_poi_count": 159,
+        "straight_line_poi_count": 636,
+        "unsnapped_poi_count": 53,
+        "no_route_in_loaded_graph_count": 406,
+        "visited_nodes": 522,
+        "loaded_edges": 2117,
+        "source_component_nodes": 32135,
+        "on_largest_component": true,
+        "runtime_ms": 156.239,
+        "limitations": [
+          "OSM network and POI mapping may be incomplete/outdated; no route is not proof of physical inaccessibility.",
+          "Directed OSM-node topology only; geometric intersections without shared nodes never connect.",
+          "Origin and POI connectors are straight-line modelling assumptions, not verified entrances or paths across barriers; max_snap_m bounds them.",
+          "Only ground-level non-bridge/non-tunnel edges accept connectors. Bridges and tunnels can be traversed through real shared nodes.",
+          "Reachable segments are a network visualization, not an exact walkable-area polygon or measured pedestrian traffic.",
+          "Costs are metres along WGS84 edges plus connectors; not walking time, wheelchair accessibility, demand or profitability.",
+          "Conditional access and foot turn restrictions are conservatively excluded; general vehicle one-way does not imply foot one-way.",
+          "POI centers may not be entrances. Counts describe features, not people or businesses."
+        ]
+      }
+    },
+    {
+      "request": {
+        "longitude": 49.155,
+        "latitude": 55.788,
+        "distance_m": 600,
+        "max_snap_m": 30
+      },
+      "http_elapsed_ms": 223.887,
+      "response_excerpt": {
+        "status": "ok",
+        "reasons": [
+          "bounded_network_with_modelled_connectors_not_verified_entrances"
+        ],
+        "algorithm_version": "osm-foot-dijkstra-segments-v1",
+        "request_fingerprint": "237bf3d43cd79dc78a17806811d429eef4d1ccc89d37a1afb690d438cb95b964",
+        "request_snapshot": {
+          "longitude": 49.155,
+          "latitude": 55.788,
+          "distance_m": 600,
+          "max_snap_m": 30,
+          "data_version": null,
+          "graph_version": null
+        },
+        "graph": {
+          "id": "03af3943-bd2f-5d99-b4ca-48f0f79704b3",
+          "manifest": {
+            "slug": "kazan-centre",
+            "city": "Казань",
+            "bbox": {
+              "west": 49.08,
+              "south": 55.76,
+              "east": 49.18,
+              "north": 55.82
+            },
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "query": "[out:json][timeout:90][maxsize:134217728];way[\"highway\"](55.76,49.08,55.82,49.18)->.roads;(.roads;node(w.roads);rel(bw.roads)[\"type\"=\"restriction\"];);out meta;",
+            "sha256": "c688d0dfd37dcf8fbef4536321271e85f335f9eec85cbc2fe75efed4b71a827e",
+            "source_sha256": "6d51c56b38147b9cd46bb2200b973d5ff6228b3482c671c83b811f381cc8726b",
+            "osm_base": "2026-10-23T21:04:36Z",
+            "fetched_at": "2026-10-23T21:06:13.009074Z",
+            "normalization": "walking_minimal_v1",
+            "license": "ODbL-1.0",
+            "attribution": "© OpenStreetMap contributors"
+          },
+          "graph_version": "a63822aec055fe6fc4190edd6ed424ffa9bbf0ef2657b6fe970b3232d91ce045",
+          "build_version": "osm-foot-node-topology-v2-components",
+          "spatial_runtime": "POSTGIS=\"3.5.2 dea6d0a\" [EXTENSION] PGSQL=\"170\" GEOS=\"3.9.0-CAPI-1.16.2\" PROJ=\"7.2.1 NETWORK_ENABLED=OFF URL_ENDPOINT=https://cdn.proj.org USER_WRITABLE_DIRECTORY=/var/lib/postgresql/.local/share/proj DATABASE_PATH=/usr/share/proj/proj.db\" (compiled against PROJ 7.2.1) LIBXML=\"2.9.10\" LIBJSON=\"0.15\" LIBPROTOBUF=\"1.3.3\" WAGYU=\"0.5.0 (Internal)\" TOPOLOGY",
+          "metric_crs": 32639,
+          "edge_count": 41640,
+          "node_count": 36496,
+          "component_count": 612,
+          "diagnostics": {
+            "excluded_ways": 1439,
+            "blocked_segments": 3191,
+            "boundary_segments_excluded": 1720
+          },
+          "imported_at": "2026-10-23T21:20:28.126983Z"
+        },
+        "poi_data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+        "origin": "modelled",
+        "distance_method": "directed_osm_network_plus_explicit_snap_connectors",
+        "source_snap_m": 10.762,
+        "coverage_margin_m": 1568.347,
+        "fully_covered": true,
+        "network": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.16109375086487,
+                    55.78544747580534
+                  ],
+                  [
+                    49.1610991,
+                    55.7855354
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 82,
+                "reachable_length_m": 9.795
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.148143785928156,
+                    55.786964660346584
+                  ],
+                  [
+                    49.1482383,
+                    55.7869569
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 199,
+                "reachable_length_m": 5.992
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1482383,
+                    55.7869569
+                  ],
+                  [
+                    49.1483586,
+                    55.7869435
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 200,
+                "reachable_length_m": 7.693
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1483586,
+                    55.7869435
+                  ],
+                  [
+                    49.1485523,
+                    55.7869233
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 201,
+                "reachable_length_m": 12.358
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.15551825718687,
+                    55.783540196737185
+                  ],
+                  [
+                    49.1556338,
+                    55.7837159
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 409,
+                "reachable_length_m": 20.862
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1556338,
+                    55.7837159
+                  ],
+                  [
+                    49.1557399,
+                    55.7838786
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 410,
+                "reachable_length_m": 19.299
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1557399,
+                    55.7838786
+                  ],
+                  [
+                    49.1559142,
+                    55.7841477
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 411,
+                "reachable_length_m": 31.894
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1563758,
+                    55.7856614
+                  ],
+                  [
+                    49.15611,
+                    55.7856692
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 434,
+                "reachable_length_m": 16.698
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.15611,
+                    55.7856692
+                  ],
+                  [
+                    49.1555518,
+                    55.7856803
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 435,
+                "reachable_length_m": 35.042
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1555518,
+                    55.7856803
+                  ],
+                  [
+                    49.1554515,
+                    55.7856964
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 436,
+                "reachable_length_m": 6.543
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1554515,
+                    55.7856964
+                  ],
+                  [
+                    49.1552427,
+                    55.7857299
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 437,
+                "reachable_length_m": 13.62
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1552427,
+                    55.7857299
+                  ],
+                  [
+                    49.1549044,
+                    55.7857422
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 438,
+                "reachable_length_m": 21.268
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1549044,
+                    55.7857422
+                  ],
+                  [
+                    49.1541916,
+                    55.7858224
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 439,
+                "reachable_length_m": 45.602
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1541916,
+                    55.7858224
+                  ],
+                  [
+                    49.1538109,
+                    55.7858553
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 440,
+                "reachable_length_m": 24.163
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1538109,
+                    55.7858553
+                  ],
+                  [
+                    49.1534883,
+                    55.7861241
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 441,
+                "reachable_length_m": 36.129
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1534883,
+                    55.7861241
+                  ],
+                  [
+                    49.1534256,
+                    55.7861212
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 442,
+                "reachable_length_m": 3.947
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1534256,
+                    55.7861212
+                  ],
+                  [
+                    49.1532144,
+                    55.7860928
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 443,
+                "reachable_length_m": 13.622
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1532144,
+                    55.7860928
+                  ],
+                  [
+                    49.1528499,
+                    55.7858199
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 444,
+                "reachable_length_m": 38.028
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1528499,
+                    55.7858199
+                  ],
+                  [
+                    49.1525221,
+                    55.7857975
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 445,
+                "reachable_length_m": 20.716
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    49.1525221,
+                    55.7857975
+                  ],
+                  [
+                    49.1523614,
+                    55.7857984
+                  ]
+                ]
+              },
+              "properties": {
+                "edge_id": 446,
+                "reachable_length_m": 10.082
+              }
+            }
+          ]
+        },
+        "pois": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "id": "node/986420588",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.151686,
+                  55.7892324
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 986420588,
+                "name": "улица Лейтенанта Шмидта",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 414.149,
+                "straight_line_distance_m": 249.095,
+                "connector_m": 4.8,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/986552284",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1483391,
+                  55.7882834
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 986552284,
+                "name": "Кинотеатр «Мир»",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 518.262,
+                "straight_line_distance_m": 419.052,
+                "connector_m": 9.235,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/993469073",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1532264,
+                  55.7877283
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 993469073,
+                "name": "улица Вишневского",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 182.057,
+                "straight_line_distance_m": 115.304,
+                "connector_m": 4.81,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/993469104",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1595937,
+                  55.787063
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 993469104,
+                "name": "улица Достоевского",
+                "categories": [
+                  "highway:bus_stop"
+                ],
+                "network_distance_m": 351.118,
+                "straight_line_distance_m": 306.486,
+                "connector_m": 1.753,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1348002878",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1562953,
+                  55.7868842
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1348002878,
+                "name": "Казань 420097",
+                "categories": [
+                  "amenity:post_office"
+                ],
+                "network_distance_m": 218.105,
+                "straight_line_distance_m": 148.447,
+                "connector_m": 6.895,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1348002879",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.156407,
+                  55.7871687
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1348002879,
+                "name": "Трафик",
+                "categories": [
+                  "shop:convenience"
+                ],
+                "network_distance_m": 183.953,
+                "straight_line_distance_m": 127.897,
+                "connector_m": 5.136,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1348002880",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1567888,
+                  55.7883562
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1348002880,
+                "name": "Справедливая цена",
+                "categories": [
+                  "shop:hairdresser"
+                ],
+                "network_distance_m": 206.947,
+                "straight_line_distance_m": 119.02,
+                "connector_m": 7.212,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1429241329",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1515631,
+                  55.7895084
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1429241329,
+                "name": "Ортека",
+                "categories": [
+                  "shop:medical_supply"
+                ],
+                "network_distance_m": 434.275,
+                "straight_line_distance_m": 273.296,
+                "connector_m": 7.01,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1429241331",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1516045,
+                  55.7894227
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1429241331,
+                "name": "Плюс",
+                "categories": [
+                  "amenity:pharmacy"
+                ],
+                "network_distance_m": 433.086,
+                "straight_line_distance_m": 265.45,
+                "connector_m": 2.95,
+                "representation": "osm_node"
+              }
+            },
+            {
+              "type": "Feature",
+              "id": "node/1433754986",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  49.1502152,
+                  55.7857638
+                ]
+              },
+              "properties": {
+                "osm_type": "node",
+                "osm_id": 1433754986,
+                "name": "Пятёрочка",
+                "categories": [
+                  "shop:supermarket"
+                ],
+                "network_distance_m": 545.145,
+                "straight_line_distance_m": 389.993,
+                "connector_m": 6.11,
+                "representation": "osm_node"
+              }
+            }
+          ]
+        },
+        "category_counts": {
+          "amenity:atm": 10,
+          "amenity:bank": 3,
+          "amenity:bar": 1,
+          "amenity:bench": 1,
+          "amenity:bicycle_parking": 3,
+          "amenity:cafe": 11,
+          "amenity:childcare": 1,
+          "amenity:clinic": 6,
+          "amenity:courthouse": 1,
+          "amenity:dentist": 5,
+          "amenity:doctors": 3,
+          "amenity:dormitory": 4,
+          "amenity:driving_school": 2,
+          "amenity:events_venue": 1,
+          "amenity:fast_food": 5,
+          "amenity:hospital": 1,
+          "amenity:kindergarten": 2,
+          "amenity:library": 1,
+          "amenity:parcel_locker": 5,
+          "amenity:parking": 48,
+          "amenity:parking_entrance": 5,
+          "amenity:payment_terminal": 1,
+          "amenity:pharmacy": 12,
+          "amenity:place_of_worship": 1,
+          "amenity:post_office": 3,
+          "amenity:recycling": 2,
+          "amenity:research_institute": 1,
+          "amenity:restaurant": 2,
+          "amenity:university": 1,
+          "amenity:vending_machine": 15,
+          "amenity:waste_basket": 2,
+          "amenity:waste_disposal": 6,
+          "highway:bus_stop": 7,
+          "shop:alcohol": 5,
+          "shop:bakery": 5,
+          "shop:beauty": 6,
+          "shop:beverages": 1,
+          "shop:bookmaker": 1,
+          "shop:butcher": 1,
+          "shop:car_parts": 3,
+          "shop:car_repair": 2,
+          "shop:cheese": 1,
+          "shop:chemist": 3,
+          "shop:clothes": 12,
+          "shop:collector": 1,
+          "shop:convenience": 6,
+          "shop:copyshop": 4,
+          "shop:cosmetics": 2,
+          "shop:department_store": 1,
+          "shop:doityourself": 1,
+          "shop:dry_cleaning": 1,
+          "shop:fabric": 1,
+          "shop:florist": 6,
+          "shop:games": 1,
+          "shop:greengrocer": 2,
+          "shop:hairdresser": 10,
+          "shop:household_linen": 1,
+          "shop:houseware": 1,
+          "shop:hunting": 1,
+          "shop:massage": 2,
+          "shop:medical_supply": 7,
+          "shop:musical_instrument": 2,
+          "shop:optician": 3,
+          "shop:outpost": 14,
+          "shop:radiotechnics": 1,
+          "shop:second_hand": 1,
+          "shop:security": 1,
+          "shop:shoe_repair": 2,
+          "shop:shoes": 4,
+          "shop:sports": 1,
+          "shop:stationery": 1,
+          "shop:supermarket": 9,
+          "shop:tailor": 2,
+          "shop:tobacco": 5,
+          "shop:travel_agency": 2,
+          "shop:variety_store": 1
+        },
+        "reachable_poi_count": 308,
+        "straight_line_poi_count": 547,
+        "unsnapped_poi_count": 5,
+        "no_route_in_loaded_graph_count": 191,
+        "visited_nodes": 645,
+        "loaded_edges": 1885,
+        "source_component_nodes": 32135,
+        "on_largest_component": true,
+        "runtime_ms": 173.683,
+        "limitations": [
+          "OSM network and POI mapping may be incomplete/outdated; no route is not proof of physical inaccessibility.",
+          "Directed OSM-node topology only; geometric intersections without shared nodes never connect.",
+          "Origin and POI connectors are straight-line modelling assumptions, not verified entrances or paths across barriers; max_snap_m bounds them.",
+          "Only ground-level non-bridge/non-tunnel edges accept connectors. Bridges and tunnels can be traversed through real shared nodes.",
+          "Reachable segments are a network visualization, not an exact walkable-area polygon or measured pedestrian traffic.",
+          "Costs are metres along WGS84 edges plus connectors; not walking time, wheelchair accessibility, demand or profitability.",
+          "Conditional access and foot turn restrictions are conservatively excluded; general vehicle one-way does not imply foot one-way.",
+          "POI centers may not be entrances. Counts describe features, not people or businesses."
+        ]
+      }
+    }
+  ],
+  "ranking": {
+    "request": {
+      "ranking": {
+        "candidates": {
+          "profile": {
+            "conversation_id": "00000000-0000-0000-0000-000000000013",
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000",
+            "funding": "own_funds",
+            "preferences": {
+              "format": "навынос"
+            },
+            "confirmation_state": "confirmed"
+          },
+          "search_bbox": {
+            "west": 49.094,
+            "south": 55.77,
+            "east": 49.165,
+            "north": 55.81
+          },
+          "cell_size_m": 500,
+          "min_separation_m": 1000,
+          "limit": 5
+        },
+        "scoring": {
+          "radius_m": 500
+        }
+      },
+      "max_snap_m": 30
+    },
+    "http_elapsed_ms": 576.193,
+    "network_status": "partial",
+    "rows": [
+      {
+        "id": "81da564fa2dfa64fa871cb0f27b71079f5cb493dded16c0af7ccd376cf6ae0fc",
+        "point": [
+          49.130260791319905,
+          55.78514960740427
+        ],
+        "straight": {
+          "candidate_id": "81da564fa2dfa64fa871cb0f27b71079f5cb493dded16c0af7ccd376cf6ae0fc",
+          "algorithm_version": "osm-cohort-minmax-v1",
+          "policy_fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+          "origin": "modelled",
+          "rank": 2,
+          "score": 82.381154,
+          "status": "ranked",
+          "raw": {
+            "distance_method": "geodesic_straight_line",
+            "coverage_margin_m": 5035.43750641,
+            "fully_covered": true,
+            "mapped_poi_count": 552,
+            "transit_count": 5,
+            "nearest_transit_m": 282.5208617,
+            "competitor_count": 24,
+            "nearest_competitor_m": 186.22104098,
+            "competitor_features_per_km2": 30.557749073643905,
+            "infrastructure_count": 63,
+            "infrastructure_categories": [
+              "amenity:atm",
+              "amenity:bank",
+              "amenity:bicycle_parking",
+              "amenity:clinic",
+              "amenity:hospital",
+              "amenity:parking",
+              "amenity:pharmacy"
+            ],
+            "complementary_count": 11,
+            "category_counts": {
+              "shop:bag": 4,
+              "shop:pet": 1,
+              "shop:tea": 1,
+              "shop:gift": 8,
+              "shop:mall": 2,
+              "shop:toys": 2,
+              "shop:wigs": 1,
+              "shop:books": 2,
+              "shop:craft": 1,
+              "shop:games": 1,
+              "shop:shoes": 7,
+              "amenity:atm": 13,
+              "amenity:bar": 3,
+              "amenity:pub": 1,
+              "shop:bakery": 1,
+              "shop:beauty": 10,
+              "shop:sewing": 1,
+              "shop:sports": 3,
+              "shop:tattoo": 1,
+              "shop:ticket": 1,
+              "amenity:bank": 5,
+              "amenity:cafe": 24,
+              "shop:alcohol": 1,
+              "shop:chemist": 3,
+              "shop:clothes": 39,
+              "shop:florist": 4,
+              "shop:jewelry": 7,
+              "shop:lottery": 1,
+              "shop:massage": 2,
+              "shop:outpost": 7,
+              "shop:watches": 1,
+              "amenity:bench": 144,
+              "shop:copyshop": 2,
+              "shop:optician": 4,
+              "amenity:cinema": 1,
+              "amenity:clinic": 6,
+              "amenity:police": 1,
+              "amenity:school": 2,
+              "shop:cosmetics": 13,
+              "shop:furniture": 1,
+              "shop:houseware": 1,
+              "shop:perfumery": 4,
+              "amenity:dentist": 6,
+              "amenity:doctors": 4,
+              "amenity:library": 2,
+              "amenity:parking": 24,
+              "amenity:toilets": 3,
+              "shop:baby_goods": 2,
+              "shop:stationery": 1,
+              "amenity:fountain": 5,
+              "amenity:hospital": 2,
+              "amenity:pharmacy": 5,
+              "amenity:training": 1,
+              "highway:bus_stop": 5,
+              "shop:convenience": 3,
+              "shop:e-cigarette": 3,
+              "shop:electronics": 3,
+              "shop:hairdresser": 4,
+              "shop:supermarket": 3,
+              "amenity:dormitory": 1,
+              "amenity:fast_food": 15,
+              "amenity:ice_cream": 1,
+              "amenity:recycling": 1,
+              "shop:dry_cleaning": 3,
+              "shop:estate_agent": 1,
+              "shop:mobile_phone": 6,
+              "amenity:checkpoint": 1,
+              "amenity:restaurant": 6,
+              "amenity:university": 2,
+              "shop:confectionery": 1,
+              "shop:travel_agency": 7,
+              "shop:variety_store": 1,
+              "amenity:arts_centre": 1,
+              "amenity:events_venue": 1,
+              "amenity:kindergarten": 2,
+              "amenity:waste_basket": 36,
+              "shop:household_linen": 1,
+              "amenity:parcel_locker": 3,
+              "amenity:parking_space": 1,
+              "amenity:dancing_school": 2,
+              "amenity:driving_school": 2,
+              "amenity:luggage_locker": 1,
+              "amenity:money_transfer": 1,
+              "amenity:public_service": 1,
+              "amenity:waste_disposal": 3,
+              "amenity:bicycle_parking": 8,
+              "amenity:language_school": 2,
+              "amenity:vending_machine": 7,
+              "shop:hairdresser_supply": 2,
+              "amenity:charging_station": 2,
+              "amenity:parking_entrance": 9,
+              "amenity:place_of_worship": 3,
+              "shop:fashion_accessories": 3,
+              "shop:interior_decoration": 1,
+              "amenity:research_institute": 1
+            }
+          },
+          "provenance": {
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "observed_at": "2026-10-22T20:27:36Z",
+            "generated_at": "2026-10-23T21:21:05.009731Z",
+            "license": "ODbL-1.0",
+            "confidence": "low",
+            "limitations": [
+              "Comparative mapped geographic context only; not a forecast of business profitability.",
+              "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+              "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+              "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+              "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+              "Budget, funding and format have no numerical effect without premises/cost data.",
+              "Scores depend on the compared candidates and cannot be compared across requests or radii.",
+              "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+              "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+              "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+              "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+              "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+              "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+              "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+            ]
+          },
+          "components": [
+            {
+              "criterion": "transit",
+              "raw_value": 0.43495827659999997,
+              "unit": "proximity_fraction",
+              "normalized": 0.47143461023145405,
+              "normalization_min": 0.0,
+              "normalization_max": 0.92262695008,
+              "weight": 0.3333333333333333,
+              "contribution": 15.714487007715134,
+              "status": "available"
+            },
+            {
+              "criterion": "infrastructure",
+              "raw_value": 7.0,
+              "unit": "mapped_category_count",
+              "normalized": 1.0,
+              "normalization_min": 2.0,
+              "normalization_max": 7.0,
+              "weight": 0.3333333333333333,
+              "contribution": 33.33333333333333,
+              "status": "available"
+            },
+            {
+              "criterion": "complementary",
+              "raw_value": 11.0,
+              "unit": "mapped_feature_count",
+              "normalized": 1.0,
+              "normalization_min": 0.0,
+              "normalization_max": 11.0,
+              "weight": 0.3333333333333333,
+              "contribution": 33.33333333333333,
+              "status": "available"
+            },
+            {
+              "criterion": "competitors",
+              "raw_value": 24.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 1.0,
+              "normalization_max": 24.0,
+              "weight": 0.0,
+              "contribution": 0.0,
+              "status": "disabled"
+            }
+          ],
+          "explanations": [
+            {
+              "criterion": "transit",
+              "effect": "neutral",
+              "text": "Выгрузка содержит 5 остановок в радиусе наблюдения. Ближайшая — 282.5 м по прямой. Относительный показатель 0.471; вклад 15.714 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "infrastructure",
+              "effect": "strength",
+              "text": "Найдено 7 категорий инфраструктуры (63 OSM-объектов). Относительный показатель 1.000; вклад 33.333 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "complementary",
+              "effect": "strength",
+              "text": "Найдено 11 OSM-объектов из списка отраслевого окружения. Это не измеренная аудитория или спрос. Относительный показатель 1.000; вклад 33.333 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "competitors",
+              "effect": "neutral",
+              "text": "Найдено 24 потенциально конкурирующих OSM-объектов; 30.6 объектов/км² круга наблюдения. Количество не доказывает насыщение или спрос. Вес равен нулю; в итоговый балл не входит."
+            }
+          ],
+          "missing_data": [
+            "premises_availability",
+            "rent_and_budget_feasibility",
+            "floor_area_and_land_use",
+            "walking_network_and_barriers",
+            "measured_traffic",
+            "measured_demand",
+            "purchasing_power",
+            "revenue_and_profitability"
+          ]
+        },
+        "network": {
+          "candidate_id": "81da564fa2dfa64fa871cb0f27b71079f5cb493dded16c0af7ccd376cf6ae0fc",
+          "algorithm_version": "osm-foot-cohort-minmax-v1",
+          "policy_fingerprint": "81c0784d7e68d75509d422583ce1c4966370a29035ee264bbb752be436be1513",
+          "origin": "modelled",
+          "rank": null,
+          "score": null,
+          "status": "insufficient_data",
+          "raw": {
+            "distance_method": "walking_network_with_connectors",
+            "coverage_margin_m": 2800.099,
+            "fully_covered": false,
+            "mapped_poi_count": 1,
+            "transit_count": 0,
+            "nearest_transit_m": null,
+            "competitor_count": 0,
+            "nearest_competitor_m": null,
+            "competitor_features_per_km2": null,
+            "infrastructure_count": 0,
+            "infrastructure_categories": [],
+            "complementary_count": 0,
+            "category_counts": {
+              "amenity:waste_disposal": 1
+            }
+          },
+          "provenance": {
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "observed_at": "2026-10-22T20:27:36Z",
+            "generated_at": "2026-10-23T21:21:05.496723Z",
+            "license": "ODbL-1.0",
+            "confidence": "low",
+            "limitations": [
+              "OSM network and POI mapping may be incomplete/outdated; no route is not proof of physical inaccessibility.",
+              "Directed OSM-node topology only; geometric intersections without shared nodes never connect.",
+              "Origin and POI connectors are straight-line modelling assumptions, not verified entrances or paths across barriers; max_snap_m bounds them.",
+              "Only ground-level non-bridge/non-tunnel edges accept connectors. Bridges and tunnels can be traversed through real shared nodes.",
+              "Reachable segments are a network visualization, not an exact walkable-area polygon or measured pedestrian traffic.",
+              "Costs are metres along WGS84 edges plus connectors; not walking time, wheelchair accessibility, demand or profitability.",
+              "Conditional access and foot turn restrictions are conservatively excluded; general vehicle one-way does not imply foot one-way.",
+              "POI centers may not be entrances. Counts describe features, not people or businesses."
+            ]
+          },
+          "components": [
+            {
+              "criterion": "transit",
+              "raw_value": 0.0,
+              "unit": "proximity_fraction",
+              "normalized": null,
+              "normalization_min": 0.0,
+              "normalization_max": 0.6330899999999999,
+              "weight": 0.3333333333333333,
+              "contribution": null,
+              "status": "outside_coverage"
+            },
+            {
+              "criterion": "infrastructure",
+              "raw_value": 0.0,
+              "unit": "mapped_category_count",
+              "normalized": null,
+              "normalization_min": 1.0,
+              "normalization_max": 4.0,
+              "weight": 0.3333333333333333,
+              "contribution": null,
+              "status": "outside_coverage"
+            },
+            {
+              "criterion": "complementary",
+              "raw_value": 0.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 0.0,
+              "normalization_max": 6.0,
+              "weight": 0.3333333333333333,
+              "contribution": null,
+              "status": "outside_coverage"
+            },
+            {
+              "criterion": "competitors",
+              "raw_value": 0.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 0.0,
+              "normalization_max": 3.0,
+              "weight": 0.0,
+              "contribution": 0.0,
+              "status": "disabled"
+            }
+          ],
+          "explanations": [
+            {
+              "criterion": "transit",
+              "effect": "unavailable",
+              "text": "Критерий transit: raw=0.0, norm=None, вклад=None. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "infrastructure",
+              "effect": "unavailable",
+              "text": "Критерий infrastructure: raw=0.0, norm=None, вклад=None. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "complementary",
+              "effect": "unavailable",
+              "text": "Критерий complementary: raw=0.0, norm=None, вклад=None. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "competitors",
+              "effect": "neutral",
+              "text": "Критерий competitors: raw=0.0, norm=None, вклад=0.0. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            }
+          ],
+          "missing_data": [
+            "premises_availability",
+            "rent_and_budget_feasibility",
+            "floor_area_and_land_use",
+            "measured_traffic",
+            "measured_demand",
+            "purchasing_power",
+            "revenue_and_profitability",
+            "unverified_snap_connectors_and_incomplete_osm_network",
+            "bounded_network_with_modelled_connectors_not_verified_entrances",
+            "origin_on_nonprincipal_or_unknown_component_quality_limited"
+          ]
+        },
+        "catchment_summary": {
+          "status": "partial",
+          "reasons": [
+            "bounded_network_with_modelled_connectors_not_verified_entrances",
+            "origin_on_nonprincipal_or_unknown_component_quality_limited"
+          ],
+          "source_snap_m": 10.934,
+          "source_component_nodes": 8,
+          "on_largest_component": false,
+          "straight_line_poi_count": 552,
+          "reachable_poi_count": 1,
+          "unsnapped_poi_count": 52,
+          "runtime_ms": 149.552
+        }
+      },
+      {
+        "id": "9e085201efed249be1954e9d198dc3799a39f910da7cfc623e19fe3fc70a8326",
+        "point": [
+          49.09785951495812,
+          55.798133894909654
+        ],
+        "straight": {
+          "candidate_id": "9e085201efed249be1954e9d198dc3799a39f910da7cfc623e19fe3fc70a8326",
+          "algorithm_version": "osm-cohort-minmax-v1",
+          "policy_fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+          "origin": "modelled",
+          "rank": 4,
+          "score": 27.697432,
+          "status": "ranked",
+          "raw": {
+            "distance_method": "geodesic_straight_line",
+            "coverage_margin_m": 3001.63349019,
+            "fully_covered": true,
+            "mapped_poi_count": 104,
+            "transit_count": 6,
+            "nearest_transit_m": 116.68403834,
+            "competitor_count": 3,
+            "nearest_competitor_m": 248.99381477,
+            "competitor_features_per_km2": 3.819718634205488,
+            "infrastructure_count": 11,
+            "infrastructure_categories": [
+              "amenity:bicycle_parking",
+              "amenity:parking"
+            ],
+            "complementary_count": 0,
+            "category_counts": {
+              "shop:gift": 2,
+              "amenity:bar": 1,
+              "shop:sports": 2,
+              "shop:ticket": 1,
+              "amenity:cafe": 3,
+              "amenity:fuel": 2,
+              "shop:florist": 1,
+              "amenity:bench": 26,
+              "amenity:dentist": 1,
+              "amenity:lounger": 4,
+              "amenity:parking": 8,
+              "amenity:theatre": 1,
+              "amenity:toilets": 2,
+              "shop:car_repair": 1,
+              "amenity:car_wash": 1,
+              "amenity:training": 2,
+              "highway:bus_stop": 6,
+              "amenity:fast_food": 1,
+              "amenity:courthouse": 4,
+              "shop:travel_agency": 3,
+              "amenity:fire_station": 1,
+              "amenity:waste_basket": 16,
+              "amenity:parking_space": 1,
+              "amenity:driving_school": 1,
+              "amenity:rescue_station": 1,
+              "amenity:waste_disposal": 1,
+              "amenity:bicycle_parking": 3,
+              "amenity:driver_training": 1,
+              "amenity:vending_machine": 3,
+              "amenity:charging_station": 2,
+              "amenity:community_centre": 1,
+              "amenity:place_of_worship": 1
+            }
+          },
+          "provenance": {
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "observed_at": "2026-10-22T20:27:36Z",
+            "generated_at": "2026-10-23T21:21:05.009731Z",
+            "license": "ODbL-1.0",
+            "confidence": "low",
+            "limitations": [
+              "Comparative mapped geographic context only; not a forecast of business profitability.",
+              "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+              "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+              "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+              "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+              "Budget, funding and format have no numerical effect without premises/cost data.",
+              "Scores depend on the compared candidates and cannot be compared across requests or radii.",
+              "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+              "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+              "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+              "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+              "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+              "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+              "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+            ]
+          },
+          "components": [
+            {
+              "criterion": "transit",
+              "raw_value": 0.76663192332,
+              "unit": "proximity_fraction",
+              "normalized": 0.8309229675694235,
+              "normalization_min": 0.0,
+              "normalization_max": 0.92262695008,
+              "weight": 0.3333333333333333,
+              "contribution": 27.697432252314112,
+              "status": "available"
+            },
+            {
+              "criterion": "infrastructure",
+              "raw_value": 2.0,
+              "unit": "mapped_category_count",
+              "normalized": 0.0,
+              "normalization_min": 2.0,
+              "normalization_max": 7.0,
+              "weight": 0.3333333333333333,
+              "contribution": 0.0,
+              "status": "available"
+            },
+            {
+              "criterion": "complementary",
+              "raw_value": 0.0,
+              "unit": "mapped_feature_count",
+              "normalized": 0.0,
+              "normalization_min": 0.0,
+              "normalization_max": 11.0,
+              "weight": 0.3333333333333333,
+              "contribution": 0.0,
+              "status": "available"
+            },
+            {
+              "criterion": "competitors",
+              "raw_value": 3.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 1.0,
+              "normalization_max": 24.0,
+              "weight": 0.0,
+              "contribution": 0.0,
+              "status": "disabled"
+            }
+          ],
+          "explanations": [
+            {
+              "criterion": "transit",
+              "effect": "strength",
+              "text": "Выгрузка содержит 6 остановок в радиусе наблюдения. Ближайшая — 116.7 м по прямой. Относительный показатель 0.831; вклад 27.697 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "infrastructure",
+              "effect": "weakness",
+              "text": "Найдено 2 категорий инфраструктуры (11 OSM-объектов). Относительный показатель 0.000; вклад 0.000 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "complementary",
+              "effect": "weakness",
+              "text": "Найдено 0 OSM-объектов из списка отраслевого окружения. Это не измеренная аудитория или спрос. Относительный показатель 0.000; вклад 0.000 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "competitors",
+              "effect": "neutral",
+              "text": "Найдено 3 потенциально конкурирующих OSM-объектов; 3.8 объектов/км² круга наблюдения. Количество не доказывает насыщение или спрос. Вес равен нулю; в итоговый балл не входит."
+            }
+          ],
+          "missing_data": [
+            "premises_availability",
+            "rent_and_budget_feasibility",
+            "floor_area_and_land_use",
+            "walking_network_and_barriers",
+            "measured_traffic",
+            "measured_demand",
+            "purchasing_power",
+            "revenue_and_profitability"
+          ]
+        },
+        "network": {
+          "candidate_id": "9e085201efed249be1954e9d198dc3799a39f910da7cfc623e19fe3fc70a8326",
+          "algorithm_version": "osm-foot-cohort-minmax-v1",
+          "policy_fingerprint": "81c0784d7e68d75509d422583ce1c4966370a29035ee264bbb752be436be1513",
+          "origin": "modelled",
+          "rank": 3,
+          "score": 38.715717,
+          "status": "ranked",
+          "raw": {
+            "distance_method": "walking_network_with_connectors",
+            "coverage_margin_m": 1120.106,
+            "fully_covered": true,
+            "mapped_poi_count": 36,
+            "transit_count": 3,
+            "nearest_transit_m": 237.857,
+            "competitor_count": 0,
+            "nearest_competitor_m": null,
+            "competitor_features_per_km2": null,
+            "infrastructure_count": 4,
+            "infrastructure_categories": [
+              "amenity:parking",
+              "amenity:bicycle_parking"
+            ],
+            "complementary_count": 0,
+            "category_counts": {
+              "amenity:bench": 9,
+              "amenity:bicycle_parking": 1,
+              "amenity:driver_training": 1,
+              "amenity:lounger": 4,
+              "amenity:parking": 3,
+              "amenity:parking_space": 1,
+              "amenity:vending_machine": 1,
+              "amenity:waste_basket": 11,
+              "highway:bus_stop": 3,
+              "shop:florist": 1,
+              "shop:ticket": 1
+            }
+          },
+          "provenance": {
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "observed_at": "2026-10-22T20:27:36Z",
+            "generated_at": "2026-10-23T21:21:05.496778Z",
+            "license": "ODbL-1.0",
+            "confidence": "low",
+            "limitations": [
+              "OSM network and POI mapping may be incomplete/outdated; no route is not proof of physical inaccessibility.",
+              "Directed OSM-node topology only; geometric intersections without shared nodes never connect.",
+              "Origin and POI connectors are straight-line modelling assumptions, not verified entrances or paths across barriers; max_snap_m bounds them.",
+              "Only ground-level non-bridge/non-tunnel edges accept connectors. Bridges and tunnels can be traversed through real shared nodes.",
+              "Reachable segments are a network visualization, not an exact walkable-area polygon or measured pedestrian traffic.",
+              "Costs are metres along WGS84 edges plus connectors; not walking time, wheelchair accessibility, demand or profitability.",
+              "Conditional access and foot turn restrictions are conservatively excluded; general vehicle one-way does not imply foot one-way.",
+              "POI centers may not be entrances. Counts describe features, not people or businesses."
+            ]
+          },
+          "components": [
+            {
+              "criterion": "transit",
+              "raw_value": 0.524286,
+              "unit": "proximity_fraction",
+              "normalized": 0.8281381794057718,
+              "normalization_min": 0.0,
+              "normalization_max": 0.6330899999999999,
+              "weight": 0.3333333333333333,
+              "contribution": 27.60460598019239,
+              "status": "available"
+            },
+            {
+              "criterion": "infrastructure",
+              "raw_value": 2.0,
+              "unit": "mapped_category_count",
+              "normalized": 0.3333333333333333,
+              "normalization_min": 1.0,
+              "normalization_max": 4.0,
+              "weight": 0.3333333333333333,
+              "contribution": 11.111111111111109,
+              "status": "available"
+            },
+            {
+              "criterion": "complementary",
+              "raw_value": 0.0,
+              "unit": "mapped_feature_count",
+              "normalized": 0.0,
+              "normalization_min": 0.0,
+              "normalization_max": 6.0,
+              "weight": 0.3333333333333333,
+              "contribution": 0.0,
+              "status": "available"
+            },
+            {
+              "criterion": "competitors",
+              "raw_value": 0.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 0.0,
+              "normalization_max": 3.0,
+              "weight": 0.0,
+              "contribution": 0.0,
+              "status": "disabled"
+            }
+          ],
+          "explanations": [
+            {
+              "criterion": "transit",
+              "effect": "neutral",
+              "text": "Критерий transit: raw=0.524286, norm=0.8281381794057718, вклад=27.60460598019239. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "infrastructure",
+              "effect": "neutral",
+              "text": "Критерий infrastructure: raw=2.0, norm=0.3333333333333333, вклад=11.111111111111109. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "complementary",
+              "effect": "neutral",
+              "text": "Критерий complementary: raw=0.0, norm=0.0, вклад=0.0. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "competitors",
+              "effect": "neutral",
+              "text": "Критерий competitors: raw=0.0, norm=None, вклад=0.0. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            }
+          ],
+          "missing_data": [
+            "premises_availability",
+            "rent_and_budget_feasibility",
+            "floor_area_and_land_use",
+            "measured_traffic",
+            "measured_demand",
+            "purchasing_power",
+            "revenue_and_profitability",
+            "unverified_snap_connectors_and_incomplete_osm_network",
+            "bounded_network_with_modelled_connectors_not_verified_entrances"
+          ]
+        },
+        "catchment_summary": {
+          "status": "ok",
+          "reasons": [
+            "bounded_network_with_modelled_connectors_not_verified_entrances"
+          ],
+          "source_snap_m": 28.862,
+          "source_component_nodes": 32135,
+          "on_largest_component": true,
+          "straight_line_poi_count": 104,
+          "reachable_poi_count": 36,
+          "unsnapped_poi_count": 11,
+          "runtime_ms": 81.627
+        }
+      },
+      {
+        "id": "1b0780b658e53d0d6e9fa3919b20a84df5fc950e2ad07826861ad34e6bbc3990",
+        "point": [
+          49.09901895225873,
+          55.771687953962115
+        ],
+        "straight": {
+          "candidate_id": "1b0780b658e53d0d6e9fa3919b20a84df5fc950e2ad07826861ad34e6bbc3990",
+          "algorithm_version": "osm-cohort-minmax-v1",
+          "policy_fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+          "origin": "modelled",
+          "rank": 3,
+          "score": 65.415165,
+          "status": "ranked",
+          "raw": {
+            "distance_method": "geodesic_straight_line",
+            "coverage_margin_m": 3076.43370924,
+            "fully_covered": true,
+            "mapped_poi_count": 126,
+            "transit_count": 8,
+            "nearest_transit_m": 198.59436973,
+            "competitor_count": 3,
+            "nearest_competitor_m": 300.74267667,
+            "competitor_features_per_km2": 3.819718634205488,
+            "infrastructure_count": 14,
+            "infrastructure_categories": [
+              "amenity:atm",
+              "amenity:parking",
+              "amenity:pharmacy",
+              "amenity:post_office"
+            ],
+            "complementary_count": 10,
+            "category_counts": {
+              "shop:bed": 1,
+              "amenity:atm": 3,
+              "shop:beauty": 1,
+              "shop:fabric": 1,
+              "shop:ticket": 2,
+              "amenity:cafe": 3,
+              "shop:alcohol": 1,
+              "shop:chemist": 1,
+              "shop:clothes": 1,
+              "shop:massage": 1,
+              "shop:outpost": 8,
+              "shop:tobacco": 1,
+              "amenity:bench": 38,
+              "amenity:school": 1,
+              "amenity:dentist": 1,
+              "amenity:doctors": 1,
+              "amenity:library": 1,
+              "amenity:parking": 7,
+              "amenity:toilets": 1,
+              "shop:stationery": 1,
+              "amenity:pharmacy": 3,
+              "amenity:post_box": 2,
+              "highway:bus_stop": 8,
+              "shop:convenience": 3,
+              "shop:e-cigarette": 1,
+              "shop:hairdresser": 2,
+              "shop:supermarket": 4,
+              "amenity:fast_food": 4,
+              "amenity:recycling": 1,
+              "amenity:restaurant": 2,
+              "amenity:university": 2,
+              "shop:confectionery": 1,
+              "amenity:bus_station": 1,
+              "amenity:post_office": 1,
+              "amenity:kindergarten": 3,
+              "amenity:ferry_terminal": 1,
+              "amenity:luggage_locker": 1,
+              "amenity:waste_disposal": 4,
+              "amenity:vending_machine": 4,
+              "amenity:charging_station": 1,
+              "amenity:place_of_worship": 1,
+              "shop:interior_decoration": 1
+            }
+          },
+          "provenance": {
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "observed_at": "2026-10-22T20:27:36Z",
+            "generated_at": "2026-10-23T21:21:05.009731Z",
+            "license": "ODbL-1.0",
+            "confidence": "low",
+            "limitations": [
+              "Comparative mapped geographic context only; not a forecast of business profitability.",
+              "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+              "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+              "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+              "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+              "Budget, funding and format have no numerical effect without premises/cost data.",
+              "Scores depend on the compared candidates and cannot be compared across requests or radii.",
+              "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+              "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+              "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+              "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+              "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+              "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+              "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+            ]
+          },
+          "components": [
+            {
+              "criterion": "transit",
+              "raw_value": 0.60281126054,
+              "unit": "proximity_fraction",
+              "normalized": 0.6533640281022909,
+              "normalization_min": 0.0,
+              "normalization_max": 0.92262695008,
+              "weight": 0.3333333333333333,
+              "contribution": 21.778800936743025,
+              "status": "available"
+            },
+            {
+              "criterion": "infrastructure",
+              "raw_value": 4.0,
+              "unit": "mapped_category_count",
+              "normalized": 0.4,
+              "normalization_min": 2.0,
+              "normalization_max": 7.0,
+              "weight": 0.3333333333333333,
+              "contribution": 13.333333333333332,
+              "status": "available"
+            },
+            {
+              "criterion": "complementary",
+              "raw_value": 10.0,
+              "unit": "mapped_feature_count",
+              "normalized": 0.9090909090909091,
+              "normalization_min": 0.0,
+              "normalization_max": 11.0,
+              "weight": 0.3333333333333333,
+              "contribution": 30.303030303030297,
+              "status": "available"
+            },
+            {
+              "criterion": "competitors",
+              "raw_value": 3.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 1.0,
+              "normalization_max": 24.0,
+              "weight": 0.0,
+              "contribution": 0.0,
+              "status": "disabled"
+            }
+          ],
+          "explanations": [
+            {
+              "criterion": "transit",
+              "effect": "neutral",
+              "text": "Выгрузка содержит 8 остановок в радиусе наблюдения. Ближайшая — 198.6 м по прямой. Относительный показатель 0.653; вклад 21.779 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "infrastructure",
+              "effect": "neutral",
+              "text": "Найдено 4 категорий инфраструктуры (14 OSM-объектов). Относительный показатель 0.400; вклад 13.333 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "complementary",
+              "effect": "strength",
+              "text": "Найдено 10 OSM-объектов из списка отраслевого окружения. Это не измеренная аудитория или спрос. Относительный показатель 0.909; вклад 30.303 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "competitors",
+              "effect": "neutral",
+              "text": "Найдено 3 потенциально конкурирующих OSM-объектов; 3.8 объектов/км² круга наблюдения. Количество не доказывает насыщение или спрос. Вес равен нулю; в итоговый балл не входит."
+            }
+          ],
+          "missing_data": [
+            "premises_availability",
+            "rent_and_budget_feasibility",
+            "floor_area_and_land_use",
+            "walking_network_and_barriers",
+            "measured_traffic",
+            "measured_demand",
+            "purchasing_power",
+            "revenue_and_profitability"
+          ]
+        },
+        "network": {
+          "candidate_id": "1b0780b658e53d0d6e9fa3919b20a84df5fc950e2ad07826861ad34e6bbc3990",
+          "algorithm_version": "osm-foot-cohort-minmax-v1",
+          "policy_fingerprint": "81c0784d7e68d75509d422583ce1c4966370a29035ee264bbb752be436be1513",
+          "origin": "modelled",
+          "rank": 1,
+          "score": 87.894717,
+          "status": "ranked",
+          "raw": {
+            "distance_method": "walking_network_with_connectors",
+            "coverage_margin_m": 1193.631,
+            "fully_covered": true,
+            "mapped_poi_count": 84,
+            "transit_count": 4,
+            "nearest_transit_m": 298.411,
+            "competitor_count": 1,
+            "nearest_competitor_m": 395.076,
+            "competitor_features_per_km2": null,
+            "infrastructure_count": 6,
+            "infrastructure_categories": [
+              "amenity:atm",
+              "amenity:post_office",
+              "amenity:pharmacy",
+              "amenity:parking"
+            ],
+            "complementary_count": 6,
+            "category_counts": {
+              "amenity:atm": 1,
+              "amenity:bench": 38,
+              "amenity:cafe": 1,
+              "amenity:dentist": 1,
+              "amenity:fast_food": 3,
+              "amenity:library": 1,
+              "amenity:parking": 2,
+              "amenity:pharmacy": 2,
+              "amenity:post_box": 2,
+              "amenity:post_office": 1,
+              "amenity:university": 1,
+              "amenity:vending_machine": 1,
+              "amenity:waste_disposal": 4,
+              "highway:bus_stop": 4,
+              "shop:alcohol": 1,
+              "shop:bed": 1,
+              "shop:confectionery": 1,
+              "shop:convenience": 2,
+              "shop:e-cigarette": 1,
+              "shop:fabric": 1,
+              "shop:hairdresser": 2,
+              "shop:outpost": 8,
+              "shop:stationery": 1,
+              "shop:supermarket": 3,
+              "shop:tobacco": 1
+            }
+          },
+          "provenance": {
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "observed_at": "2026-10-22T20:27:36Z",
+            "generated_at": "2026-10-23T21:21:05.496806Z",
+            "license": "ODbL-1.0",
+            "confidence": "low",
+            "limitations": [
+              "OSM network and POI mapping may be incomplete/outdated; no route is not proof of physical inaccessibility.",
+              "Directed OSM-node topology only; geometric intersections without shared nodes never connect.",
+              "Origin and POI connectors are straight-line modelling assumptions, not verified entrances or paths across barriers; max_snap_m bounds them.",
+              "Only ground-level non-bridge/non-tunnel edges accept connectors. Bridges and tunnels can be traversed through real shared nodes.",
+              "Reachable segments are a network visualization, not an exact walkable-area polygon or measured pedestrian traffic.",
+              "Costs are metres along WGS84 edges plus connectors; not walking time, wheelchair accessibility, demand or profitability.",
+              "Conditional access and foot turn restrictions are conservatively excluded; general vehicle one-way does not imply foot one-way.",
+              "POI centers may not be entrances. Counts describe features, not people or businesses."
+            ]
+          },
+          "components": [
+            {
+              "criterion": "transit",
+              "raw_value": 0.40317800000000004,
+              "unit": "proximity_fraction",
+              "normalized": 0.6368415233221186,
+              "normalization_min": 0.0,
+              "normalization_max": 0.6330899999999999,
+              "weight": 0.3333333333333333,
+              "contribution": 21.22805077740395,
+              "status": "available"
+            },
+            {
+              "criterion": "infrastructure",
+              "raw_value": 4.0,
+              "unit": "mapped_category_count",
+              "normalized": 1.0,
+              "normalization_min": 1.0,
+              "normalization_max": 4.0,
+              "weight": 0.3333333333333333,
+              "contribution": 33.33333333333333,
+              "status": "available"
+            },
+            {
+              "criterion": "complementary",
+              "raw_value": 6.0,
+              "unit": "mapped_feature_count",
+              "normalized": 1.0,
+              "normalization_min": 0.0,
+              "normalization_max": 6.0,
+              "weight": 0.3333333333333333,
+              "contribution": 33.33333333333333,
+              "status": "available"
+            },
+            {
+              "criterion": "competitors",
+              "raw_value": 1.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 0.0,
+              "normalization_max": 3.0,
+              "weight": 0.0,
+              "contribution": 0.0,
+              "status": "disabled"
+            }
+          ],
+          "explanations": [
+            {
+              "criterion": "transit",
+              "effect": "neutral",
+              "text": "Критерий transit: raw=0.40317800000000004, norm=0.6368415233221186, вклад=21.22805077740395. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "infrastructure",
+              "effect": "neutral",
+              "text": "Критерий infrastructure: raw=4.0, norm=1.0, вклад=33.33333333333333. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "complementary",
+              "effect": "neutral",
+              "text": "Критерий complementary: raw=6.0, norm=1.0, вклад=33.33333333333333. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "competitors",
+              "effect": "neutral",
+              "text": "Критерий competitors: raw=1.0, norm=None, вклад=0.0. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            }
+          ],
+          "missing_data": [
+            "premises_availability",
+            "rent_and_budget_feasibility",
+            "floor_area_and_land_use",
+            "measured_traffic",
+            "measured_demand",
+            "purchasing_power",
+            "revenue_and_profitability",
+            "unverified_snap_connectors_and_incomplete_osm_network",
+            "bounded_network_with_modelled_connectors_not_verified_entrances"
+          ]
+        },
+        "catchment_summary": {
+          "status": "ok",
+          "reasons": [
+            "bounded_network_with_modelled_connectors_not_verified_entrances"
+          ],
+          "source_snap_m": 28.286,
+          "source_component_nodes": 32135,
+          "on_largest_component": true,
+          "straight_line_poi_count": 126,
+          "reachable_poi_count": 84,
+          "unsnapped_poi_count": 7,
+          "runtime_ms": 63.96
+        }
+      },
+      {
+        "id": "000c37b7fd4582fcc67b07411a8b0f35e7daebdc434769eee70a6b0b1bb87fd0",
+        "point": [
+          49.14534437768836,
+          55.80335208057925
+        ],
+        "straight": {
+          "candidate_id": "000c37b7fd4582fcc67b07411a8b0f35e7daebdc434769eee70a6b0b1bb87fd0",
+          "algorithm_version": "osm-cohort-minmax-v1",
+          "policy_fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+          "origin": "modelled",
+          "rank": 5,
+          "score": 15.757576,
+          "status": "ranked",
+          "raw": {
+            "distance_method": "geodesic_straight_line",
+            "coverage_margin_m": 5193.71757223,
+            "fully_covered": true,
+            "mapped_poi_count": 63,
+            "transit_count": 0,
+            "nearest_transit_m": null,
+            "competitor_count": 3,
+            "nearest_competitor_m": 83.45475761,
+            "competitor_features_per_km2": 3.819718634205488,
+            "infrastructure_count": 11,
+            "infrastructure_categories": [
+              "amenity:atm",
+              "amenity:bicycle_parking",
+              "amenity:parking"
+            ],
+            "complementary_count": 3,
+            "category_counts": {
+              "amenity:atm": 1,
+              "shop:rental": 1,
+              "shop:sports": 1,
+              "amenity:cafe": 3,
+              "shop:bicycle": 1,
+              "amenity:bench": 11,
+              "shop:hardware": 1,
+              "amenity:dentist": 1,
+              "amenity:lounger": 9,
+              "amenity:parking": 6,
+              "amenity:toilets": 2,
+              "shop:car_repair": 1,
+              "amenity:fountain": 2,
+              "shop:convenience": 2,
+              "amenity:fast_food": 1,
+              "amenity:recycling": 1,
+              "amenity:food_court": 1,
+              "amenity:university": 1,
+              "amenity:kindergarten": 1,
+              "amenity:music_school": 1,
+              "amenity:waste_basket": 3,
+              "amenity:dressing_room": 2,
+              "amenity:bicycle_rental": 1,
+              "amenity:waste_disposal": 2,
+              "amenity:bicycle_parking": 4,
+              "amenity:vending_machine": 1,
+              "amenity:charging_station": 2
+            }
+          },
+          "provenance": {
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "observed_at": "2026-10-22T20:27:36Z",
+            "generated_at": "2026-10-23T21:21:05.009731Z",
+            "license": "ODbL-1.0",
+            "confidence": "low",
+            "limitations": [
+              "Comparative mapped geographic context only; not a forecast of business profitability.",
+              "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+              "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+              "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+              "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+              "Budget, funding and format have no numerical effect without premises/cost data.",
+              "Scores depend on the compared candidates and cannot be compared across requests or radii.",
+              "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+              "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+              "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+              "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+              "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+              "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+              "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+            ]
+          },
+          "components": [
+            {
+              "criterion": "transit",
+              "raw_value": 0.0,
+              "unit": "proximity_fraction",
+              "normalized": 0.0,
+              "normalization_min": 0.0,
+              "normalization_max": 0.92262695008,
+              "weight": 0.3333333333333333,
+              "contribution": 0.0,
+              "status": "available"
+            },
+            {
+              "criterion": "infrastructure",
+              "raw_value": 3.0,
+              "unit": "mapped_category_count",
+              "normalized": 0.2,
+              "normalization_min": 2.0,
+              "normalization_max": 7.0,
+              "weight": 0.3333333333333333,
+              "contribution": 6.666666666666666,
+              "status": "available"
+            },
+            {
+              "criterion": "complementary",
+              "raw_value": 3.0,
+              "unit": "mapped_feature_count",
+              "normalized": 0.2727272727272727,
+              "normalization_min": 0.0,
+              "normalization_max": 11.0,
+              "weight": 0.3333333333333333,
+              "contribution": 9.090909090909088,
+              "status": "available"
+            },
+            {
+              "criterion": "competitors",
+              "raw_value": 3.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 1.0,
+              "normalization_max": 24.0,
+              "weight": 0.0,
+              "contribution": 0.0,
+              "status": "disabled"
+            }
+          ],
+          "explanations": [
+            {
+              "criterion": "transit",
+              "effect": "weakness",
+              "text": "Выгрузка содержит 0 остановок в радиусе наблюдения. Расстояние до остановки неизвестно. Относительный показатель 0.000; вклад 0.000 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "infrastructure",
+              "effect": "weakness",
+              "text": "Найдено 3 категорий инфраструктуры (11 OSM-объектов). Относительный показатель 0.200; вклад 6.667 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "complementary",
+              "effect": "weakness",
+              "text": "Найдено 3 OSM-объектов из списка отраслевого окружения. Это не измеренная аудитория или спрос. Относительный показатель 0.273; вклад 9.091 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "competitors",
+              "effect": "neutral",
+              "text": "Найдено 3 потенциально конкурирующих OSM-объектов; 3.8 объектов/км² круга наблюдения. Количество не доказывает насыщение или спрос. Вес равен нулю; в итоговый балл не входит."
+            }
+          ],
+          "missing_data": [
+            "premises_availability",
+            "rent_and_budget_feasibility",
+            "floor_area_and_land_use",
+            "walking_network_and_barriers",
+            "measured_traffic",
+            "measured_demand",
+            "purchasing_power",
+            "revenue_and_profitability"
+          ]
+        },
+        "network": {
+          "candidate_id": "000c37b7fd4582fcc67b07411a8b0f35e7daebdc434769eee70a6b0b1bb87fd0",
+          "algorithm_version": "osm-foot-cohort-minmax-v1",
+          "policy_fingerprint": "81c0784d7e68d75509d422583ce1c4966370a29035ee264bbb752be436be1513",
+          "origin": "modelled",
+          "rank": 4,
+          "score": 16.666667,
+          "status": "ranked",
+          "raw": {
+            "distance_method": "walking_network_with_connectors",
+            "coverage_margin_m": 1853.553,
+            "fully_covered": true,
+            "mapped_poi_count": 39,
+            "transit_count": 0,
+            "nearest_transit_m": null,
+            "competitor_count": 3,
+            "nearest_competitor_m": 137.395,
+            "competitor_features_per_km2": null,
+            "infrastructure_count": 6,
+            "infrastructure_categories": [
+              "amenity:parking",
+              "amenity:bicycle_parking"
+            ],
+            "complementary_count": 1,
+            "category_counts": {
+              "amenity:bench": 8,
+              "amenity:bicycle_parking": 3,
+              "amenity:bicycle_rental": 1,
+              "amenity:cafe": 3,
+              "amenity:dressing_room": 2,
+              "amenity:fast_food": 1,
+              "amenity:fountain": 2,
+              "amenity:lounger": 6,
+              "amenity:music_school": 1,
+              "amenity:parking": 3,
+              "amenity:recycling": 1,
+              "amenity:toilets": 1,
+              "amenity:waste_basket": 1,
+              "shop:bicycle": 1,
+              "shop:car_repair": 1,
+              "shop:convenience": 1,
+              "shop:hardware": 1,
+              "shop:rental": 1,
+              "shop:sports": 1
+            }
+          },
+          "provenance": {
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "observed_at": "2026-10-22T20:27:36Z",
+            "generated_at": "2026-10-23T21:21:05.496829Z",
+            "license": "ODbL-1.0",
+            "confidence": "low",
+            "limitations": [
+              "OSM network and POI mapping may be incomplete/outdated; no route is not proof of physical inaccessibility.",
+              "Directed OSM-node topology only; geometric intersections without shared nodes never connect.",
+              "Origin and POI connectors are straight-line modelling assumptions, not verified entrances or paths across barriers; max_snap_m bounds them.",
+              "Only ground-level non-bridge/non-tunnel edges accept connectors. Bridges and tunnels can be traversed through real shared nodes.",
+              "Reachable segments are a network visualization, not an exact walkable-area polygon or measured pedestrian traffic.",
+              "Costs are metres along WGS84 edges plus connectors; not walking time, wheelchair accessibility, demand or profitability.",
+              "Conditional access and foot turn restrictions are conservatively excluded; general vehicle one-way does not imply foot one-way.",
+              "POI centers may not be entrances. Counts describe features, not people or businesses."
+            ]
+          },
+          "components": [
+            {
+              "criterion": "transit",
+              "raw_value": 0.0,
+              "unit": "proximity_fraction",
+              "normalized": 0.0,
+              "normalization_min": 0.0,
+              "normalization_max": 0.6330899999999999,
+              "weight": 0.3333333333333333,
+              "contribution": 0.0,
+              "status": "available"
+            },
+            {
+              "criterion": "infrastructure",
+              "raw_value": 2.0,
+              "unit": "mapped_category_count",
+              "normalized": 0.3333333333333333,
+              "normalization_min": 1.0,
+              "normalization_max": 4.0,
+              "weight": 0.3333333333333333,
+              "contribution": 11.111111111111109,
+              "status": "available"
+            },
+            {
+              "criterion": "complementary",
+              "raw_value": 1.0,
+              "unit": "mapped_feature_count",
+              "normalized": 0.16666666666666666,
+              "normalization_min": 0.0,
+              "normalization_max": 6.0,
+              "weight": 0.3333333333333333,
+              "contribution": 5.5555555555555545,
+              "status": "available"
+            },
+            {
+              "criterion": "competitors",
+              "raw_value": 3.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 0.0,
+              "normalization_max": 3.0,
+              "weight": 0.0,
+              "contribution": 0.0,
+              "status": "disabled"
+            }
+          ],
+          "explanations": [
+            {
+              "criterion": "transit",
+              "effect": "neutral",
+              "text": "Критерий transit: raw=0.0, norm=0.0, вклад=0.0. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "infrastructure",
+              "effect": "neutral",
+              "text": "Критерий infrastructure: raw=2.0, norm=0.3333333333333333, вклад=11.111111111111109. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "complementary",
+              "effect": "neutral",
+              "text": "Критерий complementary: raw=1.0, norm=0.16666666666666666, вклад=5.5555555555555545. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "competitors",
+              "effect": "neutral",
+              "text": "Критерий competitors: raw=3.0, norm=None, вклад=0.0. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            }
+          ],
+          "missing_data": [
+            "premises_availability",
+            "rent_and_budget_feasibility",
+            "floor_area_and_land_use",
+            "measured_traffic",
+            "measured_demand",
+            "purchasing_power",
+            "revenue_and_profitability",
+            "unverified_snap_connectors_and_incomplete_osm_network",
+            "bounded_network_with_modelled_connectors_not_verified_entrances"
+          ]
+        },
+        "catchment_summary": {
+          "status": "ok",
+          "reasons": [
+            "bounded_network_with_modelled_connectors_not_verified_entrances"
+          ],
+          "source_snap_m": 8.05,
+          "source_component_nodes": 32135,
+          "on_largest_component": true,
+          "straight_line_poi_count": 63,
+          "reachable_poi_count": 39,
+          "unsnapped_poi_count": 3,
+          "runtime_ms": 51.4
+        }
+      },
+      {
+        "id": "f01774970ec3f058b552104734d35c52204473feae0f1751de025504b57cd075",
+        "point": [
+          49.15479997998265,
+          55.772114318276934
+        ],
+        "straight": {
+          "candidate_id": "f01774970ec3f058b552104734d35c52204473feae0f1751de025504b57cd075",
+          "algorithm_version": "osm-cohort-minmax-v1",
+          "policy_fingerprint": "e5b222aefb27f0d5a8755380a434aa6b0079f2c9a0f30fe32fadabaccf7da1b3",
+          "origin": "modelled",
+          "rank": 1,
+          "score": 83.636364,
+          "status": "ranked",
+          "raw": {
+            "distance_method": "geodesic_straight_line",
+            "coverage_margin_m": 5974.6949453,
+            "fully_covered": true,
+            "mapped_poi_count": 115,
+            "transit_count": 3,
+            "nearest_transit_m": 38.68652496,
+            "competitor_count": 1,
+            "nearest_competitor_m": 405.13466017,
+            "competitor_features_per_km2": 1.2732395447351628,
+            "infrastructure_count": 23,
+            "infrastructure_categories": [
+              "amenity:atm",
+              "amenity:bicycle_parking",
+              "amenity:parking",
+              "amenity:pharmacy",
+              "amenity:post_office"
+            ],
+            "complementary_count": 10,
+            "category_counts": {
+              "shop:bed": 1,
+              "shop:gift": 1,
+              "shop:books": 1,
+              "shop:shoes": 2,
+              "amenity:atm": 8,
+              "shop:beauty": 2,
+              "shop:sewing": 1,
+              "shop:spices": 1,
+              "shop:sports": 2,
+              "amenity:cafe": 1,
+              "shop:alcohol": 3,
+              "shop:chemist": 1,
+              "shop:clothes": 7,
+              "shop:outpost": 7,
+              "amenity:bench": 2,
+              "shop:hardware": 2,
+              "shop:optician": 1,
+              "amenity:cinema": 1,
+              "amenity:school": 1,
+              "shop:appliance": 1,
+              "shop:beverages": 1,
+              "shop:car_parts": 1,
+              "shop:cosmetics": 1,
+              "shop:furniture": 2,
+              "shop:houseware": 1,
+              "amenity:parking": 9,
+              "shop:baby_goods": 1,
+              "shop:stationery": 1,
+              "amenity:pharmacy": 3,
+              "highway:bus_stop": 3,
+              "shop:convenience": 2,
+              "shop:e-cigarette": 1,
+              "shop:electronics": 2,
+              "shop:greengrocer": 1,
+              "shop:hairdresser": 1,
+              "shop:health_food": 1,
+              "shop:supermarket": 7,
+              "amenity:fast_food": 1,
+              "amenity:recycling": 1,
+              "shop:dry_cleaning": 1,
+              "shop:mobile_phone": 1,
+              "amenity:courthouse": 1,
+              "shop:garden_centre": 1,
+              "shop:travel_agency": 1,
+              "amenity:post_office": 1,
+              "amenity:waste_basket": 5,
+              "amenity:waste_disposal": 8,
+              "amenity:bicycle_parking": 2,
+              "amenity:vending_machine": 1,
+              "amenity:parking_entrance": 5,
+              "amenity:payment_terminal": 1,
+              "amenity:place_of_worship": 1
+            }
+          },
+          "provenance": {
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "observed_at": "2026-10-22T20:27:36Z",
+            "generated_at": "2026-10-23T21:21:05.009731Z",
+            "license": "ODbL-1.0",
+            "confidence": "low",
+            "limitations": [
+              "Comparative mapped geographic context only; not a forecast of business profitability.",
+              "OSM tagging completeness is unknown even inside the extract; zero is not proof of absence.",
+              "Counts describe OSM features, not deduplicated businesses or people; centers are not entrances.",
+              "All distances are geodesic straight lines from the zone representative point, not walking routes.",
+              "Weights and category relevance are explicit expert hypotheses, not trained demand coefficients.",
+              "Budget, funding and format have no numerical effect without premises/cost data.",
+              "Scores depend on the compared candidates and cannot be compared across requests or radii.",
+              "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+              "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+              "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+              "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+              "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+              "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+              "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+            ]
+          },
+          "components": [
+            {
+              "criterion": "transit",
+              "raw_value": 0.92262695008,
+              "unit": "proximity_fraction",
+              "normalized": 1.0,
+              "normalization_min": 0.0,
+              "normalization_max": 0.92262695008,
+              "weight": 0.3333333333333333,
+              "contribution": 33.33333333333333,
+              "status": "available"
+            },
+            {
+              "criterion": "infrastructure",
+              "raw_value": 5.0,
+              "unit": "mapped_category_count",
+              "normalized": 0.6,
+              "normalization_min": 2.0,
+              "normalization_max": 7.0,
+              "weight": 0.3333333333333333,
+              "contribution": 19.999999999999996,
+              "status": "available"
+            },
+            {
+              "criterion": "complementary",
+              "raw_value": 10.0,
+              "unit": "mapped_feature_count",
+              "normalized": 0.9090909090909091,
+              "normalization_min": 0.0,
+              "normalization_max": 11.0,
+              "weight": 0.3333333333333333,
+              "contribution": 30.303030303030297,
+              "status": "available"
+            },
+            {
+              "criterion": "competitors",
+              "raw_value": 1.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 1.0,
+              "normalization_max": 24.0,
+              "weight": 0.0,
+              "contribution": 0.0,
+              "status": "disabled"
+            }
+          ],
+          "explanations": [
+            {
+              "criterion": "transit",
+              "effect": "strength",
+              "text": "Выгрузка содержит 3 остановок в радиусе наблюдения. Ближайшая — 38.7 м по прямой. Относительный показатель 1.000; вклад 33.333 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "infrastructure",
+              "effect": "neutral",
+              "text": "Найдено 5 категорий инфраструктуры (23 OSM-объектов). Относительный показатель 0.600; вклад 20.000 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "complementary",
+              "effect": "strength",
+              "text": "Найдено 10 OSM-объектов из списка отраслевого окружения. Это не измеренная аудитория или спрос. Относительный показатель 0.909; вклад 30.303 балла из 100 по явной настройке, только среди сравниваемых зон."
+            },
+            {
+              "criterion": "competitors",
+              "effect": "neutral",
+              "text": "Найдено 1 потенциально конкурирующих OSM-объектов; 1.3 объектов/км² круга наблюдения. Количество не доказывает насыщение или спрос. Вес равен нулю; в итоговый балл не входит."
+            }
+          ],
+          "missing_data": [
+            "premises_availability",
+            "rent_and_budget_feasibility",
+            "floor_area_and_land_use",
+            "walking_network_and_barriers",
+            "measured_traffic",
+            "measured_demand",
+            "purchasing_power",
+            "revenue_and_profitability"
+          ]
+        },
+        "network": {
+          "candidate_id": "f01774970ec3f058b552104734d35c52204473feae0f1751de025504b57cd075",
+          "algorithm_version": "osm-foot-cohort-minmax-v1",
+          "policy_fingerprint": "81c0784d7e68d75509d422583ce1c4966370a29035ee264bbb752be436be1513",
+          "origin": "modelled",
+          "rank": 2,
+          "score": 38.888889,
+          "status": "ranked",
+          "raw": {
+            "distance_method": "walking_network_with_connectors",
+            "coverage_margin_m": 1348.779,
+            "fully_covered": true,
+            "mapped_poi_count": 13,
+            "transit_count": 3,
+            "nearest_transit_m": 183.455,
+            "competitor_count": 0,
+            "nearest_competitor_m": null,
+            "competitor_features_per_km2": null,
+            "infrastructure_count": 1,
+            "infrastructure_categories": [
+              "amenity:bicycle_parking"
+            ],
+            "complementary_count": 1,
+            "category_counts": {
+              "amenity:bicycle_parking": 1,
+              "amenity:payment_terminal": 1,
+              "amenity:place_of_worship": 1,
+              "amenity:waste_disposal": 1,
+              "highway:bus_stop": 3,
+              "shop:garden_centre": 1,
+              "shop:greengrocer": 1,
+              "shop:hardware": 1,
+              "shop:outpost": 2,
+              "shop:supermarket": 1
+            }
+          },
+          "provenance": {
+            "origin": "open_data",
+            "source_name": "OpenStreetMap via Overpass API",
+            "source_url": "https://overpass-api.de/api/interpreter",
+            "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+            "observed_at": "2026-10-22T20:27:36Z",
+            "generated_at": "2026-10-23T21:21:05.496851Z",
+            "license": "ODbL-1.0",
+            "confidence": "low",
+            "limitations": [
+              "OSM network and POI mapping may be incomplete/outdated; no route is not proof of physical inaccessibility.",
+              "Directed OSM-node topology only; geometric intersections without shared nodes never connect.",
+              "Origin and POI connectors are straight-line modelling assumptions, not verified entrances or paths across barriers; max_snap_m bounds them.",
+              "Only ground-level non-bridge/non-tunnel edges accept connectors. Bridges and tunnels can be traversed through real shared nodes.",
+              "Reachable segments are a network visualization, not an exact walkable-area polygon or measured pedestrian traffic.",
+              "Costs are metres along WGS84 edges plus connectors; not walking time, wheelchair accessibility, demand or profitability.",
+              "Conditional access and foot turn restrictions are conservatively excluded; general vehicle one-way does not imply foot one-way.",
+              "POI centers may not be entrances. Counts describe features, not people or businesses."
+            ]
+          },
+          "components": [
+            {
+              "criterion": "transit",
+              "raw_value": 0.6330899999999999,
+              "unit": "proximity_fraction",
+              "normalized": 1.0,
+              "normalization_min": 0.0,
+              "normalization_max": 0.6330899999999999,
+              "weight": 0.3333333333333333,
+              "contribution": 33.33333333333333,
+              "status": "available"
+            },
+            {
+              "criterion": "infrastructure",
+              "raw_value": 1.0,
+              "unit": "mapped_category_count",
+              "normalized": 0.0,
+              "normalization_min": 1.0,
+              "normalization_max": 4.0,
+              "weight": 0.3333333333333333,
+              "contribution": 0.0,
+              "status": "available"
+            },
+            {
+              "criterion": "complementary",
+              "raw_value": 1.0,
+              "unit": "mapped_feature_count",
+              "normalized": 0.16666666666666666,
+              "normalization_min": 0.0,
+              "normalization_max": 6.0,
+              "weight": 0.3333333333333333,
+              "contribution": 5.5555555555555545,
+              "status": "available"
+            },
+            {
+              "criterion": "competitors",
+              "raw_value": 0.0,
+              "unit": "mapped_feature_count",
+              "normalized": null,
+              "normalization_min": 0.0,
+              "normalization_max": 3.0,
+              "weight": 0.0,
+              "contribution": 0.0,
+              "status": "disabled"
+            }
+          ],
+          "explanations": [
+            {
+              "criterion": "transit",
+              "effect": "neutral",
+              "text": "Критерий transit: raw=0.6330899999999999, norm=1.0, вклад=33.33333333333333. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "infrastructure",
+              "effect": "neutral",
+              "text": "Критерий infrastructure: raw=1.0, norm=0.0, вклад=0.0. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "complementary",
+              "effect": "neutral",
+              "text": "Критерий complementary: raw=1.0, norm=0.16666666666666666, вклад=5.5555555555555545. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            },
+            {
+              "criterion": "competitors",
+              "effect": "neutral",
+              "text": "Критерий competitors: raw=0.0, norm=None, вклад=0.0. Те же веса/min-max, но POI отобраны по дорожному бюджету с явными соединителями. Разница отражает обход по графу и неполноту привязки, а не изменение спроса."
+            }
+          ],
+          "missing_data": [
+            "premises_availability",
+            "rent_and_budget_feasibility",
+            "floor_area_and_land_use",
+            "measured_traffic",
+            "measured_demand",
+            "purchasing_power",
+            "revenue_and_profitability",
+            "unverified_snap_connectors_and_incomplete_osm_network",
+            "bounded_network_with_modelled_connectors_not_verified_entrances"
+          ]
+        },
+        "catchment_summary": {
+          "status": "ok",
+          "reasons": [
+            "bounded_network_with_modelled_connectors_not_verified_entrances"
+          ],
+          "source_snap_m": 26.765,
+          "source_component_nodes": 32135,
+          "on_largest_component": true,
+          "straight_line_poi_count": 115,
+          "reachable_poi_count": 13,
+          "unsnapped_poi_count": 7,
+          "runtime_ms": 89.823
+        }
+      }
+    ],
+    "baseline_algorithm": "osm-cohort-minmax-v1",
+    "network_algorithm": "osm-foot-cohort-minmax-v1",
+    "network_fingerprint": "f8b60c19a862d31b80075cc001f0c5de2a22b41ee2655497b37b6685ff1aba7b"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-10-23T21:39:10.139Z",
+  "services": "real Qwen + PostGIS + walking graph + existing complete workflow",
+  "graph_version": "a63822aec055fe6fc4190edd6ed424ffa9bbf0ef2657b6fe970b3232d91ce045",
+  "poi_data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+  "counts": {
+    "network": 569,
+    "straight": 1089
+  },
+  "runtime_ms": 287.003
+}

@@ -22,6 +22,7 @@ local-ranking-eval.json
 local-ranking-proxy-eval.json
 local-finance-eval.json
 local-finance-proxy-eval.json
+local-walking-eval.json
 *.gguf
 .ollama/
 data/osm/*.raw.json

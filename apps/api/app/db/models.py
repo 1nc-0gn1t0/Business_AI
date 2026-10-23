@@ -53,6 +53,39 @@ class GeoDatasetRecord(Base):
     diagnostics: Mapped[dict[str, int]] = mapped_column(JSONB)
 
 
+class WalkGraphRecord(Base):
+    __tablename__ = "walk_graphs"
+    __table_args__ = (
+        sa.UniqueConstraint("slug", "graph_version"),
+        sa.Index("ix_walk_active_slug", "slug", unique=True, postgresql_where=sa.text("active")),
+    )
+    id: Mapped[UUID] = mapped_column(primary_key=True)
+    slug: Mapped[str] = mapped_column(sa.Text)
+    graph_version: Mapped[str] = mapped_column(sa.String(64))
+    active: Mapped[bool]
+    document: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
+class WalkEdgeRecord(Base):
+    __tablename__ = "walk_edges"
+    __table_args__ = (
+        sa.CheckConstraint("length_m > 0 AND length_m < 100000", name="ck_walk_length"),
+        sa.CheckConstraint("forward OR backward", name="ck_walk_direction"),
+        sa.Index("ix_walk_geom", "geom", postgresql_using="gist"),
+        sa.Index("ix_walk_geography", sa.text("(geom::geography)"), postgresql_using="gist"),
+    )
+    graph_id: Mapped[UUID] = mapped_column(sa.ForeignKey("walk_graphs.id"), primary_key=True)
+    edge_id: Mapped[int] = mapped_column(primary_key=True)
+    way_id: Mapped[int] = mapped_column(sa.BigInteger)
+    u: Mapped[int] = mapped_column(sa.BigInteger)
+    v: Mapped[int] = mapped_column(sa.BigInteger)
+    forward: Mapped[bool]
+    backward: Mapped[bool]
+    length_m: Mapped[float] = mapped_column(sa.Double)
+    geom: Mapped[str] = mapped_column(Geometry("LINESTRING"))
+    tags: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
 class GeoPOIRecord(Base):
     __tablename__ = "geo_pois"
     __table_args__ = (

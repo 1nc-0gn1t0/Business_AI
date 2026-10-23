@@ -70,7 +70,7 @@ def explanations(
         "complementary": f"Найдено {raw.complementary_count} OSM-объектов "
         "из списка отраслевого окружения. Это не измеренная аудитория или спрос. ",
         "competitors": f"Найдено {raw.competitor_count} потенциально конкурирующих OSM-объектов; "
-        f"{raw.competitor_features_per_km2:.1f} объектов/км² круга наблюдения. "
+        f"{raw.competitor_features_per_km2 or 0:.1f} объектов/км² круга наблюдения. "
         "Количество не доказывает насыщение или спрос. ",
     }
     result = []

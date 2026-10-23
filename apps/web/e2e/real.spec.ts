@@ -82,6 +82,68 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     path: `${directory}/BA-010-map.png`,
     fullPage: true,
   });
+  // BA-013 real PostGIS network; no recorded geometry or route interception.
+  const walking = page.getByRole("region", { name: "Пешеходная доступность" });
+  await walking
+    .getByText("Задать точку координатами WGS84", { exact: true })
+    .click();
+  await walking.getByLabel("Долгота точки").fill("49.119");
+  await walking.getByLabel("Широта точки").fill("55.788");
+  await walking
+    .getByRole("button", { name: "Использовать координаты" })
+    .click();
+  const walkHttp = page.waitForResponse((r) => r.url().endsWith("/catchment"));
+  await walking
+    .getByRole("button", { name: "Рассчитать пешую доступность →" })
+    .click();
+  const walked = await walkHttp;
+  expect(walked.ok()).toBe(true);
+  const walkResult = (await walked.json()) as Schemas["CatchmentResult"];
+  expect(walkResult.status).toBe("ok");
+  expect(walkResult.network!.features.length).toBeGreaterThan(10);
+  expect(walkResult.reachable_poi_count).toBeLessThan(
+    walkResult.straight_line_poi_count,
+  );
+  await expect(
+    walking.getByLabel("Результат пешеходного анализа"),
+  ).toBeVisible();
+  await page.getByLabel("Карта зон Казани").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1500);
+  await page
+    .locator(".map-wrap")
+    .screenshot({ path: "../../docs/screenshots/BA-013-walking-map.png" });
+  await walking.screenshot({
+    path: "../../docs/screenshots/BA-013-walking-panel.png",
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await walking.screenshot({
+    path: "../../docs/screenshots/BA-013-walking-mobile.png",
+  });
+  await page.setViewportSize({ width: 1440, height: 1050 });
+  await writeFile(
+    "../../docs/screenshots/BA-013-verification.json",
+    JSON.stringify(
+      {
+        checked_at: new Date().toISOString(),
+        services:
+          "real Qwen + PostGIS + walking graph + existing complete workflow",
+        graph_version: walkResult.graph!.graph_version,
+        poi_data_version: walkResult.poi_data_version,
+        counts: {
+          network: walkResult.reachable_poi_count,
+          straight: walkResult.straight_line_poi_count,
+        },
+        runtime_ms: walkResult.runtime_ms,
+      },
+      null,
+      2,
+    ),
+  );
   await page.getByRole("button", { name: "▥ Сравнение зон" }).click();
   await page.locator(".zone-card").nth(1).click();
   await expect(page.locator(".zone-card").nth(1)).toHaveAttribute(
@@ -253,7 +315,7 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     )
     .check();
   await lead.scrollIntoViewIfNeeded();
-  await lead.screenshot({ path: "../../docs/screenshots/BA-012-preview.png" });
+  await lead.screenshot({ path: `${directory}/BA-012-preview.png` });
   const receiptResponse = page.waitForResponse((r) =>
     r.url().endsWith("/submit"),
   );
@@ -272,21 +334,21 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
   ).toBeVisible();
   await lead
     .locator(".lead-receipt")
-    .screenshot({ path: "../../docs/screenshots/BA-012-receipt.png" });
+    .screenshot({ path: `${directory}/BA-012-receipt.png` });
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
     ),
   ).toBe(true);
-  await lead.screenshot({ path: "../../docs/screenshots/BA-012-mobile.png" });
+  await lead.screenshot({ path: `${directory}/BA-012-mobile.png` });
   await page.reload();
   await page.getByRole("button", { name: "◇ Продукты ВТБ" }).click();
   await expect(
     page.getByRole("heading", { name: receipt.message, exact: true }),
   ).toBeVisible();
   await writeFile(
-    "../../docs/screenshots/BA-012-verification.json",
+    `${directory}/BA-012-verification.json`,
     JSON.stringify(
       {
         checked_at: new Date().toISOString(),
@@ -308,6 +370,40 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
       2,
     ),
   );
+  await page.setViewportSize({ width: 1440, height: 1050 });
+  await page.getByRole("button", { name: "⌖ Карта и локации" }).click();
+  const newZonesHttp = page.waitForResponse((r) =>
+    r.url().endsWith("/rankings"),
+  );
+  await walking
+    .getByRole("button", { name: "Найти зоны во внутренней области графа" })
+    .click();
+  const newZonesResponse = await newZonesHttp;
+  expect(newZonesResponse.ok()).toBe(true);
+  const newZones = (await newZonesResponse.json()) as Ranking;
+  await walking
+    .getByText("Сравнить рейтинг BA-008: по прямой и по сети", { exact: true })
+    .click();
+  const compareHttp = page.waitForResponse((r) =>
+    r.url().endsWith("/walking-rankings"),
+  );
+  await walking
+    .getByRole("button", { name: "Сравнить сетевой рейтинг" })
+    .click();
+  const comparedResponse = await compareHttp;
+  expect(comparedResponse.ok()).toBe(true);
+  const compared =
+    (await comparedResponse.json()) as Schemas["WalkingRankingResult"];
+  expect(compared.baseline.request_fingerprint).toBe(
+    newZones.request_fingerprint,
+  );
+  expect(compared.network.evaluations.some((e) => e.score !== null)).toBe(true);
+  await expect(
+    walking.getByRole("columnheader", { name: "По сети", exact: true }),
+  ).toBeVisible();
+  await walking.screenshot({
+    path: "../../docs/screenshots/BA-013-network-comparison.png",
+  });
   expect(errors).toEqual([]);
   await writeFile(
     `${directory}/BA-010-verification.json`,

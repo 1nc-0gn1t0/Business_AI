@@ -38,6 +38,8 @@ export class ApiError extends Error {
   }
 }
 const messages: Record<string, string> = {
+  walking_graph_version_not_found:
+    "Запрошенная версия дорожного графа недоступна. Обновите граф и повторите расчёт.",
   lead_consent_changed:
     "Согласие изменилось после подготовки. Сохраните новую версию черновика и заново подтвердите её состав.",
   consent_required_assistant:

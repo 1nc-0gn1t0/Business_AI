@@ -11,6 +11,8 @@ type Props = {
   ranking: Ranking | null;
   selected: string | null;
   onSelect: (id: string) => void;
+  walking?: Schemas["CatchmentResult"] | null;
+  onPoint?: (p: [number, number]) => void;
 };
 const empty = { type: "FeatureCollection" as const, features: [] };
 maplibregl.setWorkerUrl(workerUrl);
@@ -104,6 +106,26 @@ export default function GeoMap(props: Props) {
         pois: p.pois || empty,
         zones: p.ranking?.candidates || empty,
         coverage,
+        "walk-network": p.walking?.network || empty,
+        "walk-pois": p.walking?.pois || empty,
+        "walk-origin": p.walking
+          ? {
+              type: "FeatureCollection" as const,
+              features: [
+                {
+                  type: "Feature" as const,
+                  properties: {},
+                  geometry: {
+                    type: "Point" as const,
+                    coordinates: [
+                      p.walking.request_snapshot.longitude,
+                      p.walking.request_snapshot.latitude,
+                    ],
+                  },
+                },
+              ],
+            }
+          : empty,
       };
       for (const [id, value] of Object.entries(data))
         (instance.getSource(id) as GeoJSONSource | undefined)?.setData(value);
@@ -111,7 +133,15 @@ export default function GeoMap(props: Props) {
         instance.setFilter("selected", ["==", ["id"], p.selected || ""]);
     };
     instance.on("load", () => {
-      for (const id of ["districts", "pois", "zones", "coverage"])
+      for (const id of [
+        "districts",
+        "pois",
+        "zones",
+        "coverage",
+        "walk-network",
+        "walk-pois",
+        "walk-origin",
+      ])
         instance.addSource(id, { type: "geojson", data: empty });
       instance.addLayer({
         id: "district-lines",
@@ -162,6 +192,56 @@ export default function GeoMap(props: Props) {
           "circle-stroke-color": "#e6ecff",
           "circle-stroke-width": 1,
         },
+      });
+      instance.addLayer({
+        id: "walk-lines",
+        type: "line",
+        source: "walk-network",
+        paint: {
+          "line-color": "#b39aff",
+          "line-width": 4,
+          "line-opacity": 0.85,
+        },
+      });
+      instance.addLayer({
+        id: "walk-points",
+        type: "circle",
+        source: "walk-pois",
+        paint: {
+          "circle-color": "#40dfc2",
+          "circle-radius": 5,
+          "circle-stroke-color": "#072b24",
+          "circle-stroke-width": 1,
+        },
+      });
+      instance.addLayer({
+        id: "walk-origin-point",
+        type: "circle",
+        source: "walk-origin",
+        paint: {
+          "circle-color": "#fff",
+          "circle-radius": 8,
+          "circle-stroke-color": "#b39aff",
+          "circle-stroke-width": 3,
+        },
+      });
+      instance.on("click", (e) => {
+        if (
+          !instance.queryRenderedFeatures(e.point, {
+            layers: ["zone-fill", "poi-points", "walk-points"],
+          }).length
+        )
+          latest.current.onPoint?.([e.lngLat.lng, e.lngLat.lat]);
+      });
+      instance.on("click", "walk-points", (e) => {
+        const f = e.features?.[0];
+        if (!f) return;
+        const node = document.createElement("div");
+        node.textContent = `${f.properties?.name || "POI"} · ${f.properties?.network_distance_m} м по сети + соединители · ${f.properties?.straight_line_distance_m} м по прямой`;
+        new maplibregl.Popup()
+          .setLngLat(e.lngLat)
+          .setDOMContent(node)
+          .addTo(instance);
       });
       instance.on("click", "zone-fill", (e) => {
         const id = e.features?.[0]?.id;
@@ -217,7 +297,43 @@ export default function GeoMap(props: Props) {
       props.districts || empty,
     );
     m.setFilter("selected", ["==", ["id"], props.selected || ""]);
-  }, [props.ranking, props.pois, props.districts, props.selected]);
+    (m.getSource("walk-network") as GeoJSONSource | undefined)?.setData(
+      props.walking?.network || empty,
+    );
+    (m.getSource("walk-pois") as GeoJSONSource | undefined)?.setData(
+      props.walking?.pois || empty,
+    );
+    (m.getSource("walk-origin") as GeoJSONSource | undefined)?.setData(
+      props.walking
+        ? {
+            type: "FeatureCollection",
+            features: [
+              {
+                type: "Feature",
+                properties: {},
+                geometry: {
+                  type: "Point",
+                  coordinates: [
+                    props.walking.request_snapshot.longitude,
+                    props.walking.request_snapshot.latitude,
+                  ],
+                },
+              },
+            ],
+          }
+        : empty,
+    );
+    if (props.walking?.network?.features.length) {
+      const p = props.walking.request_snapshot;
+      m.flyTo({ center: [p.longitude, p.latitude], zoom: 15, duration: 600 });
+    }
+  }, [
+    props.ranking,
+    props.pois,
+    props.districts,
+    props.selected,
+    props.walking,
+  ]);
   useEffect(() => {
     const m = map.current;
     if (!m || !props.ranking) return;
@@ -266,6 +382,12 @@ export default function GeoMap(props: Props) {
           OSM POI
         </span>
         <span>┄ Граница покрытия</span>
+        {props.walking && (
+          <>
+            <span style={{ color: "#b39aff" }}>━ Достижимая сеть</span>
+            <span style={{ color: "#40dfc2" }}>● POI по сети</span>
+          </>
+        )}
       </div>
     </div>
   );

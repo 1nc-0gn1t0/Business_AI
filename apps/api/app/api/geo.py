@@ -19,10 +19,33 @@ from app.geo.schemas import (
     SpatialQuery,
 )
 from app.geo.service import GeoData
+from app.geo.walk_ranking import WalkingRankingRequest, WalkingRankingResult, rank_walking
+from app.geo.walk_schemas import CatchmentRequest, CatchmentResult, WalkGraphView
+from app.geo.walking import catchment, graph_for
 
 router = APIRouter(prefix="/api/v1/geo", tags=["geo"])
 Database = Annotated[Session, Depends(get_session, scope="function")]
 Version = Annotated[str | None, Query(pattern=r"^[0-9a-f]{64}$")]
+
+
+@router.get("/{slug}/walking-graph", response_model=WalkGraphView | None)
+def walking_graph(
+    slug: Slug, session: Database, graph_version: Version = None
+) -> WalkGraphView | None:
+    GeoData(session).dataset(slug)
+    return graph_for(session, slug, graph_version)
+
+
+@router.post("/{slug}/catchment", response_model=CatchmentResult)
+def walking_catchment(slug: Slug, request: CatchmentRequest, session: Database) -> CatchmentResult:
+    return catchment(session, slug, request)
+
+
+@router.post("/{slug}/walking-rankings", response_model=WalkingRankingResult)
+def walking_rankings(
+    slug: Slug, request: WalkingRankingRequest, session: Database
+) -> WalkingRankingResult:
+    return rank_walking(session, slug, request)
 
 
 @router.post("/{slug}/rankings", response_model=RankingCollection)
