@@ -1,0 +1,60 @@
+{
+  "checked_at": "2026-10-23T03:49:58.956Z",
+  "services": "real local Qwen/Ollama + Compose/PostGIS + finance API; no mocks",
+  "extraction_mode": "ollama",
+  "profile": {
+    "city": "Казань",
+    "category": "кофейня",
+    "budget": "2000000.00"
+  },
+  "missing_fields_after_first_turn": [
+    "preferences.format",
+    "funding"
+  ],
+  "history_after_reload": true,
+  "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+  "ranking": [
+    {
+      "rank": 1,
+      "score": 85.608954,
+      "status": "ranked"
+    },
+    {
+      "rank": 2,
+      "score": 44.444444,
+      "status": "ranked"
+    },
+    {
+      "rank": 3,
+      "score": 34.343434,
+      "status": "ranked"
+    },
+    {
+      "rank": 4,
+      "score": 33.676577,
+      "status": "ranked"
+    },
+    {
+      "rank": 5,
+      "score": 22.747652,
+      "status": "ranked"
+    }
+  ],
+  "baseline_operating_result": [
+    {
+      "name": "conservative",
+      "value": "-30000.00"
+    },
+    {
+      "name": "base",
+      "value": "285000.00"
+    },
+    {
+      "name": "optimistic",
+      "value": "628200.00"
+    }
+  ],
+  "changed_rent": "100000",
+  "changed_base_operating_result": "265000.00",
+  "browser_errors": []
+}

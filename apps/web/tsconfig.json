@@ -6,6 +6,8 @@
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "strict": true,
+    "resolveJsonModule": true,
+    "types": ["vite/client"],
     "noEmit": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
