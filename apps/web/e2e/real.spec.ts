@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
+import { env } from "node:process";
 import type { Ranking, Schemas } from "../src/api";
 
 // Opt-in test against existing Compose and installed Qwen. No route mocks or traces.
@@ -70,7 +71,7 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
   // Wait for real vector overlays and raster tiles to paint without replacing their data.
   await expect(page.locator(".map-problem")).toHaveCount(0);
   await page.waitForTimeout(1500);
-  const directory = "../../docs/screenshots";
+  const directory = env.BA010_ARTIFACT_DIR || "../../docs/screenshots";
   await mkdir(directory, { recursive: true });
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
@@ -131,6 +132,83 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     path: `${directory}/BA-010-mobile.png`,
     fullPage: true,
   });
+  await page.setViewportSize({ width: 1440, height: 1050 });
+  await page.getByRole("button", { name: "◇ Продукты ВТБ" }).click();
+  await expect(page.getByText("Демо-каталог", { exact: true })).toBeVisible();
+  await page
+    .getByLabel("Стадия бизнеса", { exact: true })
+    .selectOption("preparing");
+  await page
+    .getByLabel("Регистрация бизнеса", { exact: true })
+    .selectOption("ip");
+  await page
+    .getByLabel("Канал продаж", { exact: true })
+    .selectOption("offline");
+  await page
+    .getByLabel("Нужен расчётный счёт", { exact: true })
+    .selectOption("true");
+  await page
+    .getByLabel("Планируете принимать оплату картами", { exact: true })
+    .selectOption("true");
+  await page
+    .getByLabel("Нужна дебетовая карта для расходов", { exact: true })
+    .selectOption("true");
+  await page
+    .getByLabel("Интересует информация о финансировании", { exact: true })
+    .selectOption("false");
+  const matchResponse = page.waitForResponse((r) =>
+    r.url().endsWith("/bank-products/matches"),
+  );
+  await page
+    .getByRole("button", { name: "Подобрать по потребностям →" })
+    .click();
+  const matchHttp = await matchResponse;
+  expect(matchHttp.ok()).toBe(true);
+  const bank = (await matchHttp.json()) as Schemas["MatchResult"];
+  expect(bank.recommended_ids).toEqual([]);
+  expect(bank.demonstration_ids).toEqual([
+    "vtb-business-card",
+    "vtb-merchant-acquiring",
+    "vtb-rko",
+  ]);
+  await expect(
+    page.getByText("Подбор выполнен по явным правилам"),
+  ).toBeVisible();
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({
+    path: "../../docs/screenshots/BA-011-bank.png",
+    fullPage: true,
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({
+    path: "../../docs/screenshots/BA-011-bank-mobile.png",
+    fullPage: true,
+  });
+  await writeFile(
+    "../../docs/screenshots/BA-011-verification.json",
+    JSON.stringify(
+      {
+        checked_at: new Date().toISOString(),
+        services:
+          "real Qwen/Ollama + PostGIS + finance + authenticated bank matching API; no mocks",
+        catalogue_version: bank.catalogue.version,
+        catalogue_fingerprint: bank.catalogue.fingerprint,
+        catalogue_mode: "demonstration",
+        profile_version: bank.profile_version,
+        recommended_ids: bank.recommended_ids,
+        demonstration_ids: bank.demonstration_ids,
+        credit_decision: bank.credit_decision,
+        browser_errors: errors,
+      },
+      null,
+      2,
+    ),
+  );
   expect(errors).toEqual([]);
   await writeFile(
     `${directory}/BA-010-verification.json`,

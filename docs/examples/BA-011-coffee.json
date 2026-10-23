@@ -1,0 +1,1269 @@
+{
+  "example_kind": "offline deterministic demonstration fixture, not a verified bank offer",
+  "response": {
+    "status": "evaluated",
+    "algorithm_version": "bank-relevance-three-valued-v1",
+    "catalogue": {
+      "version": "vtb-demo-public-references-2026-10-23-v1",
+      "fingerprint": "0bd1ec03f957bb78f14eacf38cbc1c4ffa035011ec6f51f137e3abc5a900d722",
+      "as_of": "2026-10-23",
+      "review_window_days": 30,
+      "products": [
+        {
+          "product": {
+            "id": "vtb-business-card",
+            "version": "demo-v1",
+            "name": "Дебетовая бизнес-карта ВТБ",
+            "category": "business_card",
+            "description": "Инструмент для явно запрошенных расходов бизнеса.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-card-source"
+            ],
+            "rules": [
+              {
+                "id": "registered-business",
+                "field": "registration_status",
+                "one_of": [
+                  "ip",
+                  "legal_entity"
+                ],
+                "explanation": "Зарегистрированный ИП или юридическое лицо.",
+                "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "expense-card",
+                "field": "needs_expense_card",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Потребность в дебетовой карте для расходов бизнеса.",
+                "question": "Нужна ли дебетовая карта для расходов бизнеса?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Демо-правило: зарегистрированный бизнес и явная потребность в дебетовой карте расходов."
+            ],
+            "unknown_conditions": [
+              "Уточнить открытие/привязку счёта, допустимые операции, держателей, лимиты и тариф; кредитный лимит не рассматривается."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-card-source",
+              "url": "https://www.vtb.ru/malyj-biznes/biznes-karty/",
+              "title": "Бизнес-карты для ИП и ООО",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "Страница описывает карты для расходов бизнеса. Демо-карточка относится к дебетовой функции, не к кредитной карте.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        {
+          "product": {
+            "id": "vtb-financing-information",
+            "version": "demo-v1",
+            "name": "Финансирование бизнеса ВТБ — справочная информация",
+            "category": "financing_information",
+            "description": "Ознакомление с направлениями финансирования без подбора кредита и оценки риска.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-financing-source"
+            ],
+            "rules": [
+              {
+                "id": "financing-interest",
+                "field": "financing_interest",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Интерес к информации о финансировании.",
+                "question": "Хотите ознакомиться с возможными предложениями финансирования?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Только информационный интерес: явный ответ или источник средств «кредит/смешанное» из подтверждённого профиля."
+            ],
+            "unknown_conditions": [
+              "Не проверены требования к заёмщику, стажу бизнеса, документам, обеспечению и целям; ставка, лимит и решение неизвестны."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-financing-source",
+              "url": "https://www.vtb.ru/malyj-biznes/kredity-i-garantii/",
+              "title": "Кредиты для бизнеса",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "Справочный раздел перечисляет направления финансирования бизнеса; конкретный кредит здесь не выбирается.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        {
+          "product": {
+            "id": "vtb-internet-acquiring",
+            "version": "demo-v1",
+            "name": "Интернет-эквайринг ВТБ",
+            "category": "internet_acquiring",
+            "description": "Приём оплаты в цифровом канале продаж.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-internet-source"
+            ],
+            "rules": [
+              {
+                "id": "registered-business",
+                "field": "registration_status",
+                "one_of": [
+                  "ip",
+                  "legal_entity"
+                ],
+                "explanation": "Зарегистрированный ИП или юридическое лицо.",
+                "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "online-sales",
+                "field": "sales_channel",
+                "one_of": [
+                  "online",
+                  "both"
+                ],
+                "explanation": "Онлайн-продажи или совмещённый канал.",
+                "question": "Есть ли онлайн-продажи: сайт, приложение или другой цифровой канал?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "card-payments",
+                "field": "accepts_card_payments",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Потребность в приёме оплаты картами.",
+                "question": "Планируете ли принимать оплату картами?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Демо-правило: зарегистрированный бизнес, онлайн-канал и потребность в приёме карт."
+            ],
+            "unknown_conditions": [
+              "Не проверены ограничения деятельности, требования к сайту/каналу, документы, техническая интеграция и тариф."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-internet-source",
+              "url": "https://www.vtb.ru/malyj-biznes/acquiring/internet-acquiring/",
+              "title": "Интернет-эквайринг",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "Страница описывает приём интернет-платежей; требования зависят от деятельности, канала оплаты и сайта.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        {
+          "product": {
+            "id": "vtb-merchant-acquiring",
+            "version": "demo-v1",
+            "name": "Торговый эквайринг ВТБ",
+            "category": "merchant_acquiring",
+            "description": "Приём карточных платежей в физической точке.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-merchant-source"
+            ],
+            "rules": [
+              {
+                "id": "registered-business",
+                "field": "registration_status",
+                "one_of": [
+                  "ip",
+                  "legal_entity"
+                ],
+                "explanation": "Зарегистрированный ИП или юридическое лицо.",
+                "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "offline-sales",
+                "field": "sales_channel",
+                "one_of": [
+                  "offline",
+                  "both"
+                ],
+                "explanation": "Офлайн-продажи или совмещённый канал.",
+                "question": "Какой канал продаж планируется: офлайн, онлайн или оба?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "card-payments",
+                "field": "accepts_card_payments",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Потребность в приёме оплаты картами.",
+                "question": "Планируете ли принимать оплату картами?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Демо-правило: зарегистрированный бизнес, офлайн-канал и потребность в приёме карт."
+            ],
+            "unknown_conditions": [
+              "Проверить вид деятельности/MCC, оборот, документы, терминал и персональную комиссию; из бюджета это не определяется."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-merchant-source",
+              "url": "https://www.vtb.ru/malyj-biznes/acquiring/",
+              "title": "Эквайринг для бизнеса",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "В перечне платёжных решений указан торговый эквайринг для приёма оплаты через терминал.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        {
+          "product": {
+            "id": "vtb-registration",
+            "version": "demo-v1",
+            "name": "Сервис регистрации бизнеса ВТБ",
+            "category": "registration",
+            "description": "Помощь в подготовке регистрации бизнеса.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-registration-source"
+            ],
+            "rules": [
+              {
+                "id": "not-registered",
+                "field": "registration_status",
+                "one_of": [
+                  "not_registered"
+                ],
+                "explanation": "Отсутствие регистрации бизнеса.",
+                "question": "Бизнес уже зарегистрирован?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "launch-stage",
+                "field": "launch_stage",
+                "one_of": [
+                  "idea",
+                  "preparing"
+                ],
+                "explanation": "Стадия идеи или подготовки запуска.",
+                "question": "На какой стадии находится бизнес?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "registration-help",
+                "field": "needs_registration_help",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Запрос помощи с регистрацией.",
+                "question": "Хотите ознакомиться с сервисом регистрации бизнеса?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Демо-правило: идея/подготовка запуска, нет регистрации, запрошена помощь."
+            ],
+            "unknown_conditions": [
+              "Проверить допустимость формы бизнеса, документы, идентификацию и доступность процедуры в Казани или другом городе."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-registration-source",
+              "url": "https://www.vtb.ru/malyj-biznes/registraciya/",
+              "title": "Регистрация бизнеса",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "Публичная страница описывает помощь с регистрацией ИП и ООО; дистанционная процедура зависит от идентификации и города.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        {
+          "product": {
+            "id": "vtb-rko",
+            "version": "demo-v1",
+            "name": "Расчётно-кассовое обслуживание ВТБ",
+            "category": "settlement",
+            "description": "Счёт и расчётные операции бизнеса.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-rko-source"
+            ],
+            "rules": [
+              {
+                "id": "registered-business",
+                "field": "registration_status",
+                "one_of": [
+                  "ip",
+                  "legal_entity"
+                ],
+                "explanation": "Зарегистрированный ИП или юридическое лицо.",
+                "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "account-request",
+                "field": "needs_settlement_account",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Потребность в расчётном счёте.",
+                "question": "Нужен ли вам расчётный счёт для бизнеса?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Демо-правило: зарегистрированный бизнес и явно указанная потребность в счёте."
+            ],
+            "unknown_conditions": [
+              "Нужны проверка документов и условий открытия в банке; пакет услуг и тариф не определены."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-rko-source",
+              "url": "https://www.vtb.ru/malyj-biznes/ru/rko/",
+              "title": "РКО для бизнеса",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "Публичная страница описывает расчётно-кассовое обслуживание бизнеса.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        }
+      ],
+      "limitations": [
+        "Подбор отражает соответствие заявленной потребности назначению продукта, не решение банка.",
+        "Тарифы, документы, региональная доступность и полные условия требуют проверки в ВТБ.",
+        "Кредитоспособность, вероятность одобрения, лимит и ставка не рассчитываются.",
+        "Данные не передаются в банк; заявок и банковской интеграции нет.",
+        "Демонстрационные совпадения не являются действующими предложениями ВТБ."
+      ]
+    },
+    "request_fingerprint": "fd93feded6acae3845750142de532f7692e2ce7edd69730600c9ce01b26e593d",
+    "profile_snapshot": {
+      "id": "00000000-0000-0000-0000-000000000011",
+      "conversation_id": "00000000-0000-0000-0000-000000000011",
+      "city": "Казань",
+      "category": "кофейня",
+      "budget": "2000000",
+      "funding": "own_funds",
+      "preferences": {
+        "format": "навынос",
+        "preferred_districts": [],
+        "constraints": []
+      },
+      "confirmation_state": "confirmed"
+    },
+    "profile_version": 2,
+    "needs_snapshot": {
+      "launch_stage": "preparing",
+      "registration_status": "ip",
+      "sales_channel": "offline",
+      "needs_settlement_account": true,
+      "needs_registration_help": false,
+      "accepts_card_payments": true,
+      "needs_expense_card": true,
+      "financing_interest": false
+    },
+    "decisions": [
+      {
+        "entry": {
+          "product": {
+            "id": "vtb-business-card",
+            "version": "demo-v1",
+            "name": "Дебетовая бизнес-карта ВТБ",
+            "category": "business_card",
+            "description": "Инструмент для явно запрошенных расходов бизнеса.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-card-source"
+            ],
+            "rules": [
+              {
+                "id": "registered-business",
+                "field": "registration_status",
+                "one_of": [
+                  "ip",
+                  "legal_entity"
+                ],
+                "explanation": "Зарегистрированный ИП или юридическое лицо.",
+                "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "expense-card",
+                "field": "needs_expense_card",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Потребность в дебетовой карте для расходов бизнеса.",
+                "question": "Нужна ли дебетовая карта для расходов бизнеса?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Демо-правило: зарегистрированный бизнес и явная потребность в дебетовой карте расходов."
+            ],
+            "unknown_conditions": [
+              "Уточнить открытие/привязку счёта, допустимые операции, держателей, лимиты и тариф; кредитный лимит не рассматривается."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-card-source",
+              "url": "https://www.vtb.ru/malyj-biznes/biznes-karty/",
+              "title": "Бизнес-карты для ИП и ООО",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "Страница описывает карты для расходов бизнеса. Демо-карточка относится к дебетовой функции, не к кредитной карте.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        "status": "demo_match",
+        "reasons": [
+          "Ваши ответы соответствуют условию: Зарегистрированный ИП или юридическое лицо.",
+          "Ваши ответы соответствуют условию: Потребность в дебетовой карте для расходов бизнеса."
+        ],
+        "evaluations": [
+          {
+            "rule": {
+              "id": "registered-business",
+              "field": "registration_status",
+              "one_of": [
+                "ip",
+                "legal_entity"
+              ],
+              "explanation": "Зарегистрированный ИП или юридическое лицо.",
+              "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "matched",
+            "actual_value": "ip",
+            "evaluated_value": "ip",
+            "input_path": "needs.registration_status",
+            "input_origin": "user_input"
+          },
+          {
+            "rule": {
+              "id": "expense-card",
+              "field": "needs_expense_card",
+              "one_of": [
+                true
+              ],
+              "explanation": "Потребность в дебетовой карте для расходов бизнеса.",
+              "question": "Нужна ли дебетовая карта для расходов бизнеса?",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "matched",
+            "actual_value": true,
+            "evaluated_value": true,
+            "input_path": "needs.needs_expense_card",
+            "input_origin": "user_input"
+          }
+        ],
+        "missing_fields": []
+      },
+      {
+        "entry": {
+          "product": {
+            "id": "vtb-financing-information",
+            "version": "demo-v1",
+            "name": "Финансирование бизнеса ВТБ — справочная информация",
+            "category": "financing_information",
+            "description": "Ознакомление с направлениями финансирования без подбора кредита и оценки риска.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-financing-source"
+            ],
+            "rules": [
+              {
+                "id": "financing-interest",
+                "field": "financing_interest",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Интерес к информации о финансировании.",
+                "question": "Хотите ознакомиться с возможными предложениями финансирования?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Только информационный интерес: явный ответ или источник средств «кредит/смешанное» из подтверждённого профиля."
+            ],
+            "unknown_conditions": [
+              "Не проверены требования к заёмщику, стажу бизнеса, документам, обеспечению и целям; ставка, лимит и решение неизвестны."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-financing-source",
+              "url": "https://www.vtb.ru/malyj-biznes/kredity-i-garantii/",
+              "title": "Кредиты для бизнеса",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "Справочный раздел перечисляет направления финансирования бизнеса; конкретный кредит здесь не выбирается.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        "status": "not_matched",
+        "reasons": [
+          "Условие потребности не выполнено: Интерес к информации о финансировании."
+        ],
+        "evaluations": [
+          {
+            "rule": {
+              "id": "financing-interest",
+              "field": "financing_interest",
+              "one_of": [
+                true
+              ],
+              "explanation": "Интерес к информации о финансировании.",
+              "question": "Хотите ознакомиться с возможными предложениями финансирования?",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "not_matched",
+            "actual_value": false,
+            "evaluated_value": false,
+            "input_path": "needs.financing_interest",
+            "input_origin": "user_input"
+          }
+        ],
+        "missing_fields": []
+      },
+      {
+        "entry": {
+          "product": {
+            "id": "vtb-internet-acquiring",
+            "version": "demo-v1",
+            "name": "Интернет-эквайринг ВТБ",
+            "category": "internet_acquiring",
+            "description": "Приём оплаты в цифровом канале продаж.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-internet-source"
+            ],
+            "rules": [
+              {
+                "id": "registered-business",
+                "field": "registration_status",
+                "one_of": [
+                  "ip",
+                  "legal_entity"
+                ],
+                "explanation": "Зарегистрированный ИП или юридическое лицо.",
+                "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "online-sales",
+                "field": "sales_channel",
+                "one_of": [
+                  "online",
+                  "both"
+                ],
+                "explanation": "Онлайн-продажи или совмещённый канал.",
+                "question": "Есть ли онлайн-продажи: сайт, приложение или другой цифровой канал?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "card-payments",
+                "field": "accepts_card_payments",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Потребность в приёме оплаты картами.",
+                "question": "Планируете ли принимать оплату картами?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Демо-правило: зарегистрированный бизнес, онлайн-канал и потребность в приёме карт."
+            ],
+            "unknown_conditions": [
+              "Не проверены ограничения деятельности, требования к сайту/каналу, документы, техническая интеграция и тариф."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-internet-source",
+              "url": "https://www.vtb.ru/malyj-biznes/acquiring/internet-acquiring/",
+              "title": "Интернет-эквайринг",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "Страница описывает приём интернет-платежей; требования зависят от деятельности, канала оплаты и сайта.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        "status": "not_matched",
+        "reasons": [
+          "Условие потребности не выполнено: Онлайн-продажи или совмещённый канал."
+        ],
+        "evaluations": [
+          {
+            "rule": {
+              "id": "registered-business",
+              "field": "registration_status",
+              "one_of": [
+                "ip",
+                "legal_entity"
+              ],
+              "explanation": "Зарегистрированный ИП или юридическое лицо.",
+              "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "matched",
+            "actual_value": "ip",
+            "evaluated_value": "ip",
+            "input_path": "needs.registration_status",
+            "input_origin": "user_input"
+          },
+          {
+            "rule": {
+              "id": "online-sales",
+              "field": "sales_channel",
+              "one_of": [
+                "online",
+                "both"
+              ],
+              "explanation": "Онлайн-продажи или совмещённый канал.",
+              "question": "Есть ли онлайн-продажи: сайт, приложение или другой цифровой канал?",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "not_matched",
+            "actual_value": "offline",
+            "evaluated_value": "offline",
+            "input_path": "needs.sales_channel",
+            "input_origin": "user_input"
+          },
+          {
+            "rule": {
+              "id": "card-payments",
+              "field": "accepts_card_payments",
+              "one_of": [
+                true
+              ],
+              "explanation": "Потребность в приёме оплаты картами.",
+              "question": "Планируете ли принимать оплату картами?",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "matched",
+            "actual_value": true,
+            "evaluated_value": true,
+            "input_path": "needs.accepts_card_payments",
+            "input_origin": "user_input"
+          }
+        ],
+        "missing_fields": []
+      },
+      {
+        "entry": {
+          "product": {
+            "id": "vtb-merchant-acquiring",
+            "version": "demo-v1",
+            "name": "Торговый эквайринг ВТБ",
+            "category": "merchant_acquiring",
+            "description": "Приём карточных платежей в физической точке.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-merchant-source"
+            ],
+            "rules": [
+              {
+                "id": "registered-business",
+                "field": "registration_status",
+                "one_of": [
+                  "ip",
+                  "legal_entity"
+                ],
+                "explanation": "Зарегистрированный ИП или юридическое лицо.",
+                "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "offline-sales",
+                "field": "sales_channel",
+                "one_of": [
+                  "offline",
+                  "both"
+                ],
+                "explanation": "Офлайн-продажи или совмещённый канал.",
+                "question": "Какой канал продаж планируется: офлайн, онлайн или оба?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "card-payments",
+                "field": "accepts_card_payments",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Потребность в приёме оплаты картами.",
+                "question": "Планируете ли принимать оплату картами?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Демо-правило: зарегистрированный бизнес, офлайн-канал и потребность в приёме карт."
+            ],
+            "unknown_conditions": [
+              "Проверить вид деятельности/MCC, оборот, документы, терминал и персональную комиссию; из бюджета это не определяется."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-merchant-source",
+              "url": "https://www.vtb.ru/malyj-biznes/acquiring/",
+              "title": "Эквайринг для бизнеса",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "В перечне платёжных решений указан торговый эквайринг для приёма оплаты через терминал.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        "status": "demo_match",
+        "reasons": [
+          "Ваши ответы соответствуют условию: Зарегистрированный ИП или юридическое лицо.",
+          "Ваши ответы соответствуют условию: Офлайн-продажи или совмещённый канал.",
+          "Ваши ответы соответствуют условию: Потребность в приёме оплаты картами."
+        ],
+        "evaluations": [
+          {
+            "rule": {
+              "id": "registered-business",
+              "field": "registration_status",
+              "one_of": [
+                "ip",
+                "legal_entity"
+              ],
+              "explanation": "Зарегистрированный ИП или юридическое лицо.",
+              "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "matched",
+            "actual_value": "ip",
+            "evaluated_value": "ip",
+            "input_path": "needs.registration_status",
+            "input_origin": "user_input"
+          },
+          {
+            "rule": {
+              "id": "offline-sales",
+              "field": "sales_channel",
+              "one_of": [
+                "offline",
+                "both"
+              ],
+              "explanation": "Офлайн-продажи или совмещённый канал.",
+              "question": "Какой канал продаж планируется: офлайн, онлайн или оба?",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "matched",
+            "actual_value": "offline",
+            "evaluated_value": "offline",
+            "input_path": "needs.sales_channel",
+            "input_origin": "user_input"
+          },
+          {
+            "rule": {
+              "id": "card-payments",
+              "field": "accepts_card_payments",
+              "one_of": [
+                true
+              ],
+              "explanation": "Потребность в приёме оплаты картами.",
+              "question": "Планируете ли принимать оплату картами?",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "matched",
+            "actual_value": true,
+            "evaluated_value": true,
+            "input_path": "needs.accepts_card_payments",
+            "input_origin": "user_input"
+          }
+        ],
+        "missing_fields": []
+      },
+      {
+        "entry": {
+          "product": {
+            "id": "vtb-registration",
+            "version": "demo-v1",
+            "name": "Сервис регистрации бизнеса ВТБ",
+            "category": "registration",
+            "description": "Помощь в подготовке регистрации бизнеса.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-registration-source"
+            ],
+            "rules": [
+              {
+                "id": "not-registered",
+                "field": "registration_status",
+                "one_of": [
+                  "not_registered"
+                ],
+                "explanation": "Отсутствие регистрации бизнеса.",
+                "question": "Бизнес уже зарегистрирован?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "launch-stage",
+                "field": "launch_stage",
+                "one_of": [
+                  "idea",
+                  "preparing"
+                ],
+                "explanation": "Стадия идеи или подготовки запуска.",
+                "question": "На какой стадии находится бизнес?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "registration-help",
+                "field": "needs_registration_help",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Запрос помощи с регистрацией.",
+                "question": "Хотите ознакомиться с сервисом регистрации бизнеса?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Демо-правило: идея/подготовка запуска, нет регистрации, запрошена помощь."
+            ],
+            "unknown_conditions": [
+              "Проверить допустимость формы бизнеса, документы, идентификацию и доступность процедуры в Казани или другом городе."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-registration-source",
+              "url": "https://www.vtb.ru/malyj-biznes/registraciya/",
+              "title": "Регистрация бизнеса",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "Публичная страница описывает помощь с регистрацией ИП и ООО; дистанционная процедура зависит от идентификации и города.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        "status": "not_matched",
+        "reasons": [
+          "Условие потребности не выполнено: Отсутствие регистрации бизнеса.",
+          "Условие потребности не выполнено: Запрос помощи с регистрацией."
+        ],
+        "evaluations": [
+          {
+            "rule": {
+              "id": "not-registered",
+              "field": "registration_status",
+              "one_of": [
+                "not_registered"
+              ],
+              "explanation": "Отсутствие регистрации бизнеса.",
+              "question": "Бизнес уже зарегистрирован?",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "not_matched",
+            "actual_value": "ip",
+            "evaluated_value": "ip",
+            "input_path": "needs.registration_status",
+            "input_origin": "user_input"
+          },
+          {
+            "rule": {
+              "id": "launch-stage",
+              "field": "launch_stage",
+              "one_of": [
+                "idea",
+                "preparing"
+              ],
+              "explanation": "Стадия идеи или подготовки запуска.",
+              "question": "На какой стадии находится бизнес?",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "matched",
+            "actual_value": "preparing",
+            "evaluated_value": "preparing",
+            "input_path": "needs.launch_stage",
+            "input_origin": "user_input"
+          },
+          {
+            "rule": {
+              "id": "registration-help",
+              "field": "needs_registration_help",
+              "one_of": [
+                true
+              ],
+              "explanation": "Запрос помощи с регистрацией.",
+              "question": "Хотите ознакомиться с сервисом регистрации бизнеса?",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "not_matched",
+            "actual_value": false,
+            "evaluated_value": false,
+            "input_path": "needs.needs_registration_help",
+            "input_origin": "user_input"
+          }
+        ],
+        "missing_fields": []
+      },
+      {
+        "entry": {
+          "product": {
+            "id": "vtb-rko",
+            "version": "demo-v1",
+            "name": "Расчётно-кассовое обслуживание ВТБ",
+            "category": "settlement",
+            "description": "Счёт и расчётные операции бизнеса.",
+            "mode": "demonstration",
+            "status": "unconfirmed",
+            "last_reviewed_at": "2026-10-23",
+            "source_ids": [
+              "vtb-rko-source"
+            ],
+            "rules": [
+              {
+                "id": "registered-business",
+                "field": "registration_status",
+                "one_of": [
+                  "ip",
+                  "legal_entity"
+                ],
+                "explanation": "Зарегистрированный ИП или юридическое лицо.",
+                "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              },
+              {
+                "id": "account-request",
+                "field": "needs_settlement_account",
+                "one_of": [
+                  true
+                ],
+                "explanation": "Потребность в расчётном счёте.",
+                "question": "Нужен ли вам расчётный счёт для бизнеса?",
+                "origin": "application_policy",
+                "purpose": "relevance_only_not_bank_eligibility"
+              }
+            ],
+            "applicable_conditions": [
+              "Демо-правило: зарегистрированный бизнес и явно указанная потребность в счёте."
+            ],
+            "unknown_conditions": [
+              "Нужны проверка документов и условий открытия в банке; пакет услуг и тариф не определены."
+            ],
+            "limitations": [
+              "Демонстрационное соответствие потребности, не действующее предложение или проверка права на продукт.",
+              "Правила приложения не заменяют банковскую проверку; договор/счёт/кредит не оформляются."
+            ]
+          },
+          "sources": [
+            {
+              "id": "vtb-rko-source",
+              "url": "https://www.vtb.ru/malyj-biznes/ru/rko/",
+              "title": "РКО для бизнеса",
+              "reviewed_at": "2026-10-23",
+              "verification": "cached_only",
+              "last_verified_at": null,
+              "content_sha256": null,
+              "summary": "Публичная страница описывает расчётно-кассовое обслуживание бизнеса.",
+              "limitations": [
+                "Осмотрена индексированная копия официальной страницы, не подтверждённое текущее предложение.",
+                "Прямая TLS-проверка 23.10.2026 не удалась; сертификаты не обходились. Тарифы и доступность не подтверждены."
+              ]
+            }
+          ],
+          "availability": "demonstration_only",
+          "availability_reasons": [
+            "Демо-карточка: актуальные условия и доступность не подтверждены."
+          ]
+        },
+        "status": "demo_match",
+        "reasons": [
+          "Ваши ответы соответствуют условию: Зарегистрированный ИП или юридическое лицо.",
+          "Ваши ответы соответствуют условию: Потребность в расчётном счёте."
+        ],
+        "evaluations": [
+          {
+            "rule": {
+              "id": "registered-business",
+              "field": "registration_status",
+              "one_of": [
+                "ip",
+                "legal_entity"
+              ],
+              "explanation": "Зарегистрированный ИП или юридическое лицо.",
+              "question": "Бизнес уже зарегистрирован? Укажите ИП, юридическое лицо или отсутствие регистрации.",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "matched",
+            "actual_value": "ip",
+            "evaluated_value": "ip",
+            "input_path": "needs.registration_status",
+            "input_origin": "user_input"
+          },
+          {
+            "rule": {
+              "id": "account-request",
+              "field": "needs_settlement_account",
+              "one_of": [
+                true
+              ],
+              "explanation": "Потребность в расчётном счёте.",
+              "question": "Нужен ли вам расчётный счёт для бизнеса?",
+              "origin": "application_policy",
+              "purpose": "relevance_only_not_bank_eligibility"
+            },
+            "status": "matched",
+            "actual_value": true,
+            "evaluated_value": true,
+            "input_path": "needs.needs_settlement_account",
+            "input_origin": "user_input"
+          }
+        ],
+        "missing_fields": []
+      }
+    ],
+    "recommended_ids": [],
+    "demonstration_ids": [
+      "vtb-business-card",
+      "vtb-merchant-acquiring",
+      "vtb-rko"
+    ],
+    "missing_fields": [],
+    "credit_decision": "not_assessed",
+    "limitations": [
+      "Подбор отражает соответствие заявленной потребности назначению продукта, не решение банка.",
+      "Тарифы, документы, региональная доступность и полные условия требуют проверки в ВТБ.",
+      "Кредитоспособность, вероятность одобрения, лимит и ставка не рассчитываются.",
+      "Данные не передаются в банк; заявок и банковской интеграции нет.",
+      "Демонстрационные совпадения не являются действующими предложениями ВТБ."
+    ]
+  }
+}
