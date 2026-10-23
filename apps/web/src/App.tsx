@@ -1,0 +1,284 @@
+import { useEffect, useRef, useState } from "react";
+import Chat from "./Chat";
+import Locations from "./Locations";
+import Finance from "./Finance";
+import {
+  ApiError,
+  errorText,
+  history,
+  readCredential,
+  request,
+  rub,
+  saveCredential,
+} from "./api";
+import type { Conversation, Credential, Ranking, Schemas } from "./api";
+
+export default function App() {
+  const [credential, setCredential] = useState<Credential | null>(
+    readCredential,
+  );
+  const [conversation, setConversation] = useState<Conversation | null>(null);
+  const [messages, setMessages] = useState<Schemas["MessageView"][]>([]);
+  const [busy, setBusy] = useState(() => Boolean(readCredential()));
+  const [error, setError] = useState("");
+  const [health, setHealth] = useState("Проверка API");
+  const [tab, setTab] = useState<"map" | "compare" | "finance">("map");
+  const [ranking, setRanking] = useState<Ranking | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [financeContext, setFinanceContext] = useState(0);
+  const lock = useRef(false);
+  useEffect(() => {
+    const c = new AbortController();
+    request<Schemas["HealthResponse"]>("/healthz", { signal: c.signal })
+      .then(() => setHealth("API и PostGIS доступны"))
+      .catch(() => {
+        if (!c.signal.aborted) setHealth("API недоступен");
+      });
+    return () => c.abort();
+  }, []);
+  useEffect(() => {
+    const credential = readCredential();
+    if (!credential) return;
+    const c = new AbortController();
+    Promise.all([
+      request<Conversation>(`/api/v1/conversations/${credential.id}`, {
+        credential,
+        signal: c.signal,
+      }),
+      history(credential, c.signal),
+    ])
+      .then(([view, items]) => {
+        setConversation(view);
+        setMessages(items);
+      })
+      .catch((e) => {
+        if (!c.signal.aborted) setError(errorText(e));
+      })
+      .finally(() => {
+        if (!c.signal.aborted) setBusy(false);
+      });
+    return () => c.abort();
+  }, []);
+  async function refresh(key = credential) {
+    if (!key) return;
+    const [view, items] = await Promise.all([
+      request<Conversation>(`/api/v1/conversations/${key.id}`, {
+        credential: key,
+      }),
+      history(key),
+    ]);
+    setConversation(view);
+    setMessages(items);
+    setRanking(null);
+    setSelected(null);
+    setFinanceContext((n) => n + 1);
+  }
+  async function create() {
+    const created = await request<Schemas["ConversationCreated"]>(
+      "/api/v1/conversations",
+      { method: "POST" },
+    );
+    const key = { id: created.id, token: created.access_token };
+    if (!saveCredential(key))
+      setError(
+        "Браузер запретил сохранение ключа. Не закрывайте и не перезагружайте вкладку: доступ к этой беседе будет утрачен.",
+      );
+    setCredential(key);
+    setConversation(created);
+    setMessages([]);
+    setRanking(null);
+    setSelected(null);
+    setFinanceContext((n) => n + 1);
+    return { key, view: created };
+  }
+  async function action(work: () => Promise<void>, propagate = false) {
+    if (lock.current) return;
+    lock.current = true;
+    setBusy(true);
+    setError("");
+    try {
+      await work();
+    } catch (e) {
+      if (
+        e instanceof ApiError &&
+        (e.code === "version_conflict" || e.code === "network")
+      ) {
+        try {
+          await refresh();
+        } catch {
+          /* Preserve the original action error. */
+        }
+      }
+      setError(errorText(e));
+      if (propagate) throw e;
+    } finally {
+      setBusy(false);
+      lock.current = false;
+    }
+  }
+  async function mutate(
+    path: string,
+    method: string,
+    body: unknown,
+    key: Credential,
+  ) {
+    const view = await request<Conversation>(
+      `/api/v1/conversations/${key.id}${path}`,
+      { method, body, credential: key },
+    );
+    setConversation(view);
+    setRanking(null);
+    setSelected(null);
+    setFinanceContext((n) => n + 1);
+    setMessages(await history(key));
+  }
+  const zone =
+    ranking && selected
+      ? {
+          dataset_slug: ranking.candidates.dataset.slug,
+          data_version: ranking.candidates.dataset.data_version,
+          candidate_id: selected,
+          ranking_fingerprint: ranking.request_fingerprint,
+        }
+      : null;
+  return (
+    <div className="app-shell">
+      <header className="topbar">
+        <a className="brand" href="/">
+          <span className="brand-icon">
+            b<span>·</span>
+          </span>
+          <span>
+            Business<span className="brand-ai">AI</span>
+          </span>
+        </a>
+        <span className="brand-divider" />
+        <span className="brand-caption">Ваш бизнес начинается с решения</span>
+        <div className="topbar-right">
+          <span className="health">
+            <i
+              className={`dot ${health === "API и PostGIS доступны" ? "mint-dot" : "amber-dot"}`}
+            />
+            {health}
+          </span>
+          <span className="tag">MVP</span>
+          <span className="avatar">S</span>
+        </div>
+      </header>
+      <div className="workspace">
+        <Chat
+          conversation={conversation}
+          messages={messages}
+          busy={busy}
+          onNew={() => {
+            void action(async () => {
+              await create();
+            });
+          }}
+          onRefresh={() => {
+            void action(refresh);
+          }}
+          onSend={(content) =>
+            action(async () => {
+              const current =
+                credential && conversation
+                  ? { key: credential, view: conversation }
+                  : await create();
+              await mutate(
+                "/messages",
+                "POST",
+                { content, expected_version: current.view.version },
+                current.key,
+              );
+            }, true)
+          }
+          onPatch={(patch) =>
+            action(async () => {
+              if (credential && conversation)
+                await mutate(
+                  "/profile",
+                  "PATCH",
+                  { patch, expected_version: conversation.version },
+                  credential,
+                );
+            })
+          }
+          onConfirm={() => {
+            void action(async () => {
+              if (credential && conversation)
+                await mutate(
+                  "/profile/confirm",
+                  "POST",
+                  { expected_version: conversation.version },
+                  credential,
+                );
+            });
+          }}
+        />
+        <main className="main-panel">
+          <div className="workspace-top">
+            <div className="breadcrumb">
+              Рабочее пространство <span>/</span>{" "}
+              {conversation?.profile.category || "Новая бизнес-идея"}
+            </div>
+            <span className="subtle">{rub(conversation?.profile.budget)}</span>
+          </div>
+          <nav className="tabs" aria-label="Разделы анализа">
+            <button
+              className={tab === "map" ? "active" : ""}
+              onClick={() => setTab("map")}
+            >
+              <span>⌖</span> Карта и локации
+            </button>
+            <button
+              className={tab === "compare" ? "active" : ""}
+              onClick={() => setTab("compare")}
+            >
+              <span>▥</span> Сравнение зон
+            </button>
+            <button
+              className={tab === "finance" ? "active" : ""}
+              onClick={() => setTab("finance")}
+            >
+              <span>↗</span> Финансовая модель
+            </button>
+          </nav>
+          {error && (
+            <div className="alert global-alert" role="alert">
+              {error}
+              <button className="text-button" onClick={() => setError("")}>
+                Закрыть
+              </button>
+            </div>
+          )}
+          <div className="main-content">
+            <div hidden={tab === "finance"}>
+              <Locations
+                key={`${conversation?.id || "none"}:${conversation?.version ?? 0}`}
+                profile={conversation?.profile || null}
+                ranking={ranking}
+                onRanking={setRanking}
+                selected={selected}
+                onSelect={setSelected}
+                comparison={tab === "compare"}
+                onFinance={() => setTab("finance")}
+              />
+            </div>
+            <div hidden={tab !== "finance"}>
+              <Finance
+                key={`${financeContext}:${selected || "none"}`}
+                profile={conversation?.profile || null}
+                zone={zone}
+              />
+            </div>
+          </div>
+          <footer className="product-footer">
+            <span>Sab0tage · Business AI</span>
+            <span>Данные → контекст → осознанное решение</span>
+            <span>Банковские продукты — следующий этап</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+  );
+}

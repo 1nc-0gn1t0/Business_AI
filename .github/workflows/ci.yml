@@ -49,6 +49,12 @@ jobs:
         run: uv tool run --from prek==0.5.4 prek run --all-files
       - name: Build web
         run: npm --prefix apps/web run build
+      - name: Install Chromium for mocked browser workflow
+        if: runner.os == 'Linux'
+        run: npx --prefix apps/web playwright install --with-deps chromium
+      - name: Browser workflow (explicit mock adapter; no GPU or model)
+        if: runner.os == 'Linux'
+        run: npm --prefix apps/web run test:e2e
 
   compose:
     name: Compose smoke

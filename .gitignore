@@ -13,6 +13,8 @@ dist/
 .DS_Store
 Thumbs.db
 .playwright-cli/
+apps/web/test-results/
+apps/web/playwright-report/
 local-llm-eval.json
 local-candidate-eval.json
 local-candidate-proxy-eval.json

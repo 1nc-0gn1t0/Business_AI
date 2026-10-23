@@ -187,7 +187,11 @@ class Conversations:
                 patch = call.arguments
                 mode = llm.mode
                 if call.intent == "analytics":
-                    answer = "Аналитика, финансовые расчёты и продукты ВТБ ещё не подключены. "
+                    answer = (
+                        "Географический анализ и финансовые расчёты доступны в разделах "
+                        "карты и финансовой модели после проверки вводных. "
+                        "Банковские продукты пока не подключены. "
+                    )
                 elif call.intent == "unrelated":
                     answer = "Помогу собрать вводные для запуска бизнеса. "
                 if call.intent != "profile":

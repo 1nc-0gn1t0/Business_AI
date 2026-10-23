@@ -48,3 +48,11 @@ entry = 'node apps/web/node_modules/typescript/bin/tsc --project apps/web/tsconf
 language = "system"
 pass_filenames = false
 always_run = true
+
+[[repos.hooks]]
+id = 'web-tests'
+name = 'Web unit and API integration tests (mock)'
+entry = 'node apps/web/node_modules/vitest/vitest.mjs run --config vitest.config.ts --root apps/web'
+language = "system"
+pass_filenames = false
+always_run = true

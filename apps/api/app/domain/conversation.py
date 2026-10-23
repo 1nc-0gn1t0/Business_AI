@@ -78,7 +78,8 @@ def reply_for(profile: BusinessProfile) -> str:
     )
     if profile.confirmation_state == ConfirmationState.CONFIRMED:
         return (
-            summary + " Вводные подтверждены. Аналитика и банковские интеграции ещё не подключены."
+            summary + " Вводные подтверждены. Откройте разделы карты и финансовой модели "
+            "для расчётов. Банковские интеграции пока не подключены."
         )
     return summary + " Проверьте вводные: исправьте их или напишите «подтверждаю»."
 

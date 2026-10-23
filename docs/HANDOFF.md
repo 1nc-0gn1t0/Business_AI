@@ -2,86 +2,93 @@
 
 ## Состояние на 23.10.2026
 
-- PR #8 BA-008 объединён, merge `486018b1497b8fc94dcc410941e16950e8abc2b1`.
-  Перед BA-009 main синхронизирован с origin/main, рабочее дерево было чистым.
-- BA-009 реализована в `codex/BA-009-financial-engine` от `486018b`.
-  Фактический HEAD, PR и статус GitHub CI после push — в итоговом сообщении.
-  Не объединять автоматически. BA-010 не начиналась.
-- LLM/диалоги и геомодули BA-003…BA-008 сохранены; миграций/зависимостей не добавлено.
+- PR #9 (BA-009) объединён: `07b579e50a5e1995c0eaa0996b4a99d78cb9129f`.
+  Перед BA-010 main синхронизирован с origin/main, рабочее дерево было чистым.
+- BA-010: ветка `codex/BA-010-product-interface` от этого main.
+  Фактический commit/PR и статус GitHub Actions после push — в итоговом сообщении.
+  PR не объединять автоматически. BA-011 не начиналась.
 
-## Сделано в BA-009
+## Сделано
 
-- `app/finance/schemas.py`, `engine.py`; `app/api/finance.py`, route
-  POST `/api/v1/finance/calculate` и подключение router в main.py.
-- Чистый Decimal-движок: отдельный Context(prec=64, HALF_UP), без float,
-  независим от внешнего precision/rounding/traps. Новые money/ratio inputs —
-  decimal strings/integers; float/bool отклоняются. Вычисленные деньги/counts — строки.
-- Стартовая потребность: оборудование, ремонт, депозит, запас, организационные,
-  прочие расходы и резерв. Это использования денег, не всё является expense/CAPEX.
-  Сравнение с budget BusinessProfile: остаток/дефицит либо budget_unknown.
-- Месячные fixed/variable costs, revenue, точная/display unit margin,
-  monthly contribution, operating result, ceil BE по неокруглённой марже.
-  Variable costs округляются за месяц до копеек перед вычитанием; строки сходятся.
-- Три явно заданных сценария; optional полный override fixed costs сценария,
-  сравнение с base, one-at-a-time sensitivity чека/продаж/аренды/ratio.
-  Выход perturbation за домен → outside_domain/null, без скрытого clamp.
-- У каждой существенной вводной origin/source/version/confidence/limitations.
-  Документированные факты требуют caller attestation + evidence_ref/date;
-  это не независимая проверка документа сервисом. Демо-вводные только synthetic,
-  бюджет user_input, расчёты modelled; формулы/input_paths/algorithm/version/hash видны.
-- Снимок профиля/зоны передаёт клиент; приватная беседа по ID не читается,
-  профиль не подтверждается/не меняется, AnalysisRun не создаётся.
-  Draft разрешён для моделирования с warning. Зона — непроверенная context reference,
-  OSM-score не принимается и не влияет на финансовую математику.
-- README, FINANCE_ENGINE.md, ADR-0006, явный редактируемый demo input/result JSON,
-  `scripts/eval_finance.py` для HTTP + независимого integer/Fraction эталона.
+- Единый React/TypeScript workspace в тёмной палитре: AI-чат/профиль,
+  MapLibre-карта, сравнение кандидатов, финансовая модель, мобильная адаптация.
+- `apps/web/src/App.tsx`, `Chat.tsx`, `api.ts`: реальные conversation API,
+  sessionStorage guest key, header-only доступ, вся история с пагинацией,
+  expected_version, PATCH/confirm, обработка 409/502/503/504 и ошибок сети.
+  Режим stub/rules не называется Qwen. Изменение профиля сбрасывает анализ.
+- `GeoMap.tsx`, `Locations.tsx`: настоящие PostGIS GeoJSON, покрытие,
+  POI выбранной категории (явный предел 500), полигоны районов/зон, выбор зоны,
+  источники/даты/версии/ограничения. Заметные маркеры с серверным rank.
+  Исправлено всплытие клика маркера к слою под ним; регрессия проверяется
+  и mock-, и настоящим браузерным сценарием.
+  Ranking вызывает BA-007 на backend; веса/режим конкурентов редактируются,
+  null score не заменяется вымышленным числом. Карточки следуют серверному rank.
+- `Finance.tsx`, `FinanceChart.tsx`, `finance-template.json`: только исходные
+  synthetic-допущения BA-009, реальные POST calculate/recalculate, три сценария,
+  бюджет/капитал/расходы/безубыточность, графики результата и порога продаж,
+  sensitivity с графическим отображением изменения из API. Никаких финансовых
+  формул на frontend. Зона — контекстная ссылка, score не влияет на экономику.
+- `api-schema.d.ts`: сгенерированные OpenAPI DTO. Новые зависимости закреплены
+  в npm lock. Полная типизация тестов в prek/CI; production tsconfig.build.json
+  исключает тестовые fixture imports, недоступные в Docker frontend context.
+- nginx read timeout 180s вместо 10s для локальной Qwen. В двух шаблонах
+  backend-ответа убраны устаревшие слова, что аналитика не подключена: вместо
+  них переход к карте/финансам. LLM-алгоритм, API-контракты и геодвижки сохранены.
+  Добавлена проверка корректной подсказки после подтверждения профиля.
+- README и USER_INTERFACE.md: сценарий, API, гостевой доступ, ограничения,
+  таймауты, лицензии, политика raster OSM, реальные/mock-команды и скриншоты.
 
 ## Проверки
 
-- `uv run --locked --project apps/api pytest apps/api/tests/test_finance.py -q`:
-  **34 passed**, включая HTTP TestClient integration без зависимости от БД.
-  Формулы/3 сценария, округление/копеечная маржа, zero sales/fixed,
-  отрицательные результаты, денежные лимиты, invalid ratio/check/days/count,
-  provenance/факты/синтетика, budget unknown/shortfall, override/sensitivity,
-  пересчёт, source paths, реплей/Decimal context и независимость от зоны.
+- `npm --prefix apps/web test`: 16 frontend unit/API tests PASS.
+  Явные fetch mocks; WebGL-компонент заменён mock. Покрыты guest key/URL,
+  пагинация истории, редактирование/confirm, сохранение неотправленного текста,
+  409/LLM/network/validation ошибки, пустые данные, null score, версия набора,
+  provenance synthetic, финансовый запрос и пометка устаревшего результата.
+- `npm --prefix apps/web run test:e2e`: 2 Chromium mock-сценария PASS.
+  Полный путь с API fixtures, мобильная ширина, reload; недоступность Ollama
+  проверяется явным 503 mock. Ни скачивания весов, ни GPU/сети OSM для CI.
 - `uv tool run --from prek==0.5.4 prek run --all-files`: Ruff lint/format,
-  strict mypy, pytest, ESLint, TypeScript PASS; `npm --prefix apps/web run build` PASS.
-- `docker compose --profile test run --build --rm db-tests`: **49 passed**,
-  регрессия миграций, диалогов/конкурентности, геоимпорта, BA-007/BA-008.
-  Новые финансовые тесты не требуют PostGIS и включены в обычный CI pytest.
-- Compose healthy; `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke.ps1`: PASS.
-- Реальный HTTP eval API :8000 и nginx :5173: PASS. Сверка трёх сценариев
-  независимым Fraction/целыми копейками (без Decimal/engine helpers), startup/budget,
-  полный identical replay, редактирование/recalculate, исключение зоны без изменения
-  экономики. Прямой запуск 0.084/0.029/0.030/0.009 s, proxy
-  0.087/0.028/0.015/0.029 s, один локальный запуск, не SLA.
-- Docker/localhost проверены штатными разрешениями вне песочницы; для pytest —
-  отдельный PYTEST_DEBUG_TEMPROOT. Настройки системы/ACL/volumes не менялись.
-  Статус GitHub Actions подтверждается после push и сообщается в итоговом отчёте.
+  mypy, pytest, ESLint, TypeScript, frontend tests PASS.
+- `npm --prefix apps/web run build`: PASS. Известное предупреждение Vite:
+  MapLibre делает JS chunk крупнее 500 kB; это не ошибка сборки.
+- `docker compose --profile test run --build --rm db-tests`: 49 PASS;
+  изолированные тестовые БД, существующие данные/volumes не удалялись.
+- Docker Compose build/up healthy и `scripts/smoke.ps1`: PASS.
+- Настоящий Chromium workflow с `BA010_REAL=1` (не mock): Qwen/Ollama,
+  PostGIS и финансовый API. Извлечены Казань/кофейня/2000000, уточнены формат
+  и финансирование через редактор; confirm, reload с историей, пять реальных
+  рейтингов, карта/выбор зоны, calculate/edit/recalculate, мобильная ширина.
+  Результаты и дата конкретного прогона — `docs/screenshots/BA-010-verification.json`.
+  Скриншоты карты, сравнения, финансов и мобильной страницы — в той же папке.
+  Браузерные traces/HAR/video отключены, ключи доступа в артефакты не записываются.
+- Docker/localhost использовались через штатное разрешение вне песочницы;
+  системные настройки/ACL не менялись. Для pytest — отдельный PYTEST_DEBUG_TEMPROOT.
 
-## Демо и ограничения
+## Реальный пример и ограничения
 
-- `docs/examples/BA-009-coffee-input.json` — открытая synthetic-модель кофейни,
-  не реальные цены Казани. Бюджет пользователя 2000000; startup без резерва 1500000,
-  резерв 300000, всего 1800000, модельный остаток 200000 ₽.
-- Fixed: аренда 80000, payroll 180000, utilities 20000, other 20000 ₽/месяц;
-  30 дней. Check/sales/day/ratio: 250/60/0.40; 300/100/0.35; 350/130/0.32.
-  Revenue: 450000/900000/1365000; variable: 180000/315000/436800;
-  operating result: −30000/285000/628200 ₽; BE: 67/52/43 продаж в день.
-- Input содержит настоящую архивную ссылку на зону BA-008; цены/продажи из OSM
-  не выводятся. Geo dataset/version и реальные карты — в GEO_DATA/CANDIDATE_ZONES/
-  ZONE_RANKING.md и прежних примерах. Повторный импорт для BA-009 не требовался.
-- Operating result до неучтённых налогов/амортизации/процентов/прочих статей,
-  не чистая прибыль/денежный поток. Нет payback/loan/cashflow schedule,
-  сезонности/ликвидности/оборота запасов, верифицированных помещений и спроса.
-  Payroll/ratio/other включают лишь явно принятые расходы; пропуски не становятся
-  нулевыми реальными обязательствами. Budget fit — только сравнение модели.
-- Нет скрытых rent/demand defaults и банковских условий. Независимая сверка
-  доказывает арифметику, не коммерческую достоверность допущений.
+- Установленная модель: `qwen3:4b-instruct-2507-q4_K_M`, новых весов не скачивали.
+  Один холодный вызов при проверке занял около 78s; последующий полный браузерный
+  прогон был быстрее. Нет обещания скорости/SLA для RTX 3050 Ti 4 GB.
+- OSM snapshot `44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447`,
+  osm_base 22.10.2026, 23852 POI/8 полигонов; покрыта часть Казани.
+  Внутренний bbox preset BA-008 явно указан и отключается в UI.
+  Баллы пяти зон: 85.608954 / 44.444444 / 34.343434 / 33.676577 / 22.747652.
+  Это сравнительные признаки OSM, не прибыльность или свободные помещения.
+- Synthetic финансы: старт 1800000 включая резерв 300000, бюджет 2000000;
+  исходные операционные результаты −30000/285000/628200 ₽ в месяц.
+  Аренда 80000 → 100000 даёт базовый результат 265000 ₽ через настоящий API.
+  Нет измеренных аренды/спроса/трафика, налогов/кредитных платежей/окупаемости.
+- Внешняя raster-подложка OSM требует интернета и соблюдения tile policy,
+  без SLA/массового prefetch. Атрибуция видна; для публичного масштаба нужен
+  отдельный tile-server/провайдер. WebGL обязателен для карты; список работает отдельно.
+- Гостевой доступ только для текущей вкладки; нет восстановления утраченного ключа.
+  Георезультаты/финансовый черновик хранятся в памяти и сбрасываются при reload
+  или смене профиля/зоны; серверная история беседы сохраняется.
+- Проверен Chromium, не Safari/Firefox; нет нагрузочного/промышленного аудита.
 
 ## Следующий шаг
 
-1. Проверить PR BA-009 и CI; объединить только по решению владельца.
-2. После отдельного разрешения — BA-010 по PROJECT_PLAN.md, frontend поверх DTO.
-3. Для реальных решений заменить synthetic-вводные проверенными источниками
-   и расширить финансовую модель явно, не маскируя отсутствующие статьи.
+1. Проверить PR BA-010, CI и UI на http://localhost:5173; объединять только владельцу.
+2. После отдельного разрешения — BA-011: каталог банковских продуктов и matching.
+3. BA-012, реальные заявки и банковские условия сейчас не реализованы.

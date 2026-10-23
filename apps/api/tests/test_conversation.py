@@ -31,6 +31,8 @@ def test_multi_turn_extract_correct_confirm_and_clear() -> None:
     assert state_for(profile) == ConversationState.AWAITING_CONFIRMATION
     profile = confirm(profile)
     assert state_for(profile) == ConversationState.CONFIRMED
+    assert "разделы карты и финансовой модели" in reply_for(profile)
+    assert "Банковские интеграции пока не подключены" in reply_for(profile)
     edited = apply_patch(
         profile, extract_business_profile("Не Казань, а Москва; бюджет: 3 млн", profile)
     )
