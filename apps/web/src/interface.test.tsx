@@ -220,6 +220,18 @@ describe("critical UI components with explicit API mocks", () => {
     saveCredential({ id: view.id, token: "test-key" });
     let conflicted = false;
     vi.spyOn(globalThis, "fetch").mockImplementation(async (path, options) => {
+      if (String(path).endsWith("/consent-texts"))
+        return json([{ purpose: "assistant", version: "assistant-demo-v1" }]);
+      if (String(path).endsWith("/consents"))
+        return json({
+          consents: [
+            {
+              purpose: "assistant",
+              status: "granted",
+              text_version: "assistant-demo-v1",
+            },
+          ],
+        });
       if (String(path).includes("/messages?"))
         return json([
           {

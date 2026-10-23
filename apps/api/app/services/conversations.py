@@ -31,6 +31,7 @@ from app.domain.conversation import (
     state_for,
 )
 from app.domain.enums import ConversationState, MessageRole
+from app.leads.consents import require_consent
 
 
 class ConversationNotFound(Exception):
@@ -116,8 +117,8 @@ class Conversations:
         self.session.flush()
         return ConversationCreated(**self._view(record).model_dump(), access_token=token)
 
-    def get(self, conversation_id: UUID, token: str) -> ConversationView:
-        return self._view(self._authorise(conversation_id, token))
+    def get(self, conversation_id: UUID, token: str, *, lock: bool = False) -> ConversationView:
+        return self._view(self._authorise(conversation_id, token, lock=lock))
 
     def _save_event(
         self,
@@ -157,6 +158,7 @@ class Conversations:
     ) -> ConversationView:
         # Inference holds no row lock. Re-check the version under lock before any write.
         record = self._authorise(conversation_id, token)
+        require_consent(self.session, conversation_id, "assistant")
         if record.version != expected_version:
             raise VersionConflict(record.version)
         profile = self._profile(record.id)
@@ -207,6 +209,7 @@ class Conversations:
                 elif answer:
                     answer += reply_for(profile)
         record = self._authorise(conversation_id, token, lock=True)
+        require_consent(self.session, conversation_id, "assistant")
         if record.version != expected_version:
             raise VersionConflict(record.version)
         if patch is not None:

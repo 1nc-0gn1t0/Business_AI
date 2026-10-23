@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import BankProducts from "./BankProducts";
 import type { Conversation, Schemas } from "./api";
 import example from "../../../docs/examples/BA-011-coffee.json";
+vi.mock("./LeadFlow", () => ({ default: () => null }));
 
 // Recorded deterministic demonstration responses, never real bank offers.
 const result = example.response as unknown as Schemas["MatchResult"];

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ApiError, date, errorText, request } from "./api";
 import type { Conversation, Credential, Schemas } from "./api";
+import LeadFlow from "./LeadFlow";
 
 type Needs = Schemas["BankingNeeds"];
 const fields: {
@@ -403,6 +404,14 @@ export default function BankProducts({
               )}
             </pre>
           </details>
+          {conversation && credential && (
+            <LeadFlow
+              conversation={conversation}
+              credential={credential}
+              catalogue={catalogue}
+              active={active}
+            />
+          )}
         </>
       )}
     </div>

@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import financeFixture from "../../../docs/examples/BA-009-coffee-result.json" with { type: "json" };
 import rankingFixture from "../../../docs/examples/BA-008-kazan-coffee.json" with { type: "json" };
+import { mockConsents } from "./consent.mock";
 
 // Explicit mock adapter: no LLM, GPU, database, or public tile downloads in CI.
 test("browser workflow with explicitly mocked APIs", async ({ page }) => {
@@ -104,6 +105,7 @@ test("browser workflow with explicitly mocked APIs", async ({ page }) => {
     }
     return route.fulfill({ status: 404, json: {} });
   });
+  await mockConsents(page);
   await page.goto("/");
   await page
     .getByLabel("Сообщение помощнику")
@@ -180,6 +182,7 @@ test("Ollama error retains message and permits retry without pretending success"
       json: { detail: { code: "llm_unavailable" } },
     }),
   );
+  await mockConsents(page);
   await page.goto("/");
   await page.getByLabel("Сообщение помощнику").fill("Идея бизнеса");
   await page.getByLabel("Отправить сообщение").click();

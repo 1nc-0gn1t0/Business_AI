@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { Conversation, Schemas } from "./api";
 import { rub } from "./api";
 
@@ -11,6 +11,7 @@ export type ChatProps = {
   onSend: (content: string) => Promise<void>;
   onPatch: (patch: Schemas["ProfilePatch"]) => Promise<void>;
   onConfirm: () => void;
+  consentControl?: ReactNode;
 };
 const fields: Record<string, string> = {
   city: "город",
@@ -184,6 +185,7 @@ export default function Chat(props: ChatProps) {
             <span>Разберём профиль, географию и экономику — шаг за шагом.</span>
           </p>
         </div>
+        {props.consentControl}
         {!c && (
           <button
             className="prompt-card"

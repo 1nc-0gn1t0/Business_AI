@@ -77,7 +77,7 @@ Frontend-чат — BA-010, аналитические инструменты �
 Запустите Ollama и Compose по README, затем:
 
 ```powershell
-uv run --locked --project apps/api python scripts/eval_local_llm.py --output local-llm-eval.json
+uv run --locked --project apps/api python scripts/eval_local_llm.py --consent-to-local-evaluation --output local-llm-eval.json
 ```
 
 Скрипт создаёт анонимные беседы в основной БД приложения, не удаляет существующие

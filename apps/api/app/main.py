@@ -11,7 +11,10 @@ from app.api.bank import router as bank_router
 from app.api.conversations import error_detail, router
 from app.api.finance import router as finance_router
 from app.api.geo import router as geo_router
+from app.api.leads import public_router as consent_text_router
+from app.api.leads import router as leads_router
 from app.db.health import check_postgis
+from app.leads.policy import LeadError
 from app.services.conversations import ConversationNotFound, IncompleteProfile, VersionConflict
 
 logger = logging.getLogger(__name__)
@@ -20,6 +23,13 @@ app.include_router(router)
 app.include_router(geo_router)
 app.include_router(finance_router)
 app.include_router(bank_router)
+app.include_router(leads_router)
+app.include_router(consent_text_router)
+
+
+@app.exception_handler(LeadError)
+async def lead_error(request: Request, error: LeadError) -> JSONResponse:
+    return JSONResponse(status_code=error.status, content={"detail": {"code": error.code}})
 
 
 async def conversation_error(request: Request, error: Exception) -> JSONResponse:

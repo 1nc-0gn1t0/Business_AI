@@ -1,0 +1,60 @@
+{
+  "texts": [
+    {
+      "purpose": "assistant",
+      "version": "assistant-demo-v1",
+      "title": "Использование ассистента",
+      "text": "Согласен на локальную обработку параметров бизнес-идеи для работы Business AI. Не сообщайте паспортные, контактные и банковские данные. Отзыв останавливает новые сообщения и изменения профиля; просмотр истории и базовые расчёты доступны.",
+      "recipient": "Business AI (локальный демонстрационный сервис); ВТБ данные не получает",
+      "legally_approved": false
+    },
+    {
+      "purpose": "marketing",
+      "version": "marketing-demo-v1",
+      "title": "Маркетинговые рекомендации",
+      "text": "Отдельно согласен на маркетинговые рекомендации. Это необязательно. Рассылки и внешний маркетинг в прототипе не реализованы. Отказ не блокирует аналитику, финансы, просмотр каталога и подбор по моему запросу.",
+      "recipient": "Business AI (локальный демонстрационный сервис); ВТБ данные не получает",
+      "legally_approved": false
+    },
+    {
+      "purpose": "demo_lead",
+      "version": "demo-lead-v1",
+      "title": "Подготовка и демонстрационная передача",
+      "text": "Согласен на подготовку, хранение и создание локальной демонстрационной заявки из показанных полей и выбранных продуктов. Данные в ВТБ не отправляются. Получатель — только локальный mock Business AI. Это не банковская заявка. Отзыв блокирует дальнейшую подготовку, изменение, подтверждение и отправку; история согласий, квитанций и аудит сохраняются.",
+      "recipient": "Business AI (локальный демонстрационный сервис); ВТБ данные не получает",
+      "legally_approved": false
+    }
+  ],
+  "consents": [
+    {
+      "id": null,
+      "purpose": "assistant",
+      "revision": 0,
+      "text_version": "assistant-demo-v1",
+      "status": "not_given",
+      "given_at": null,
+      "withdrawn_at": null,
+      "recorded_at": null
+    },
+    {
+      "id": null,
+      "purpose": "marketing",
+      "revision": 0,
+      "text_version": "marketing-demo-v1",
+      "status": "not_given",
+      "given_at": null,
+      "withdrawn_at": null,
+      "recorded_at": null
+    },
+    {
+      "id": null,
+      "purpose": "demo_lead",
+      "revision": 0,
+      "text_version": "demo-lead-v1",
+      "status": "not_given",
+      "given_at": null,
+      "withdrawn_at": null,
+      "recorded_at": null
+    }
+  ]
+}

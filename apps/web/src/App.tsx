@@ -27,6 +27,48 @@ export default function App() {
   const [ranking, setRanking] = useState<Ranking | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [financeContext, setFinanceContext] = useState(0);
+  const [assistantConsent, setAssistantConsent] = useState(false);
+  const [consentText, setConsentText] = useState<Schemas["ConsentText"] | null>(
+    null,
+  );
+  useEffect(() => {
+    const c = new AbortController();
+    request<Schemas["ConsentText"][]>("/api/v1/consent-texts", {
+      signal: c.signal,
+    })
+      .then((texts) =>
+        setConsentText(texts.find((t) => t.purpose === "assistant") || null),
+      )
+      .catch(() => {
+        /* A missing text never implies consent. */
+      });
+    return () => c.abort();
+  }, []);
+  async function ensureAssistant(key: Credential) {
+    const state = await request<Schemas["ConsentState"]>(
+      `/api/v1/conversations/${key.id}/consents`,
+      { credential: key },
+    );
+    const current = state.consents.find((c) => c.purpose === "assistant")!;
+    if (
+      current.status === "granted" &&
+      current.text_version === consentText?.version
+    )
+      return;
+    if (!assistantConsent || !consentText || current.status !== "not_given")
+      throw new Error(
+        "Нужно отдельное согласие на использование ассистента. После отзыва включите его заново в разделе продуктов и согласий.",
+      );
+    await request(`/api/v1/conversations/${key.id}/consents/assistant`, {
+      credential: key,
+      method: "PUT",
+      body: {
+        expected_revision: current.revision,
+        text_version: consentText.version,
+        decision: "grant",
+      },
+    });
+  }
   const lock = useRef(false);
   useEffect(() => {
     const c = new AbortController();
@@ -168,12 +210,36 @@ export default function App() {
       </header>
       <div className="workspace">
         <Chat
+          consentControl={
+            <details className="assistant-consent">
+              <summary>Использование ассистента · отдельное согласие</summary>
+              <p>
+                {consentText?.text ||
+                  "Текст согласия загружается. При ошибке обновите страницу."}
+              </p>
+              <label className="check-line">
+                <input
+                  type="checkbox"
+                  checked={assistantConsent}
+                  disabled={!consentText || busy}
+                  onChange={(e) => setAssistantConsent(e.target.checked)}
+                />
+                Согласен на использование ассистента
+              </label>
+              <small>
+                Демо-текст, не документ ВТБ. Нужна правовая проверка до пилота.
+                Это не согласие на маркетинг или заявку. Управление и отзыв — в
+                разделе продуктов.
+              </small>
+            </details>
+          }
           conversation={conversation}
           messages={messages}
           busy={busy}
           onNew={() => {
             void action(async () => {
               await create();
+              setAssistantConsent(false);
             });
           }}
           onRefresh={() => {
@@ -185,6 +251,7 @@ export default function App() {
                 credential && conversation
                   ? { key: credential, view: conversation }
                   : await create();
+              await ensureAssistant(current.key);
               await mutate(
                 "/messages",
                 "POST",
@@ -195,24 +262,28 @@ export default function App() {
           }
           onPatch={(patch) =>
             action(async () => {
-              if (credential && conversation)
+              if (credential && conversation) {
+                await ensureAssistant(credential);
                 await mutate(
                   "/profile",
                   "PATCH",
                   { patch, expected_version: conversation.version },
                   credential,
                 );
+              }
             })
           }
           onConfirm={() => {
             void action(async () => {
-              if (credential && conversation)
+              if (credential && conversation) {
+                await ensureAssistant(credential);
                 await mutate(
                   "/profile/confirm",
                   "POST",
                   { expected_version: conversation.version },
                   credential,
                 );
+              }
             });
           }}
         />

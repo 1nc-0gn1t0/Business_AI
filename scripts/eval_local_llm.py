@@ -17,6 +17,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--api", default="http://127.0.0.1:8000")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--consent-to-local-evaluation",
+        action="store_true",
+        required=True,
+        help="Explicitly permit local processing of the built-in fictional evaluation inputs; no marketing or lead consent",
+    )
     args = parser.parse_args()
     results: list[dict[str, object]] = []
 
@@ -45,6 +51,22 @@ def main() -> None:
         assert status == 201 and isinstance(created, dict)
         token = str(created["access_token"])
         path = "/api/v1/conversations/" + str(created["id"])
+        status, consents = request(path + "/consents", token=token)
+        assert status == 200 and isinstance(consents, dict)
+        texts = consents["texts"]
+        assert isinstance(texts, list)
+        text = next(item for item in texts if item["purpose"] == "assistant")
+        status, _ = request(
+            path + "/consents/assistant",
+            "PUT",
+            {
+                "expected_revision": 0,
+                "text_version": text["version"],
+                "decision": "grant",
+            },
+            token,
+        )
+        assert status == 200
         view = created
         for text, expected in turns:
             started = time.monotonic()

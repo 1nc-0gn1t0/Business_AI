@@ -189,6 +189,56 @@ class BusinessProfileRecord(Base):
     )
 
 
+class ConsentRecord(Base):
+    __tablename__ = "consents"
+    __table_args__ = (
+        sa.UniqueConstraint("conversation_id", "purpose", "revision"),
+        sa.CheckConstraint("revision > 0", name="ck_consent_revision"),
+        sa.CheckConstraint(
+            "purpose IN ('assistant', 'marketing', 'demo_lead')", name="ck_consent_purpose"
+        ),
+        sa.CheckConstraint("jsonb_typeof(document) = 'object'", name="ck_consent_document"),
+    )
+    id: Mapped[UUID] = mapped_column(primary_key=True)
+    conversation_id: Mapped[UUID] = mapped_column(sa.ForeignKey("conversations.id"), index=True)
+    purpose: Mapped[str] = mapped_column(sa.Text)
+    revision: Mapped[int]
+    document: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
+class LeadDraftRecord(Base):
+    __tablename__ = "lead_drafts"
+    __table_args__ = (
+        sa.CheckConstraint("jsonb_typeof(document) = 'object'", name="ck_draft_document"),
+    )
+    id: Mapped[UUID] = mapped_column(primary_key=True)
+    conversation_id: Mapped[UUID] = mapped_column(sa.ForeignKey("conversations.id"), index=True)
+    document: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
+class LeadSubmissionRecord(Base):
+    __tablename__ = "lead_submissions"
+    __table_args__ = (
+        sa.UniqueConstraint("conversation_id", "idempotency_key"),
+        sa.CheckConstraint("jsonb_typeof(document) = 'object'", name="ck_submission_document"),
+    )
+    id: Mapped[UUID] = mapped_column(primary_key=True)
+    conversation_id: Mapped[UUID] = mapped_column(sa.ForeignKey("conversations.id"), index=True)
+    draft_id: Mapped[UUID] = mapped_column(sa.ForeignKey("lead_drafts.id"), unique=True)
+    idempotency_key: Mapped[UUID]
+    request_fingerprint: Mapped[str] = mapped_column(sa.String(64))
+    document: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
+class AuditEventRecord(Base):
+    __tablename__ = "audit_events"
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    conversation_id: Mapped[UUID] = mapped_column(sa.ForeignKey("conversations.id"), index=True)
+    action: Mapped[str] = mapped_column(sa.Text)
+    object_id: Mapped[UUID]
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+
+
 class AnalysisRunRecord(Base):
     __tablename__ = "analysis_runs"
     __table_args__ = (
