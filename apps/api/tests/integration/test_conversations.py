@@ -49,6 +49,83 @@ def create(client: TestClient) -> tuple[dict[str, Any], dict[str, str], str]:
     return body, headers, "/api/v1/conversations/" + body["id"]
 
 
+def test_bank_matching_uses_authorised_confirmed_profile_without_mutation(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from datetime import date
+
+    monkeypatch.setattr("app.api.bank.today", lambda: date(2026, 10, 23))
+    _, headers, url = create(client)
+    endpoint = url + "/bank-products/matches"
+    body = {"expected_version": 0}
+    assert client.post(endpoint, json=body).status_code == 401
+    _, other_headers, _ = create(client)
+    assert client.post(endpoint, json=body, headers=other_headers).status_code == 404
+    draft = client.post(endpoint, json=body, headers=headers)
+    assert draft.status_code == 200 and draft.json()["status"] == "needs_confirmation"
+    profile = client.patch(
+        url + "/profile",
+        headers=headers,
+        json={
+            "expected_version": 0,
+            "patch": {
+                "city": "Казань",
+                "category": "кофейня",
+                "budget": "2000000",
+                "funding": "own_funds",
+                "preferences": {"format": "навынос"},
+            },
+        },
+    )
+    assert profile.status_code == 200
+    confirmed = client.post(
+        url + "/profile/confirm",
+        headers=headers,
+        json={"expected_version": profile.json()["version"]},
+    )
+    assert confirmed.status_code == 200
+    version = confirmed.json()["version"]
+    before_history = client.get(url + "/history", headers=headers).json()
+    response = client.post(
+        endpoint,
+        headers=headers,
+        json={
+            "expected_version": version,
+            "needs": {
+                "registration_status": "ip",
+                "sales_channel": "offline",
+                "accepts_card_payments": True,
+                "needs_settlement_account": True,
+                "needs_expense_card": True,
+            },
+        },
+    )
+    assert response.status_code == 200
+    assert set(response.json()["demonstration_ids"]) == {
+        "vtb-rko",
+        "vtb-merchant-acquiring",
+        "vtb-business-card",
+    }
+    assert response.json()["recommended_ids"] == []
+    assert response.json()["profile_snapshot"] == confirmed.json()["profile"]
+    assert client.get(url, headers=headers).json() == confirmed.json()
+    assert client.get(url + "/history", headers=headers).json() == before_history
+    changed = client.patch(
+        url + "/profile",
+        headers=headers,
+        json={"expected_version": version, "patch": {"city": "Москва"}},
+    )
+    assert changed.status_code == 200
+    assert (
+        client.post(endpoint, headers=headers, json={"expected_version": version}).status_code
+        == 409
+    )
+    updated = client.post(
+        endpoint, headers=headers, json={"expected_version": changed.json()["version"]}
+    )
+    assert updated.json()["status"] == "needs_confirmation"
+
+
 def test_llm_result_persists_with_safe_questions(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:

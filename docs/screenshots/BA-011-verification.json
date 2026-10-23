@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-23T19:19:37.824Z",
+  "services": "real Qwen/Ollama + PostGIS + finance + authenticated bank matching API; no mocks",
+  "catalogue_version": "vtb-demo-public-references-2026-10-23-v1",
+  "catalogue_fingerprint": "0bd1ec03f957bb78f14eacf38cbc1c4ffa035011ec6f51f137e3abc5a900d722",
+  "catalogue_mode": "demonstration",
+  "profile_version": 3,
+  "recommended_ids": [],
+  "demonstration_ids": [
+    "vtb-business-card",
+    "vtb-merchant-acquiring",
+    "vtb-rko"
+  ],
+  "credit_decision": "not_assessed",
+  "browser_errors": []
+}

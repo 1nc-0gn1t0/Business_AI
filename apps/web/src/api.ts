@@ -38,6 +38,10 @@ export class ApiError extends Error {
   }
 }
 const messages: Record<string, string> = {
+  bank_catalogue_unavailable:
+    "Каталог временно недоступен или не прошёл проверку. Предложения не подставляются автоматически.",
+  bank_catalogue_version_conflict:
+    "Каталог обновился. Проверьте актуальные сведения и повторите подбор.",
   version_conflict:
     "Профиль изменён другим запросом. Загружена актуальная версия; проверьте данные и повторите действие.",
   profile_incomplete:

@@ -1,94 +1,83 @@
 # Business AI — HANDOFF
 
-## Состояние на 23.10.2026
+## BA-011 · 23.10.2026
 
-- PR #9 (BA-009) объединён: `07b579e50a5e1995c0eaa0996b4a99d78cb9129f`.
-  Перед BA-010 main синхронизирован с origin/main, рабочее дерево было чистым.
-- BA-010: ветка `codex/BA-010-product-interface` от этого main.
-  Фактический commit/PR и статус GitHub Actions после push — в итоговом сообщении.
-  PR не объединять автоматически. BA-011 не начиналась.
+- PR #10 объединён: d67a6b56a61dfc1ee1349d5f61e33e0d3ac0eaa0.
+  Main синхронизирован, дерево перед началом было чистым.
+- Ветка: feat/BA-011-bank-products. Фактический HEAD/PR/CI — в итоговом отчёте.
+  Не объединять автоматически; BA-012 не начиналась.
 
-## Сделано
+## Реализовано
 
-- Единый React/TypeScript workspace в тёмной палитре: AI-чат/профиль,
-  MapLibre-карта, сравнение кандидатов, финансовая модель, мобильная адаптация.
-- `apps/web/src/App.tsx`, `Chat.tsx`, `api.ts`: реальные conversation API,
-  sessionStorage guest key, header-only доступ, вся история с пагинацией,
-  expected_version, PATCH/confirm, обработка 409/502/503/504 и ошибок сети.
-  Режим stub/rules не называется Qwen. Изменение профиля сбрасывает анализ.
-- `GeoMap.tsx`, `Locations.tsx`: настоящие PostGIS GeoJSON, покрытие,
-  POI выбранной категории (явный предел 500), полигоны районов/зон, выбор зоны,
-  источники/даты/версии/ограничения. Заметные маркеры с серверным rank.
-  Исправлено всплытие клика маркера к слою под ним; регрессия проверяется
-  и mock-, и настоящим браузерным сценарием.
-  Ranking вызывает BA-007 на backend; веса/режим конкурентов редактируются,
-  null score не заменяется вымышленным числом. Карточки следуют серверному rank.
-- `Finance.tsx`, `FinanceChart.tsx`, `finance-template.json`: только исходные
-  synthetic-допущения BA-009, реальные POST calculate/recalculate, три сценария,
-  бюджет/капитал/расходы/безубыточность, графики результата и порога продаж,
-  sensitivity с графическим отображением изменения из API. Никаких финансовых
-  формул на frontend. Зона — контекстная ссылка, score не влияет на экономику.
-- `api-schema.d.ts`: сгенерированные OpenAPI DTO. Новые зависимости закреплены
-  в npm lock. Полная типизация тестов в prek/CI; production tsconfig.build.json
-  исключает тестовые fixture imports, недоступные в Docker frontend context.
-- nginx read timeout 180s вместо 10s для локальной Qwen. В двух шаблонах
-  backend-ответа убраны устаревшие слова, что аналитика не подключена: вместо
-  них переход к карте/финансам. LLM-алгоритм, API-контракты и геодвижки сохранены.
-  Добавлена проверка корректной подсказки после подтверждения профиля.
-- README и USER_INTERFACE.md: сценарий, API, гостевой доступ, ограничения,
-  таймауты, лицензии, политика raster OSM, реальные/mock-команды и скриншоты.
+- app/bank: schemas.py, catalogue.json, matching.py — Product, EligibilityRule,
+  EvidenceSource/review dates, локальный версионируемый JSON и чистый matcher.
+- Шесть demo-карточек: РКО, регистрация, торговый/интернет-эквайринг,
+  дебетовая бизнес-карта, справка о финансировании. Никаких выдуманных тарифов.
+- Трёхзначный AND: matched/unknown/not_matched. Unknown требует уточнения,
+  явное несовпадение исключает карточку. Stale/future/retired/unavailable блокируются.
+  Trace: исходные параметры/интерпретация, rule, input_path, sources, ограничения.
+- GET /api/v1/bank-products; POST /api/v1/conversations/{id}/bank-products/matches.
+  Matching читает настоящий профиль из PostgreSQL с X-Conversation-Token,
+  expected_version и catalogue_fingerprint. Client profile/confirmed/as_of не принимаются.
+  Read-only: профиль/история не меняются; 401/404/409/422/503 обработаны.
+- BankProducts.tsx: добровольные потребности, demo-статусы, причины/вопросы,
+  официальные ссылки и даты, правила/версии. Изменение needs/профиля/каталога
+  снимает старые результаты. Дополнительные needs — только в памяти вкладки.
+- Qwen/гео/финансовые алгоритмы сохранены; новых зависимостей и миграций нет.
+  Нет кредитного score, банковской интеграции, заявок или receipts BA-012.
+- README, BANK_CATALOGUE.md, ADR-0007, UI docs; offline demo fixture
+  docs/examples/BA-011-coffee.json; настоящие browser screenshots/verification BA-011.
+
+## Источники и ограничения
+
+23.10.2026 просмотрены индексированные официальные страницы ВТБ:
+/malyj-biznes/ru/rko/, /registraciya/, /acquiring/, /acquiring/internet-acquiring/,
+/biznes-karty/, /kredity-i-garantii/ (последние пути после /malyj-biznes/).
+Прямой web fetch давал 502, urllib/PowerShell — ошибку TLS-цепочки.
+Сертификаты/системные настройки не менялись, TLS-проверка не отключалась.
+Это не доказательство недоступности ВТБ и не проверка действующих условий.
+
+Начальный каталог: demonstration/unconfirmed, источники cached_only,
+last_verified_at/digest=null. Review date — попытка проверки. Recommended_ids пуст;
+совпадения отдельно в demonstration_ids. Срок пересмотра 30 дней, потом блокировка.
+Для public_reference/published нужны ответственная прямая проверка, дата/digest,
+уточнённые условия и verified source. См. BANK_CATALOGUE.md для обновления JSON/volume.
+
+## Пример кофейни: Казань, 2 млн ₽
+
+- Только профиль: нужны уточнения, автоматических совпадений нет.
+- Явно ИП + офлайн + приём карт + нужен счёт/дебетовая карта:
+  три demo_match — vtb-rko, vtb-merchant-acquiring, vtb-business-card.
+- Онлайн меняет тип эквайринга; до регистрации, на стадии подготовки с запросом
+  помощи — demo регистрации. Unknown не считается ИП или выполненным условием.
+- Финансирование только как информация при интересе; loan/mixed используется
+  лишь если отдельного ответа нет. Явное «нет» приоритетно. Credit_decision=not_assessed.
+- Бюджет/категория/город не доказывают MCC-допуск, тариф и кредитоспособность.
+  Банковская маржа, OSM-score, стиль речи и LLM не участвуют в подборе.
 
 ## Проверки
 
-- `npm --prefix apps/web test`: 16 frontend unit/API tests PASS.
-  Явные fetch mocks; WebGL-компонент заменён mock. Покрыты guest key/URL,
-  пагинация истории, редактирование/confirm, сохранение неотправленного текста,
-  409/LLM/network/validation ошибки, пустые данные, null score, версия набора,
-  provenance synthetic, финансовый запрос и пометка устаревшего результата.
-- `npm --prefix apps/web run test:e2e`: 2 Chromium mock-сценария PASS.
-  Полный путь с API fixtures, мобильная ширина, reload; недоступность Ollama
-  проверяется явным 503 mock. Ни скачивания весов, ни GPU/сети OSM для CI.
-- `uv tool run --from prek==0.5.4 prek run --all-files`: Ruff lint/format,
-  mypy, pytest, ESLint, TypeScript, frontend tests PASS.
-- `npm --prefix apps/web run build`: PASS. Известное предупреждение Vite:
-  MapLibre делает JS chunk крупнее 500 kB; это не ошибка сборки.
-- `docker compose --profile test run --build --rm db-tests`: 49 PASS;
-  изолированные тестовые БД, существующие данные/volumes не удалялись.
-- Docker Compose build/up healthy и `scripts/smoke.ps1`: PASS.
-- Настоящий Chromium workflow с `BA010_REAL=1` (не mock): Qwen/Ollama,
-  PostGIS и финансовый API. Извлечены Казань/кофейня/2000000, уточнены формат
-  и финансирование через редактор; confirm, reload с историей, пять реальных
-  рейтингов, карта/выбор зоны, calculate/edit/recalculate, мобильная ширина.
-  Результаты и дата конкретного прогона — `docs/screenshots/BA-010-verification.json`.
-  Скриншоты карты, сравнения, финансов и мобильной страницы — в той же папке.
-  Браузерные traces/HAR/video отключены, ключи доступа в артефакты не записываются.
-- Docker/localhost использовались через штатное разрешение вне песочницы;
-  системные настройки/ACL не менялись. Для pytest — отдельный PYTEST_DEBUG_TEMPROOT.
+- pytest apps/api/tests/test_bank.py -q: 23 unit/API PASS — matching/unknown,
+  demo/verified fixtures, stale/retired/unconfirmed/unavailable, trace/replay,
+  строгая валидация, guest/version/catalogue pin и безопасный 503.
+- npm --prefix apps/web test: 21 PASS, включая 5 банковских тестов.
+- npm --prefix apps/web run test:e2e: 3 mock Chromium-сценария PASS,
+  без сети банка, GPU и весов; существующий BA-010 сценарий сохранён.
+- docker compose --profile test run --build --rm db-tests: 50 PASS,
+  в том числе новый protected matching/confirm/version/чужой ключ/отсутствие мутаций.
+- prek run --all-files: Ruff/format/mypy/pytest/ESLint/TypeScript/frontend tests PASS;
+  production build PASS (прежнее предупреждение о размере MapLibre chunk).
+- Docker Compose healthy, scripts/smoke.ps1 PASS; volumes/данные сохранены.
+- Настоящий browser workflow BA010_REAL=1 + BA010_ARTIFACT_DIR=test-results/ba011-regression:
+  Qwen → профиль → реальные зоны → финансы/пересчёт → банковский API/demo/mobile;
+  PASS, без console/page errors. Это проверка нашего API, не интеграции ВТБ.
+  Дата/факты: docs/screenshots/BA-011-verification.json, снимки BA-011-bank*.png.
+- Работали через штатное разрешение вне песочницы; pytest использует отдельный
+  PYTEST_DEBUG_TEMPROOT. Traces/HAR/video с ключами не записывались.
 
-## Реальный пример и ограничения
+## Следующее действие
 
-- Установленная модель: `qwen3:4b-instruct-2507-q4_K_M`, новых весов не скачивали.
-  Один холодный вызов при проверке занял около 78s; последующий полный браузерный
-  прогон был быстрее. Нет обещания скорости/SLA для RTX 3050 Ti 4 GB.
-- OSM snapshot `44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447`,
-  osm_base 22.10.2026, 23852 POI/8 полигонов; покрыта часть Казани.
-  Внутренний bbox preset BA-008 явно указан и отключается в UI.
-  Баллы пяти зон: 85.608954 / 44.444444 / 34.343434 / 33.676577 / 22.747652.
-  Это сравнительные признаки OSM, не прибыльность или свободные помещения.
-- Synthetic финансы: старт 1800000 включая резерв 300000, бюджет 2000000;
-  исходные операционные результаты −30000/285000/628200 ₽ в месяц.
-  Аренда 80000 → 100000 даёт базовый результат 265000 ₽ через настоящий API.
-  Нет измеренных аренды/спроса/трафика, налогов/кредитных платежей/окупаемости.
-- Внешняя raster-подложка OSM требует интернета и соблюдения tile policy,
-  без SLA/массового prefetch. Атрибуция видна; для публичного масштаба нужен
-  отдельный tile-server/провайдер. WebGL обязателен для карты; список работает отдельно.
-- Гостевой доступ только для текущей вкладки; нет восстановления утраченного ключа.
-  Георезультаты/финансовый черновик хранятся в памяти и сбрасываются при reload
-  или смене профиля/зоны; серверная история беседы сохраняется.
-- Проверен Chromium, не Safari/Firefox; нет нагрузочного/промышленного аудита.
-
-## Следующий шаг
-
-1. Проверить PR BA-010, CI и UI на http://localhost:5173; объединять только владельцу.
-2. После отдельного разрешения — BA-011: каталог банковских продуктов и matching.
-3. BA-012, реальные заявки и банковские условия сейчас не реализованы.
+1. Владелец проверяет PR BA-011/CI и решает о merge.
+2. Для действующих рекомендаций — проверка/обновление источников и каталога.
+3. BA-012 (consent/mock lead) только по отдельному разрешению. Дополнительные
+   needs не сохраняются в DB/LLM; актуальные тарифы, банк и Firefox/Safari не проверены.

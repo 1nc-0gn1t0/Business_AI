@@ -1707,3 +1707,117 @@ th:first-child {
 .sensitivity-value .loss {
   background: #f79eac;
 }
+.bank-catalogue-heading {
+  margin: 24px 0 16px;
+}
+.bank-demo-banner {
+  padding: 18px;
+  border: 1px solid #ae8b4355;
+  background: #4d3c171c;
+  border-radius: 10px;
+}
+.bank-demo-banner p {
+  font-size: 12px;
+  color: #c3bfae;
+  margin-top: 12px;
+}
+.bank-needs > p {
+  margin-top: 10px;
+}
+.bank-needs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 22px 0;
+}
+.bank-needs-grid select {
+  font-size: 12px;
+}
+.bank-result-summary {
+  margin: 22px 0;
+  padding: 20px;
+  border: 1px solid #35796b;
+  background: #142f31;
+  border-radius: 10px;
+}
+.bank-result-summary p {
+  font-size: 12px;
+  margin-top: 10px;
+}
+.bank-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.bank-product-card {
+  padding: 20px;
+  background: #111e2e;
+  border: 1px solid #304155;
+  border-radius: 11px;
+  min-width: 0;
+}
+.bank-product-card h2 {
+  margin: 18px 0 10px;
+  font-size: 17px;
+}
+.bank-product-card h3 {
+  font-size: 12px;
+  margin-top: 18px;
+  color: #b6c9d6;
+}
+.bank-product-card p,
+.bank-product-card li {
+  font-size: 12px;
+  color: #9fb0c5;
+}
+.bank-product-card li {
+  margin-bottom: 6px;
+}
+.bank-decision {
+  padding: 1px 12px 8px;
+  border-left: 2px solid #40dfc2;
+  background: #40dfc208;
+  margin: 16px 0;
+}
+.bank-decision h3 {
+  color: #40dfc2;
+}
+.bank-sources {
+  border-top: 1px solid #293b4f;
+  padding-top: 14px;
+  margin-top: 12px;
+}
+.bank-sources a {
+  font-size: 12px;
+}
+.bank-sources p {
+  margin-top: 6px;
+  font-size: 10px;
+}
+.bank-sources small {
+  font-size: 10px;
+}
+.muted-card {
+  border-color: #273244;
+  background: #101a28;
+}
+.tabs {
+  overflow-x: auto;
+}
+@media (max-width: 1100px) {
+  .bank-product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 800px) {
+  .bank-needs-grid {
+    grid-template-columns: 1fr;
+  }
+  .bank-catalogue-heading {
+    align-items: flex-start;
+  }
+  .bank-catalogue-heading .subtle {
+    text-align: right;
+    font-size: 10px;
+  }
+}

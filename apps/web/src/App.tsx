@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Chat from "./Chat";
 import Locations from "./Locations";
 import Finance from "./Finance";
+import BankProducts from "./BankProducts";
 import {
   ApiError,
   errorText,
@@ -22,7 +23,7 @@ export default function App() {
   const [busy, setBusy] = useState(() => Boolean(readCredential()));
   const [error, setError] = useState("");
   const [health, setHealth] = useState("Проверка API");
-  const [tab, setTab] = useState<"map" | "compare" | "finance">("map");
+  const [tab, setTab] = useState<"map" | "compare" | "finance" | "bank">("map");
   const [ranking, setRanking] = useState<Ranking | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [financeContext, setFinanceContext] = useState(0);
@@ -242,6 +243,12 @@ export default function App() {
             >
               <span>↗</span> Финансовая модель
             </button>
+            <button
+              className={tab === "bank" ? "active" : ""}
+              onClick={() => setTab("bank")}
+            >
+              <span>◇</span> Продукты ВТБ
+            </button>
           </nav>
           {error && (
             <div className="alert global-alert" role="alert">
@@ -252,7 +259,7 @@ export default function App() {
             </div>
           )}
           <div className="main-content">
-            <div hidden={tab === "finance"}>
+            <div hidden={tab === "finance" || tab === "bank"}>
               <Locations
                 key={`${conversation?.id || "none"}:${conversation?.version ?? 0}`}
                 profile={conversation?.profile || null}
@@ -271,11 +278,27 @@ export default function App() {
                 zone={zone}
               />
             </div>
+            <div hidden={tab !== "bank"}>
+              <BankProducts
+                key={`${conversation?.id || "none"}:${conversation?.version ?? 0}`}
+                active={tab === "bank"}
+                conversation={conversation}
+                credential={credential}
+                onProfileConflict={() => {
+                  void action(async () => {
+                    await refresh();
+                    setError(
+                      "Профиль изменился. Проверьте актуальные параметры и повторите банковский подбор.",
+                    );
+                  });
+                }}
+              />
+            </div>
           </div>
           <footer className="product-footer">
             <span>Sab0tage · Business AI</span>
             <span>Данные → контекст → осознанное решение</span>
-            <span>Банковские продукты — следующий этап</span>
+            <span>Подбор продуктов — демо · заявки не отправляются</span>
           </footer>
         </main>
       </div>

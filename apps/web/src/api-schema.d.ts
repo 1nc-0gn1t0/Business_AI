@@ -227,6 +227,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/bank-products": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Products */
+    get: operations["products_api_v1_bank_products_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/bank-products/matches": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Matches */
+    post: operations["matches_api_v1_conversations__conversation_id__bank_products_matches_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/healthz": {
     parameters: {
       query?: never;
@@ -259,6 +293,25 @@ export interface components {
       /** Value */
       value: string;
       source: components["schemas"]["InputSource"];
+    };
+    /** BankingNeeds */
+    BankingNeeds: {
+      /** Launch Stage */
+      launch_stage?: ("idea" | "preparing" | "operating") | null;
+      /** Registration Status */
+      registration_status?: ("not_registered" | "ip" | "legal_entity") | null;
+      /** Sales Channel */
+      sales_channel?: ("offline" | "online" | "both") | null;
+      /** Needs Settlement Account */
+      needs_settlement_account?: boolean | null;
+      /** Needs Registration Help */
+      needs_registration_help?: boolean | null;
+      /** Accepts Card Payments */
+      accepts_card_payments?: boolean | null;
+      /** Needs Expense Card */
+      needs_expense_card?: boolean | null;
+      /** Financing Interest */
+      financing_interest?: boolean | null;
     };
     /** Bounds */
     Bounds: {
@@ -543,6 +596,24 @@ export interface components {
        */
       requirements: components["schemas"]["ProximityRequirement"][];
     };
+    /** CatalogueView */
+    CatalogueView: {
+      /** Version */
+      version: string;
+      /** Fingerprint */
+      fingerprint: string;
+      /**
+       * As Of
+       * Format: date
+       */
+      as_of: string;
+      /** Review Window Days */
+      review_window_days: number;
+      /** Products */
+      products: components["schemas"]["ProductView"][];
+      /** Limitations */
+      limitations: string[];
+    };
     /** CategoriesView */
     CategoriesView: {
       dataset: components["schemas"]["DatasetView"];
@@ -753,6 +824,69 @@ export interface components {
       /** Admin Level */
       admin_level: number;
     };
+    /** EligibilityRule */
+    EligibilityRule: {
+      /** Id */
+      id: string;
+      /**
+       * Field
+       * @enum {string}
+       */
+      field:
+        | "launch_stage"
+        | "registration_status"
+        | "sales_channel"
+        | "needs_settlement_account"
+        | "needs_registration_help"
+        | "accepts_card_payments"
+        | "needs_expense_card"
+        | "financing_interest";
+      /** One Of */
+      one_of: (string | boolean)[];
+      /** Explanation */
+      explanation: string;
+      /** Question */
+      question: string;
+      /**
+       * Origin
+       * @default application_policy
+       * @constant
+       */
+      origin: "application_policy";
+      /**
+       * Purpose
+       * @default relevance_only_not_bank_eligibility
+       * @constant
+       */
+      purpose: "relevance_only_not_bank_eligibility";
+    };
+    /** EvidenceSource */
+    EvidenceSource: {
+      /** Id */
+      id: string;
+      /** Url */
+      url: string;
+      /** Title */
+      title: string;
+      /**
+       * Reviewed At
+       * Format: date
+       */
+      reviewed_at: string;
+      /**
+       * Verification
+       * @enum {string}
+       */
+      verification: "verified" | "cached_only" | "unavailable";
+      /** Last Verified At */
+      last_verified_at?: string | null;
+      /** Content Sha256 */
+      content_sha256?: string | null;
+      /** Summary */
+      summary: string;
+      /** Limitations */
+      limitations: string[];
+    };
     /** FinanceRequest */
     "FinanceRequest-Input": {
       profile: components["schemas"]["BusinessProfile-Input"];
@@ -920,6 +1054,56 @@ export interface components {
        * @default false
        */
       source_attested: boolean;
+    };
+    /** MatchRequest */
+    MatchRequest: {
+      /** Expected Version */
+      expected_version: number;
+      needs?: components["schemas"]["BankingNeeds"];
+      /** Catalogue Fingerprint */
+      catalogue_fingerprint?: string | null;
+    };
+    /** MatchResult */
+    MatchResult: {
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: "evaluated" | "needs_confirmation" | "catalogue_unavailable";
+      /** Algorithm Version */
+      algorithm_version: string;
+      catalogue: components["schemas"]["CatalogueView"];
+      /** Request Fingerprint */
+      request_fingerprint: string;
+      profile_snapshot: components["schemas"]["BusinessProfile-Output"];
+      /** Profile Version */
+      profile_version: number;
+      needs_snapshot: components["schemas"]["BankingNeeds"];
+      /** Decisions */
+      decisions: components["schemas"]["ProductDecision"][];
+      /** Recommended Ids */
+      recommended_ids: string[];
+      /** Demonstration Ids */
+      demonstration_ids: string[];
+      /** Missing Fields */
+      missing_fields: (
+        | "launch_stage"
+        | "registration_status"
+        | "sales_channel"
+        | "needs_settlement_account"
+        | "needs_registration_help"
+        | "accepts_card_payments"
+        | "needs_expense_card"
+        | "financing_interest"
+      )[];
+      /**
+       * Credit Decision
+       * @default not_assessed
+       * @constant
+       */
+      credit_decision: "not_assessed";
+      /** Limitations */
+      limitations: string[];
     };
     /** MessageRequest */
     MessageRequest: {
@@ -1095,6 +1279,97 @@ export interface components {
        */
       constraints: string[];
     };
+    /** Product */
+    Product: {
+      /** Id */
+      id: string;
+      /** Version */
+      version: string;
+      /** Name */
+      name: string;
+      /**
+       * Category
+       * @enum {string}
+       */
+      category:
+        | "settlement"
+        | "registration"
+        | "merchant_acquiring"
+        | "internet_acquiring"
+        | "business_card"
+        | "financing_information";
+      /** Description */
+      description: string;
+      /**
+       * Mode
+       * @enum {string}
+       */
+      mode: "public_reference" | "demonstration";
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: "published" | "unconfirmed" | "unavailable" | "retired";
+      /**
+       * Last Reviewed At
+       * Format: date
+       */
+      last_reviewed_at: string;
+      /** Source Ids */
+      source_ids: string[];
+      /** Rules */
+      rules: components["schemas"]["EligibilityRule"][];
+      /** Applicable Conditions */
+      applicable_conditions: string[];
+      /** Unknown Conditions */
+      unknown_conditions: string[];
+      /** Limitations */
+      limitations: string[];
+    };
+    /** ProductDecision */
+    ProductDecision: {
+      entry: components["schemas"]["ProductView"];
+      /**
+       * Status
+       * @enum {string}
+       */
+      status:
+        | "potential_match"
+        | "information_only"
+        | "demo_match"
+        | "demo_information"
+        | "needs_clarification"
+        | "not_matched"
+        | "unavailable";
+      /** Reasons */
+      reasons: string[];
+      /** Evaluations */
+      evaluations: components["schemas"]["RuleEvaluation"][];
+      /** Missing Fields */
+      missing_fields: (
+        | "launch_stage"
+        | "registration_status"
+        | "sales_channel"
+        | "needs_settlement_account"
+        | "needs_registration_help"
+        | "accepts_card_payments"
+        | "needs_expense_card"
+        | "financing_interest"
+      )[];
+    };
+    /** ProductView */
+    ProductView: {
+      product: components["schemas"]["Product"];
+      /** Sources */
+      sources: components["schemas"]["EvidenceSource"][];
+      /**
+       * Availability
+       * @enum {string}
+       */
+      availability: "verified_reference" | "demonstration_only" | "blocked";
+      /** Availability Reasons */
+      availability_reasons: string[];
+    };
     /** ProfilePatch */
     ProfilePatch: {
       /** City */
@@ -1256,6 +1531,27 @@ export interface components {
        * Format: date-time
        */
       created_at: string;
+    };
+    /** RuleEvaluation */
+    RuleEvaluation: {
+      rule: components["schemas"]["EligibilityRule"];
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: "matched" | "unknown" | "not_matched";
+      /** Actual Value */
+      actual_value: string | boolean | null;
+      /** Evaluated Value */
+      evaluated_value: string | boolean | null;
+      /** Input Path */
+      input_path: string;
+      /**
+       * Input Origin
+       * @default user_input
+       * @constant
+       */
+      input_origin: "user_input";
     };
     /** Sales */
     Sales: {
@@ -2016,6 +2312,61 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["FinanceResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  products_api_v1_bank_products_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CatalogueView"];
+        };
+      };
+    };
+  };
+  matches_api_v1_conversations__conversation_id__bank_products_matches_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["MatchRequest"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["MatchResult"];
         };
       };
       /** @description Validation Error */
