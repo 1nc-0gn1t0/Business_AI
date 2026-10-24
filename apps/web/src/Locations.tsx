@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { Dataset, Profile, Ranking, Schemas } from "./api";
 import { date, errorText, request } from "./api";
 import GeoMap from "./GeoMap";
+import Walking from "./Walking";
 import { readable } from "./labels";
 
 export const criteria: Record<string, string> = {
@@ -20,6 +21,15 @@ type Props = {
   onFinance: () => void;
 };
 export default function Locations(props: Props) {
+  const [walkPoint, setWalkPoint] = useState<[number, number] | null>(null);
+  function selectZone(id: string | null) {
+    setWalkPoint(null);
+    setWalking(null);
+    props.onSelect(id);
+  }
+  const [walking, setWalking] = useState<Schemas["CatchmentResult"] | null>(
+    null,
+  );
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [dataset, setDataset] = useState<Dataset | null>(null);
   const [pois, setPois] = useState<Schemas["POICollection"] | null>(null);
@@ -90,13 +100,15 @@ export default function Locations(props: Props) {
   }, [dataset, category]);
   const [operation, setOperation] = useState<AbortController | null>(null);
   useEffect(() => () => operation?.abort(), [operation]);
-  async function analyze() {
+  async function analyze(searchBounds?: Schemas["Bounds"]) {
     if (!dataset || !props.profile) return;
     const controller = new AbortController();
     setOperation(controller);
     setBusy(true);
     setError("");
     props.onRanking(null);
+    setWalking(null);
+    setWalkPoint(null);
     props.onSelect(null);
     try {
       const result = await request<Ranking>(
@@ -111,16 +123,18 @@ export default function Locations(props: Props) {
               limit: 5,
               cell_size_m: 500,
               min_separation_m: 1000,
-              ...(interior && dataset.slug === "kazan-centre"
-                ? {
-                    search_bbox: {
-                      west: 49.065,
-                      south: 55.71,
-                      east: 49.235,
-                      north: 55.84,
-                    },
-                  }
-                : {}),
+              ...(searchBounds
+                ? { search_bbox: searchBounds }
+                : interior && dataset.slug === "kazan-centre"
+                  ? {
+                      search_bbox: {
+                        west: 49.065,
+                        south: 55.71,
+                        east: 49.235,
+                        north: 55.84,
+                      },
+                    }
+                  : {}),
             },
             scoring: {
               version: "osm-relative-v1",
@@ -202,6 +216,8 @@ export default function Locations(props: Props) {
                 disabled={busy}
                 onChange={(e) => {
                   setDataset(datasets.find((d) => d.slug === e.target.value)!);
+                  setWalking(null);
+                  setWalkPoint(null);
                   setPois(null);
                   setDistricts(null);
                   props.onRanking(null);
@@ -235,7 +251,7 @@ export default function Locations(props: Props) {
               disabled={
                 busy || props.profile?.confirmation_state !== "confirmed"
               }
-              onClick={analyze}
+              onClick={() => void analyze()}
             >
               {busy
                 ? "Анализируем…"
@@ -308,6 +324,31 @@ export default function Locations(props: Props) {
             </p>
           </details>
           {!props.comparison && (
+            <Walking
+              dataset={dataset}
+              ranking={props.ranking}
+              point={
+                walkPoint ||
+                (props.ranking?.candidates.features.find(
+                  (f) => f.id === props.selected,
+                )?.properties.representative_point.coordinates as
+                  | [number, number]
+                  | undefined) ||
+                null
+              }
+              result={walking}
+              onSearchBounds={
+                props.profile?.confirmation_state === "confirmed" && !busy
+                  ? (b) => {
+                      void analyze(b);
+                    }
+                  : undefined
+              }
+              onPoint={setWalkPoint}
+              onResult={setWalking}
+            />
+          )}
+          {!props.comparison && (
             <GeoMap
               key={`${dataset.slug}:${dataset.data_version}`}
               dataset={dataset}
@@ -315,7 +356,12 @@ export default function Locations(props: Props) {
               districts={districts}
               ranking={props.ranking}
               selected={props.selected}
-              onSelect={props.onSelect}
+              onSelect={selectZone}
+              walking={walking}
+              onPoint={(p) => {
+                setWalking(null);
+                setWalkPoint(p);
+              }}
             />
           )}
           <div className="row source-strip">
@@ -376,7 +422,7 @@ export default function Locations(props: Props) {
                     <button
                       className={`zone-card ${props.selected === f.id ? "chosen" : ""}`}
                       key={f.id}
-                      onClick={() => props.onSelect(f.id)}
+                      onClick={() => selectZone(f.id)}
                       aria-pressed={props.selected === f.id}
                     >
                       <div className="row">

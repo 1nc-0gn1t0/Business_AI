@@ -14,7 +14,7 @@ class Geometry(UserDefinedType[str]):
         self.srid = int(srid)
 
     def get_col_spec(self, **kwargs: Any) -> str:
-        if self.kind not in {"POINT", "MULTIPOLYGON"} or self.srid != 4326:
+        if self.kind not in {"POINT", "MULTIPOLYGON", "LINESTRING"} or self.srid != 4326:
             raise ValueError("Unsupported geometry type")
         return f"geometry({self.kind},{self.srid})"
 

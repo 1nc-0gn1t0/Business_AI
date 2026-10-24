@@ -41,6 +41,7 @@ test("browser workflow with explicitly mocked APIs", async ({ page }) => {
   await page.route("**/api/v1/**", async (route) => {
     const url = new URL(route.request().url());
     const path = url.pathname;
+    if (path.endsWith("/walking-graph")) return route.fulfill({ json: null });
     if (path.endsWith("/conversations"))
       return route.fulfill({
         json: { ...view, access_token: "explicit-mock-credential-never-real" },

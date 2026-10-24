@@ -49,6 +49,9 @@ class ResolvedScoringPolicy(Contract):
 
 
 class RawGeoMetrics(Contract):
+    distance_method: Literal["geodesic_straight_line", "walking_network_with_connectors"] = (
+        "geodesic_straight_line"
+    )
     coverage_margin_m: float
     fully_covered: bool
     mapped_poi_count: int
@@ -56,7 +59,7 @@ class RawGeoMetrics(Contract):
     nearest_transit_m: float | None
     competitor_count: int
     nearest_competitor_m: float | None
-    competitor_features_per_km2: float
+    competitor_features_per_km2: float | None
     infrastructure_count: int
     infrastructure_categories: tuple[str, ...]
     complementary_count: int

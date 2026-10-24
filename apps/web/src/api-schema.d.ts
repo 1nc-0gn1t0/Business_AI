@@ -108,6 +108,57 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/geo/{slug}/walking-graph": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Walking Graph */
+    get: operations["walking_graph_api_v1_geo__slug__walking_graph_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/geo/{slug}/catchment": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Walking Catchment */
+    post: operations["walking_catchment_api_v1_geo__slug__catchment_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/geo/{slug}/walking-rankings": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Walking Rankings */
+    post: operations["walking_rankings_api_v1_geo__slug__walking_rankings_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/geo/{slug}/rankings": {
     parameters: {
       query?: never;
@@ -797,6 +848,119 @@ export interface components {
       review_window_days: number;
       /** Products */
       products: components["schemas"]["ProductView"][];
+      /** Limitations */
+      limitations: string[];
+    };
+    /** CatchmentRequest */
+    CatchmentRequest: {
+      /** Longitude */
+      longitude: number;
+      /** Latitude */
+      latitude: number;
+      /**
+       * Distance M
+       * @default 500
+       */
+      distance_m: number;
+      /**
+       * Max Snap M
+       * @default 30
+       */
+      max_snap_m: number;
+      /** Data Version */
+      data_version?: string | null;
+      /** Graph Version */
+      graph_version?: string | null;
+    };
+    /** CatchmentResult */
+    CatchmentResult: {
+      /**
+       * Status
+       * @enum {string}
+       */
+      status:
+        | "ok"
+        | "partial"
+        | "graph_unavailable"
+        | "outside_coverage"
+        | "no_network_access"
+        | "resource_limit";
+      /** Reasons */
+      reasons: string[];
+      /** Algorithm Version */
+      algorithm_version: string;
+      /** Request Fingerprint */
+      request_fingerprint: string;
+      request_snapshot: components["schemas"]["CatchmentRequest"];
+      graph?: components["schemas"]["WalkGraphView"] | null;
+      /** Poi Data Version */
+      poi_data_version: string;
+      /**
+       * Origin
+       * @default modelled
+       * @constant
+       */
+      origin: "modelled";
+      /**
+       * Distance Method
+       * @default directed_osm_network_plus_explicit_snap_connectors
+       * @constant
+       */
+      distance_method: "directed_osm_network_plus_explicit_snap_connectors";
+      /** Source Snap M */
+      source_snap_m?: number | null;
+      /** Coverage Margin M */
+      coverage_margin_m?: number | null;
+      /**
+       * Fully Covered
+       * @default false
+       */
+      fully_covered: boolean;
+      network?: components["schemas"]["ReachableNetwork"];
+      pois?: components["schemas"]["WalkingPOIs"];
+      /** Category Counts */
+      category_counts?: {
+        [key: string]: number;
+      };
+      /**
+       * Reachable Poi Count
+       * @default 0
+       */
+      reachable_poi_count: number;
+      /**
+       * Straight Line Poi Count
+       * @default 0
+       */
+      straight_line_poi_count: number;
+      /**
+       * Unsnapped Poi Count
+       * @default 0
+       */
+      unsnapped_poi_count: number;
+      /**
+       * No Route In Loaded Graph Count
+       * @default 0
+       */
+      no_route_in_loaded_graph_count: number;
+      /**
+       * Visited Nodes
+       * @default 0
+       */
+      visited_nodes: number;
+      /**
+       * Loaded Edges
+       * @default 0
+       */
+      loaded_edges: number;
+      /** Source Component Nodes */
+      source_component_nodes?: number | null;
+      /** On Largest Component */
+      on_largest_component?: boolean | null;
+      /**
+       * Runtime Ms
+       * @default 0
+       */
+      runtime_ms: number;
       /** Limitations */
       limitations: string[];
     };
@@ -1897,6 +2061,14 @@ export interface components {
     };
     /** RawGeoMetrics */
     RawGeoMetrics: {
+      /**
+       * Distance Method
+       * @default geodesic_straight_line
+       * @enum {string}
+       */
+      distance_method:
+        | "geodesic_straight_line"
+        | "walking_network_with_connectors";
       /** Coverage Margin M */
       coverage_margin_m: number;
       /** Fully Covered */
@@ -1912,7 +2084,7 @@ export interface components {
       /** Nearest Competitor M */
       nearest_competitor_m: number | null;
       /** Competitor Features Per Km2 */
-      competitor_features_per_km2: number;
+      competitor_features_per_km2: number | null;
       /** Infrastructure Count */
       infrastructure_count: number;
       /** Infrastructure Categories */
@@ -1921,6 +2093,34 @@ export interface components {
       complementary_count: number;
       /** Category Counts */
       category_counts: {
+        [key: string]: number;
+      };
+    };
+    /** ReachableNetwork */
+    ReachableNetwork: {
+      /**
+       * Type
+       * @default FeatureCollection
+       * @constant
+       */
+      type: "FeatureCollection";
+      /**
+       * Features
+       * @default []
+       */
+      features: components["schemas"]["ReachableSegment"][];
+    };
+    /** ReachableSegment */
+    ReachableSegment: {
+      /**
+       * Type
+       * @default Feature
+       * @constant
+       */
+      type: "Feature";
+      geometry: components["schemas"]["WalkLine"];
+      /** Properties */
+      properties: {
         [key: string]: number;
       };
     };
@@ -2237,6 +2437,160 @@ export interface components {
       /** Context */
       ctx?: Record<string, never>;
     };
+    /** WalkGraphView */
+    WalkGraphView: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      manifest: components["schemas"]["WalkManifest"];
+      /** Graph Version */
+      graph_version: string;
+      /** Build Version */
+      build_version: string;
+      /** Spatial Runtime */
+      spatial_runtime: string;
+      /** Metric Crs */
+      metric_crs: number;
+      /** Edge Count */
+      edge_count: number;
+      /** Node Count */
+      node_count: number;
+      /** Component Count */
+      component_count: number;
+      /** Diagnostics */
+      diagnostics: {
+        [key: string]: number;
+      };
+      /**
+       * Imported At
+       * Format: date-time
+       */
+      imported_at: string;
+    };
+    /** WalkLine */
+    WalkLine: {
+      /**
+       * Type
+       * @default LineString
+       * @constant
+       */
+      type: "LineString";
+      /** Coordinates */
+      coordinates: [number, number][];
+    };
+    /** WalkManifest */
+    WalkManifest: {
+      /**
+       * Origin
+       * @default open_data
+       * @constant
+       */
+      origin: "open_data";
+      /**
+       * Source Name
+       * @default OpenStreetMap via Overpass API
+       * @constant
+       */
+      source_name: "OpenStreetMap via Overpass API";
+      /** Slug */
+      slug: string;
+      /** City */
+      city: string;
+      bbox: components["schemas"]["Bounds"];
+      /** Source Url */
+      source_url: string;
+      /** Query */
+      query: string;
+      /** Sha256 */
+      sha256: string;
+      /** Source Sha256 */
+      source_sha256: string;
+      /**
+       * Osm Base
+       * Format: date-time
+       */
+      osm_base: string;
+      /**
+       * Fetched At
+       * Format: date-time
+       */
+      fetched_at: string;
+      /**
+       * Normalization
+       * @default walking_minimal_v1
+       * @constant
+       */
+      normalization: "walking_minimal_v1";
+      /**
+       * License
+       * @default ODbL-1.0
+       * @constant
+       */
+      license: "ODbL-1.0";
+      /**
+       * Attribution
+       * @default © OpenStreetMap contributors
+       * @constant
+       */
+      attribution: "© OpenStreetMap contributors";
+    };
+    /** WalkingPOI */
+    WalkingPOI: {
+      /**
+       * Type
+       * @default Feature
+       * @constant
+       */
+      type: "Feature";
+      /** Id */
+      id: string;
+      geometry: components["schemas"]["PointGeometry"];
+      /** Properties */
+      properties: {
+        [key: string]: unknown;
+      };
+    };
+    /** WalkingPOIs */
+    WalkingPOIs: {
+      /**
+       * Type
+       * @default FeatureCollection
+       * @constant
+       */
+      type: "FeatureCollection";
+      /**
+       * Features
+       * @default []
+       */
+      features: components["schemas"]["WalkingPOI"][];
+    };
+    /** WalkingRankingRequest */
+    WalkingRankingRequest: {
+      ranking: components["schemas"]["RankingRequest"];
+      /**
+       * Max Snap M
+       * @default 30
+       */
+      max_snap_m: number;
+      /** Graph Version */
+      graph_version?: string | null;
+    };
+    /** WalkingRankingResult */
+    WalkingRankingResult: {
+      baseline: components["schemas"]["RankingCollection"];
+      network: components["schemas"]["RankingCollection"];
+      /** Catchments */
+      catchments: {
+        [key: string]: components["schemas"]["CatchmentResult"];
+      };
+      /**
+       * Methodology
+       * @default Separate opt-in comparison; BA-008 remains straight-line. Identical weights/min-max, different explicitly versioned network inputs.
+       */
+      methodology: string;
+    };
     /** WorkingDays */
     WorkingDays: {
       /** Value */
@@ -2537,6 +2891,109 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["RevisionView"][];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  walking_graph_api_v1_geo__slug__walking_graph_get: {
+    parameters: {
+      query?: {
+        graph_version?: string | null;
+      };
+      header?: never;
+      path: {
+        slug: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WalkGraphView"] | null;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  walking_catchment_api_v1_geo__slug__catchment_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        slug: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CatchmentRequest"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CatchmentResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  walking_rankings_api_v1_geo__slug__walking_rankings_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        slug: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["WalkingRankingRequest"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WalkingRankingResult"];
         };
       };
       /** @description Validation Error */
