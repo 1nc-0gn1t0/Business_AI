@@ -27,6 +27,31 @@ class Base(DeclarativeBase):
     pass
 
 
+class ProviderDatasetRecord(Base):
+    __tablename__ = "provider_datasets"
+    __table_args__ = (
+        sa.UniqueConstraint("provider", "slug", "revision"),
+        sa.Index(
+            "ix_provider_active",
+            "provider",
+            "slug",
+            unique=True,
+            postgresql_where=sa.text("active"),
+        ),
+        sa.CheckConstraint("provider = 'synthetic'", name="ck_provider_implemented_import"),
+        sa.CheckConstraint("data_version ~ '^[0-9a-f]{64}$'", name="ck_provider_version"),
+        sa.CheckConstraint("document->>'origin' = 'synthetic'", name="ck_provider_origin"),
+    )
+
+    provider: Mapped[str] = mapped_column(sa.Text, primary_key=True)
+    slug: Mapped[str] = mapped_column(sa.Text, primary_key=True)
+    data_version: Mapped[str] = mapped_column(sa.Text, primary_key=True)
+    revision: Mapped[str] = mapped_column(sa.Text)
+    document: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    active: Mapped[bool] = mapped_column(server_default=sa.true())
+    imported_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+
+
 class GeoDatasetRecord(Base):
     __tablename__ = "geo_datasets"
     __table_args__ = (
