@@ -38,6 +38,14 @@ export class ApiError extends Error {
   }
 }
 const messages: Record<string, string> = {
+  demo_data_disabled:
+    "Демонстрационные данные запрещены текущим режимом или отключены сервером.",
+  provider_version_not_found:
+    "Версия источника недоступна. Обновите список и выберите набор заново.",
+  provider_dataset_invalid:
+    "Набор не прошёл проверку целостности. Данные не подставлены.",
+  provider_not_integrated:
+    "Источник ещё не подключён. Данные отсутствуют, подмена не выполняется.",
   walking_graph_version_not_found:
     "Запрошенная версия дорожного графа недоступна. Обновите граф и повторите расчёт.",
   lead_consent_changed:

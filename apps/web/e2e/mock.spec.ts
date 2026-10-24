@@ -41,6 +41,12 @@ test("browser workflow with explicitly mocked APIs", async ({ page }) => {
   await page.route("**/api/v1/**", async (route) => {
     const url = new URL(route.request().url());
     const path = url.pathname;
+    if (path.startsWith("/api/v1/data-providers/"))
+      return route.fulfill({
+        json: path.endsWith("/policy")
+          ? { mode: "real", demo_enabled: false, allowed_providers: ["osm"] }
+          : [],
+      });
     if (path.endsWith("/walking-graph")) return route.fulfill({ json: null });
     if (path.endsWith("/conversations"))
       return route.fulfill({

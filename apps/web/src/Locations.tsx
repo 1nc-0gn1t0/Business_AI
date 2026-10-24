@@ -3,6 +3,7 @@ import type { Dataset, Profile, Ranking, Schemas } from "./api";
 import { date, errorText, request } from "./api";
 import GeoMap from "./GeoMap";
 import Walking from "./Walking";
+import DataSources from "./DataSources";
 import { readable } from "./labels";
 
 export const criteria: Record<string, string> = {
@@ -180,6 +181,7 @@ export default function Locations(props: Props) {
         </div>
         <span className="tag outline">Казань · MVP</span>
       </div>
+      <DataSources />
       {error && (
         <div className="alert" role="alert">
           {error}

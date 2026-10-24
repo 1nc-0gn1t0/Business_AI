@@ -9,6 +9,7 @@ from pydantic import BaseModel, ValidationError
 from app.adapters.llm import LLMError
 from app.api.bank import router as bank_router
 from app.api.conversations import error_detail, router
+from app.api.data import router as data_router
 from app.api.finance import router as finance_router
 from app.api.geo import router as geo_router
 from app.api.leads import public_router as consent_text_router
@@ -23,6 +24,7 @@ app.include_router(router)
 app.include_router(geo_router)
 app.include_router(finance_router)
 app.include_router(bank_router)
+app.include_router(data_router)
 app.include_router(leads_router)
 app.include_router(consent_text_router)
 

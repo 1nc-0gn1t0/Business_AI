@@ -40,6 +40,7 @@ services:
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3:4b-instruct-2507-q4_K_M}
       LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-120}
       OLLAMA_NUM_CTX: ${OLLAMA_NUM_CTX:-4096}
+      DATA_DEMO_ENABLED: ${DATA_DEMO_ENABLED:-false}
     ports:
       - "127.0.0.1:${API_PORT:-8000}:8000"
     depends_on:
