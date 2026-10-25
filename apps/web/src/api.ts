@@ -38,6 +38,12 @@ export class ApiError extends Error {
   }
 }
 const messages: Record<string, string> = {
+  database_unavailable:
+    "База данных временно недоступна. Повторите действие после восстановления сервиса.",
+  llm_timeout:
+    "Ollama превысила время ожидания. Текст сохранён, повторите запрос.",
+  llm_invalid_response:
+    "Ответ локальной модели не прошёл проверку. Текст сохранён, повторите запрос или исправьте профиль вручную.",
   report_outdated:
     "Профиль или источники изменились. Обновите отчёт перед скачиванием.",
   report_results_changed:

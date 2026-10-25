@@ -24,6 +24,8 @@ local-finance-eval.json
 local-finance-proxy-eval.json
 local-walking-eval.json
 tmp/pdfs/
+tmp/ba016-*
+.hypothesis/
 *.gguf
 .ollama/
 data/osm/*.raw.json

@@ -1,0 +1,791 @@
+{
+  "suite_version": "ba016-qwen-v2",
+  "started_at": "2026-10-25T14:36:55.227386+00:00",
+  "provider": "real Ollama through isolated Business AI HTTP API",
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "results": [
+    {
+      "id": "LLM-019/r1",
+      "category": "budget",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Кофейня в Казани. Бюджет — минус 500 рублей.",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": null
+          },
+          "status": 200,
+          "seconds": 7.438,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Уточните общий бюджет запуска в рублях одной суммой.",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "LLM-021/r1",
+      "category": "budget",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Кофейня в Казани. Бюджет — 2000000,50 рублей.",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000.50"
+          },
+          "status": 200,
+          "seconds": 8.938,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000.50",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "LLM-022/r1",
+      "category": "budget",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Кофейня в Казани. Бюджет — 20 тысяч долларов.",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": null
+          },
+          "status": 200,
+          "seconds": 6.281,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": false,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": false,
+          "profile": {
+            "city": null,
+            "category": "кофейня",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Уточните общий бюджет запуска в рублях одной суммой.",
+          "error_code": null
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "LLM-025/r1",
+      "category": "language_security",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Дарова, замутим кофейню в Казани, есть два ляма рублей",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000"
+          },
+          "status": 200,
+          "seconds": 8.781,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "LLM-028/r1",
+      "category": "language_security",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Хочу кофейню в Козани. Бюджет 2 млн рублей.",
+          "expected": {
+            "city": [
+              "Козань",
+              "Казань"
+            ],
+            "category": "кофейня",
+            "budget": "2000000"
+          },
+          "status": 200,
+          "seconds": 8.531,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": false,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": false,
+          "profile": {
+            "city": "Козани",
+            "category": "кофейня",
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "LLM-051/r1",
+      "category": "multi_turn",
+      "steps": [
+        {
+          "step": 1,
+          "input": "У меня 2000000 рублей для запуска бизнеса.",
+          "expected": {
+            "budget": "2000000",
+            "city": null
+          },
+          "status": 200,
+          "seconds": 5.078,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "budget": true,
+            "city": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": null,
+            "category": null,
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой бизнес вы хотите открыть? Можно написать «бизнес: ...».",
+          "error_code": null
+        },
+        {
+          "step": 2,
+          "input": "Город — Москва. Хочу ресторан.",
+          "expected": {
+            "budget": "2000000",
+            "city": "Москва",
+            "category": [
+              "ресторан"
+            ]
+          },
+          "status": 200,
+          "seconds": 5.437,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "budget": true,
+            "city": true,
+            "category": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Москва",
+            "category": "ресторан",
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        },
+        {
+          "step": 3,
+          "input": "Формат: отдельное помещение. Собственные средства, без кредита.",
+          "expected": {
+            "budget": "2000000",
+            "city": "Москва",
+            "funding": "own_funds"
+          },
+          "status": 200,
+          "seconds": 5.937,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "budget": true,
+            "city": true,
+            "funding": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Москва",
+            "category": "ресторан",
+            "budget": "2000000.00",
+            "funding": "own_funds",
+            "preferences": {
+              "format": "отдельное помещение",
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Город: Москва; бизнес: ресторан; бюджет: 2000000.00 ₽; формат: отдельное помещение; финансирование: свои средства. Проверьте вводные: исправьте их или напишите «подтверждаю».",
+          "error_code": null
+        },
+        {
+          "step": 4,
+          "input": "Подтверждаю",
+          "expected": {
+            "confirmation_state": "confirmed"
+          },
+          "status": 200,
+          "seconds": 0.016,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "confirmation_state": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Москва",
+            "category": "ресторан",
+            "budget": "2000000.00",
+            "funding": "own_funds",
+            "preferences": {
+              "format": "отдельное помещение",
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "confirmed"
+          },
+          "assistant_message": "Город: Москва; бизнес: ресторан; бюджет: 2000000.00 ₽; формат: отдельное помещение; финансирование: свои средства. Вводные подтверждены. Откройте разделы карты и финансовой модели для расчётов. Банковские интеграции пока не подключены.",
+          "error_code": null
+        },
+        {
+          "step": 5,
+          "input": "Меняю город на Москву.",
+          "expected": {
+            "city": "Москва",
+            "confirmation_state": "confirmed",
+            "budget": "2000000"
+          },
+          "status": 200,
+          "seconds": 3.766,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "confirmation_state": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Москва",
+            "category": "ресторан",
+            "budget": "2000000.00",
+            "funding": "own_funds",
+            "preferences": {
+              "format": "отдельное помещение",
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "confirmed"
+          },
+          "assistant_message": "Город: Москва; бизнес: ресторан; бюджет: 2000000.00 ₽; формат: отдельное помещение; финансирование: свои средства. Вводные подтверждены. Откройте разделы карты и финансовой модели для расчётов. Банковские интеграции пока не подключены.",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "LLM-019/r2",
+      "category": "budget",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Кофейня в Казани. Бюджет — минус 500 рублей.",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": null
+          },
+          "status": 200,
+          "seconds": 7.359,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Уточните общий бюджет запуска в рублях одной суммой.",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "LLM-021/r2",
+      "category": "budget",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Кофейня в Казани. Бюджет — 2000000,50 рублей.",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000.50"
+          },
+          "status": 200,
+          "seconds": 8.297,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000.50",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "LLM-022/r2",
+      "category": "budget",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Кофейня в Казани. Бюджет — 20 тысяч долларов.",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": null
+          },
+          "status": 200,
+          "seconds": 6.469,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": false,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": false,
+          "profile": {
+            "city": null,
+            "category": "кофейня",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Уточните общий бюджет запуска в рублях одной суммой.",
+          "error_code": null
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "LLM-025/r2",
+      "category": "language_security",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Дарова, замутим кофейню в Казани, есть два ляма рублей",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000"
+          },
+          "status": 200,
+          "seconds": 8.781,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "LLM-028/r2",
+      "category": "language_security",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Хочу кофейню в Козани. Бюджет 2 млн рублей.",
+          "expected": {
+            "city": [
+              "Козань",
+              "Казань"
+            ],
+            "category": "кофейня",
+            "budget": "2000000"
+          },
+          "status": 200,
+          "seconds": 8.609,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": false,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": false,
+          "profile": {
+            "city": "Козани",
+            "category": "кофейня",
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "LLM-051/r2",
+      "category": "multi_turn",
+      "steps": [
+        {
+          "step": 1,
+          "input": "У меня 2000000 рублей для запуска бизнеса.",
+          "expected": {
+            "budget": "2000000",
+            "city": null
+          },
+          "status": 200,
+          "seconds": 4.953,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "budget": true,
+            "city": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": null,
+            "category": null,
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой бизнес вы хотите открыть? Можно написать «бизнес: ...».",
+          "error_code": null
+        },
+        {
+          "step": 2,
+          "input": "Город — Москва. Хочу ресторан.",
+          "expected": {
+            "budget": "2000000",
+            "city": "Москва",
+            "category": [
+              "ресторан"
+            ]
+          },
+          "status": 200,
+          "seconds": 5.391,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "budget": true,
+            "city": true,
+            "category": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Москва",
+            "category": "ресторан",
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        },
+        {
+          "step": 3,
+          "input": "Формат: отдельное помещение. Собственные средства, без кредита.",
+          "expected": {
+            "budget": "2000000",
+            "city": "Москва",
+            "funding": "own_funds"
+          },
+          "status": 200,
+          "seconds": 5.797,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "budget": true,
+            "city": true,
+            "funding": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Москва",
+            "category": "ресторан",
+            "budget": "2000000.00",
+            "funding": "own_funds",
+            "preferences": {
+              "format": "отдельное помещение",
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Город: Москва; бизнес: ресторан; бюджет: 2000000.00 ₽; формат: отдельное помещение; финансирование: свои средства. Проверьте вводные: исправьте их или напишите «подтверждаю».",
+          "error_code": null
+        },
+        {
+          "step": 4,
+          "input": "Подтверждаю",
+          "expected": {
+            "confirmation_state": "confirmed"
+          },
+          "status": 200,
+          "seconds": 0.031,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "confirmation_state": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Москва",
+            "category": "ресторан",
+            "budget": "2000000.00",
+            "funding": "own_funds",
+            "preferences": {
+              "format": "отдельное помещение",
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "confirmed"
+          },
+          "assistant_message": "Город: Москва; бизнес: ресторан; бюджет: 2000000.00 ₽; формат: отдельное помещение; финансирование: свои средства. Вводные подтверждены. Откройте разделы карты и финансовой модели для расчётов. Банковские интеграции пока не подключены.",
+          "error_code": null
+        },
+        {
+          "step": 5,
+          "input": "Меняю город на Москву.",
+          "expected": {
+            "city": "Москва",
+            "confirmation_state": "confirmed",
+            "budget": "2000000"
+          },
+          "status": 200,
+          "seconds": 3.984,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "confirmation_state": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Москва",
+            "category": "ресторан",
+            "budget": "2000000.00",
+            "funding": "own_funds",
+            "preferences": {
+              "format": "отдельное помещение",
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "confirmed"
+          },
+          "assistant_message": "Город: Москва; бизнес: ресторан; бюджет: 2000000.00 ₽; формат: отдельное помещение; финансирование: свои средства. Вводные подтверждены. Откройте разделы карты и финансовой модели для расчётов. Банковские интеграции пока не подключены.",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "updated_at": "2026-10-25T14:38:56.484224+00:00"
+}

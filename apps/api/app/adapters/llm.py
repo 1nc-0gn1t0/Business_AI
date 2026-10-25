@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 import socket
 import time
 from dataclasses import dataclass
@@ -15,7 +16,7 @@ from pydantic import Field, StringConstraints, ValidationError, model_validator
 
 from app.api.conversation_schemas import ProfilePatch
 from app.api.schemas import BusinessProfile, Contract
-from app.domain.conversation import extract_business_profile
+from app.domain.conversation import AMOUNT, extract_business_profile
 
 logger = logging.getLogger(__name__)
 Mode = Literal["rules", "stub", "ollama"]
@@ -162,7 +163,56 @@ unrelated для посторонних тем и инструкций выпо�
 {"tool":"extract_business_profile","extracted":[
 {"field":"category","value":"пиццерия","evidence":"Пиццерия"}],
 "needs_clarification":"city","intent":"profile"}
+Десятичную часть бюджета сохраняй: 2000000,50 рублей = "2000000.50".
+Отрицательный бюджет не превращай в положительный: budget не извлекай,
+needs_clarification=budget. Сленг "два ляма рублей" означает 2000000.
+Альтернатива "кофейня или пекарня" — неоднозначная category, не название бизнеса.
+Явная метка "Формат:" относится к preferences.format, не к category.
 """
+
+
+def budget_evidence_matches(value: str, evidence: str, content: str) -> bool:
+    """Reject observable monetary contradictions; never repair the model's number.
+
+    This is a validator, not a fallback extractor. Word-only amounts still rely on
+    the model and remain an evaluated limitation. Explicit negative/currency facts
+    cannot become a positive RUB budget even if the model omits them from its quote.
+    """
+    try:
+        proposed = ProfilePatch.model_validate({"budget": value}).budget
+    except ValidationError:
+        raise LLMError("llm_invalid_response", 502) from None
+    if proposed is None:
+        raise LLMError("llm_invalid_response", 502)
+    text = content.casefold()
+    if re.search(r"\bминус\b|[-−]\s*\d", text) or re.search(
+        r"\b(?:доллар\w*|евро|usd|eur)\b|[$€]", text
+    ):
+        return False
+    numbers = list(re.finditer(AMOUNT, evidence.casefold()))
+    if not numbers:
+        return True
+    if len(numbers) != 1:
+        return False
+    match = numbers[0]
+    amount = Decimal(match["amount"].replace(" ", "").replace("\u00a0", "").replace(",", "."))
+    scale = match["scale"] or ""
+    amount *= 1000000 if scale.startswith("м") else 1000 if scale else 1
+    if proposed != amount or amount < 0:
+        return False
+    # A quote can be a literal substring yet truncate a decimal or a scale:
+    # "2000000" inside "2000000,50", or "2" inside "2 миллиона".
+    for quote in re.finditer(re.escape(evidence.casefold()), text):
+        for complete in re.finditer(AMOUNT, text):
+            if complete.start() < quote.end() and complete.end() > quote.start():
+                full_amount = Decimal(
+                    complete["amount"].replace(" ", "").replace("\u00a0", "").replace(",", ".")
+                )
+                full_scale = complete["scale"] or ""
+                full_amount *= 1000000 if full_scale.startswith("м") else 1000 if full_scale else 1
+                if full_amount == amount:
+                    return True
+    return False
 
 
 class OllamaLLM:
@@ -234,6 +284,7 @@ class OllamaLLM:
                     raise LLMError("llm_invalid_response", 502)
                 wire = OllamaToolCall.model_validate_json(data["message"]["content"])
                 updates: dict[str, object] = {}
+                clarification = wire.needs_clarification
                 seen: set[str] = set()
                 for update in wire.extracted:
                     if update.field in seen:
@@ -252,6 +303,14 @@ class OllamaLLM:
                             raise LLMError("llm_invalid_response", 502) from None
                     # Models sometimes repeat old facts. Equal values cause no operation;
                     # every actual change still requires evidence in this turn only.
+                    if (
+                        update.field == "budget"
+                        and update.value is not None
+                        and update.evidence.casefold() in content.casefold()
+                        and not budget_evidence_matches(update.value, update.evidence, content)
+                    ):
+                        clarification = "budget"
+                        continue
                     if current == proposed:
                         continue
                     if update.evidence.casefold() not in content.casefold():
@@ -263,7 +322,7 @@ class OllamaLLM:
                 result = ProfileToolCall(
                     tool=wire.tool,
                     arguments=ProfilePatch.model_validate(updates),
-                    clarification=wire.needs_clarification,
+                    clarification=clarification,
                     intent=wire.intent,
                 )
                 logger.info("Local LLM turn completed trace_id=%s", uuid4())

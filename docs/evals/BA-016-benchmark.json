@@ -1,0 +1,81 @@
+{
+  "checked_at": "2026-10-25T15:11:29.995018+00:00",
+  "method": "serial HTTP, 1 excluded warm-up then 5 samples per endpoint; no concurrent LLM or load test; report is finance-only, 6 local snapshots created",
+  "results": [
+    {
+      "id": "health",
+      "n": 5,
+      "unit": "ms",
+      "samples": [
+        46.378,
+        28.381,
+        38.811,
+        42.522,
+        49.69
+      ],
+      "median": 42.522,
+      "p95_nearest_rank": 49.69,
+      "fingerprint_stable": null
+    },
+    {
+      "id": "ranking_5_zones",
+      "n": 5,
+      "unit": "ms",
+      "samples": [
+        203.395,
+        251.878,
+        256.326,
+        204.32,
+        210.429
+      ],
+      "median": 210.429,
+      "p95_nearest_rank": 256.326,
+      "fingerprint_stable": true
+    },
+    {
+      "id": "catchment_600m",
+      "n": 5,
+      "unit": "ms",
+      "samples": [
+        309.873,
+        247.701,
+        266.519,
+        296.325,
+        345.245
+      ],
+      "median": 296.325,
+      "p95_nearest_rank": 345.245,
+      "fingerprint_stable": true
+    },
+    {
+      "id": "finance_3_scenarios",
+      "n": 5,
+      "unit": "ms",
+      "samples": [
+        28.961,
+        32.951,
+        33.131,
+        13.713,
+        25.908
+      ],
+      "median": 28.961,
+      "p95_nearest_rank": 33.131,
+      "fingerprint_stable": true
+    },
+    {
+      "id": "report_finance_pdf_json",
+      "n": 5,
+      "unit": "ms",
+      "samples": [
+        150.615,
+        196.685,
+        128.336,
+        108.13,
+        136.855
+      ],
+      "median": 136.855,
+      "p95_nearest_rank": 196.685,
+      "fingerprint_stable": null
+    }
+  ]
+}

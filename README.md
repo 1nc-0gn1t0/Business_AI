@@ -288,3 +288,26 @@ GHSL/коммерческие адаптеры пока не подключен�
 API, ограничения и воспроизводимость: [REPORT_EXPORT.md](docs/REPORT_EXPORT.md).
 Примеры: [PDF](docs/examples/BA-015-kazan-coffee.pdf),
 [JSON](docs/examples/BA-015-kazan-coffee.json). PDF работает офлайн, со встроенным шрифтом.
+
+## Проверки качества и стабильное демо (BA-016)
+
+[TEST_MATRIX](docs/TEST_MATRIX.md) — покрытие и команды отдельных групп;
+[LLM_EVALUATION](docs/LLM_EVALUATION.md) — настоящая Qwen и оставшиеся ошибки;
+[E2E_REPORT](docs/E2E_REPORT.md), [SECURITY_TEST_REPORT](docs/SECURITY_TEST_REPORT.md),
+[PERFORMANCE](docs/PERFORMANCE.md), [DEMO_GUIDE](docs/DEMO_GUIDE.md).
+
+```powershell
+uv tool run --from prek==0.5.4 prek run --all-files
+uv run --locked --project apps/api pytest apps/api/tests -m extended --hypothesis-show-statistics
+uv run --locked --project apps/api python scripts/demo_ready.py --require-demo-data
+```
+
+Extended: pairwise12отраслей/6городов/6бюджетов и1550Hypothesis examples с фиксированными
+seed. CI не запускает live LLM. Для массовой live-оценки используйте отдельный
+localhost:8016/тестовую БД по DEMO_GUIDE, `scripts/eval_product_llm.py`, корпус
+`tests/evaluation/qwen-v2.json`; не рабочие пользовательские диалоги.
+Readiness сверяет `data/demo-manifest.json`, но наличие модели не заменяет реальный
+ответ с extraction_mode=ollama. Источники заранее загружены; Overpass в демо не нужен.
+Отрицательная/противоречащая цифровой цитате сумма вызывает уточнение; пользователь
+всё равно должен проверить город/сумму до подтверждения. Финансовый demo-template —
+пример кофейни, не отраслевая модель произвольного бизнеса.

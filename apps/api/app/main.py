@@ -5,6 +5,7 @@ import psycopg
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ValidationError
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.adapters.llm import LLMError
 from app.api.bank import router as bank_router
@@ -31,6 +32,13 @@ app.include_router(data_router)
 app.include_router(leads_router)
 app.include_router(consent_text_router)
 app.include_router(reports_router)
+
+
+@app.exception_handler(SQLAlchemyError)
+async def database_error(request: Request, error: SQLAlchemyError) -> JSONResponse:
+    # SQLAlchemy exception strings can contain SQL parameters and connection details.
+    logger.warning("Database operation failed")
+    return JSONResponse(status_code=503, content={"detail": {"code": "database_unavailable"}})
 
 
 @app.exception_handler(LeadError)

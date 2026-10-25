@@ -1,0 +1,3418 @@
+{
+  "date": "2026-10-25",
+  "counting": "Unique named IDs; 6 property suites count separately from 1550 generated examples; DB tests run in separate isolated databases. Browser and live LLM are separate.",
+  "baseline": {
+    "api_pass": 235,
+    "postgres_pass": 70,
+    "vitest_pass": 35,
+    "mock_browser_pass": 3
+  },
+  "final": {
+    "api_pass": 352,
+    "postgres_pass": 72,
+    "vitest_pass": 35,
+    "named_total": 459,
+    "ordinary_cases": 453,
+    "property_suites": 6,
+    "property_examples": 1550,
+    "browser_mock_pass": 18,
+    "browser_real_pass": 3
+  },
+  "tests": [
+    {
+      "id": "tests.integration.test_candidates::test_multiple_valid_covered_unique_reproducible_zones",
+      "category": "postgres_postgis",
+      "expected": "multiple valid covered unique reproducible zones",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_candidates::test_separation_and_positive_proximity",
+      "category": "postgres_postgis",
+      "expected": "separation and positive proximity",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_candidates::test_coverage_empty_and_partial",
+      "category": "postgres_postgis",
+      "expected": "coverage empty and partial",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_candidates::test_missing_profile_districts_constraints_versions",
+      "category": "postgres_postgis",
+      "expected": "missing profile districts constraints versions",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_candidates::test_district_intersection_and_exclusion",
+      "category": "postgres_postgis",
+      "expected": "district intersection and exclusion",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_candidates::test_bound_constraint_and_empty_observations",
+      "category": "postgres_postgis",
+      "expected": "bound constraint and empty observations",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_candidates::test_grid_resource_limit",
+      "category": "postgres_postgis",
+      "expected": "grid resource limit",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_bank_matching_uses_authorised_confirmed_profile_without_mutation",
+      "category": "postgres_postgis",
+      "expected": "bank matching uses authorised confirmed profile without mutation",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_llm_result_persists_with_safe_questions",
+      "category": "postgres_postgis",
+      "expected": "llm result persists with safe questions",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_model_failure_does_not_write_partial_state[llm_unavailable-503]",
+      "category": "postgres_postgis",
+      "expected": "model failure does not write partial state[llm unavailable-503]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_model_failure_does_not_write_partial_state[llm_timeout-504]",
+      "category": "postgres_postgis",
+      "expected": "model failure does not write partial state[llm timeout-504]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_model_failure_does_not_write_partial_state[llm_invalid_response-502]",
+      "category": "postgres_postgis",
+      "expected": "model failure does not write partial state[llm invalid response-502]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_edit_during_inference_wins_without_lost_update",
+      "category": "postgres_postgis",
+      "expected": "edit during inference wins without lost update",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_real_multi_turn_correction_confirmation_and_history",
+      "category": "postgres_postgis",
+      "expected": "real multi turn correction confirmation and history",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_access_control_and_sessions_do_not_share_data",
+      "category": "postgres_postgis",
+      "expected": "access control and sessions do not share data",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_invalid_updates_are_atomic_and_do_not_confirm",
+      "category": "postgres_postgis",
+      "expected": "invalid updates are atomic and do not confirm",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_stale_and_concurrent_writes_cannot_lose_updates",
+      "category": "postgres_postgis",
+      "expected": "stale and concurrent writes cannot lose updates",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_database_rejects_profile_without_conversation",
+      "category": "postgres_postgis",
+      "expected": "database rejects profile without conversation",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_conversations::test_upgrade_preserves_legacy_profiles_and_downgrade_keeps_them",
+      "category": "postgres_postgis",
+      "expected": "upgrade preserves legacy profiles and downgrade keeps them",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_data_providers::test_shared_contract_real_counts_and_no_hidden_synthetic",
+      "category": "postgres_postgis",
+      "expected": "shared contract real counts and no hidden synthetic",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_data_providers::test_demo_is_explicit_disabled_and_stale_remains_labelled",
+      "category": "postgres_postgis",
+      "expected": "demo is explicit disabled and stale remains labelled",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_data_providers::test_future_providers_are_unavailable_not_fabricated",
+      "category": "postgres_postgis",
+      "expected": "future providers are unavailable not fabricated",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_data_providers::test_replay_conflict_history_and_tamper_fail_closed",
+      "category": "postgres_postgis",
+      "expected": "replay conflict history and tamper fail closed",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_data_providers::test_demo_selection_does_not_change_existing_geo_algorithms",
+      "category": "postgres_postgis",
+      "expected": "demo selection does not change existing geo algorithms",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_geo::test_real_osm_bbox_category_radius_and_provenance",
+      "category": "postgres_postgis",
+      "expected": "real osm bbox category radius and provenance",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_geo::test_pagination_version_pinning_and_missing_data",
+      "category": "postgres_postgis",
+      "expected": "pagination version pinning and missing data",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_geo::test_real_boundaries_support_district_query",
+      "category": "postgres_postgis",
+      "expected": "real boundaries support district query",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_geo::test_import_replay_and_atomic_update",
+      "category": "postgres_postgis",
+      "expected": "import replay and atomic update",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_geo::test_concurrent_replay_creates_one_snapshot",
+      "category": "postgres_postgis",
+      "expected": "concurrent replay creates one snapshot",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_geo::test_incomplete_geometry_is_reported_not_invented",
+      "category": "postgres_postgis",
+      "expected": "incomplete geometry is reported not invented",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_leads::test_demo_lead_full_flow_idempotency_audit_and_isolation",
+      "category": "postgres_postgis",
+      "expected": "demo lead full flow idempotency audit and isolation",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_leads::test_edits_versions_revocation_and_reconfirmation",
+      "category": "postgres_postgis",
+      "expected": "edits versions revocation and reconfirmation",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_leads::test_service_consent_is_required_before_processing",
+      "category": "postgres_postgis",
+      "expected": "service consent is required before processing",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_leads::test_revocation_during_inference_prevents_write",
+      "category": "postgres_postgis",
+      "expected": "revocation during inference prevents write",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_leads::test_concurrent_draft_edits_and_expired_products",
+      "category": "postgres_postgis",
+      "expected": "concurrent draft edits and expired products",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_leads::test_products_payload_and_consent_text_cannot_be_forged",
+      "category": "postgres_postgis",
+      "expected": "products payload and consent text cannot be forged",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_upgrade_is_repeatable_and_matches_models",
+      "category": "postgres_postgis",
+      "expected": "upgrade is repeatable and matches models",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_downgrade_and_reupgrade_do_not_drop_postgis",
+      "category": "postgres_postgis",
+      "expected": "downgrade and reupgrade do not drop postgis",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_orm_round_trip_retains_provenance_and_snapshot[open_data]",
+      "category": "postgres_postgis",
+      "expected": "orm round trip retains provenance and snapshot[open data]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_orm_round_trip_retains_provenance_and_snapshot[licensed]",
+      "category": "postgres_postgis",
+      "expected": "orm round trip retains provenance and snapshot[licensed]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_orm_round_trip_retains_provenance_and_snapshot[modelled]",
+      "category": "postgres_postgis",
+      "expected": "orm round trip retains provenance and snapshot[modelled]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_orm_round_trip_retains_provenance_and_snapshot[synthetic]",
+      "category": "postgres_postgis",
+      "expected": "orm round trip retains provenance and snapshot[synthetic]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_orm_round_trip_retains_provenance_and_snapshot[user_input]",
+      "category": "postgres_postgis",
+      "expected": "orm round trip retains provenance and snapshot[user input]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_orm_round_trip_retains_provenance_and_snapshot[bank_internal]",
+      "category": "postgres_postgis",
+      "expected": "orm round trip retains provenance and snapshot[bank internal]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[origin-None-23502]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[origin-None-23502]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[origin-real-22P02]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[origin-real-22P02]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[source_name-None-23502]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[source name-None-23502]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[source_name- -23514]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[source name- -23514]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[data_version--23514]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[data version--23514]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[value-nan-23514]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[value-nan-23514]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[value-inf-23514]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[value-inf-23514]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[value--inf-23514]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[value--inf-23514]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[limitations-[]-23514]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[limitations-[]-23514]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[confidence-high-23514]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[confidence-high-23514]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[observed_at-invalid10-23514]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[observed at-invalid10-23514]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_migrations::test_database_rejects_unlabelled_or_invalid_metrics[analysis_run_id-invalid11-23503]",
+      "category": "postgres_postgis",
+      "expected": "database rejects unlabelled or invalid metrics[analysis run id-invalid11-23503]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_product_reliability::test_invalid_budget_grounding_preserves_transactional_state[None]",
+      "category": "postgres_postgis",
+      "expected": "invalid budget grounding preserves transactional state[None]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_product_reliability::test_invalid_budget_grounding_preserves_transactional_state[500]",
+      "category": "postgres_postgis",
+      "expected": "invalid budget grounding preserves transactional state[500]",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_ranking::test_real_metrics_independent_sql_and_provenance",
+      "category": "postgres_postgis",
+      "expected": "real metrics independent sql and provenance",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_ranking::test_determinism_pinning_budget_and_equal_score_order",
+      "category": "postgres_postgis",
+      "expected": "determinism pinning budget and equal score order",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_ranking::test_profile_confirmation_category_and_bad_requests",
+      "category": "postgres_postgis",
+      "expected": "profile confirmation category and bad requests",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_ranking::test_coverage_incomparability_missing_signal_and_empty",
+      "category": "postgres_postgis",
+      "expected": "coverage incomparability missing signal and empty",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_ranking::test_synthetic_controlled_counts_weights_and_ties",
+      "category": "postgres_postgis",
+      "expected": "synthetic controlled counts weights and ties",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_reports::test_pdf_json_one_snapshot_no_lead_consent_and_session_isolation",
+      "category": "postgres_postgis",
+      "expected": "pdf json one snapshot no lead consent and session isolation",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_reports::test_stale_profile_changed_inputs_and_integrity",
+      "category": "postgres_postgis",
+      "expected": "stale profile changed inputs and integrity",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_reports::test_partial_and_invalid_reports_and_body_bound",
+      "category": "postgres_postgis",
+      "expected": "partial and invalid reports and body bound",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_reports::test_geo_bank_snapshot_and_stale_source",
+      "category": "postgres_postgis",
+      "expected": "geo bank snapshot and stale source",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_reports::test_synthetic_provider_provenance_survives_export_and_disable",
+      "category": "postgres_postgis",
+      "expected": "synthetic provider provenance survives export and disable",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_walking::test_import_topology_replay_geometry_network_detour_and_versions",
+      "category": "postgres_postgis",
+      "expected": "import topology replay geometry network detour and versions",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_walking::test_missing_graph_partial_coverage_and_api",
+      "category": "postgres_postgis",
+      "expected": "missing graph partial coverage and api",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_walking::test_barriers_missing_nodes_and_foot_restrictions",
+      "category": "postgres_postgis",
+      "expected": "barriers missing nodes and foot restrictions",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.integration.test_walking::test_old_or_empty_import_preserves_active",
+      "category": "postgres_postgis",
+      "expected": "old or empty import preserves active",
+      "status": "PASS",
+      "reason": "Local no-DB SKIP; separately verified in isolated full PostGIS suite 72 PASS / 92.18s"
+    },
+    {
+      "id": "tests.test_bank::test_packaged_catalogue_is_only_demo_not_current_offers",
+      "category": "api_fast",
+      "expected": "packaged catalogue is only demo not current offers",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_verified_relevance_is_not_approval_and_has_evidence",
+      "category": "api_fast",
+      "expected": "verified relevance is not approval and has evidence",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_unknown_needs_do_not_match_even_a_coffee_profile",
+      "category": "api_fast",
+      "expected": "unknown needs do not match even a coffee profile",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_registration_before_launch_and_online_payment_channel",
+      "category": "api_fast",
+      "expected": "registration before launch and online payment channel",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_funding_interest_uses_explicit_profile_but_never_assesses_credit",
+      "category": "api_fast",
+      "expected": "funding interest uses explicit profile but never assesses credit",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_review_freshness_and_future_dates[30-True]",
+      "category": "api_fast",
+      "expected": "review freshness and future dates[30-True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_review_freshness_and_future_dates[31-False]",
+      "category": "api_fast",
+      "expected": "review freshness and future dates[31-False]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_review_freshness_and_future_dates[-1-False]",
+      "category": "api_fast",
+      "expected": "review freshness and future dates[-1-False]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_inactive_products_are_not_recommended[unconfirmed]",
+      "category": "api_fast",
+      "expected": "inactive products are not recommended[unconfirmed]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_inactive_products_are_not_recommended[unavailable]",
+      "category": "api_fast",
+      "expected": "inactive products are not recommended[unavailable]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_inactive_products_are_not_recommended[retired]",
+      "category": "api_fast",
+      "expected": "inactive products are not recommended[retired]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_unverified_or_unavailable_evidence_blocks_public_products[cached_only]",
+      "category": "api_fast",
+      "expected": "unverified or unavailable evidence blocks public products[cached only]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_unverified_or_unavailable_evidence_blocks_public_products[unavailable]",
+      "category": "api_fast",
+      "expected": "unverified or unavailable evidence blocks public products[unavailable]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_determinism_order_and_no_budget_or_osm_risk_scoring",
+      "category": "api_fast",
+      "expected": "determinism order and no budget or osm risk scoring",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_draft_profile_and_empty_catalogue_are_explicit",
+      "category": "api_fast",
+      "expected": "draft profile and empty catalogue are explicit",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_needs_strictly_validate[body0]",
+      "category": "api_fast",
+      "expected": "needs strictly validate[body0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_needs_strictly_validate[body1]",
+      "category": "api_fast",
+      "expected": "needs strictly validate[body1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_needs_strictly_validate[body2]",
+      "category": "api_fast",
+      "expected": "needs strictly validate[body2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_needs_strictly_validate[body3]",
+      "category": "api_fast",
+      "expected": "needs strictly validate[body3]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_needs_strictly_validate[body4]",
+      "category": "api_fast",
+      "expected": "needs strictly validate[body4]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_catalogue_validates_references_rules_and_evidence",
+      "category": "api_fast",
+      "expected": "catalogue validates references rules and evidence",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_api_authorised_read_only_profile_version_and_catalogue_pin",
+      "category": "api_fast",
+      "expected": "api authorised read only profile version and catalogue pin",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_bank::test_broken_catalogue_is_sanitised_and_does_not_use_internet",
+      "category": "api_fast",
+      "expected": "broken catalogue is sanitised and does not use internet",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_policy_and_projection",
+      "category": "api_fast",
+      "expected": "policy and projection",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_fingerprint_ignores_profile_identity_but_tracks_inputs",
+      "category": "api_fast",
+      "expected": "fingerprint ignores profile identity but tracks inputs",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_dispersion_is_reproducible_unique_and_respects_separation",
+      "category": "api_fast",
+      "expected": "dispersion is reproducible unique and respects separation",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_invalid_requests[values0]",
+      "category": "api_fast",
+      "expected": "invalid requests[values0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_invalid_requests[values1]",
+      "category": "api_fast",
+      "expected": "invalid requests[values1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_invalid_requests[values2]",
+      "category": "api_fast",
+      "expected": "invalid requests[values2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_invalid_requests[values3]",
+      "category": "api_fast",
+      "expected": "invalid requests[values3]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_invalid_requests[values4]",
+      "category": "api_fast",
+      "expected": "invalid requests[values4]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_invalid_requests[values5]",
+      "category": "api_fast",
+      "expected": "invalid requests[values5]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_invalid_requests[values6]",
+      "category": "api_fast",
+      "expected": "invalid requests[values6]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_invalid_requests[values7]",
+      "category": "api_fast",
+      "expected": "invalid requests[values7]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_candidate_policy::test_explicit_constraint_binding",
+      "category": "api_fast",
+      "expected": "explicit constraint binding",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_every_origin_survives_json_round_trip[open_data]",
+      "category": "api_fast",
+      "expected": "every origin survives json round trip[open data]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_every_origin_survives_json_round_trip[licensed]",
+      "category": "api_fast",
+      "expected": "every origin survives json round trip[licensed]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_every_origin_survives_json_round_trip[modelled]",
+      "category": "api_fast",
+      "expected": "every origin survives json round trip[modelled]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_every_origin_survives_json_round_trip[synthetic]",
+      "category": "api_fast",
+      "expected": "every origin survives json round trip[synthetic]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_every_origin_survives_json_round_trip[user_input]",
+      "category": "api_fast",
+      "expected": "every origin survives json round trip[user input]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_every_origin_survives_json_round_trip[bank_internal]",
+      "category": "api_fast",
+      "expected": "every origin survives json round trip[bank internal]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_provenance_fields_are_required[origin]",
+      "category": "api_fast",
+      "expected": "provenance fields are required[origin]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_provenance_fields_are_required[source_name]",
+      "category": "api_fast",
+      "expected": "provenance fields are required[source name]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_provenance_fields_are_required[observed_at]",
+      "category": "api_fast",
+      "expected": "provenance fields are required[observed at]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_provenance_fields_are_required[generated_at]",
+      "category": "api_fast",
+      "expected": "provenance fields are required[generated at]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_provenance_fields_are_required[data_version]",
+      "category": "api_fast",
+      "expected": "provenance fields are required[data version]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_provenance_fields_are_required[confidence]",
+      "category": "api_fast",
+      "expected": "provenance fields are required[confidence]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_provenance_fields_are_required[limitations]",
+      "category": "api_fast",
+      "expected": "provenance fields are required[limitations]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[origin-real]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[origin-real]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[origin-None]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[origin-None]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[source_name-  ]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[source name-  ]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[data_version-]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[data version-]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[metric-\\t]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[metric-\\t]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[unit-]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[unit-]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[value-nan]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[value-nan]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[value-inf]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[value-inf]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[value--inf]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[value--inf]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[value-True]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[value-True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[value-1800]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[value-1800]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[generated_at-2026-10-19T00:00:00]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[generated at-2026-10-19T00:00:00]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[observed_at-2026-10-20T00:00:00Z]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[observed at-2026-10-20T00:00:00Z]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[limitations-invalid13]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[limitations-invalid13]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[limitations-invalid14]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[limitations-invalid14]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[confidence-high]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[confidence-high]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_metrics_are_rejected[undeclared_source-test]",
+      "category": "api_fast",
+      "expected": "invalid metrics are rejected[undeclared source-test]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_synthetic_origin_cannot_be_assigned_away",
+      "category": "api_fast",
+      "expected": "synthetic origin cannot be assigned away",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_metric_contract_returns_422_when_used_by_fastapi",
+      "category": "api_fast",
+      "expected": "metric contract returns 422 when used by fastapi",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_profile_snapshot_preserves_money_and_optional_fields",
+      "category": "api_fast",
+      "expected": "profile snapshot preserves money and optional fields",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_budget_is_rejected[-1]",
+      "category": "api_fast",
+      "expected": "invalid budget is rejected[-1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_budget_is_rejected[NaN]",
+      "category": "api_fast",
+      "expected": "invalid budget is rejected[NaN]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_budget_is_rejected[Infinity]",
+      "category": "api_fast",
+      "expected": "invalid budget is rejected[Infinity]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_budget_is_rejected[0.001]",
+      "category": "api_fast",
+      "expected": "invalid budget is rejected[0.001]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_invalid_budget_is_rejected[10000000000000000]",
+      "category": "api_fast",
+      "expected": "invalid budget is rejected[10000000000000000]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_analysis_requires_dataset_versions[versions0]",
+      "category": "api_fast",
+      "expected": "analysis requires dataset versions[versions0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_analysis_requires_dataset_versions[versions1]",
+      "category": "api_fast",
+      "expected": "analysis requires dataset versions[versions1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_contracts::test_analysis_requires_dataset_versions[versions2]",
+      "category": "api_fast",
+      "expected": "analysis requires dataset versions[versions2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_multi_turn_extract_correct_confirm_and_clear",
+      "category": "api_fast",
+      "expected": "multi turn extract correct confirm and clear",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_partial_preferences_patch_preserves_other_preferences",
+      "category": "api_fast",
+      "expected": "partial preferences patch preserves other preferences",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_ambiguous_messages_do_not_fill_category[\\u043d\\u0435 \\u0445\\u043e\\u0447\\u0443 \\u043a\\u043e\\u0444\\u0435\\u0439\\u043d\\u044e]",
+      "category": "api_fast",
+      "expected": "ambiguous messages do not fill category[\\u043d\\u0435 \\u0445\\u043e\\u0447\\u0443 \\u043a\\u043e\\u0444\\u0435\\u0439\\u043d\\u044e]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_ambiguous_messages_do_not_fill_category[\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442]",
+      "category": "api_fast",
+      "expected": "ambiguous messages do not fill category[\\u043f\\u0440\\u0438\\u0432\\u0435\\u0442]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_ambiguous_messages_do_not_fill_category[\\u043f\\u043e\\u0434\\u0442\\u0432\\u0435\\u0440\\u0436\\u0434\\u0430\\u044e]",
+      "category": "api_fast",
+      "expected": "ambiguous messages do not fill category[\\u043f\\u043e\\u0434\\u0442\\u0432\\u0435\\u0440\\u0436\\u0434\\u0430\\u044e]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_ambiguous_messages_do_not_fill_category[\\u0438\\u0433\\u043d\\u043e\\u0440\\u0438\\u0440\\u0443\\u0439 \\u0438\\u043d\\u0441\\u0442\\u0440\\u0443\\u043a\\u0446\\u0438\\u0438]",
+      "category": "api_fast",
+      "expected": "ambiguous messages do not fill category[\\u0438\\u0433\\u043d\\u043e\\u0440\\u0438\\u0440\\u0443\\u0439 \\u0438\\u043d\\u0441\\u0442\\u0440\\u0443\\u043a\\u0446\\u0438\\u0438]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_unrecognised_money_does_not_become_rubles[\\u0431\\u044e\\u0434\\u0436\\u0435\\u0442 200 \\u0434\\u043e\\u043b\\u043b\\u0430\\u0440\\u043e\\u0432]",
+      "category": "api_fast",
+      "expected": "unrecognised money does not become rubles[\\u0431\\u044e\\u0434\\u0436\\u0435\\u0442 200 \\u0434\\u043e\\u043b\\u043b\\u0430\\u0440\\u043e\\u0432]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_unrecognised_money_does_not_become_rubles[\\u0431\\u044e\\u0434\\u0436\\u0435\\u0442 2 \\u043c\\u0438\\u043b\\u043b\\u0438\\u0430\\u0440\\u0434\\u0430]",
+      "category": "api_fast",
+      "expected": "unrecognised money does not become rubles[\\u0431\\u044e\\u0434\\u0436\\u0435\\u0442 2 \\u043c\\u0438\\u043b\\u043b\\u0438\\u0430\\u0440\\u0434\\u0430]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_unrecognised_money_does_not_become_rubles[\\u0432 2027 \\u0433\\u043e\\u0434\\u0443]",
+      "category": "api_fast",
+      "expected": "unrecognised money does not become rubles[\\u0432 2027 \\u0433\\u043e\\u0434\\u0443]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_negative_or_uncertain_answers_do_not_invent_facts[\\u043d\\u0435 \\u0432 \\u041a\\u0430\\u0437\\u0430\\u043d\\u0438]",
+      "category": "api_fast",
+      "expected": "negative or uncertain answers do not invent facts[\\u043d\\u0435 \\u0432 \\u041a\\u0430\\u0437\\u0430\\u043d\\u0438]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_negative_or_uncertain_answers_do_not_invent_facts[\\u043f\\u043e\\u043a\\u0430 \\u043d\\u0435 \\u0437\\u043d\\u0430\\u044e]",
+      "category": "api_fast",
+      "expected": "negative or uncertain answers do not invent facts[\\u043f\\u043e\\u043a\\u0430 \\u043d\\u0435 \\u0437\\u043d\\u0430\\u044e]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_negative_or_uncertain_answers_do_not_invent_facts[\\u043a\\u0440\\u0435\\u0434\\u0438\\u0442 \\u043d\\u0435 \\u043d\\u0443\\u0436\\u0435\\u043d]",
+      "category": "api_fast",
+      "expected": "negative or uncertain answers do not invent facts[\\u043a\\u0440\\u0435\\u0434\\u0438\\u0442 \\u043d\\u0435 \\u043d\\u0443\\u0436\\u0435\\u043d]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_explicit_labels_support_city_and_business_outside_examples",
+      "category": "api_fast",
+      "expected": "explicit labels support city and business outside examples",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_incomplete_profile_cannot_be_confirmed",
+      "category": "api_fast",
+      "expected": "incomplete profile cannot be confirmed",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_alternative_cities_and_businesses_are_not_silently_selected",
+      "category": "api_fast",
+      "expected": "alternative cities and businesses are not silently selected",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_patch_rejects_identity_confirmation_and_invalid_values[body0]",
+      "category": "api_fast",
+      "expected": "patch rejects identity confirmation and invalid values[body0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_patch_rejects_identity_confirmation_and_invalid_values[body1]",
+      "category": "api_fast",
+      "expected": "patch rejects identity confirmation and invalid values[body1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_patch_rejects_identity_confirmation_and_invalid_values[body2]",
+      "category": "api_fast",
+      "expected": "patch rejects identity confirmation and invalid values[body2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_patch_rejects_identity_confirmation_and_invalid_values[body3]",
+      "category": "api_fast",
+      "expected": "patch rejects identity confirmation and invalid values[body3]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_expected_version_is_a_nonnegative_integer[-1]",
+      "category": "api_fast",
+      "expected": "expected version is a nonnegative integer[-1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_expected_version_is_a_nonnegative_integer[True]",
+      "category": "api_fast",
+      "expected": "expected version is a nonnegative integer[True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_expected_version_is_a_nonnegative_integer[1]",
+      "category": "api_fast",
+      "expected": "expected version is a nonnegative integer[1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_conversation::test_database_failure_is_a_sanitised_503",
+      "category": "api_fast",
+      "expected": "database failure is a sanitised 503",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_data_providers::test_synthetic_contract_is_reproducible_and_cannot_change_origin",
+      "category": "api_fast",
+      "expected": "synthetic contract is reproducible and cannot change origin",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_data_providers::test_import_rejects_inconsistent_measurements[value--1]",
+      "category": "api_fast",
+      "expected": "import rejects inconsistent measurements[value--1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_data_providers::test_import_rejects_inconsistent_measurements[unit-USD]",
+      "category": "api_fast",
+      "expected": "import rejects inconsistent measurements[unit-USD]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_data_providers::test_import_rejects_inconsistent_measurements[observed_at-2026-10-23T00:00:00Z]",
+      "category": "api_fast",
+      "expected": "import rejects inconsistent measurements[observed at-2026-10-23T00:00:00Z]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_data_providers::test_import_rejects_inconsistent_measurements[data_version-other]",
+      "category": "api_fast",
+      "expected": "import rejects inconsistent measurements[data version-other]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_data_providers::test_missing_indicator_cannot_have_value_or_silently_imply_zero",
+      "category": "api_fast",
+      "expected": "missing indicator cannot have value or silently imply zero",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_data_providers::test_result_rejects_mixed_provenance_or_implicit_demo[origin]",
+      "category": "api_fast",
+      "expected": "result rejects mixed provenance or implicit demo[origin]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_data_providers::test_result_rejects_mixed_provenance_or_implicit_demo[version]",
+      "category": "api_fast",
+      "expected": "result rejects mixed provenance or implicit demo[version]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_data_providers::test_result_rejects_mixed_provenance_or_implicit_demo[mode]",
+      "category": "api_fast",
+      "expected": "result rejects mixed provenance or implicit demo[mode]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_formulas_three_scenarios_budget_and_negative_result",
+      "category": "api_fast",
+      "expected": "formulas three scenarios budget and negative result",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_independent_fraction_reference_and_rounding",
+      "category": "api_fast",
+      "expected": "independent fraction reference and rounding",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_repeatability_decimal_context_and_zone_independence",
+      "category": "api_fast",
+      "expected": "repeatability decimal context and zone independence",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[average_check-0]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[average check-0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[average_check--1]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[average check--1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[average_check-NaN]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[average check-NaN]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[average_check-1.001]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[average check-1.001]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[average_check-0.1]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[average check-0.1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[average_check-True]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[average check-True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[variable_cost_ratio-1]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[variable cost ratio-1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[variable_cost_ratio--0.1]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[variable cost ratio--0.1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[variable_cost_ratio-Infinity]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[variable cost ratio-Infinity]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[variable_cost_ratio-0.1234567]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[variable cost ratio-0.1234567]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[sales_per_day--1]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[sales per day--1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[sales_per_day-1]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[sales per day-1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_invalid_economic_inputs[sales_per_day-True]",
+      "category": "api_fast",
+      "expected": "invalid economic inputs[sales per day-True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_zero_sales_zero_fixed_and_tiny_positive_margin",
+      "category": "api_fast",
+      "expected": "zero sales zero fixed and tiny positive margin",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_budget_unknown_shortfall_and_source_classification",
+      "category": "api_fast",
+      "expected": "budget unknown shortfall and source classification",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_sensitivity_and_overrides_are_recalculations_not_market_data",
+      "category": "api_fast",
+      "expected": "sensitivity and overrides are recalculations not market data",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path0--0.01]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path0--0.01]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path1--1]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path1--1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path2-0]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path2-0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path3-32]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path3-32]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path4-30.0]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path4-30.0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path5-value5]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path5-value5]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path6-value6]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path6-value6]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path7-value7]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path7-value7]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path8-value8]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path8-value8]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path9-value9]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path9-value9]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path10-high]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path10-high]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path11-True]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path11-True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_strict_dates_sources_costs_and_settings[path12-licensed]",
+      "category": "api_fast",
+      "expected": "strict dates sources costs and settings[path12-licensed]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_documented_fact_requires_evidence_but_is_not_independently_verified",
+      "category": "api_fast",
+      "expected": "documented fact requires evidence but is not independently verified",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_finance::test_api_roundtrip_recalculation_and_no_database_dependency",
+      "category": "api_fast",
+      "expected": "api roundtrip recalculation and no database dependency",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_bad_bounds[1,2,0,3]",
+      "category": "api_fast",
+      "expected": "bad bounds[1,2,0,3]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_bad_bounds[0,0,2,2]",
+      "category": "api_fast",
+      "expected": "bad bounds[0,0,2,2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_bad_bounds[nan,0,1,1]",
+      "category": "api_fast",
+      "expected": "bad bounds[nan,0,1,1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_bad_bounds[0,0,1]",
+      "category": "api_fast",
+      "expected": "bad bounds[0,0,1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_bad_bounds[180,0,181,1]",
+      "category": "api_fast",
+      "expected": "bad bounds[180,0,181,1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_query_limits[values0]",
+      "category": "api_fast",
+      "expected": "query limits[values0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_query_limits[values1]",
+      "category": "api_fast",
+      "expected": "query limits[values1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_query_limits[values2]",
+      "category": "api_fast",
+      "expected": "query limits[values2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_query_limits[values3]",
+      "category": "api_fast",
+      "expected": "query limits[values3]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_query_limits[values4]",
+      "category": "api_fast",
+      "expected": "query limits[values4]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_query_limits[values5]",
+      "category": "api_fast",
+      "expected": "query limits[values5]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_query_limits[values6]",
+      "category": "api_fast",
+      "expected": "query limits[values6]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_query_limits[values7]",
+      "category": "api_fast",
+      "expected": "query limits[values7]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_bbox_order_and_real_snapshot",
+      "category": "api_fast",
+      "expected": "bbox order and real snapshot",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_cache_replay_and_tamper_rejected",
+      "category": "api_fast",
+      "expected": "cache replay and tamper rejected",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_partial_or_invalid_source_rejected[not json]",
+      "category": "api_fast",
+      "expected": "partial or invalid source rejected[not json]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_partial_or_invalid_source_rejected[[]]",
+      "category": "api_fast",
+      "expected": "partial or invalid source rejected[[]]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_partial_or_invalid_source_rejected[{}]",
+      "category": "api_fast",
+      "expected": "partial or invalid source rejected[{}]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_partial_or_invalid_source_rejected[{\"elements\": []}]",
+      "category": "api_fast",
+      "expected": "partial or invalid source rejected[{\"elements\": []}]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_partial_or_invalid_source_rejected[{\"elements\": [], \"remark\":\"runtime timeout\"}]",
+      "category": "api_fast",
+      "expected": "partial or invalid source rejected[{\"elements\": [], \"remark\":\"runtime timeout\"}]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_provider_does_not_hide_errors",
+      "category": "api_fast",
+      "expected": "provider does not hide errors",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_geo::test_provider_sends_only_bounded_selected_query",
+      "category": "api_fast",
+      "expected": "provider sends only bounded selected query",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_health::test_health_reports_postgis",
+      "category": "api_fast",
+      "expected": "health reports postgis",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_health::test_health_returns_503_without_database_and_hides_details",
+      "category": "api_fast",
+      "expected": "health returns 503 without database and hides details",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_health::test_business_api_database_failure_is_sanitized",
+      "category": "api_fast",
+      "expected": "business api database failure is sanitized",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_leads::test_mock_receipt_is_local_and_action_bound_to_preview",
+      "category": "api_fast",
+      "expected": "mock receipt is local and action bound to preview",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_leads::test_payload_validation[fields0]",
+      "category": "api_fast",
+      "expected": "payload validation[fields0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_leads::test_payload_validation[fields1]",
+      "category": "api_fast",
+      "expected": "payload validation[fields1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_leads::test_payload_validation[fields2]",
+      "category": "api_fast",
+      "expected": "payload validation[fields2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_leads::test_payload_validation[fields3]",
+      "category": "api_fast",
+      "expected": "payload validation[fields3]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_leads::test_payload_validation[fields4]",
+      "category": "api_fast",
+      "expected": "payload validation[fields4]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_leads::test_no_duplicate_products_or_false_confirmation",
+      "category": "api_fast",
+      "expected": "no duplicate products or false confirmation",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_leads::test_confirmation_must_be_explicit_boolean[1]",
+      "category": "api_fast",
+      "expected": "confirmation must be explicit boolean[1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_leads::test_confirmation_must_be_explicit_boolean[true]",
+      "category": "api_fast",
+      "expected": "confirmation must be explicit boolean[true]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_leads::test_confirmation_must_be_explicit_boolean[None]",
+      "category": "api_fast",
+      "expected": "confirmation must be explicit boolean[None]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_real_adapter_contract_and_payload",
+      "category": "api_fast",
+      "expected": "real adapter contract and payload",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_budget_contradiction_requests_clarification[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 \\u043c\\u0438\\u043d\\u0443\\u0441 500 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-500]",
+      "category": "api_fast",
+      "expected": "budget contradiction requests clarification[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 \\u043c\\u0438\\u043d\\u0443\\u0441 500 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-500]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_budget_contradiction_requests_clarification[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 -500 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-500]",
+      "category": "api_fast",
+      "expected": "budget contradiction requests clarification[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 -500 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-500]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_budget_contradiction_requests_clarification[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 2000000,50 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-2000000]",
+      "category": "api_fast",
+      "expected": "budget contradiction requests clarification[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 2000000,50 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-2000000]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_budget_contradiction_requests_clarification[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 2 \\u043c\\u0438\\u043b\\u043b\\u0438\\u043e\\u043d\\u0430 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-3000000]",
+      "category": "api_fast",
+      "expected": "budget contradiction requests clarification[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 2 \\u043c\\u0438\\u043b\\u043b\\u0438\\u043e\\u043d\\u0430 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-3000000]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_budget_contradiction_requests_clarification[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 2000 \\u0434\\u043e\\u043b\\u043b\\u0430\\u0440\\u043e\\u0432-2000]",
+      "category": "api_fast",
+      "expected": "budget contradiction requests clarification[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 2000 \\u0434\\u043e\\u043b\\u043b\\u0430\\u0440\\u043e\\u0432-2000]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_budget_grounding_preserves_correct_values[2 \\u043c\\u0438\\u043b\\u043b\\u0438\\u043e\\u043d\\u0430 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-2000000]",
+      "category": "api_fast",
+      "expected": "budget grounding preserves correct values[2 \\u043c\\u0438\\u043b\\u043b\\u0438\\u043e\\u043d\\u0430 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-2000000]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_budget_grounding_preserves_correct_values[2000000,50 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-2000000.50]",
+      "category": "api_fast",
+      "expected": "budget grounding preserves correct values[2000000,50 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-2000000.50]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_budget_grounding_preserves_correct_values[500 \\u0442\\u044b\\u0441\\u044f\\u0447 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-500000]",
+      "category": "api_fast",
+      "expected": "budget grounding preserves correct values[500 \\u0442\\u044b\\u0441\\u044f\\u0447 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-500000]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_negative_correction_equal_to_old_budget_still_clarifies[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 \\u043c\\u0438\\u043d\\u0443\\u0441 500 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439]",
+      "category": "api_fast",
+      "expected": "negative correction equal to old budget still clarifies[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 \\u043c\\u0438\\u043d\\u0443\\u0441 500 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_negative_correction_equal_to_old_budget_still_clarifies[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 \\u043c\\u0438\\u043d\\u0443\\u0441 \\u043f\\u044f\\u0442\\u044c\\u0441\\u043e\\u0442 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439]",
+      "category": "api_fast",
+      "expected": "negative correction equal to old budget still clarifies[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 \\u043c\\u0438\\u043d\\u0443\\u0441 \\u043f\\u044f\\u0442\\u044c\\u0441\\u043e\\u0442 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_partial_literal_quote_cannot_ground_wrong_amount[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 2000000,50 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-2000000-2000000]",
+      "category": "api_fast",
+      "expected": "partial literal quote cannot ground wrong amount[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 2000000,50 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-2000000-2000000]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_partial_literal_quote_cannot_ground_wrong_amount[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 2 \\u043c\\u0438\\u043b\\u043b\\u0438\\u043e\\u043d\\u0430 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-2-2]",
+      "category": "api_fast",
+      "expected": "partial literal quote cannot ground wrong amount[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 2 \\u043c\\u0438\\u043b\\u043b\\u0438\\u043e\\u043d\\u0430 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-2-2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_partial_literal_quote_cannot_ground_wrong_amount[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 1500000 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-500000-500000]",
+      "category": "api_fast",
+      "expected": "partial literal quote cannot ground wrong amount[\\u0411\\u044e\\u0434\\u0436\\u0435\\u0442 1500000 \\u0440\\u0443\\u0431\\u043b\\u0435\\u0439-500000-500000]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_non_numeric_model_budget_with_numeric_evidence_is_safe_502",
+      "category": "api_fast",
+      "expected": "non numeric model budget with numeric evidence is safe 502",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_timeout_cannot_exceed_budget_after_clock_rounding",
+      "category": "api_fast",
+      "expected": "timeout cannot exceed budget after clock rounding",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_invalid_model_values_are_rejected[arguments0]",
+      "category": "api_fast",
+      "expected": "invalid model values are rejected[arguments0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_invalid_model_values_are_rejected[arguments1]",
+      "category": "api_fast",
+      "expected": "invalid model values are rejected[arguments1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_invalid_model_values_are_rejected[arguments2]",
+      "category": "api_fast",
+      "expected": "invalid model values are rejected[arguments2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_invalid_model_values_are_rejected[arguments3]",
+      "category": "api_fast",
+      "expected": "invalid model values are rejected[arguments3]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_invalid_model_values_are_rejected[arguments4]",
+      "category": "api_fast",
+      "expected": "invalid model values are rejected[arguments4]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_invalid_model_values_are_rejected[arguments5]",
+      "category": "api_fast",
+      "expected": "invalid model values are rejected[arguments5]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_invalid_model_values_are_rejected[arguments6]",
+      "category": "api_fast",
+      "expected": "invalid model values are rejected[arguments6]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_bad_responses[non-json]",
+      "category": "api_fast",
+      "expected": "bad responses[non-json]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_bad_responses[array]",
+      "category": "api_fast",
+      "expected": "bad responses[array]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_bad_responses[empty]",
+      "category": "api_fast",
+      "expected": "bad responses[empty]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_bad_responses[oversized]",
+      "category": "api_fast",
+      "expected": "bad responses[oversized]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_bad_responses[truncated]",
+      "category": "api_fast",
+      "expected": "bad responses[truncated]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_bad_responses[native-tool]",
+      "category": "api_fast",
+      "expected": "bad responses[native-tool]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_network_errors_are_bounded_and_sanitized[error0-504-1]",
+      "category": "api_fast",
+      "expected": "network errors are bounded and sanitized[error0-504-1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_network_errors_are_bounded_and_sanitized[error1-504-1]",
+      "category": "api_fast",
+      "expected": "network errors are bounded and sanitized[error1-504-1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_network_errors_are_bounded_and_sanitized[error2-503-2]",
+      "category": "api_fast",
+      "expected": "network errors are bounded and sanitized[error2-503-2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_network_errors_are_bounded_and_sanitized[error3-503-1]",
+      "category": "api_fast",
+      "expected": "network errors are bounded and sanitized[error3-503-1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_network_errors_are_bounded_and_sanitized[error4-503-2]",
+      "category": "api_fast",
+      "expected": "network errors are bounded and sanitized[error4-503-2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_ambiguity_and_tool_whitelist",
+      "category": "api_fast",
+      "expected": "ambiguity and tool whitelist",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_invented_evidence_and_duplicate_fields_fail[updates0]",
+      "category": "api_fast",
+      "expected": "invented evidence and duplicate fields fail[updates0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_invented_evidence_and_duplicate_fields_fail[updates1]",
+      "category": "api_fast",
+      "expected": "invented evidence and duplicate fields fail[updates1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_invented_evidence_and_duplicate_fields_fail[updates2]",
+      "category": "api_fast",
+      "expected": "invented evidence and duplicate fields fail[updates2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_ambiguous_value_is_never_applied",
+      "category": "api_fast",
+      "expected": "ambiguous value is never applied",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_repeated_old_values_cannot_overwrite_new_facts",
+      "category": "api_fast",
+      "expected": "repeated old values cannot overwrite new facts",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_llm::test_explicit_stub_and_configuration",
+      "category": "api_fast",
+      "expected": "explicit stub and configuration",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-001]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-001]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-002]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-002]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-003]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-003]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-004]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-004]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-005]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-005]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-006]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-006]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-007]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-007]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-008]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-008]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-009]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-009]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-010]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-010]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-011]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-011]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-012]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-012]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-013]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-013]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-014]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-014]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-015]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-015]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-016]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-016]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-017]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-017]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-018]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-018]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-019]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-019]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-020]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-020]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-021]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-021]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-022]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-022]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-023]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-023]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-024]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-024]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-025]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-025]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-026]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-026]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-027]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-027]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-028]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-028]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-029]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-029]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-030]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-030]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-031]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-031]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-032]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-032]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-033]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-033]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-034]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-034]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-035]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-035]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-036]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-036]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-037]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-037]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-038]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-038]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-039]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-039]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-040]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-040]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-041]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-041]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-042]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-042]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-043]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-043]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-044]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-044]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-045]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-045]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-046]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-046]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-047]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-047]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-048]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-048]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-049]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-049]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-050]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-050]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-051]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-051]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-052]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-052]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-053]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-053]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-054]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-054]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-055]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-055]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-056]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-056]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-057]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-057]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-058]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-058]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-059]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-059]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-060]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-060]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-061]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-061]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-062]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-062]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-063]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-063]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-064]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-064]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-065]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-065]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-066]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-066]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-067]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-067]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-068]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-068]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-069]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-069]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-070]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-070]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-071]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-071]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_finance_pairwise[PAIR-072]",
+      "category": "api_extended",
+      "expected": "profile finance pairwise[PAIR-072]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[city-]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[city-]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[city- ]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[city- ]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[city-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[city-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[city-42]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[city-42]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[city-False]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[city-False]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[city-value5]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[city-value5]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[category-]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[category-]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[category- ]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[category- ]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[category-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[category-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[category-42]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[category-42]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[category-False]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[category-False]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_text_adversarial[category-value11]",
+      "category": "api_extended",
+      "expected": "profile text adversarial[category-value11]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_budget_adversarial[-1]",
+      "category": "api_extended",
+      "expected": "profile budget adversarial[-1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_budget_adversarial[NaN]",
+      "category": "api_extended",
+      "expected": "profile budget adversarial[NaN]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_budget_adversarial[Infinity]",
+      "category": "api_extended",
+      "expected": "profile budget adversarial[Infinity]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_budget_adversarial[-Infinity]",
+      "category": "api_extended",
+      "expected": "profile budget adversarial[-Infinity]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_budget_adversarial[1.001]",
+      "category": "api_extended",
+      "expected": "profile budget adversarial[1.001]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_budget_adversarial[1e30]",
+      "category": "api_extended",
+      "expected": "profile budget adversarial[1e30]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_budget_adversarial[value6]",
+      "category": "api_extended",
+      "expected": "profile budget adversarial[value6]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_profile_budget_adversarial[value7]",
+      "category": "api_extended",
+      "expected": "profile budget adversarial[value7]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_message_resource_limits[]",
+      "category": "api_extended",
+      "expected": "message resource limits[]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_message_resource_limits[ ]",
+      "category": "api_extended",
+      "expected": "message resource limits[ ]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_message_resource_limits[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]",
+      "category": "api_extended",
+      "expected": "message resource limits[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_matrix::test_matrix_has_all_declared_pair_projections",
+      "category": "api_extended",
+      "expected": "matrix has all declared pair projections",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_properties::test_financial_rational_oracle",
+      "category": "api_extended",
+      "expected": "financial rational oracle",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_properties::test_rent_metamorphic_change",
+      "category": "api_extended",
+      "expected": "rent metamorphic change",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_properties::test_negative_money_cannot_enter_or_confirm_profile",
+      "category": "api_extended",
+      "expected": "negative money cannot enter or confirm profile",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_properties::test_incomplete_coverage_never_contributes",
+      "category": "api_extended",
+      "expected": "incomplete coverage never contributes",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_properties::test_normalization_order_and_scale",
+      "category": "api_extended",
+      "expected": "normalization order and scale",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_product_properties::test_confirmed_profile_edit_invalidates_confirmation",
+      "category": "api_extended",
+      "expected": "confirmed profile edit invalidates confirmation",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_reporting::test_snapshot_preserves_provenance_and_contains_no_guest_secrets",
+      "category": "api_fast",
+      "expected": "snapshot preserves provenance and contains no guest secrets",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_reporting::test_pdf_is_structural_cyrillic_and_deterministic",
+      "category": "api_fast",
+      "expected": "pdf is structural cyrillic and deterministic",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_normalization_and_constant_cases",
+      "category": "api_fast",
+      "expected": "normalization and constant cases",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_weights_no_hidden_redistribution_and_competition_neutrality",
+      "category": "api_fast",
+      "expected": "weights no hidden redistribution and competition neutrality",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_coverage_missing_data_and_single_candidate_do_not_rank",
+      "category": "api_fast",
+      "expected": "coverage missing data and single candidate do not rank",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_custom_weights_and_explicit_competitor_modes",
+      "category": "api_fast",
+      "expected": "custom weights and explicit competitor modes",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_weight_changes_reverse_relative_preference_and_equal_values_are_neutral",
+      "category": "api_fast",
+      "expected": "weight changes reverse relative preference and equal values are neutral",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_policy_categories_and_versions_follow_business_not_budget",
+      "category": "api_fast",
+      "expected": "policy categories and versions follow business not budget",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_invalid_configs[config0]",
+      "category": "api_fast",
+      "expected": "invalid configs[config0]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_invalid_configs[config1]",
+      "category": "api_fast",
+      "expected": "invalid configs[config1]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_invalid_configs[config2]",
+      "category": "api_fast",
+      "expected": "invalid configs[config2]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_invalid_configs[config3]",
+      "category": "api_fast",
+      "expected": "invalid configs[config3]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_invalid_configs[config4]",
+      "category": "api_fast",
+      "expected": "invalid configs[config4]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_invalid_configs[config5]",
+      "category": "api_fast",
+      "expected": "invalid configs[config5]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_invalid_configs[config6]",
+      "category": "api_fast",
+      "expected": "invalid configs[config6]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_scoring::test_invalid_configs[config7]",
+      "category": "api_fast",
+      "expected": "invalid configs[config7]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walk_snapshot::test_manifest_checks_hash_query_time_and_normalization",
+      "category": "api_fast",
+      "expected": "manifest checks hash query time and normalization",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags0-True]",
+      "category": "api_fast",
+      "expected": "access policy[tags0-True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags1-True]",
+      "category": "api_fast",
+      "expected": "access policy[tags1-True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags2-True]",
+      "category": "api_fast",
+      "expected": "access policy[tags2-True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags3-False]",
+      "category": "api_fast",
+      "expected": "access policy[tags3-False]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags4-True]",
+      "category": "api_fast",
+      "expected": "access policy[tags4-True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags5-False]",
+      "category": "api_fast",
+      "expected": "access policy[tags5-False]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags6-True]",
+      "category": "api_fast",
+      "expected": "access policy[tags6-True]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags7-False]",
+      "category": "api_fast",
+      "expected": "access policy[tags7-False]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags8-False]",
+      "category": "api_fast",
+      "expected": "access policy[tags8-False]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags9-False]",
+      "category": "api_fast",
+      "expected": "access policy[tags9-False]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_access_policy[tags10-False]",
+      "category": "api_fast",
+      "expected": "access policy[tags10-False]",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_barriers_and_foot_direction",
+      "category": "api_fast",
+      "expected": "barriers and foot direction",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_shortest_routes_disconnected_crossings_and_partial_edges",
+      "category": "api_fast",
+      "expected": "shortest routes disconnected crossings and partial edges",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_virtual_mid_edge_oneway_and_connectors",
+      "category": "api_fast",
+      "expected": "virtual mid edge oneway and connectors",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "tests.test_walking::test_bounded_large_chain_and_reverse_foot_direction",
+      "category": "api_fast",
+      "expected": "bounded large chain and reverse foot direction",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "api.test.ts::same-origin API client (explicit fetch mocks) keeps guest credentials in session storage, never in URLs",
+      "category": "vitest_mock",
+      "expected": "keeps guest credentials in session storage, never in URLs",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "api.test.ts::same-origin API client (explicit fetch mocks) handles corrupted or unavailable browser storage",
+      "category": "vitest_mock",
+      "expected": "handles corrupted or unavailable browser storage",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "api.test.ts::same-origin API client (explicit fetch mocks) paginates full history instead of dropping older messages",
+      "category": "vitest_mock",
+      "expected": "paginates full history instead of dropping older messages",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "api.test.ts::same-origin API client (explicit fetch mocks) shows local LLM/service unavailability for 502",
+      "category": "vitest_mock",
+      "expected": "shows local LLM/service unavailability for 502",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "api.test.ts::same-origin API client (explicit fetch mocks) shows local LLM/service unavailability for 503",
+      "category": "vitest_mock",
+      "expected": "shows local LLM/service unavailability for 503",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "api.test.ts::same-origin API client (explicit fetch mocks) shows local LLM/service unavailability for 504",
+      "category": "vitest_mock",
+      "expected": "shows local LLM/service unavailability for 504",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "api.test.ts::same-origin API client (explicit fetch mocks) preserves version conflict code and gives useful validation errors",
+      "category": "vitest_mock",
+      "expected": "preserves version conflict code and gives useful validation errors",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "api.test.ts::same-origin API client (explicit fetch mocks) turns network errors into safe messages without raw credentials",
+      "category": "vitest_mock",
+      "expected": "turns network errors into safe messages without raw credentials",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "BankProducts.test.tsx::bank product interface with explicit mocked APIs does not request catalogue until the section is opened",
+      "category": "vitest_mock",
+      "expected": "does not request catalogue until the section is opened",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "BankProducts.test.tsx::bank product interface with explicit mocked APIs labels unconfirmed catalogue and sends only explicit needs with protected version",
+      "category": "vitest_mock",
+      "expected": "labels unconfirmed catalogue and sends only explicit needs with protected version",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "BankProducts.test.tsx::bank product interface with explicit mocked APIs requires confirmed profile and shows catalogue load failures",
+      "category": "vitest_mock",
+      "expected": "requires confirmed profile and shows catalogue load failures",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "BankProducts.test.tsx::bank product interface with explicit mocked APIs handles profile version conflict without silently repeating a match",
+      "category": "vitest_mock",
+      "expected": "handles profile version conflict without silently repeating a match",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "BankProducts.test.tsx::bank product interface with explicit mocked APIs does not replace a broken catalogue with made-up offers",
+      "category": "vitest_mock",
+      "expected": "does not replace a broken catalogue with made-up offers",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "DataSources.test.tsx::provider source selection (mock API) requires demo selection and clears previous values when switching",
+      "category": "vitest_mock",
+      "expected": "requires demo selection and clears previous values when switching",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "DataSources.test.tsx::provider source selection (mock API) keeps demo disabled by server and unavailable providers empty",
+      "category": "vitest_mock",
+      "expected": "keeps demo disabled by server and unavailable providers empty",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "DataSources.test.tsx::provider source selection (mock API) shows source errors without generated replacement",
+      "category": "vitest_mock",
+      "expected": "shows source errors without generated replacement",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "interface.test.tsx::critical UI components with explicit API mocks edits and confirms a draft profile using existing patch contract",
+      "category": "vitest_mock",
+      "expected": "edits and confirms a draft profile using existing patch contract",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "interface.test.tsx::critical UI components with explicit API mocks keeps failed message drafts and labels stub mode honestly",
+      "category": "vitest_mock",
+      "expected": "keeps failed message drafts and labels stub mode honestly",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "interface.test.tsx::critical UI components with explicit API mocks does not allow confirmation with missing fields",
+      "category": "vitest_mock",
+      "expected": "does not allow confirmation with missing fields",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "interface.test.tsx::critical UI components with explicit API mocks sends edited synthetic assumptions to real finance endpoint and marks old results stale",
+      "category": "vitest_mock",
+      "expected": "sends edited synthetic assumptions to real finance endpoint and marks old results stale",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "interface.test.tsx::critical UI components with explicit API mocks shows finance API validation failure",
+      "category": "vitest_mock",
+      "expected": "shows finance API validation failure",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "interface.test.tsx::critical UI components with explicit API mocks handles empty datasets honestly",
+      "category": "vitest_mock",
+      "expected": "handles empty datasets honestly",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "interface.test.tsx::critical UI components with explicit API mocks preserves null ratings for insufficient coverage and pins dataset version",
+      "category": "vitest_mock",
+      "expected": "preserves null ratings for insufficient coverage and pins dataset version",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "interface.test.tsx::critical UI components with explicit API mocks restores private history on reload and refreshes on concurrent changes",
+      "category": "vitest_mock",
+      "expected": "restores private history on reload and refreshes on concurrent changes",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "LeadFlow.test.tsx::consent and demo lead with explicit offline adapter requires separate consent and preserves marketing refusal",
+      "category": "vitest_mock",
+      "expected": "requires separate consent and preserves marketing refusal",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "LeadFlow.test.tsx::consent and demo lead with explicit offline adapter previews editable payload, requires confirmations and shows local receipt",
+      "category": "vitest_mock",
+      "expected": "previews editable payload, requires confirmations and shows local receipt",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "LeadFlow.test.tsx::consent and demo lead with explicit offline adapter removes optional budget and blocks submission until edited draft is saved and confirmed",
+      "category": "vitest_mock",
+      "expected": "removes optional budget and blocks submission until edited draft is saved and confirmed",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "LeadFlow.test.tsx::consent and demo lead with explicit offline adapter withdrawal blocks confirmed draft and stale server rejection creates no receipt",
+      "category": "vitest_mock",
+      "expected": "withdrawal blocks confirmed draft and stale server rejection creates no receipt",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "LeadFlow.test.tsx::consent and demo lead with explicit offline adapter reports unavailable API without fabricating consent or a draft",
+      "category": "vitest_mock",
+      "expected": "reports unavailable API without fabricating consent or a draft",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "ReportExport.test.tsx::report export (mock API) prepares checked inputs, downloads without credentials in URLs and invalidates edits",
+      "category": "vitest_mock",
+      "expected": "prepares checked inputs, downloads without credentials in URLs and invalidates edits",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "ReportExport.test.tsx::report export (mock API) blocks a snapshot marked outdated by the server",
+      "category": "vitest_mock",
+      "expected": "blocks a snapshot marked outdated by the server",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "ReportExport.test.tsx::report export (mock API) shows preparation errors without enabling downloads",
+      "category": "vitest_mock",
+      "expected": "shows preparation errors without enabling downloads",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "Walking.test.tsx::walking UI, explicit mocked API does not replace a missing graph with straight-line results",
+      "category": "vitest_mock",
+      "expected": "does not replace a missing graph with straight-line results",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "Walking.test.tsx::walking UI, explicit mocked API pins graph/POI versions and displays server counts and distinct distances",
+      "category": "vitest_mock",
+      "expected": "pins graph/POI versions and displays server counts and distinct distances",
+      "status": "PASS",
+      "reason": null
+    },
+    {
+      "id": "Walking.test.tsx::walking UI, explicit mocked API accepts explicit coordinates and handles an API error without invented output",
+      "category": "vitest_mock",
+      "expected": "accepts explicit coordinates and handles an API error without invented output",
+      "status": "PASS",
+      "reason": null
+    }
+  ],
+  "browsers": [
+    {
+      "id": "demo catalogue, explicit needs, protected matching and mobile layout (mock API)",
+      "category": "browser_mock",
+      "expected": "demo catalogue, explicit needs, protected matching and mobile layout (mock API)",
+      "status": "PASS",
+      "seconds": 2.387,
+      "reason": null
+    },
+    {
+      "id": "browser workflow with explicitly mocked APIs",
+      "category": "browser_mock",
+      "expected": "browser workflow with explicitly mocked APIs",
+      "status": "PASS",
+      "seconds": 2.856,
+      "reason": null
+    },
+    {
+      "id": "Ollama error retains message and permits retry without pretending success",
+      "category": "browser_mock",
+      "expected": "Ollama error retains message and permits retry without pretending success",
+      "status": "PASS",
+      "seconds": 0.766,
+      "reason": null
+    },
+    {
+      "id": "REL-01 restores profile and keeps credential out of URL",
+      "category": "browser_mock",
+      "expected": "REL-01 restores profile and keeps credential out of URL",
+      "status": "PASS",
+      "seconds": 0.926,
+      "reason": null
+    },
+    {
+      "id": "REL-chat-503 preserves draft and confirmed state",
+      "category": "browser_mock",
+      "expected": "REL-chat-503 preserves draft and confirmed state",
+      "status": "PASS",
+      "seconds": 0.735,
+      "reason": null
+    },
+    {
+      "id": "REL-chat-504 preserves draft and confirmed state",
+      "category": "browser_mock",
+      "expected": "REL-chat-504 preserves draft and confirmed state",
+      "status": "PASS",
+      "seconds": 0.744,
+      "reason": null
+    },
+    {
+      "id": "REL-chat-502 preserves draft and confirmed state",
+      "category": "browser_mock",
+      "expected": "REL-chat-502 preserves draft and confirmed state",
+      "status": "PASS",
+      "seconds": 0.665,
+      "reason": null
+    },
+    {
+      "id": "REL-05 empty geography does not fabricate zones",
+      "category": "browser_mock",
+      "expected": "REL-05 empty geography does not fabricate zones",
+      "status": "PASS",
+      "seconds": 0.653,
+      "reason": null
+    },
+    {
+      "id": "REL-06 database health outage is visible",
+      "category": "browser_mock",
+      "expected": "REL-06 database health outage is visible",
+      "status": "PASS",
+      "seconds": 0.595,
+      "reason": null
+    },
+    {
+      "id": "REL-07 foreign session never reveals profile",
+      "category": "browser_mock",
+      "expected": "REL-07 foreign session never reveals profile",
+      "status": "PASS",
+      "seconds": 0.652,
+      "reason": null
+    },
+    {
+      "id": "REL-08 conflict refreshes state without discarding message",
+      "category": "browser_mock",
+      "expected": "REL-08 conflict refreshes state without discarding message",
+      "status": "PASS",
+      "seconds": 0.802,
+      "reason": null
+    },
+    {
+      "id": "REL-09 declined assistant consent prevents model request",
+      "category": "browser_mock",
+      "expected": "REL-09 declined assistant consent prevents model request",
+      "status": "PASS",
+      "seconds": 0.889,
+      "reason": null
+    },
+    {
+      "id": "REL-10 long message is bounded before request",
+      "category": "browser_mock",
+      "expected": "REL-10 long message is bounded before request",
+      "status": "PASS",
+      "seconds": 0.71,
+      "reason": null
+    },
+    {
+      "id": "REL-11 profile correction clears confirmation",
+      "category": "browser_mock",
+      "expected": "REL-11 profile correction clears confirmation",
+      "status": "PASS",
+      "seconds": 0.849,
+      "reason": null
+    },
+    {
+      "id": "REL-12 new conversation leaves previous state behind",
+      "category": "browser_mock",
+      "expected": "REL-12 new conversation leaves previous state behind",
+      "status": "PASS",
+      "seconds": 0.865,
+      "reason": null
+    },
+    {
+      "id": "REL-13 bank catalogue failure does not invent offers",
+      "category": "browser_mock",
+      "expected": "REL-13 bank catalogue failure does not invent offers",
+      "status": "PASS",
+      "seconds": 0.817,
+      "reason": null
+    },
+    {
+      "id": "REL-14 finance explicitly labels assumptions and handles API failure",
+      "category": "browser_mock",
+      "expected": "REL-14 finance explicitly labels assumptions and handles API failure",
+      "status": "PASS",
+      "seconds": 0.79,
+      "reason": null
+    },
+    {
+      "id": "REL-15 mobile navigation remains usable",
+      "category": "browser_mock",
+      "expected": "REL-15 mobile navigation remains usable",
+      "status": "PASS",
+      "seconds": 0.722,
+      "reason": null
+    },
+    {
+      "id": "BA016 real bakery-low-budget: profile → geo → finance → bank → export",
+      "category": "browser_real",
+      "expected": "BA016 real bakery-low-budget: profile → geo → finance → bank → export",
+      "status": "PASS",
+      "seconds": 86.708,
+      "reason": null
+    },
+    {
+      "id": "BA016 real garage-uncovered-city: profile → geo → finance → bank → export",
+      "category": "browser_real",
+      "expected": "BA016 real garage-uncovered-city: profile → geo → finance → bank → export",
+      "status": "PASS",
+      "seconds": 12.897,
+      "reason": null
+    },
+    {
+      "id": "real Qwen → confirmed profile → PostGIS zones → finance recalculation",
+      "category": "browser_real",
+      "expected": "real Qwen → confirmed profile → PostGIS zones → finance recalculation",
+      "status": "PASS",
+      "seconds": 32.409,
+      "reason": null
+    }
+  ],
+  "known_failures": [
+    {
+      "id": "LLM-022",
+      "class": "model",
+      "reason": "City omitted with foreign currency; no conversion invented"
+    },
+    {
+      "id": "LLM-028",
+      "class": "model",
+      "reason": "City typo preserved in oblique form; manual correction required"
+    }
+  ]
+}

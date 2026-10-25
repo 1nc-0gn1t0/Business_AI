@@ -49,6 +49,8 @@ jobs:
         run: uv tool run --from prek==0.5.4 prek run --all-files
       - name: Build web
         run: npm --prefix apps/web run build
+      - name: Extended pairwise and property checks (fixed seeds; no LLM)
+        run: uv run --locked --project apps/api pytest apps/api/tests -m extended --hypothesis-show-statistics
       - name: Install Chromium for mocked browser workflow
         if: runner.os == 'Linux'
         run: npx --prefix apps/web playwright install --with-deps chromium
