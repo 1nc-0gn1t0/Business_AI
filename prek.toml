@@ -28,7 +28,7 @@ always_run = true
 [[repos.hooks]]
 id = 'api-tests'
 name = 'API pytest'
-entry = 'uv run --locked --project apps/api pytest apps/api/tests'
+entry = 'uv run --locked --project apps/api pytest apps/api/tests -m "not extended"'
 language = "system"
 pass_filenames = false
 always_run = true

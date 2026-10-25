@@ -1,0 +1,34 @@
+{
+  "manifest_version": "ba016-demo-v1",
+  "checks": [
+    {
+      "id": "postgres_postgis",
+      "status": "PASS"
+    },
+    {
+      "id": "pinned_osm",
+      "status": "PASS"
+    },
+    {
+      "id": "pinned_walking_graph",
+      "status": "PASS"
+    },
+    {
+      "id": "installed_qwen",
+      "status": "PASS"
+    },
+    {
+      "id": "demo_bank_catalogue",
+      "status": "PASS"
+    },
+    {
+      "id": "explicit_demo_enabled",
+      "status": "PASS"
+    },
+    {
+      "id": "pinned_synthetic",
+      "status": "PASS"
+    }
+  ],
+  "limitations": "Installed model is not proof of API extraction_mode; verify the UI says local Qwen. No inference performed."
+}

@@ -3,6 +3,120 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { env } from "node:process";
 import type { Ranking, Schemas } from "../src/api";
 
+for (const scenario of [
+  {
+    name: "bakery-low-budget",
+    message: "Хочу открыть пекарню в Казани. Бюджет 500000 рублей.",
+    city: "Казань",
+    category: "пекарня",
+    budget: "500000",
+    covered: true,
+  },
+  {
+    name: "garage-uncovered-city",
+    message: "Хочу открыть автосервис в Самаре. Бюджет 10000000 рублей.",
+    city: "Самара",
+    category: "автосервис",
+    budget: "10000000",
+    covered: false,
+  },
+])
+  test(`BA016 real ${scenario.name}: profile → geo → finance → bank → export`, async ({
+    page,
+  }) => {
+    page.setDefaultTimeout(20_000);
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    await page.goto("/");
+    await page.locator(".assistant-consent>summary").click();
+    await page
+      .getByLabel("Согласен на использование ассистента", { exact: true })
+      .check();
+    await page.getByLabel("Сообщение помощнику").fill(scenario.message);
+    const turn = page.waitForResponse(
+      (r) => r.url().endsWith("/messages") && r.request().method() === "POST",
+      { timeout: 210_000 },
+    );
+    await page.getByLabel("Отправить сообщение").click();
+    const reply = await turn;
+    expect(reply.ok()).toBe(true);
+    const view = (await reply.json()) as Schemas["ConversationView"];
+    expect(view.extraction_mode).toBe("ollama");
+    expect(view.profile.city).toBe(scenario.city);
+    expect(view.profile.category).toBe(scenario.category);
+    expect(Number(view.profile.budget)).toBe(Number(scenario.budget));
+    await page.getByText("Редактировать профиль ↗").click();
+    await page
+      .getByLabel("Формат", { exact: true })
+      .fill("отдельное помещение");
+    await page.getByLabel("Источник средств").selectOption("own_funds");
+    await page.getByRole("button", { name: "Сохранить профиль" }).click();
+    await page.getByRole("button", { name: "Подтвердить профиль →" }).click();
+    const rank = page.waitForResponse((r) => r.url().endsWith("/rankings"));
+    await page.getByRole("button", { name: "Найти зоны →" }).click();
+    const geoHttp = await rank;
+    expect(geoHttp.ok()).toBe(true);
+    const geo = (await geoHttp.json()) as Ranking;
+    if (scenario.covered)
+      expect(geo.candidates.features.length).toBeGreaterThan(1);
+    else {
+      expect(geo.candidates.features).toHaveLength(0);
+      expect(geo.status).not.toBe("ok");
+    }
+    await page.getByRole("button", { name: "↗ Финансовая модель" }).click();
+    await page
+      .getByRole("button", { name: "Загрузить демо-допущения" })
+      .click();
+    // Explicitly chosen coffee demo assumptions, not a sector-specific market estimate.
+    const calculated = page.waitForResponse((r) =>
+      r.url().endsWith("/finance/calculate"),
+    );
+    await page.getByRole("button", { name: "Пересчитать модель →" }).click();
+    const financialHttp = await calculated;
+    expect(financialHttp.ok()).toBe(true);
+    const financial = (await financialHttp.json()) as Schemas["FinanceResult"];
+    expect(financial.budget.status).toBe(
+      scenario.covered ? "model_budget_shortfall" : "within_model_budget",
+    );
+    await page.getByRole("button", { name: "◇ Продукты ВТБ" }).click();
+    await page
+      .getByLabel("Нужен расчётный счёт", { exact: true })
+      .selectOption("true");
+    const matched = page.waitForResponse((r) =>
+      r.url().endsWith("/bank-products/matches"),
+    );
+    await page
+      .getByRole("button", { name: "Подобрать по потребностям →" })
+      .click();
+    const bankHttp = await matched;
+    expect(bankHttp.ok()).toBe(true);
+    expect(
+      ((await bankHttp.json()) as Schemas["MatchResult"]).credit_decision,
+    ).toBe("not_assessed");
+    const panel = page.getByRole("region", {
+      name: "Экспорт аналитического отчёта",
+    });
+    await panel
+      .getByRole("button", { name: "Подготовить отчёт", exact: true })
+      .click();
+    const downloaded = page.waitForEvent("download");
+    await expect(
+      panel.getByRole("button", { name: "Скачать JSON", exact: true }),
+    ).toBeEnabled();
+    await panel
+      .getByRole("button", { name: "Скачать JSON", exact: true })
+      .click();
+    const file = await downloaded;
+    const directory = env.BA010_ARTIFACT_DIR || "test-results/ba016-real";
+    await mkdir(directory, { recursive: true });
+    await file.saveAs(`${directory}/${scenario.name}.json`);
+    await page.reload();
+    await expect(
+      page.getByText(scenario.message, { exact: true }),
+    ).toBeVisible();
+    expect(errors).toEqual([]);
+  });
+
 // Opt-in test against existing Compose and installed Qwen. No route mocks or traces.
 test("real Qwen → confirmed profile → PostGIS zones → finance recalculation", async ({
   page,
@@ -296,18 +410,14 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
   await reportPanel
     .getByRole("button", { name: "Скачать JSON", exact: true })
     .click();
-  await (
-    await jsonDownloaded
-  ).saveAs("../../docs/examples/BA-015-kazan-coffee.json");
+  await (await jsonDownloaded).saveAs(`${directory}/BA-015-kazan-coffee.json`);
   const pdfDownloaded = page.waitForEvent("download");
   await reportPanel
     .getByRole("button", { name: "Скачать PDF", exact: true })
     .click();
-  await (
-    await pdfDownloaded
-  ).saveAs("../../docs/examples/BA-015-kazan-coffee.pdf");
+  await (await pdfDownloaded).saveAs(`${directory}/BA-015-kazan-coffee.pdf`);
   await reportPanel.screenshot({
-    path: "../../docs/screenshots/BA-015-report-export.png",
+    path: `${directory}/BA-015-report-export.png`,
   });
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
@@ -316,7 +426,7 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     ),
   ).toBe(true);
   await reportPanel.screenshot({
-    path: "../../docs/screenshots/BA-015-report-export-mobile.png",
+    path: `${directory}/BA-015-report-export-mobile.png`,
   });
   await page.setViewportSize({ width: 1440, height: 1050 });
   await page.getByRole("button", { name: "↗ Финансовая модель" }).click();
@@ -332,7 +442,7 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
   ).toBeDisabled();
   await page.getByRole("button", { name: "◇ Продукты ВТБ" }).click();
   await writeFile(
-    "../../docs/screenshots/BA-015-verification.json",
+    `${directory}/BA-015-verification.json`,
     JSON.stringify(
       {
         checked_at: new Date().toISOString(),

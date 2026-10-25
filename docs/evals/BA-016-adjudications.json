@@ -1,0 +1,12 @@
+[
+  {
+    "suite": "ba016-qwen-v1",
+    "case": "LLM-051",
+    "step": 5,
+    "classification": "oracle_error",
+    "expected_correction": {
+      "confirmation_state": "confirmed"
+    },
+    "reason": "City was already Moscow. No semantic change means confirmation is correctly retained; the v1 oracle incorrectly required draft. Raw results preserved. Corrected in qwen-v2.json."
+  }
+]

@@ -10,7 +10,9 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   use: {
-    baseURL: real ? "http://localhost:5173" : "http://127.0.0.1:4173",
+    baseURL: real
+      ? env.BA_TEST_WEB_URL || "http://localhost:5173"
+      : "http://127.0.0.1:4173",
     viewport: { width: 1440, height: 1050 },
     // Traces/HAR can contain guest credentials; do not record them.
     trace: "off",

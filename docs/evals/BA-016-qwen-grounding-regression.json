@@ -1,0 +1,180 @@
+{
+  "suite_version": "ba016-qwen-v2",
+  "corpus_sha256": "0f0d4ee804be65e5ceabc0959dedb8e6b3467476b4af30560a5161519e799290",
+  "started_at": "2026-10-25T15:17:46.985584+00:00",
+  "provider": "real Ollama through isolated Business AI HTTP API",
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "results": [
+    {
+      "id": "LLM-001/r1",
+      "category": "industry_city",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Планирую открыть кофейню в Казани. Бюджет 2000000 рублей.",
+          "expected": {
+            "city": "Казань",
+            "category": [
+              "кофейня"
+            ],
+            "budget": "2000000"
+          },
+          "status": 200,
+          "seconds": 50.828,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "LLM-019/r1",
+      "category": "budget",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Кофейня в Казани. Бюджет — минус 500 рублей.",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": null
+          },
+          "status": 200,
+          "seconds": 7.906,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Уточните общий бюджет запуска в рублях одной суммой.",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "LLM-021/r1",
+      "category": "budget",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Кофейня в Казани. Бюджет — 2000000,50 рублей.",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000.50"
+          },
+          "status": 200,
+          "seconds": 8.375,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000.50",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "LLM-025/r1",
+      "category": "language_security",
+      "steps": [
+        {
+          "step": 1,
+          "input": "Дарова, замутим кофейню в Казани, есть два ляма рублей",
+          "expected": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000"
+          },
+          "status": 200,
+          "seconds": 8.157,
+          "checks": {
+            "http_200": true,
+            "real_ollama": true,
+            "city": true,
+            "category": true,
+            "budget": true,
+            "persisted": true,
+            "history": true
+          },
+          "passed": true,
+          "profile": {
+            "city": "Казань",
+            "category": "кофейня",
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "assistant_message": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
+          "error_code": null
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "updated_at": "2026-10-25T15:19:02.851644+00:00"
+}

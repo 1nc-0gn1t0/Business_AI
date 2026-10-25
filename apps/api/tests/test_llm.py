@@ -80,6 +80,78 @@ def test_real_adapter_contract_and_payload(monkeypatch: pytest.MonkeyPatch) -> N
     assert "funding" not in call.arguments.model_fields_set
 
 
+@pytest.mark.parametrize(
+    "text,value",
+    [
+        ("Бюджет минус 500 рублей", "500"),
+        ("Бюджет -500 рублей", "500"),
+        ("Бюджет 2000000,50 рублей", "2000000"),
+        ("Бюджет 2 миллиона рублей", "3000000"),
+        ("Бюджет 2000 долларов", "2000"),
+    ],
+)
+def test_budget_contradiction_requests_clarification(
+    monkeypatch: pytest.MonkeyPatch, text: str, value: str
+) -> None:
+    transport(monkeypatch, lambda *args, **kwargs: io.BytesIO(response({"budget": value}, text)))
+    call = OllamaLLM(LLMSettings()).extract(text, profile(), ())
+    assert call.clarification == "budget"
+    assert "budget" not in call.arguments.model_fields_set
+
+
+@pytest.mark.parametrize(
+    "text,value",
+    [
+        ("2 миллиона рублей", "2000000"),
+        ("2000000,50 рублей", "2000000.50"),
+        ("500 тысяч рублей", "500000"),
+    ],
+)
+def test_budget_grounding_preserves_correct_values(
+    monkeypatch: pytest.MonkeyPatch, text: str, value: str
+) -> None:
+    transport(monkeypatch, lambda *args, **kwargs: io.BytesIO(response({"budget": value}, text)))
+    call = OllamaLLM(LLMSettings()).extract(text, profile(), ())
+    assert call.arguments.budget == Decimal(value)
+
+
+@pytest.mark.parametrize("text", ["Бюджет минус 500 рублей", "Бюджет минус пятьсот рублей"])
+def test_negative_correction_equal_to_old_budget_still_clarifies(
+    monkeypatch: pytest.MonkeyPatch, text: str
+) -> None:
+    transport(monkeypatch, lambda *args, **kwargs: io.BytesIO(response({"budget": "500"}, text)))
+    call = OllamaLLM(LLMSettings()).extract(
+        text, profile().model_copy(update={"budget": Decimal(500)}), ()
+    )
+    assert call.clarification == "budget"
+
+
+@pytest.mark.parametrize(
+    "text,evidence,value",
+    [
+        ("Бюджет 2000000,50 рублей", "2000000", "2000000"),
+        ("Бюджет 2 миллиона рублей", "2", "2"),
+        ("Бюджет 1500000 рублей", "500000", "500000"),
+    ],
+)
+def test_partial_literal_quote_cannot_ground_wrong_amount(
+    monkeypatch: pytest.MonkeyPatch, text: str, evidence: str, value: str
+) -> None:
+    transport(
+        monkeypatch, lambda *args, **kwargs: io.BytesIO(response({"budget": value}, evidence))
+    )
+    call = OllamaLLM(LLMSettings()).extract(text, profile(), ())
+    assert call.clarification == "budget"
+
+
+def test_non_numeric_model_budget_with_numeric_evidence_is_safe_502(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    transport(monkeypatch, lambda *args, **kwargs: io.BytesIO(response({"budget": "abc"}, "500")))
+    with pytest.raises(LLMError, match="llm_invalid_response"):
+        OllamaLLM(LLMSettings()).extract("Бюджет 500 рублей", profile(), ())
+
+
 def test_timeout_cannot_exceed_budget_after_clock_rounding(monkeypatch: pytest.MonkeyPatch) -> None:
     # Adding 120 to this counter then subtracting it yields 120.00000000000001.
     monkeypatch.setattr("app.adapters.llm.time.monotonic", lambda: 8.002)
