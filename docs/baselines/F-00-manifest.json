@@ -343,7 +343,13 @@
       "Single database; no roles, tablespaces, WAL/PITR or encryption",
       "Trusted local archive only; protect directory with OS ACL/encrypted storage",
       "Do not run DDL or sequence-changing writers during backup"
-    ]
+    ],
+    "local_protection": {
+      "inheritance_disabled": true,
+      "allow_rule_count": 1,
+      "encrypted": false,
+      "path": "%LOCALAPPDATA%/BusinessAI/F00-20261025-private/backup-02/database.dump"
+    }
   },
   "restore": {
     "database": "f00_restore_20261025_a2",
@@ -579,5 +585,12 @@
   "operator_files_sha256": {
     "scripts/backup_postgres.py": "59861d051e43f7fbc703c2b4a543da6598f51f6939aebc5ae5bc41e0e24506e7",
     "apps/api/tests/test_backup_postgres.py": "6bda25fb9373340473eb2c9a71aae5030bf963d975fe678d515d1c932bf088f7"
-  }
+  },
+  "application_ci": {
+    "run_id": 40217117052,
+    "head_sha": "709398cb48241df3c1202b0e7c958ab73bd9c99d",
+    "conclusion": "success",
+    "url": "https://github.com/1nc-0gn1t0/Business_AI/actions/runs/40217117052"
+  },
+  "hash_policy": "Raw byte hashes of checked checkout/runtime; LF/CRLF may differ on another checkout; application_commit is canonical cross-platform source identity."
 }

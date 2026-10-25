@@ -4,6 +4,8 @@
 Приложение: `709398cb48241df3c1202b0e7c958ab73bd9c99d` — main после merge
 [PR #17](https://github.com/1nc-0gn1t0/Business_AI/pull/17) в 17:34:21 UTC.
 Main обновлён ff-only, divergence 0/0, исходное дерево чистое.
+[CI именно этого main](https://github.com/1nc-0gn1t0/Business_AI/actions/runs/40217117052)
+завершён SUCCESS. Manifest фиксирует run ID и полный head SHA.
 Операторские материалы F-00 — отдельная ветка `codex/F-00-mvp-baseline`.
 Фактический HEAD/PR/CI этой ветки записывается в PR и итоговом сообщении.
 
@@ -33,6 +35,8 @@ image IDs/base digests; повторный `up --build` в будущем не �
 восстанавливать исходники/locks и осознанно закреплять base digests, затем перепроверять.
 Image/model archives, шифрование/offsite и полноценный rollback drill остаются H-04/RC.
 Оригинальный manifest не перезаписывать при следующем checkpoint: новый ID/файл.
+Файловые SHA — raw bytes проверенного checkout/образа; LF/CRLF другого checkout
+могут отличаться. Каноническая идентичность исходников между ОС — указанный Git commit.
 
 ## Проверенные версии
 
