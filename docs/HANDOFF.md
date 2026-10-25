@@ -1,11 +1,41 @@
 # Business AI — HANDOFF
 
-## BA-016 · 25.10.2026 (МСК)
+## Post-MVP planning · 25.10.2026 (МСК)
+
+- PR [#16](https://github.com/1nc-0gn1t0/Business_AI/pull/16) объединён 25.10.2026:
+  main `09f2f7d8f8fd7260b72e57b42e51758eb6ada488`, fetch/ff-only, divergence 0/0,
+  исходное дерево чистое. [CI merged main](https://github.com/1nc-0gn1t0/Business_AI/actions/runs/40208572389) success.
+- Ветка документации: `codex/post-mvp-master-roadmap`. Фактический commit/PR/CI
+  текущего planning PR — в итоговом сообщении; не объединять автоматически.
+- Созданы [POST_MVP_ROADMAP](roadmap/POST_MVP_ROADMAP.md),
+  [QUALITY_GATES](roadmap/QUALITY_GATES.md), [RISK_REGISTER](roadmap/RISK_REGISTER.md).
+  43 планируемых блока с зависимостями, критериями, оценками/рисками; сроки BA-017/018,
+  архитектурные предложения и внешние pilot gates. README содержит ссылку.
+- Сверены код/API/ORM/миграции/ADR/CI и BA-016 evidence. Подтверждены узкая отрасль/город,
+  потеря части UI state после reload, отсутствие live AnalysisRun persistence и
+  глобальных resource caps; DB transaction во время inference — риск, impact не измерен.
+- Read-only API/PostGIS/readiness работают; новые live Qwen/E2E ради плана не запускались.
+  Официальные VTB references доступны частично в поисковом представлении; прямой browser
+  TLS не прошёл, визуальные brand tokens/права не подтверждены, предупреждения не обходились.
+- **План требует утверждения. Никакие F/H/U/UI/Q, BA-017/018 не выполнены и не начаты.
+  PROJECT_PLAN, исходный код, алгоритмы, модели и данные не менялись.**
+- После разрешения: F-00 baseline → BA-017-01 protocol/recruitment человеком → H-01
+  bounded triage; затем BA-017/018 до 31.10. Доступность 23 ч + до 4 ч резерва,
+  реальные участники и вычитка требуют действий владельца; без интервью BA-017 partial.
+- Проверки текущего planning PR: 43 уникальные карточки, все 15 атрибутов,
+  зависимости без циклов, локальные Markdown-ссылки в 5 файлах — PASS;
+  `git diff --check` — PASS. `uv tool run --from prek==0.5.4 prek run --all-files`
+  (с отдельным PYTEST_DEBUG_TEMPROOT) — все 7 hooks PASS: Ruff/format/mypy/pytest,
+  ESLint/TypeScript/Vitest. `scripts/demo_ready.py --require-demo-data` — 7/7 PASS,
+  без inference. Новые live Qwen/DB integration/browser/performance не запускались:
+  изменена только документация; исторические результаты ниже не засчитывались заново.
+
+## BA-016 · сохранённые результаты реализации (не новый запуск)
 
 - PR #15 merged: ea0354eafea2cc33cdcfc48a208262709bafd32d.
   Main синхронизирован ff-only, исходное дерево чистое.
-- Ветка feat/BA-016-comprehensive-testing. Фактические HEAD/PR/CI — в итоговом отчёте.
-  PR не объединять автоматически, BA-017/018 не начинать без указания владельца.
+- Ветка реализации feat/BA-016-comprehensive-testing; PR #16 уже merged (см. выше).
+  BA-017/018 не начинать без указания владельца.
 
 ## Сделано
 
@@ -64,6 +94,7 @@
   Isolated DB business_ai_eval_ba016 содержит только open/synthetic и вымышленные
   QA-сессии. API business-ai-ba016-eval:8016; Vite4174 использовался только для QA.
   Можно остановить эти 2 тестовых процесса, не удаляя БД/volumes.
-- Проверить PR/CI BA-016 и решить merge. Дальше только по разрешению владельца.
+- PR/CI BA-016 проверены, merged; следующий шаг — утверждение Post-MVP roadmap.
+  Дальше только по разрешению владельца.
   Прежние BA-015 детали/источники/ограничения: REPORT_EXPORT.md, ADR-0011,
   docs/examples/BA-015-kazan-coffee.{pdf,json} и Git history.
