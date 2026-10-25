@@ -1,5 +1,61 @@
 # Business AI · безопасность и ранний triage
 
+## H-02 · 26.10.2026 · input/resource hardening
+
+PR #19 merged, база `c3c8c73d92c1f63664b440faee62d69c9c5fce2e`, исходное дерево
+чистое, ветка `codex/H-02-api-resource-limits`. Инвентаризация **18 write API до
+изменения кода**, конфигурация, rationale, concurrency/deployment assumptions и
+таблица отказов — [API_LIMITS](API_LIMITS.md). Продуктовые алгоритмы/миграции/
+формат отчётов не менялись; новых зависимостей/сервисов нет.
+
+| Finding | Статус после H-02 | Доказательство |
+|---|---|---|
+| H01-P1-01 | Закрыт в локальном single-worker scope | Profile/PATCH200/20; body chunks/envelope, admission и persistent stock caps; boundary/parallel/refusal-no-write tests PASS |
+| H01-P2-01 | Закрыт для стандартного request-validation422 | Отсутствуют input/ctx, редактируются arbitrary keys; sentinel assertions PASS, не переносится на H-05 |
+| H01-P1-02 | Подтверждён, открыт для H-03 | Controlled PostgreSQL inference probe остаётся strict XFAIL, не PASS |
+| Новый P0 | Не выявлен на выполненных проверках | Не полный pentest/DoS; публичный deployment по-прежнему запрещён |
+
+Новые проверки: Content-Length/отсутствующий/заниженный length/chunks, exact/+1 bytes,
+Unicode200/201 и message4000/4001, JSON depth/nodes/collections/nonfinite/types,
+версии INTEGER, fail-closed config, общий window между endpoints, concurrent active
+slots, timeout release, safe422 с sentinel в имени/значении extra field. DB probes:
+parallel new guests и reports с одним оставшимся global slot; профиль/messages/confirm
+используют общую квоту; spy гарантирует отсутствие Qwen/renderer/mock sender при
+preflight отказе; snapshot/count/version не изменены после отказов; consent revoke
+доступен при полном stock/window; повтор receipt не пишет audit; owner401/404 сохранены.
+
+Фактические прогоны: **299 PASS/83 SKIP** быстрых (DB skips выполнены отдельно),
+**102 PASS** extended, включая **1550** successful Hypothesis examples с прежними seed;
+**82 PASS/1 XFAIL** PostgreSQL/PostGIS, **41 PASS** frontend, **22 PASS** Chromium mock
+E2E и 4 targeted повторных PASS после проверки клавиатуры/390px. Не складывать повторы
+в уникальное покрытие. Полные commands — API_LIMITS и действующий CI/prek.
+Первые prek: 3 environment errors из чужого `%TEMP%/pytest-of-inc`; повтор с отдельным
+PYTEST_DEBUG_TEMPROOT проверяет те же assertions, без отключения тестов.
+
+Окончательный локальный prek: **7/7 hooks PASS**, Ruff/format/mypy и ESLint/TypeScript/
+build PASS, doc links/OpenAPI inventory/git diff --check PASS. Generated TypeScript
+types не изменились по смыслу, formatting-only output не включён. Общая policy
+расположена в трёх небольших модулях config/http/storage; размер PR оправдан одной
+атомарной защитой 18 write API, тесты и operator documentation вынесены отдельно.
+
+Compose db/api/web healthy, HTTP/API/web/PostGIS smoke PASS, migration head
+`0008_analytical_reports`. Настоящая Qwen `qwen3:4b-instruct-2507-q4_K_M`, model ID
+`0edcdef34593`: отдельная новая H-02 UUID-БД, oversized413 → version0 unchanged →
+запрос кофейни/Казань/2млн → mode=ollama, city/category/budget корректны, version1,
+history3, **22.04s** (один live smoke, не повтор BA-016 evaluation/latency benchmark).
+Ollama была остановлена; запущен существующий контейнер, веса не скачивались.
+Backup F-00 SHA256 `690133a959640c3ee0167c46bc39eea13b966f2fff615f4158c10eda85e74feb`
+неизменен. Рабочие write API для тестов не вызывались, volumes не удалялись.
+
+Оставшиеся риски: exhaustion общей квоты доступным локальным клиентом, сеть/slow
+connections до ASGI, hard compute cancellation/CPU/диск PostgreSQL, прямой Ollama
+и несколько workers не защищены этой политикой; stock bytes — logical report payload.
+H-03 нужен для DB connection/очереди модели, H-04 backup/restore, H-05 broader diagnostics,
+H-06 supply chain. Удаление/retention/accounts не реализованы. Никакого production/pilot
+approval. Exact HEAD CI/PR и окончательный prek — в PR и финальном сообщении.
+
+Ниже сохранён исторический H-01 результат; его исходные XFAIL/counts не переписаны.
+
 ## H-01 · 25.10.2026 · результат ограниченной проверки
 
 Основание: PR #18 merged, main `6d2cee01473cb88ad4ce0f0632436fda4a32e9c0`,

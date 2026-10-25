@@ -1,4 +1,4 @@
-"""Bounded audit probes. Strict XFAIL is an open finding, never a security PASS."""
+"""H-01 probes closed by H-02; keep the original desired assertions as regressions."""
 
 from collections.abc import Iterator
 from uuid import uuid4
@@ -21,11 +21,6 @@ class ValidationInputReflected(AssertionError):
     pass
 
 
-@pytest.mark.xfail(
-    strict=True,
-    raises=OversizedProfileAccepted,
-    reason="H01-P1-01: full BusinessProfile lacks a city length bound; H-02",
-)
 def test_h01_full_profile_bounds_oversized_city() -> None:
     try:
         BusinessProfile(conversation_id=uuid4(), city="x" * 4096)
@@ -34,11 +29,6 @@ def test_h01_full_profile_bounds_oversized_city() -> None:
     raise OversizedProfileAccepted("4096-character city accepted; no load test performed")
 
 
-@pytest.mark.xfail(
-    strict=True,
-    raises=ValidationInputReflected,
-    reason="H01-P2-01: default request-validation error reflects supplied input; H-02/H-05",
-)
 def test_h01_validation_error_omits_input(caplog: pytest.LogCaptureFixture) -> None:
     def unbound_session() -> Iterator[Session]:
         # Validation must finish before the endpoint queries any DB.

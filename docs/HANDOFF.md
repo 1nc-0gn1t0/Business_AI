@@ -1,6 +1,53 @@
 # Business AI — HANDOFF
 
-## H-01 · ранний triage · 25.10.2026 (МСК)
+## H-02 · input/resource limits · 26.10.2026 (МСК)
+
+- PR [#19](https://github.com/1nc-0gn1t0/Business_AI/pull/19) merged
+  `2026-10-25T22:02:19Z`, main `c3c8c73d92c1f63664b440faee62d69c9c5fce2e`.
+  Fetch/ff-only, divergence0/0, чистое дерево до начала; ветка
+  `codex/H-02-api-resource-limits`. Exact HEAD/новый PR/CI — в финальном отчёте/PR.
+- Выполнена H-02, не H-03: [полная инвентаризация 18 write API, caps/квоты/config](API_LIMITS.md).
+  Новый общий pure-ASGI envelope/admission заменил report-only middleware.
+  Full profile соответствует PATCH200/20; strict version INTEGER; безопасные
+  standard422 без input/context/arbitrary keys. HTTP413/422/429; реальный Retry-After
+  только для временного окна; busy/stock не обещают время. React сохраняет draft,
+  объясняет отказ; автоматического retry и redesign нет.
+- PostgreSQL count/byte stock checks + короткая transaction advisory lock перед
+  записью; owner/CAS/consent/idempotency сохранены. Новая guest session/restart не
+  сбрасывает stock. Отзыв granted consent имеет ограниченное safety exception.
+  Временные/active counters — **только один worker**, WEB_CONCURRENCY!=1 fail closed;
+  CLI --workers>1/replicas запрещены deployment-инструкцией, автоматически не определяются.
+  Нет новых сервисов/зависимостей/миграций, гео/финансовых/банковских алгоритмов или
+  форматов сохранённых отчётов. OpenAPI/TS regenerated comparison: v1 fields/types
+  сохранены, только новые validation bounds; formatting-only TS diff не включён.
+- Результаты: backend quick **299 PASS/83 SKIP** (это DB skip, не успех), extended
+  **102 PASS**, **1550** successful property examples; PostgreSQL/PostGIS **82 PASS/
+  1 XFAIL**; frontend **41 PASS**; Chromium mock **22 PASS**, дополнительно4 targeted
+  PASS с keyboard и390px. Новые refusal probes проверяют counts/version/no inference/
+  no render/no sender, а не только status. H01-P1-01/P2-01 XPASS воспроизведён,
+  xfail decorators сняты с сохранением assertions; **H01-P1-02 оставлен XFAIL для H-03**.
+- Compose db/api/web healthy; build/HTTP smoke PASS, head `0008_analytical_reports`.
+  Single live Qwen smoke в новой isolated H-02 UUID-БД: oversized413 не меняет
+  version0, реальная кофейня/Казань/2млн распознана, modeollama/version1/history3,
+  **22.04s**. Не полный BA-016 evaluation. Модель `qwen3:4b-instruct-2507-q4_K_M`,
+  ID `0edcdef34593`; запущен существующий остановленный Ollama container, downloads нет.
+  Working DB tests не выполнялись, пользовательские данные/volumes/F-00 сохранены;
+  SHA backup неизменен: `690133a959640c3ee0167c46bc39eea13b966f2fff615f4158c10eda85e74feb`.
+- Ограничения/remaining риски — SECURITY_TEST_REPORT и RISK_REGISTER. Не полный
+  pentest/load, не multi-worker/public readiness; stock logical bytes не physical disk cap.
+  H-03 transaction/queue, H-04…06 и D-01…04 остаются. Vite large-chunk warning прежний.
+  Первые prek получили 3 Windows temp permission errors; использован отдельный
+  PYTEST_DEBUG_TEMPROOT без смены ACL, изменения assertions или удаления данных.
+  Повторный **prek: все 7 hooks PASS**; Ruff/format/mypy, ESLint/TypeScript и build PASS.
+  18 write operations сверены с OpenAPI; относительные doc links/git diff --check PASS.
+  Временная H-02 smoke-БД и только её контейнер после smoke удалены по проверенному
+  UUID имени; существующие QA/пользовательские БД и volumes сохранены.
+- Сознательный порядок F-00→H-01→H-02→H-03…06→UX→U→UI→QA→RC сохранён.
+  BA-017/018 — отдельный research track, не отменён/не выполнен; зависимости UX/U
+  требуют отдельного решения. **Далее: review/CI H-02; H-03 только после разрешения.
+  Не merge автоматически, не начинать исследования или следующую задачу.**
+
+## H-01 · ранний triage · 25.10.2026 (МСК, исторический)
 
 - PR [#18](https://github.com/1nc-0gn1t0/Business_AI/pull/18) merged 18:33:42 UTC.
   Main `6d2cee01473cb88ad4ce0f0632436fda4a32e9c0`, ff-only/divergence 0/0,

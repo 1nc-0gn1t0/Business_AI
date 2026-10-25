@@ -11,6 +11,7 @@ from app.geo.candidate_schemas import Version
 from app.geo.ranking_schemas import RankingCollection, RankingRequest
 from app.geo.schemas import Slug
 from app.geo.walk_schemas import CatchmentRequest, CatchmentResult
+from app.limits.config import VersionNumber
 
 
 class GeoReportInput(Contract):
@@ -41,7 +42,7 @@ class ProviderReportInput(Contract):
 
 
 class ReportRequest(Contract):
-    expected_version: int = Field(strict=True, ge=0)
+    expected_version: VersionNumber
     geo: GeoReportInput | None = None
     selected_zone: Version | None = None
     finance: FinanceReportInput | None = None

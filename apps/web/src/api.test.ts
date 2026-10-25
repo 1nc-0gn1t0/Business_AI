@@ -4,10 +4,59 @@ import {
   history,
   readCredential,
   request,
+  requestFile,
   saveCredential,
 } from "./api";
 
 describe("same-origin API client (explicit fetch mocks)", () => {
+  it.each([
+    [413, "request_body_too_large", "Сократите"],
+    [422, "request_text_too_long", "длинный"],
+    [429, "resource_quota_exceeded", "не сбросит"],
+    [429, "report_limit_reached", "остаются доступны"],
+    [429, "request_capacity_busy", "Сервис занят"],
+  ])(
+    "handles limits without automatic retries: %s %s",
+    async (status, code, expected) => {
+      const mock = vi
+        .spyOn(globalThis, "fetch")
+        .mockResolvedValue(
+          new Response(JSON.stringify({ detail: { code } }), {
+            status: Number(status),
+          }),
+        );
+      await expect(
+        request("/api/v1/conversations/id/messages"),
+      ).rejects.toThrow(String(expected));
+      expect(mock).toHaveBeenCalledTimes(1);
+    },
+  );
+  it("shows only a server-provided retry time, including report downloads", async () => {
+    const mock = vi
+      .spyOn(globalThis, "fetch")
+      .mockImplementation(
+        async () =>
+          new Response(
+            JSON.stringify({ detail: { code: "request_rate_limited" } }),
+            { status: 429, headers: { "Retry-After": "7" } },
+          ),
+      );
+    await expect(request("/api/v1/geo/datasets")).rejects.toThrow("через 7 с.");
+    await expect(
+      requestFile("/api/v1/conversations/id/reports/r/file?format=pdf", {
+        id: "id",
+        token: "fixture",
+      }),
+    ).rejects.toThrow("через 7 с.");
+    mock.mockImplementation(
+      async () =>
+        new Response(
+          JSON.stringify({ detail: { code: "request_capacity_busy" } }),
+          { status: 429 },
+        ),
+    );
+    await expect(request("/api/v1/geo/datasets")).rejects.not.toThrow("через");
+  });
   it("keeps guest credentials in session storage, never in URLs", async () => {
     const key = { id: "test-conversation", token: "test-secret-not-real" };
     expect(saveCredential(key)).toBe(true);

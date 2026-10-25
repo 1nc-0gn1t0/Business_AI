@@ -3,17 +3,19 @@ from uuid import UUID
 
 from pydantic import AwareDatetime, Field, StringConstraints
 
-from app.api.schemas import BusinessProfile, Contract, Money
+from app.api.schemas import BusinessProfile, Contract, Money, ProfileText
 from app.domain.enums import ConversationState, Funding, MessageRole
+from app.limits.config import VersionNumber, policy
 
-ProfileText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=200)]
-Version = Annotated[int, Field(strict=True, ge=0)]
+Version = VersionNumber
 
 
 class PreferencesPatch(Contract):
     format: ProfileText | None = None
-    preferred_districts: tuple[ProfileText, ...] = Field(default=(), max_length=20)
-    constraints: tuple[ProfileText, ...] = Field(default=(), max_length=20)
+    preferred_districts: tuple[ProfileText, ...] = Field(
+        default=(), max_length=policy().profile_items
+    )
+    constraints: tuple[ProfileText, ...] = Field(default=(), max_length=policy().profile_items)
 
 
 class ProfilePatch(Contract):
@@ -25,7 +27,10 @@ class ProfilePatch(Contract):
 
 
 class MessageRequest(Contract):
-    content: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=4000)]
+    content: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=1, max_length=policy().message_chars),
+    ]
     expected_version: Version
 
 

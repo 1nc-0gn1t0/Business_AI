@@ -6,9 +6,10 @@ from pydantic import AwareDatetime, Field, StringConstraints, field_validator, m
 from app.api.schemas import BusinessProfile, Contract, Money
 from app.bank.schemas import Digest, Key, ProductView
 from app.domain.enums import Funding
+from app.limits.config import VersionNumber, policy
 
 Purpose = Literal["assistant", "marketing", "demo_lead"]
-Revision = Annotated[int, Field(strict=True, ge=0)]
+Revision = VersionNumber
 ShortText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)]
 RECEIPT_MESSAGE: Literal["Демонстрационная заявка создана. Данные в ВТБ не отправлены"] = (
     "Демонстрационная заявка создана. Данные в ВТБ не отправлены"
@@ -26,7 +27,7 @@ class ConsentText(Contract):
 
 class ConsentDecision(Contract):
     expected_revision: Revision
-    text_version: str
+    text_version: Annotated[str, StringConstraints(min_length=1, max_length=policy().profile_chars)]
     decision: Literal["grant", "decline", "withdraw"]
 
 

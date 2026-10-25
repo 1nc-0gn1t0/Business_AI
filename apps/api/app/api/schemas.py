@@ -13,8 +13,12 @@ from pydantic import (
 )
 
 from app.domain.enums import Confidence, ConfirmationState, DataOrigin, Funding
+from app.limits.config import policy
 
 NonEmptyText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+ProfileText = Annotated[
+    str, StringConstraints(strip_whitespace=True, min_length=1, max_length=policy().profile_chars)
+]
 Money = Annotated[Decimal, Field(ge=0, max_digits=18, decimal_places=2, allow_inf_nan=False)]
 MetricValue = Annotated[float, Field(strict=True, allow_inf_nan=False)]
 
@@ -24,16 +28,18 @@ class Contract(BaseModel):
 
 
 class BusinessPreferences(Contract):
-    format: NonEmptyText | None = None
-    preferred_districts: tuple[NonEmptyText, ...] = ()
-    constraints: tuple[NonEmptyText, ...] = ()
+    format: ProfileText | None = None
+    preferred_districts: tuple[ProfileText, ...] = Field(
+        default=(), max_length=policy().profile_items
+    )
+    constraints: tuple[ProfileText, ...] = Field(default=(), max_length=policy().profile_items)
 
 
 class BusinessProfile(Contract):
     id: UUID = Field(default_factory=uuid4)
     conversation_id: UUID
-    city: NonEmptyText | None = None
-    category: NonEmptyText | None = None
+    city: ProfileText | None = None
+    category: ProfileText | None = None
     budget: Money | None = None
     funding: Funding | None = None
     preferences: BusinessPreferences = Field(default_factory=BusinessPreferences)
