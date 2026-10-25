@@ -1,5 +1,9 @@
 # BA-016 · воспроизводимая демонстрация
 
+Post-MVP checkpoint: [F-00 baseline](baselines/F-00_BASELINE.md),
+[точный manifest](baselines/F-00-manifest.json),
+[backup/изолированный restore](BACKUP_RESTORE.md). Это локальный MVP, не RC/пилот.
+
 ## Перед показом
 
 1. Docker Desktop работает. Используйте уже загруженные OSM, walking graph и модель;
@@ -9,6 +13,8 @@
 3. Для синтетического раздела явным образом включите `DATA_DEMO_ENABLED=true` и заранее
    импортируйте версионированный набор по [DATA_PROVIDERS](DATA_PROVIDERS.md).
    Без этого раздел должен честно сообщать об отсутствии demo, не подменять данные.
+   PowerShell: `$env:DATA_DEMO_ENABLED='true'` **перед** `docker compose up`.
+   Новый shell без переменной снова использует false; `.env` автоматически не меняется.
 4. `docker compose up --build --detach --wait --wait-timeout 180` сохраняет volumes.
 5. Выполните readiness:
 
