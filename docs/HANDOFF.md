@@ -6,6 +6,16 @@
   `2026-10-25T22:02:19Z`, main `c3c8c73d92c1f63664b440faee62d69c9c5fce2e`.
   Fetch/ff-only, divergence0/0, чистое дерево до начала; ветка
   `codex/H-02-api-resource-limits`. Exact HEAD/новый PR/CI — в финальном отчёте/PR.
+- Реализация опубликована коммитом `6149cf68b7a7648a075d1881d43bcf3933c81915`;
+  GitHub CI этого SHA: **Windows/Ubuntu/Compose smoke — SUCCESS**,
+  [run40241666474](https://github.com/1nc-0gn1t0/Business_AI/actions/runs/40241666474).
+  Создание PR пока требует внешнего действия: автоматическая проверка отклонила
+  REST-вызов с Git credential helper без пояснения причины; GitHub CLI отсутствует,
+  встроенный браузер GitHub не авторизован. Пользователю показана compare-вкладка
+  `main...codex/H-02-api-resource-limits` для входа/создания PR. Не считать PR созданным
+  или задачу принятой, пока реальный PR не открыт; после входа завершить этот шаг,
+  attach PR к чату и проверить exact HEAD CI. Документационный commit после указанного
+  implementation SHA не меняет выполненные алгоритмы/тесты.
 - Выполнена H-02, не H-03: [полная инвентаризация 18 write API, caps/квоты/config](API_LIMITS.md).
   Новый общий pure-ASGI envelope/admission заменил report-only middleware.
   Full profile соответствует PATCH200/20; strict version INTEGER; безопасные
