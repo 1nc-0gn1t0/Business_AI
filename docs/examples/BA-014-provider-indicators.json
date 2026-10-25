@@ -1,0 +1,306 @@
+{
+  "osm": {
+    "dataset": {
+      "provider": "osm",
+      "slug": "kazan-centre",
+      "revision": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+      "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+      "active": true,
+      "bbox": {
+        "west": 49.05,
+        "south": 55.7,
+        "east": 49.25,
+        "north": 55.85
+      },
+      "origin": "open_data",
+      "source_name": "OpenStreetMap via Overpass API",
+      "source_url": "https://overpass-api.de/api/interpreter",
+      "license": "ODbL-1.0",
+      "attribution": "© OpenStreetMap contributors",
+      "observed_at": "2026-10-22T20:27:36Z",
+      "generated_at": "2026-10-22T20:28:58.496357Z",
+      "stale": false,
+      "stale_after_days": 30,
+      "quality": "mapping_completeness_unknown",
+      "limitations": [
+        "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+        "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+        "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+        "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+        "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+        "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+        "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+      ]
+    },
+    "selection": {
+      "version": "explicit-provider-v1",
+      "mode": "real",
+      "demo_enabled": true,
+      "allowed_providers": [
+        "osm"
+      ],
+      "limitations": [
+        "Источник и версия выбираются явно; автоматической подмены данных нет.",
+        "Синтетический сценарий: не измерения рынка Казани и не сведения о свободном помещении.",
+        "Показатели не передаются автоматически в рейтинг, catchment или финансовый расчёт."
+      ]
+    },
+    "bbox": {
+      "west": 49.05,
+      "south": 55.7,
+      "east": 49.25,
+      "north": 55.85
+    },
+    "indicators": [
+      {
+        "metric": "mapped_poi_count",
+        "name": "Нанесённые объекты OSM",
+        "value_type": "number",
+        "unit": "features",
+        "status": "available",
+        "measurement": {
+          "metric": "mapped_poi_count",
+          "value": 23852,
+          "unit": "features",
+          "origin": "open_data",
+          "source_name": "OpenStreetMap via Overpass API",
+          "observed_at": "2026-10-22T20:27:36Z",
+          "generated_at": "2026-10-24T04:14:07.814883Z",
+          "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+          "confidence": "low",
+          "limitations": [
+            "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+            "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+            "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+            "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+            "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+            "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+            "Overpass boundary bbox selection uses member nodes, so containing districts may be absent.",
+            "Count of mapped OSM features, not traffic or verified businesses; osm_base is snapshot/edit time, not a field observation."
+          ]
+        },
+        "reason": null
+      },
+      {
+        "metric": "mapped_cafe_count",
+        "name": "Нанесённые кафе OSM",
+        "value_type": "number",
+        "unit": "features",
+        "status": "available",
+        "measurement": {
+          "metric": "mapped_cafe_count",
+          "value": 819,
+          "unit": "features",
+          "origin": "open_data",
+          "source_name": "OpenStreetMap via Overpass API",
+          "observed_at": "2026-10-22T20:27:36Z",
+          "generated_at": "2026-10-24T04:14:07.814950Z",
+          "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+          "confidence": "low",
+          "limitations": [
+            "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+            "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+            "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+            "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+            "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+            "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+            "Overpass boundary bbox selection uses member nodes, so containing districts may be absent.",
+            "Count of mapped OSM features, not traffic or verified businesses; osm_base is snapshot/edit time, not a field observation."
+          ]
+        },
+        "reason": null
+      },
+      {
+        "metric": "pedestrian_flow_daily",
+        "name": "Условный пешеходный поток",
+        "value_type": "number",
+        "unit": "people_per_day",
+        "status": "missing",
+        "measurement": null,
+        "reason": "Показатель отсутствует. Синтетическая подмена не выполняется."
+      },
+      {
+        "metric": "rent_monthly_rub",
+        "name": "Условная месячная аренда",
+        "value_type": "number",
+        "unit": "RUB_per_month",
+        "status": "missing",
+        "measurement": null,
+        "reason": "Показатель отсутствует. Синтетическая подмена не выполняется."
+      },
+      {
+        "metric": "purchases_daily",
+        "name": "Сценарное количество покупок",
+        "value_type": "number",
+        "unit": "purchases_per_day",
+        "status": "missing",
+        "measurement": null,
+        "reason": "Показатель отсутствует. Синтетическая подмена не выполняется."
+      }
+    ],
+    "algorithm_version": "provider-indicators-v1:osm-bbox-count-v1",
+    "request_fingerprint": "b965024d39405f5764986f3a703025dc8b22d92b3a2415452da63ca954aa6b29",
+    "limitations": [
+      "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+      "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+      "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+      "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+      "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+      "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+      "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+    ]
+  },
+  "synthetic": {
+    "dataset": {
+      "provider": "synthetic",
+      "slug": "coffee-kazan-demo",
+      "revision": "coffee-kazan-v1",
+      "data_version": "adf6964b918eda73247a462f4be465d95d5d060580fa2493ef8294c9840708dd",
+      "active": true,
+      "bbox": {
+        "west": 49.11,
+        "south": 55.78,
+        "east": 49.13,
+        "north": 55.8
+      },
+      "origin": "synthetic",
+      "source_name": "Sab0tage authored coffee scenario v1",
+      "source_url": null,
+      "license": "CC0-1.0",
+      "attribution": "Sab0tage — synthetic demonstration",
+      "observed_at": null,
+      "generated_at": "2026-10-24T00:00:00Z",
+      "stale": false,
+      "stale_after_days": 365,
+      "quality": "not_applicable",
+      "limitations": [
+        "Исключительно синтетический пример; не рыночные данные Казани.",
+        "Не использовать для инвестиционного решения, рейтинга зон или подтверждения доступности помещения.",
+        "Generation: fixed-authored-scenario-v1",
+        "Синтетический сценарий: не измерения рынка Казани и не сведения о свободном помещении.",
+        "Показатели не передаются автоматически в рейтинг, catchment или финансовый расчёт."
+      ]
+    },
+    "selection": {
+      "version": "explicit-provider-v1",
+      "mode": "demo",
+      "demo_enabled": true,
+      "allowed_providers": [
+        "osm",
+        "synthetic"
+      ],
+      "limitations": [
+        "Источник и версия выбираются явно; автоматической подмены данных нет.",
+        "Синтетический сценарий: не измерения рынка Казани и не сведения о свободном помещении.",
+        "Показатели не передаются автоматически в рейтинг, catchment или финансовый расчёт."
+      ]
+    },
+    "bbox": {
+      "west": 49.11,
+      "south": 55.78,
+      "east": 49.13,
+      "north": 55.8
+    },
+    "indicators": [
+      {
+        "metric": "mapped_poi_count",
+        "name": "Нанесённые объекты OSM",
+        "value_type": "number",
+        "unit": "features",
+        "status": "missing",
+        "measurement": null,
+        "reason": "Показатель отсутствует. Синтетическая подмена не выполняется."
+      },
+      {
+        "metric": "mapped_cafe_count",
+        "name": "Нанесённые кафе OSM",
+        "value_type": "number",
+        "unit": "features",
+        "status": "missing",
+        "measurement": null,
+        "reason": "Показатель отсутствует. Синтетическая подмена не выполняется."
+      },
+      {
+        "metric": "pedestrian_flow_daily",
+        "name": "Условный пешеходный поток",
+        "value_type": "number",
+        "unit": "people_per_day",
+        "status": "available",
+        "measurement": {
+          "metric": "pedestrian_flow_daily",
+          "value": 1800,
+          "unit": "people_per_day",
+          "origin": "synthetic",
+          "source_name": "Sab0tage authored coffee scenario v1",
+          "observed_at": null,
+          "generated_at": "2026-10-24T00:00:00Z",
+          "data_version": "adf6964b918eda73247a462f4be465d95d5d060580fa2493ef8294c9840708dd",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Исключительно синтетический пример; не рыночные данные Казани.",
+            "Не использовать для инвестиционного решения, рейтинга зон или подтверждения доступности помещения.",
+            "Генерация: фиксированные авторские значения fixed-authored-scenario-v1; случайность отсутствует."
+          ]
+        },
+        "reason": null
+      },
+      {
+        "metric": "rent_monthly_rub",
+        "name": "Условная месячная аренда",
+        "value_type": "number",
+        "unit": "RUB_per_month",
+        "status": "available",
+        "measurement": {
+          "metric": "rent_monthly_rub",
+          "value": 90000,
+          "unit": "RUB_per_month",
+          "origin": "synthetic",
+          "source_name": "Sab0tage authored coffee scenario v1",
+          "observed_at": null,
+          "generated_at": "2026-10-24T00:00:00Z",
+          "data_version": "adf6964b918eda73247a462f4be465d95d5d060580fa2493ef8294c9840708dd",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Исключительно синтетический пример; не рыночные данные Казани.",
+            "Не использовать для инвестиционного решения, рейтинга зон или подтверждения доступности помещения.",
+            "Генерация: фиксированные авторские значения fixed-authored-scenario-v1; случайность отсутствует."
+          ]
+        },
+        "reason": null
+      },
+      {
+        "metric": "purchases_daily",
+        "name": "Сценарное количество покупок",
+        "value_type": "number",
+        "unit": "purchases_per_day",
+        "status": "available",
+        "measurement": {
+          "metric": "purchases_daily",
+          "value": 90,
+          "unit": "purchases_per_day",
+          "origin": "synthetic",
+          "source_name": "Sab0tage authored coffee scenario v1",
+          "observed_at": null,
+          "generated_at": "2026-10-24T00:00:00Z",
+          "data_version": "adf6964b918eda73247a462f4be465d95d5d060580fa2493ef8294c9840708dd",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Исключительно синтетический пример; не рыночные данные Казани.",
+            "Не использовать для инвестиционного решения, рейтинга зон или подтверждения доступности помещения.",
+            "Генерация: фиксированные авторские значения fixed-authored-scenario-v1; случайность отсутствует."
+          ]
+        },
+        "reason": null
+      }
+    ],
+    "algorithm_version": "provider-indicators-v1:fixed-authored-scenario-v1",
+    "request_fingerprint": "507dbf585b046a6d430042bebb916eaaab38fcc0fa5b3a1f277b39446c3b98f4",
+    "limitations": [
+      "Исключительно синтетический пример; не рыночные данные Казани.",
+      "Не использовать для инвестиционного решения, рейтинга зон или подтверждения доступности помещения.",
+      "Generation: fixed-authored-scenario-v1",
+      "Синтетический сценарий: не измерения рынка Казани и не сведения о свободном помещении.",
+      "Показатели не передаются автоматически в рейтинг, catchment или финансовый расчёт."
+    ]
+  }
+}

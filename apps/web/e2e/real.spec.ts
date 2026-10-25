@@ -111,9 +111,9 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
   await page.waitForTimeout(1500);
   await page
     .locator(".map-wrap")
-    .screenshot({ path: "../../docs/screenshots/BA-013-walking-map.png" });
+    .screenshot({ path: `${directory}/BA-013-walking-map.png` });
   await walking.screenshot({
-    path: "../../docs/screenshots/BA-013-walking-panel.png",
+    path: `${directory}/BA-013-walking-panel.png`,
   });
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
@@ -122,11 +122,11 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     ),
   ).toBe(true);
   await walking.screenshot({
-    path: "../../docs/screenshots/BA-013-walking-mobile.png",
+    path: `${directory}/BA-013-walking-mobile.png`,
   });
   await page.setViewportSize({ width: 1440, height: 1050 });
   await writeFile(
-    "../../docs/screenshots/BA-013-verification.json",
+    `${directory}/BA-013-verification.json`,
     JSON.stringify(
       {
         checked_at: new Date().toISOString(),
@@ -402,8 +402,59 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     walking.getByRole("columnheader", { name: "По сети", exact: true }),
   ).toBeVisible();
   await walking.screenshot({
-    path: "../../docs/screenshots/BA-013-network-comparison.png",
+    path: `${directory}/BA-013-network-comparison.png`,
   });
+  const sources = page.locator(".data-sources");
+  await sources.locator("summary").first().click();
+  const showIndicators = sources.getByRole("button", {
+    name: "Показать показатели источника",
+  });
+  await expect(showIndicators).toBeEnabled();
+  const osmResponse = page.waitForResponse((r) =>
+    r.url().endsWith("/data-providers/indicators"),
+  );
+  await showIndicators.click();
+  const osmHttp = await osmResponse;
+  expect(osmHttp.ok()).toBe(true);
+  const osm = (await osmHttp.json()) as Schemas["IndicatorResult"];
+  expect(osm.indicators[0].measurement?.origin).toBe("open_data");
+  expect(osm.indicators[2].measurement).toBeNull();
+  await sources.getByLabel("Режим данных").selectOption("demo");
+  await expect(sources.getByLabel("Режим данных")).toHaveValue("demo");
+  await sources.getByLabel("Источник показателей").selectOption("synthetic");
+  await expect(showIndicators).toBeEnabled();
+  const syntheticResponse = page.waitForResponse((r) =>
+    r.url().endsWith("/data-providers/indicators"),
+  );
+  await showIndicators.click();
+  const syntheticHttp = await syntheticResponse;
+  expect(syntheticHttp.ok()).toBe(true);
+  const synthetic = (await syntheticHttp.json()) as Schemas["IndicatorResult"];
+  expect(
+    synthetic.indicators.filter((i) => i.measurement?.origin === "synthetic"),
+  ).toHaveLength(3);
+  await expect(
+    sources.getByText(/СИНТЕТИЧЕСКИЕ ДАННЫЕ · НЕ РЫНОК/),
+  ).toBeVisible();
+  await sources.screenshot({
+    path: "../../docs/screenshots/BA-014-data-providers.png",
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await sources.screenshot({
+    path: "../../docs/screenshots/BA-014-data-providers-mobile.png",
+  });
+  await writeFile(
+    "../../docs/examples/BA-014-provider-indicators.json",
+    JSON.stringify({ osm, synthetic }, null, 2),
+  );
+  await sources.getByLabel("Режим данных").selectOption("real");
+  await expect(sources.getByLabel("Режим данных")).toHaveValue("real");
+  await expect(sources.locator(".source-result")).toHaveCount(0);
   expect(errors).toEqual([]);
   await writeFile(
     `${directory}/BA-010-verification.json`,

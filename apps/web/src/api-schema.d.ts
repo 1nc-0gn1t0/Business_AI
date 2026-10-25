@@ -312,6 +312,91 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/data-providers/sources": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Provider Sources */
+    get: operations["provider_sources_api_v1_data_providers_sources_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/data-providers/policy": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Current Policy */
+    get: operations["current_policy_api_v1_data_providers_policy_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/data-providers/selection": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Select Mode */
+    post: operations["select_mode_api_v1_data_providers_selection_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/data-providers/{provider}/datasets": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Provider Datasets */
+    get: operations["provider_datasets_api_v1_data_providers__provider__datasets_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/data-providers/indicators": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Indicators */
+    post: operations["indicators_api_v1_data_providers_indicators_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/conversations/{conversation_id}/consents": {
     parameters: {
       query?: never;
@@ -1148,6 +1233,35 @@ export interface components {
       | "synthetic"
       | "user_input"
       | "bank_internal";
+    /** DataPolicy */
+    DataPolicy: {
+      /**
+       * Version
+       * @default explicit-provider-v1
+       * @constant
+       */
+      version: "explicit-provider-v1";
+      /**
+       * Mode
+       * @enum {string}
+       */
+      mode: "real" | "demo";
+      /** Demo Enabled */
+      demo_enabled: boolean;
+      /** Allowed Providers */
+      allowed_providers: ("osm" | "synthetic" | "ghsl" | "licensed")[];
+      /** Limitations */
+      limitations: string[];
+    };
+    /** DataSelection */
+    DataSelection: {
+      /**
+       * Mode
+       * @default real
+       * @enum {string}
+       */
+      mode: "real" | "demo";
+    };
     /** DatasetView */
     DatasetView: {
       /** Slug */
@@ -1493,6 +1607,64 @@ export interface components {
       /** Postgis Version */
       postgis_version: string;
     };
+    /** Indicator */
+    Indicator: {
+      /** Metric */
+      metric: string;
+      /** Name */
+      name: string;
+      /**
+       * Value Type
+       * @default number
+       * @constant
+       */
+      value_type: "number";
+      /** Unit */
+      unit: string;
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: "available" | "stale" | "missing" | "outside_coverage";
+      measurement: components["schemas"]["MetricWithProvenance"] | null;
+      /** Reason */
+      reason: string | null;
+    };
+    /** IndicatorQuery */
+    IndicatorQuery: {
+      /**
+       * Provider
+       * @enum {string}
+       */
+      provider: "osm" | "synthetic" | "ghsl" | "licensed";
+      /** Dataset */
+      dataset: string;
+      /** Data Version */
+      data_version: string;
+      /**
+       * Mode
+       * @default real
+       * @enum {string}
+       */
+      mode: "real" | "demo";
+      bbox?: components["schemas"]["Bounds"] | null;
+      /** Metrics */
+      metrics: string[];
+    };
+    /** IndicatorResult */
+    IndicatorResult: {
+      dataset: components["schemas"]["ProviderDataset"];
+      selection: components["schemas"]["DataPolicy"];
+      bbox: components["schemas"]["Bounds"];
+      /** Indicators */
+      indicators: components["schemas"]["Indicator"][];
+      /** Algorithm Version */
+      algorithm_version: string;
+      /** Request Fingerprint */
+      request_fingerprint: string;
+      /** Limitations */
+      limitations: string[];
+    };
     /** InputSource */
     InputSource: {
       origin: components["schemas"]["DataOrigin"];
@@ -1734,6 +1906,30 @@ export interface components {
        * Format: date-time
        */
       created_at: string;
+    };
+    /** MetricWithProvenance */
+    MetricWithProvenance: {
+      /** Metric */
+      metric: string;
+      /** Value */
+      value: number;
+      /** Unit */
+      unit: string;
+      origin: components["schemas"]["DataOrigin"];
+      /** Source Name */
+      source_name: string;
+      /** Observed At */
+      observed_at: string | null;
+      /**
+       * Generated At
+       * Format: date-time
+       */
+      generated_at: string;
+      /** Data Version */
+      data_version: string;
+      confidence: components["schemas"]["Confidence"];
+      /** Limitations */
+      limitations: string[];
     };
     /** MultiPolygonGeometry */
     MultiPolygonGeometry: {
@@ -1980,6 +2176,68 @@ export interface components {
       budget?: number | string | null;
       funding?: components["schemas"]["Funding"] | null;
       preferences?: components["schemas"]["PreferencesPatch"] | null;
+    };
+    /** ProviderDataset */
+    ProviderDataset: {
+      /**
+       * Provider
+       * @enum {string}
+       */
+      provider: "osm" | "synthetic" | "ghsl" | "licensed";
+      /** Slug */
+      slug: string;
+      /** Revision */
+      revision: string;
+      /** Data Version */
+      data_version: string;
+      /** Active */
+      active: boolean;
+      bbox: components["schemas"]["Bounds"];
+      origin: components["schemas"]["DataOrigin"];
+      /** Source Name */
+      source_name: string;
+      /** Source Url */
+      source_url: string | null;
+      /** License */
+      license: string;
+      /** Attribution */
+      attribution: string;
+      /** Observed At */
+      observed_at: string | null;
+      /**
+       * Generated At
+       * Format: date-time
+       */
+      generated_at: string;
+      /** Stale */
+      stale: boolean;
+      /** Stale After Days */
+      stale_after_days: number;
+      /**
+       * Quality
+       * @enum {string}
+       */
+      quality: "mapping_completeness_unknown" | "not_applicable";
+      /** Limitations */
+      limitations: string[];
+    };
+    /** ProviderInfo */
+    ProviderInfo: {
+      /**
+       * Id
+       * @enum {string}
+       */
+      id: "osm" | "synthetic" | "ghsl" | "licensed";
+      /** Name */
+      name: string;
+      origin: components["schemas"]["DataOrigin"];
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: "ready" | "disabled" | "not_integrated";
+      /** Limitations */
+      limitations: string[];
     };
     /** ProximityRequirement */
     ProximityRequirement: {
@@ -3277,6 +3535,143 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["MatchResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  provider_sources_api_v1_data_providers_sources_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ProviderInfo"][];
+        };
+      };
+    };
+  };
+  current_policy_api_v1_data_providers_policy_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DataPolicy"];
+        };
+      };
+    };
+  };
+  select_mode_api_v1_data_providers_selection_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DataSelection"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DataPolicy"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  provider_datasets_api_v1_data_providers__provider__datasets_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        provider: "osm" | "synthetic" | "ghsl" | "licensed";
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ProviderDataset"][];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  indicators_api_v1_data_providers_indicators_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["IndicatorQuery"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["IndicatorResult"];
         };
       };
       /** @description Validation Error */

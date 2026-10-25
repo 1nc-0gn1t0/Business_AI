@@ -11,6 +11,7 @@ import Chat from "./Chat";
 import Finance from "./Finance";
 import Locations from "./Locations";
 vi.mock("./Walking", () => ({ default: () => null }));
+vi.mock("./DataSources", () => ({ default: () => null }));
 import App from "./App";
 import { saveCredential } from "./api";
 import geoExample from "../../../docs/examples/BA-008-kazan-coffee.json";

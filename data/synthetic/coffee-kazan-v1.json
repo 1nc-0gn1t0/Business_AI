@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "slug": "coffee-kazan-demo",
+  "revision": "coffee-kazan-v1",
+  "origin": "synthetic",
+  "source_name": "Sab0tage authored coffee scenario v1",
+  "generated_at": "2026-10-24T00:00:00Z",
+  "bbox": {
+    "west": 49.11,
+    "south": 55.78,
+    "east": 49.13,
+    "north": 55.8
+  },
+  "license": "CC0-1.0",
+  "attribution": "Sab0tage — synthetic demonstration",
+  "generation_method": "fixed-authored-scenario-v1",
+  "limitations": [
+    "Исключительно синтетический пример; не рыночные данные Казани.",
+    "Не использовать для инвестиционного решения, рейтинга зон или подтверждения доступности помещения."
+  ],
+  "measurements": [
+    {
+      "metric": "pedestrian_flow_daily",
+      "value": 1800.0,
+      "unit": "people_per_day",
+      "origin": "synthetic",
+      "source_name": "Sab0tage authored coffee scenario v1",
+      "observed_at": null,
+      "generated_at": "2026-10-24T00:00:00Z",
+      "data_version": "coffee-kazan-v1",
+      "confidence": "not_applicable",
+      "limitations": [
+        "Исключительно синтетический пример; не рыночные данные Казани.",
+        "Не использовать для инвестиционного решения, рейтинга зон или подтверждения доступности помещения.",
+        "Генерация: фиксированные авторские значения fixed-authored-scenario-v1; случайность отсутствует."
+      ]
+    },
+    {
+      "metric": "rent_monthly_rub",
+      "value": 90000.0,
+      "unit": "RUB_per_month",
+      "origin": "synthetic",
+      "source_name": "Sab0tage authored coffee scenario v1",
+      "observed_at": null,
+      "generated_at": "2026-10-24T00:00:00Z",
+      "data_version": "coffee-kazan-v1",
+      "confidence": "not_applicable",
+      "limitations": [
+        "Исключительно синтетический пример; не рыночные данные Казани.",
+        "Не использовать для инвестиционного решения, рейтинга зон или подтверждения доступности помещения.",
+        "Генерация: фиксированные авторские значения fixed-authored-scenario-v1; случайность отсутствует."
+      ]
+    },
+    {
+      "metric": "purchases_daily",
+      "value": 90.0,
+      "unit": "purchases_per_day",
+      "origin": "synthetic",
+      "source_name": "Sab0tage authored coffee scenario v1",
+      "observed_at": null,
+      "generated_at": "2026-10-24T00:00:00Z",
+      "data_version": "coffee-kazan-v1",
+      "confidence": "not_applicable",
+      "limitations": [
+        "Исключительно синтетический пример; не рыночные данные Казани.",
+        "Не использовать для инвестиционного решения, рейтинга зон или подтверждения доступности помещения.",
+        "Генерация: фиксированные авторские значения fixed-authored-scenario-v1; случайность отсутствует."
+      ]
+    }
+  ]
+}
