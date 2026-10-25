@@ -27,6 +27,23 @@ class Base(DeclarativeBase):
     pass
 
 
+class ReportRecord(Base):
+    __tablename__ = "analytical_reports"
+    __table_args__ = (
+        sa.CheckConstraint("snapshot_sha256 ~ '^[0-9a-f]{64}$'", name="ck_report_snapshot_sha"),
+        sa.CheckConstraint("pdf_sha256 ~ '^[0-9a-f]{64}$'", name="ck_report_pdf_sha"),
+        sa.CheckConstraint("octet_length(pdf) <= 3145728", name="ck_report_pdf_size"),
+    )
+    id: Mapped[UUID] = mapped_column(primary_key=True)
+    conversation_id: Mapped[UUID] = mapped_column(sa.ForeignKey("conversations.id"), index=True)
+    profile_version: Mapped[int]
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    snapshot: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    snapshot_sha256: Mapped[str] = mapped_column(sa.Text)
+    pdf: Mapped[bytes] = mapped_column(sa.LargeBinary)
+    pdf_sha256: Mapped[str] = mapped_column(sa.Text)
+
+
 class ProviderDatasetRecord(Base):
     __tablename__ = "provider_datasets"
     __table_args__ = (

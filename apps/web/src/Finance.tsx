@@ -52,9 +52,11 @@ export function demoInput(
 export default function Finance({
   profile,
   zone,
+  onReport,
 }: {
   profile: Profile | null;
   zone: Schemas["ZoneReference"] | null;
+  onReport?: (value: Schemas["FinanceResult"] | null) => void;
 }) {
   const [input, setInput] = useState<FinanceInput | null>(null);
   const [result, setResult] = useState<Schemas["FinanceResult"] | null>(null);
@@ -62,6 +64,10 @@ export default function Finance({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const active = useRef<AbortController | null>(null);
+  useEffect(() => {
+    onReport?.(dirty ? null : result);
+  }, [result, dirty, onReport]);
+  useEffect(() => () => onReport?.(null), [onReport]);
   useEffect(() => () => active.current?.abort(), []);
   function edit(
     group:
@@ -172,6 +178,7 @@ export default function Finance({
             className="button"
             disabled={!profile}
             onClick={() => {
+              setDirty(true);
               if (profile) setInput(demoInput(profile, zone));
             }}
           >

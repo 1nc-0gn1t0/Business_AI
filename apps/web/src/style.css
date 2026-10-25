@@ -2108,3 +2108,25 @@ th:first-child {
     color: var(--muted);
   }
 }
+.report-export {
+  margin-bottom: 26px;
+  padding: 22px;
+  border: 1px solid #2e575b;
+  border-radius: 16px;
+  background: linear-gradient(120deg, #112b32, #142235);
+}
+.report-export p {
+  margin: 10px 0;
+}
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+.report-export .button.secondary:hover:not(:disabled) {
+  background: #263b4e;
+}
+.report-export small {
+  overflow-wrap: anywhere;
+}

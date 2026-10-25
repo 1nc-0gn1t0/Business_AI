@@ -20,8 +20,16 @@ type Props = {
   onSelect: (id: string | null) => void;
   comparison: boolean;
   onFinance: () => void;
+  onWalkingReport?: (value: Schemas["CatchmentResult"] | null) => void;
+  onProviderReport?: (value: Schemas["IndicatorResult"] | null) => void;
 };
 export default function Locations(props: Props) {
+  function invalidateAnalysis() {
+    props.onRanking(null);
+    props.onSelect(null);
+    setWalking(null);
+    setWalkPoint(null);
+  }
   const [walkPoint, setWalkPoint] = useState<[number, number] | null>(null);
   function selectZone(id: string | null) {
     setWalkPoint(null);
@@ -31,6 +39,11 @@ export default function Locations(props: Props) {
   const [walking, setWalking] = useState<Schemas["CatchmentResult"] | null>(
     null,
   );
+  const onWalkingReport = props.onWalkingReport;
+  useEffect(() => {
+    onWalkingReport?.(walking);
+  }, [walking, onWalkingReport]);
+  useEffect(() => () => onWalkingReport?.(null), [onWalkingReport]);
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [dataset, setDataset] = useState<Dataset | null>(null);
   const [pois, setPois] = useState<Schemas["POICollection"] | null>(null);
@@ -181,7 +194,7 @@ export default function Locations(props: Props) {
         </div>
         <span className="tag outline">Казань · MVP</span>
       </div>
-      <DataSources />
+      <DataSources onReport={props.onProviderReport} />
       {error && (
         <div className="alert" role="alert">
           {error}
@@ -283,9 +296,10 @@ export default function Locations(props: Props) {
                     disabled={
                       busy || (key === "competitors" && mode === "neutral")
                     }
-                    onChange={(e) =>
-                      setWeights({ ...weights, [key]: Number(e.target.value) })
-                    }
+                    onChange={(e) => {
+                      invalidateAnalysis();
+                      setWeights({ ...weights, [key]: Number(e.target.value) });
+                    }}
                   />
                 </label>
               ))}
@@ -296,6 +310,7 @@ export default function Locations(props: Props) {
                   disabled={busy}
                   onChange={(e) => {
                     const m = e.target.value as typeof mode;
+                    invalidateAnalysis();
                     setMode(m);
                     setWeights((w) => ({
                       ...w,
@@ -314,7 +329,10 @@ export default function Locations(props: Props) {
                 type="checkbox"
                 checked={interior}
                 disabled={busy}
-                onChange={(e) => setInterior(e.target.checked)}
+                onChange={(e) => {
+                  invalidateAnalysis();
+                  setInterior(e.target.checked);
+                }}
               />
               Внутренняя область Казани: 49.065, 55.71 — 49.235, 55.84
             </label>

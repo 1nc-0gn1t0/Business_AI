@@ -1,83 +1,94 @@
 # Business AI — HANDOFF
 
-## BA-014 · 24.10.2026 (МСК)
+## BA-015 · 25.10.2026 (МСК)
 
-- PR #13 объединён: 3347d51f73dd45967453f2817f801286fc1d0f78.
-  Main синхронизирован ff-only, исходное дерево чистое, main...origin/main=0/0.
-- Ветка feat/BA-014-data-providers. Фактический HEAD/PR/CI — в итоговом отчёте.
-  PR не объединять автоматически. BA-015 не начиналась.
+- PR #14 объединён: 1cc82c401bc755964dd420e24044d0916a82c0c9.
+  Main обновлён ff-only, исходное дерево чистое, main...origin/main=0/0.
+- Ветка feat/BA-015-report-export. Фактический HEAD/PR/CI — в итоговом отчёте.
+  PR не объединять автоматически. BA-016 не начиналась.
 
-## Реализовано
+## Сделано
 
-- app/data/{schemas,providers,importer}.py; app/api/data.py, main router.
-  DataProvider Protocol/read/datasets + OSMProvider/SyntheticProvider.
-  GHSLProvider/LicensedProvider — unavailable контракты, без фиктивных интеграций.
-- Существующие MetricWithProvenance/DataOrigin/Bounds; nullable Indicator,
-  качество/лицензия/даты/bbox/status/version, запрет смешения происхождения.
-  OSM bbox counts по существующим PostGIS snapshots; rent/flow/demand missing.
-- 0007_data_providers и ProviderDatasetRecord: immutable revision/SHA/document,
-  история/active/imported_at, advisory lock/atomic swap, replay без rollback версии,
-  конфликт прежней revision запрещён, валидация/проверка SHA при чтении.
-- DATA_DEMO_ENABLED=false по умолчанию + явный mode=demo в каждом запросе.
-  Выбор request-scoped, не меняет чужие сессии и предыдущие алгоритмы.
-  API sources/policy/selection/{provider}/datasets/indicators, строгие DTO/ошибки.
-- data/synthetic/coffee-kazan-v1.json — небольшой фиксированный авторский сценарий,
-  CC0-1.0. Поток 1800, аренда 90000 RUB/месяц, покупки 90/день — только синтетика.
-  Значения независимы, не рынок Казани/не доступное помещение/не прогноз прибыли.
-- DataSources.tsx в карте/сравнении: явный real/demo/provider/version,
-  provenance/пропуски/даты/ограничения/история; смена выбора убирает результат.
-  Синтетика не переносится автоматически в scoring, walking или finance.
-  Исправлено найденное реальным браузером мобильное переполнение таблицы.
-- README/.env.example/compose, DATA_PROVIDERS.md, ADR-0010, USER_INTERFACE,
-  synthetic README; API-типы сгенерированы из OpenAPI. Новых зависимостей нет.
+- reporting/{schemas,service,pdf,limits}.py + api/reports.py: ReportRequest с DTO
+  прежних сервисов/fingerprints, проверка owner/profile/version и реконструкция
+  BA-008/009/011/013/014 сервером. Нет доверия присланным итоговым цифрам/summary/PDF.
+- 0008_analytical_reports и ReportRecord: owner UUID, immutable JSONB snapshot/SHA,
+  готовые PDF bytes/SHA, версия профиля/дата. Два формата из одного ReportSnapshot.
+  Профиль проверяется под существующей блокировкой conversation; history не удаляется.
+- Typed POST …/reports, GET …/{id}, GET …/{id}/snapshot,
+  GET …/{id}/file?format=pdf|json. Guest token только в header; чужие ID →404.
+  Download filename ASCII UUID, Content-Type, private/no-store/nosniff, общий SHA.
+  Проверка целостности/актуальности, explicit historical=true; demo disable не обходится.
+- ReportLab 4.5.1 (runtime), pypdf 6.21.2 (dev), lock/requirements обновлены.
+  Встроен DejaVu Sans с полным LICENSE; русский/₽ без внешнего font download.
+- PDF: проект/зоны/выбор/факторы/схема/источники, walking, три финсценария/график/
+  вводные/чувствительность/формулы, банк, явные ProviderResult, резюме/ограничения.
+  Нет тайлов/внешних PDF/LLM вызовов. Synthetic отдельно и в каждой строке.
+- JSON сохраняет полные типизированные результаты/геометрии/версии/источники,
+  provenance_rules/metric_units. В PDF только top8 walking-категорий с явной ссылкой
+  на полный JSON; baseline BA-008 не подменяется сетевым score.
+- React ReportExport + lifecycle callbacks Finance/BankProducts/Locations/DataSources:
+  текущие посчитанные результаты, подготовка, два скачивания, блокировка после edits.
+  Изменение поисковых весов очищает прежний анализ. Нет mock lead side effects.
+- README, REPORT_EXPORT.md, USER_INTERFACE, ADR-0011, примеры/скриншоты BA-015.
+  Старые BA-014 артефакты реальный тест больше не перезаписывает.
 
-## Настоящие API и локальная среда
+## Реальный пример
 
-- OSM kazan-centre data_version 44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447:
-  23852 mapped POI, 819 mapped cafes; origin=open_data, ODbL-1.0,
-  source OpenStreetMap via Overpass, osm_base=2026-10-22T20:27:36Z.
-  Полнота картирования неизвестна, это не measured demand/traffic.
-- Synthetic SHA adf6964b918eda73247a462f4be465d95d5d060580fa2493ef8294c9840708dd,
-  revision coffee-kazan-v1, generated_at=2026-10-24T00:00:00Z,
-  fixed-authored-scenario-v1, origin=synthetic/observed_at=null/not_applicable.
-- Реальные HTTP-ответы (без токенов/персональных данных):
-  docs/examples/BA-014-provider-indicators.json. Screenshots BA-014 отдельно.
-- В текущем Compose API для проверки включён DATA_DEMO_ENABLED=true,
-  набор импортирован операторским CLI. После recreate без явного env/.env flag
-  снова false. Полное отключение без удаления данных — DATA_PROVIDERS.md.
-- Миграция 0007 применена, db/api/web healthy, volumes/OSM/граф/согласия сохранены.
-  Ollama/Qwen прежние, новые веса/внешние коммерческие API не подключались.
+- docs/examples/BA-015-kazan-coffee.pdf: 12 страниц, 59912 bytes.
+- docs/examples/BA-015-kazan-coffee.json: 502171 bytes.
+- Report UUID 9b2fa2b1-4c9f-49a2-8a82-3834d8a5bdd0, profile v3,
+  created_at=2026-10-25T13:08:26.492183Z (16:08:26 МСК).
+- Snapshot SHA c50c1dc9525d7f1ca10f601375fd124d63eeb4d2d697645a67e56b0a48e85ad9.
+  PDF SHA 07b30d9fd405c923b7d8f4dccfd0ffa4b713d610489742919a279bdf359ff3d2.
+- Кофейня/Казань/2 млн ₽: OSM 44157bdc… и настоящий walking graph a63822ae…,
+  5 зон; ручная walking-точка 49.119,55.788, 600 м, 569 reachable POI.
+  Это не фактический вход в выбранную зону и не доказательство спроса.
+- Финансовые допущения: 1.8 млн ₽ старт, 200 тыс ₽ остаток модельного бюджета,
+  операционный результат -50 тыс /265 тыс /608200 ₽/месяц. Не прибыль/cash flow.
+  Сценарная аренда 100000 ₽ из пользовательского редактирования независима от
+  SyntheticProvider rent 90000 ₽; origin/provenance сохранены раздельно.
+- Банковский каталог демонстрационный, credit_decision=not_assessed. В банк ничего
+  не отправлено экспортом. В JSON нет guest token/истории переписки/lead contacts.
+- Скриншоты docs/screenshots/BA-015-report-export{,-mobile}.png и verification.json.
 
 ## Проверки
 
-- pytest apps/api/tests/test_data_providers.py -q: 9 PASS (schema/provenance,
-  запрет чужого origin/версии/неявного demo, воспроизводимый seed).
-- Новые 5 PostgreSQL/API-тестов: общий контракт/count по SQL, missing/stale,
-  outside/disable, GHSL/licensed unavailable, replay/conflict/history/tamper,
-  стабильность BA-008/BA-013 при выборе demo.
-- Все PostgreSQL/PostGIS integration: 65 PASS (78.22 s), включая migration/check/
-  downgrade и прежние модули. Команда: docker compose --profile test run --no-deps
-  --rm с read-only bind mounts актуальных app/tests/integration/migrations в db-tests.
-  Первый targeted image build/run: 4 PASS; затем расширенный набор выше.
-- npm --prefix apps/web test: 32 PASS, в том числе 3 DataSources mocked-API теста.
-- npm --prefix apps/web run test:e2e: 3 mock Chromium PASS, без GPU/интернета/банка.
-- BA010_REAL=1/BA010_ARTIFACT_DIR=test-results/ba014-regression: настоящий Qwen →
-  profile → PostGIS → walking/scoring → finance/recalc → bank → consents/mock receipt →
-  OSM indicators → явное demo/synthetic → real/clear: PASS, 26 s, без console errors,
-  mobile width390 без overflow. Исторические скриншоты BA-013 не перезаписываются.
-- prek run --all-files: Ruff/format/strict mypy/pytest/ESLint/TypeScript/Vitest PASS.
-  Docker production build, healthy services, HTTP smoke PASS.
-  Временные Docker Hub TLS timeouts устранены повтором; MapLibre large chunk warning прежний.
-- Context7 docs fetch дал сетевую ошибку; валидация сверена с официальной Pydantic docs.
+- pytest tests/test_reporting.py: 2 PASS — структура JSON/PDF, кириллица/₽,
+  одинаковые байты при фиксированном снимке, отсутствие гостевых секретов.
+- 5 новых PostgreSQL/API-тестов: один снимок/финансовая независимая сверка,
+  повторное чтение, авторизация/изоляция, no lead consent, changed inputs/profile,
+  historical/integrity, partial/body bound, OSM/bank, synthetic/disable.
+- Полный PostgreSQL/PostGIS набор: 70 PASS (78.35 с), включая migration/check/downgrade.
+  docker compose --profile test run --no-deps --rm с read-only mounts актуальных
+  app/tests/integration/migrations в db-tests. Целевой image build/run: 5 PASS.
+  После добавления typed snapshot endpoint: целевой тест повторно PASS.
+- Frontend: 35 тестов, в том числе 3 новых ReportExport (mock API).
+  npm --prefix apps/web run test:e2e: 3 mock Chromium PASS.
+- BA010_REAL=1 + BA010_ARTIFACT_DIR=test-results/ba015-regression: настоящий Qwen →
+  профиль → PostGIS → walking → finance/recalc → bank → explicit synthetic provider →
+  preparation → PDF/JSON browser downloads → stale rent/block → прежняя mock-заявка:
+  PASS, последний 28.6 с, без console/page errors, 390px без overflow.
+- Все 12 страниц PDF отрендерены Poppler и просмотрены; обрезаний/наложений нет.
+  Отдельно проверены проект/финансы/синтетика/формулы и нумерация. Промежуточные PNG
+  в ignored tmp/pdfs. После визуального QA убраны почти пустые хвостовые страницы.
+- prek run --all-files: Ruff/format/strict mypy/pytest/ESLint/TS/Vitest PASS.
+  Docker builds/healthy services/HTTP smoke PASS; MapLibre large-chunk warning прежний.
+- find-docs/Context7 не ответил (fetch failed); сверка ReportLab API/лицензии шрифта
+  по официальным docs. Навык pdf применён с artifact marker и visual QA.
 
-## Ограничения / следующий шаг
+## Ограничения / дальше
 
-1. Проверить PR/CI BA-014; merge только по решению владельца.
-2. GHSL/licensed не подключены: нужны проверенный набор/лицензия/договор.
-3. Демо не отражает рынок; bbox сценария нельзя масштабировать на подрайон.
-   Переход к другим источникам не является подтверждением коммерческой достоверности.
-4. Промышленное подключение новых признаков в ranking/finance требует явного
-   алгоритма/версии/правил смешения. В BA-014 они намеренно независимы.
-5. UI snapshot, не подписка: обновление списка или версии убирает текущие показатели.
-   Режим не сохраняется после reload. OSM history сохраняется в прежних таблицах.
-6. BA-015 — только по отдельному разрешению. Банковская заявка остаётся mock.
+1. Проверить PR/CI BA-015. Merge только по решению владельца.
+2. Это аналитический snapshot, не объявление о помещении/прибыль/одобрение кредита.
+   Нет платных сервисов/реальной банковской передачи. GHSL/licensed по-прежнему unavailable.
+3. UI держит текущий подготовленный ID в памяти: после reload нужна новая preparation;
+   исторические IDs доступны владельцу по API. Финансовые локальные edits отслеживает UI.
+4. Лимиты: body128KiB/snapshot4MiB/PDF3MiB/40pages/20reports per conversation,
+   checks20/30s (не hard preemption), SQL5s. Для публичного пилота нужны общие квоты,
+   retention/удаление/нагрузочные проверки. Tagged PDF/PDF-A/скринридер не сертифицированы.
+5. PDF metadata CreationDate=2000 invariant, фактическая дата на страницах/в JSON.
+   Менять renderer/ReportLab/font — с новой версией. Денежные DTO сохраняют Decimal.
+6. Локальный Compose использует DATA_DEMO_ENABLED=true для реального теста;
+   default false, существующие OSM/volumes/Ollama/согласия сохранены.
+7. BA-016 — только по отдельному разрешению.
