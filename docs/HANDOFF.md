@@ -1,34 +1,45 @@
 # Business AI — HANDOFF
 
-## Post-MVP planning · 25.10.2026 (МСК)
+## F-00 baseline · 25.10.2026 (МСК)
 
-- PR [#16](https://github.com/1nc-0gn1t0/Business_AI/pull/16) объединён 25.10.2026:
-  main `09f2f7d8f8fd7260b72e57b42e51758eb6ada488`, fetch/ff-only, divergence 0/0,
-  исходное дерево чистое. [CI merged main](https://github.com/1nc-0gn1t0/Business_AI/actions/runs/40208572389) success.
-- Ветка документации: `codex/post-mvp-master-roadmap`. Фактический commit/PR/CI
-  текущего planning PR — в итоговом сообщении; не объединять автоматически.
-- Созданы [POST_MVP_ROADMAP](roadmap/POST_MVP_ROADMAP.md),
-  [QUALITY_GATES](roadmap/QUALITY_GATES.md), [RISK_REGISTER](roadmap/RISK_REGISTER.md).
-  43 планируемых блока с зависимостями, критериями, оценками/рисками; сроки BA-017/018,
-  архитектурные предложения и внешние pilot gates. README содержит ссылку.
-- Сверены код/API/ORM/миграции/ADR/CI и BA-016 evidence. Подтверждены узкая отрасль/город,
-  потеря части UI state после reload, отсутствие live AnalysisRun persistence и
-  глобальных resource caps; DB transaction во время inference — риск, impact не измерен.
-- Read-only API/PostGIS/readiness работают; новые live Qwen/E2E ради плана не запускались.
-  Официальные VTB references доступны частично в поисковом представлении; прямой browser
-  TLS не прошёл, визуальные brand tokens/права не подтверждены, предупреждения не обходились.
-- **План требует утверждения. Никакие F/H/U/UI/Q, BA-017/018 не выполнены и не начаты.
-  PROJECT_PLAN, исходный код, алгоритмы, модели и данные не менялись.**
-- После разрешения: F-00 baseline → BA-017-01 protocol/recruitment человеком → H-01
-  bounded triage; затем BA-017/018 до 31.10. Доступность 23 ч + до 4 ч резерва,
-  реальные участники и вычитка требуют действий владельца; без интервью BA-017 partial.
-- Проверки текущего planning PR: 43 уникальные карточки, все 15 атрибутов,
-  зависимости без циклов, локальные Markdown-ссылки в 5 файлах — PASS;
-  `git diff --check` — PASS. `uv tool run --from prek==0.5.4 prek run --all-files`
-  (с отдельным PYTEST_DEBUG_TEMPROOT) — все 7 hooks PASS: Ruff/format/mypy/pytest,
-  ESLint/TypeScript/Vitest. `scripts/demo_ready.py --require-demo-data` — 7/7 PASS,
-  без inference. Новые live Qwen/DB integration/browser/performance не запускались:
-  изменена только документация; исторические результаты ниже не засчитывались заново.
+- PR [#17](https://github.com/1nc-0gn1t0/Business_AI/pull/17) merged 25.10 в 17:34:21 UTC.
+  Main `709398cb48241df3c1202b0e7c958ab73bd9c99d`, fetch/ff-only, divergence 0/0,
+  исходное дерево чистое. Roadmap утверждён владельцем; разрешена только F-00.
+- Ветка `codex/F-00-mvp-baseline`; фактический HEAD/PR/CI — в итоговом сообщении.
+  **Не объединять PR; не начинать H-01/BA-017/018 самостоятельно.**
+- Baseline ID `f00-mvp-20261025-v1`: [baseline](baselines/F-00_BASELINE.md),
+  [единый manifest](baselines/F-00-manifest.json), [backup/restore](BACKUP_RESTORE.md).
+  Pins приложения/образов/locks/модели/OSM/graph/synthetic/алгоритмов и ограничения.
+  Tag `baseline/f00-mvp-20261025-v1` только предложен, не создан.
+- Добавлен операторский `scripts/backup_postgres.py` + 11 offline safety tests.
+  Работает через существующие контейнеры, не новые сервисы/зависимости.
+  Явно выбирает running non-oneoff: Compose exec api при QA иначе выбирал копию.
+- Docker Engine 28.0.1, Postgres17.5/PostGIS3.5.2, db/api/web healthy, head 0008.
+  До старта сервисы были остановлены/удалены, volumes сохранены; подняты из текущей
+  сборки. API sources и built frontend побайтово совпали с checkout/dist.
+- Свежая регрессия: 7 prek hooks PASS; fast API 261 PASS/72 SKIP/102 deselected (3,62 с),
+  extended 102 PASS (6,17 с, 1550 property examples), DB 72 PASS (76,29 с), Vitest 35 PASS,
+  Chromium 18 mock PASS (26,9 с), 3 real Qwen browser PASS (reporter 1,2 мин), build PASS.
+  Новый operator suite 11 PASS; отдельный Ruff/format scripts PASS. Точные команды/NOT RUN
+  в baseline. Это новые результаты; полный live corpus BA-016 не повторялся.
+- Smoke 3/3, readiness 7/7. Сначала demo-preflight 5/7: DATA_DEMO_ENABLED=false по умолчанию;
+  после явного `$env:DATA_DEMO_ENABLED='true'` перед Compose →7/7. `.env` не менялся.
+- Финальный архив **вне Git**, private ACL текущего пользователя:
+  `%LOCALAPPDATA%/BusinessAI/F00-20261025-private/backup-02/database.dump`.
+  5 949 397 bytes, SHA `690133a959640c3ee0167c46bc39eea13b966f2fff615f4158c10eda85e74feb`.
+  Backup15,016 с; restore+verify15,093 с в **новую** `f00_restore_20261025_a2`.
+  19 public tables counts/hashes + schema/extensions/indexes совпали; 5 report hashes,
+  12 mock receipts прочитаны. Повторный restore в существующий target отказан.
+- Первая копия `…_a1` использована для 3 вымышленных QA-сессий, `…_a2` pristine.
+  QA API business-ai-f00-qa:8017 и Vite4175 остановлены; обе БД/архива сохранены.
+  **Все public fingerprints исходной рабочей БД совпали с backup. Никакие volumes,
+  пользовательские записи, продуктовые исходники/формулы/миграции не удалялись/не менялись.**
+- Новый D-04: default Alembic check exit 255 из-за TIGER/search_path; явный public scope
+  PASS. Не запускать blind autogenerate/drop; исправление в H-04, не выполнено сейчас.
+  D-01/02 Qwen и D-03 UI state остаются. Нет encryption/PITR/cluster DR, global quotas,
+  полного workspace, full-city coverage, legal/brand/pilot approvals. Это локальный MVP.
+- Дальше: владелец проверяет F-00 PR/принимает baseline и решает tag/следующую задачу.
+  Плановый следующий шаг — BA-017-01, затем H-01, **только после отдельного указания**.
 
 ## BA-016 · сохранённые результаты реализации (не новый запуск)
 
@@ -94,7 +105,7 @@
   Isolated DB business_ai_eval_ba016 содержит только open/synthetic и вымышленные
   QA-сессии. API business-ai-ba016-eval:8016; Vite4174 использовался только для QA.
   Можно остановить эти 2 тестовых процесса, не удаляя БД/volumes.
-- PR/CI BA-016 проверены, merged; следующий шаг — утверждение Post-MVP roadmap.
+- PR/CI BA-016 проверены, merged; roadmap утверждён, актуальный статус F-00 выше.
   Дальше только по разрешению владельца.
   Прежние BA-015 детали/источники/ограничения: REPORT_EXPORT.md, ADR-0011,
   docs/examples/BA-015-kazan-coffee.{pdf,json} и Git history.

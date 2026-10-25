@@ -1,0 +1,583 @@
+{
+  "baseline_id": "f00-mvp-20261025-v1",
+  "captured_at": "2026-10-25T17:59:33.632376+00:00",
+  "application_commit": "709398cb48241df3c1202b0e7c958ab73bd9c99d",
+  "prerequisite_pr": 17,
+  "scope": "Local functional MVP; not RC/public pilot. F-00 operator artifacts do not alter application code.",
+  "migration_head": "0008_analytical_reports",
+  "images": {
+    "business-ai-api-1": {
+      "Id": "sha256:7c6617af06f5042e7f7aa9273737e8861e75346d6a814a0eaaf9bc71be3d2d77",
+      "RepoTags": [
+        "business-ai-api:latest"
+      ],
+      "RepoDigests": [],
+      "Architecture": "amd64",
+      "Os": "linux"
+    },
+    "business-ai-web-1": {
+      "Id": "sha256:84099fabd609b8614e0abf796aa3c68ed0270a72ff126ff8ebb8da240fa1820c",
+      "RepoTags": [
+        "business-ai-web:latest"
+      ],
+      "RepoDigests": [],
+      "Architecture": "amd64",
+      "Os": "linux"
+    },
+    "business-ai-migrate-1": {
+      "Id": "sha256:916b2cc44145af9be33655b8f8c84f557aefa5b388f8ef1351501112fa7ee2c9",
+      "RepoTags": [
+        "business-ai-migrate:latest"
+      ],
+      "RepoDigests": [],
+      "Architecture": "amd64",
+      "Os": "linux"
+    },
+    "business-ai-db-1": {
+      "Id": "sha256:2ed748fc602dd3031c6724db8cb289e1578c2deb552a4f6e291f6f7e5e6e4f69",
+      "RepoTags": [
+        "postgis/postgis:17-3.5"
+      ],
+      "RepoDigests": [
+        "postgis/postgis@sha256:01a6a70e41e6c4467c8f55f6063555ed72db2d6662cd0d571040d42eadaeb6f6"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux"
+    },
+    "business-ai-ollama": {
+      "Id": "sha256:a95ca06aa736fc602819a6df80b5dbf8448a3bba189e12836e1aa631c1ebbb80",
+      "RepoTags": [
+        "ollama/ollama:0.40.8"
+      ],
+      "RepoDigests": [
+        "ollama/ollama@sha256:2b8eecdb85aa6ea67c381c8ecffec04b2658496cf2821a8f88b0485bdff198e8"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux"
+    }
+  },
+  "base_image_build_digests": {
+    "python:3.12-slim": "sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+    "node:24-alpine": "sha256:06d7adf3e0ef61a13f1d28682726366f97a15aa1888c934d3ecec86c33918b53",
+    "nginx:stable-alpine": "sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951"
+  },
+  "docker_engine": "28.0.1",
+  "compose": "2.33.1-desktop.1",
+  "host_tools": {
+    "node": "v24.20.0",
+    "npm": "12.2.0",
+    "uv": "uv 0.13.1 (62faed335 2026-10-13 x86_64-pc-windows-msvc)"
+  },
+  "runtime_config": {
+    "LLM_PROVIDER": "ollama",
+    "OLLAMA_BASE_URL": "http://host.docker.internal:11434",
+    "OLLAMA_MODEL": "qwen3:4b-instruct-2507-q4_K_M",
+    "LLM_TIMEOUT_SECONDS": "120",
+    "OLLAMA_NUM_CTX": "4096",
+    "DATA_DEMO_ENABLED": "true"
+  },
+  "api_runtime": {
+    "python": "3.12.15",
+    "packages": {
+      "pip": "25.0.1",
+      "MarkupSafe": "3.0.4",
+      "annotated-types": "0.8.0",
+      "h11": "0.16.0",
+      "alembic": "1.20.0",
+      "fastapi": "0.146.0",
+      "anyio": "4.15.1",
+      "Mako": "1.4.3",
+      "starlette": "1.9.0",
+      "SQLAlchemy": "2.1.5",
+      "charset-normalizer": "3.5.2",
+      "annotated-doc": "0.0.5",
+      "click": "8.5.0",
+      "psycopg-binary": "3.3.6",
+      "psycopg": "3.3.6",
+      "pydantic": "2.14.1",
+      "opentelemetry-api": "1.45.1",
+      "typing_extensions": "4.16.0",
+      "uvicorn": "0.54.0",
+      "pillow": "13.0.0",
+      "reportlab": "4.5.1",
+      "typing-inspection": "0.4.4",
+      "idna": "3.20",
+      "pydantic_core": "2.50.1"
+    }
+  },
+  "python_locked_packages": {
+    "alembic": "1.20.0",
+    "annotated-doc": "0.0.5",
+    "annotated-types": "0.8.0",
+    "anyio": "4.15.1",
+    "business-ai-api": "0.1.0",
+    "charset-normalizer": "3.5.2",
+    "click": "8.5.0",
+    "colorama": "0.4.6",
+    "fastapi": "0.146.0",
+    "h11": "0.16.0",
+    "httpcore2": "2.14.0",
+    "httpx2": "2.14.0",
+    "httpx2-jsfetch": "1.0",
+    "hypothesis": "6.170.9",
+    "idna": "3.20",
+    "iniconfig": "2.3.1",
+    "librt": "0.16.0",
+    "mako": "1.4.3",
+    "markupsafe": "3.0.4",
+    "mypy": "1.20.2",
+    "mypy-extensions": "1.1.0",
+    "opentelemetry-api": "1.45.1",
+    "packaging": "26.3",
+    "pathspec": "1.1.1",
+    "pillow": "13.0.0",
+    "pluggy": "1.7.0",
+    "psycopg": "3.3.6",
+    "psycopg-binary": "3.3.6",
+    "pydantic": "2.14.1",
+    "pydantic-core": "2.50.1",
+    "pygments": "2.21.0",
+    "pypdf": "6.21.2",
+    "pytest": "9.1.1",
+    "reportlab": "4.5.1",
+    "ruff": "0.17.1",
+    "sortedcontainers": "2.4.0",
+    "sqlalchemy": "2.1.5",
+    "starlette": "1.9.0",
+    "truststore": "0.10.5",
+    "typing-extensions": "4.16.0",
+    "typing-inspection": "0.4.4",
+    "tzdata": "2026.5",
+    "uvicorn": "0.54.0"
+  },
+  "web_installed_direct": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.1",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.8",
+    "@types/react-dom": "19.3.0",
+    "@types/react": "19.3.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint": "10.13.0",
+    "globals": "17.13.0",
+    "jsdom": "30.1.3",
+    "maplibre-gl": "6.15.0",
+    "openapi-typescript": "7.13.0",
+    "react-dom": "19.3.1",
+    "react": "19.3.1",
+    "typescript-eslint": "8.71.2",
+    "typescript": "5.9.3",
+    "vite": "7.3.7",
+    "vitest": "4.1.12"
+  },
+  "source_hashes": {
+    "apps/api/Dockerfile": "5ec9b4aaca6cbcd19c2ef51021135e7b0f3fc972a4d9dda5e61de43befd3c8ff",
+    "apps/api/app/bank/catalogue.json": "64b7be36859ab02a731c1b786dcdc33e7bbdcff1fc8e92f002189318c9b7da1d",
+    "apps/api/migrations/env.py": "5104fb92b3c5477a2c867abecd980eb50603b9b5aed409504a2d508d53a38361",
+    "apps/api/migrations/versions/0001_contracts.py": "e8c9b9916296a7da6cc061e72add9e91785815777d0f2e70e35b6fa61a0164fa",
+    "apps/api/migrations/versions/0002_conversations.py": "afe1124e2b16c80c50b0453fbbc3057b2c51d4d4258738dd92f5350625305505",
+    "apps/api/migrations/versions/0003_llm_mode.py": "32fd6328908214a91cf2383aca066bce7832e480b552b532eac3c90980357d8e",
+    "apps/api/migrations/versions/0004_osm_geo.py": "6a130977b156173099ca46af707b633f21031d43f84d49f2f6a3451f5b65bc5e",
+    "apps/api/migrations/versions/0005_consent_leads.py": "9fd4f0d65855fe05cce4781b7bcabcde3b2a756e37574715f9e38911204ac35a",
+    "apps/api/migrations/versions/0006_walking_graph.py": "f0086dbdac4af57c6bb7d08bd8ec014a7b50d7fd25c73c0b4e9e17e9d44c9562",
+    "apps/api/migrations/versions/0007_data_providers.py": "ee6aaf9681be71710b9cce59a9e4ec485d7382d1749e61be02b144ad951db97a",
+    "apps/api/migrations/versions/0008_analytical_reports.py": "7b014af14d0281a0c9bd312508a151e874c93ea9939554d467f1e09c8de74456",
+    "apps/api/pyproject.toml": "0ccb1648792e0a154cc0d344376ec747b5bf153be826d161db4fb06066e29d22",
+    "apps/api/requirements.txt": "b314da1c406a2eee8dbcb5f56f997d5f805a0bf660049855cd7f8bd3702c4764",
+    "apps/api/uv.lock": "33945fcfc2717025f12b527a35a8b44353143370e2e23868ed3b072c2c44be7c",
+    "apps/web/nginx.conf": "9d32a86dc1e3a95a935db440aaf124845f95e63e1fb0ac1176d4e7313b13cbe8",
+    "apps/web/package-lock.json": "2da89eaefbee0aacdfd87a613727dcdcaafa607b18bb1ac1d87609c2d116e2a5",
+    "apps/web/package.json": "adf83b6a80b678f59abcc1851e7455e21a8b9216ab5ae69389a860039c04577e",
+    "compose.yaml": "fa44739415ae4c82471efaa270f0afd912224a7b15a2fd868fb10fae35872635",
+    "data/demo-manifest.json": "65013b4ed3442ee0cdab34b085deb07891973abb1030609e672ad8237bac98fa",
+    "infra/docker/web.Dockerfile": "60c5ebe73d8487ed3db026da0358d243996d4c0429fdeaf76c07cef00bd60782"
+  },
+  "runtime_matches_checkout": {
+    "api": true,
+    "web_built_files": true
+  },
+  "api_runtime_files_sha256": "ecd8cbbc1fab7fcbe6e4e828f6aecf66558485f5e79112ddce66883bfb163831",
+  "web_build_sha256": {
+    "index.html": "a042eb9ad529bb9c6858da2d8aeb02a121046c54040aa6ea36b31761e5880fa4",
+    "assets/index-BYgKL6yf.js": "9e40c3447dad5802ea9bb552692348d5f9ce9afc7df308e8fefc40a02967ff21",
+    "assets/index-Ca6YhEKI.css": "c2ad83583b0ecc28177027eb244e2044b5d1ee9160da2bd732585aeeb2b79a3d",
+    "assets/maplibre-gl-worker-HZYoAjW0.js": "ab0693e578005fd970937169b8838a7b916cc451a01084717267c800d4a6032c"
+  },
+  "model": {
+    "name": "qwen3:4b-instruct-2507-q4_K_M",
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "modified_at": "2026-10-22T19:50:15.060960947Z",
+    "size": 2497293803,
+    "digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+    "details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "qwen3",
+      "families": [
+        "qwen3"
+      ],
+      "parameter_size": "4.0B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 262144,
+      "embedding_length": 2560,
+      "runner": "ggml"
+    },
+    "capabilities": [
+      "tools",
+      "thinking",
+      "completion"
+    ]
+  },
+  "ollama_version": "0.40.8",
+  "data_pins": {
+    "version": "ba016-demo-v1",
+    "dataset_slug": "kazan-centre",
+    "osm_data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+    "graph_version": "a63822aec055fe6fc4190edd6ed424ffa9bbf0ef2657b6fe970b3232d91ce045",
+    "synthetic_data_version": "adf6964b918eda73247a462f4be465d95d5d060580fa2493ef8294c9840708dd",
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "limitations": [
+      "Покрыта только часть Казани; это не полный город.",
+      "OSM и дорожный граф — открытые данные, не измеренный спрос.",
+      "Синтетика разрешается отдельно и не заменяет реальные данные.",
+      "Банковский каталог и заявка демонстрационные; отправки в ВТБ нет."
+    ]
+  },
+  "geo_datasets": [
+    {
+      "slug": "kazan-centre",
+      "city": "Kazan",
+      "bbox": {
+        "west": 49.05,
+        "south": 55.7,
+        "east": 49.25,
+        "north": 55.85
+      },
+      "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+      "origin": "open_data",
+      "source_name": "OpenStreetMap via Overpass API",
+      "source_url": "https://overpass-api.de/api/interpreter",
+      "license": "ODbL-1.0",
+      "license_url": "https://www.openstreetmap.org/copyright",
+      "attribution": "© OpenStreetMap contributors",
+      "osm_base": "2026-10-22T20:27:36Z",
+      "fetched_at": "2026-10-22T20:28:58.496357Z",
+      "imported_at": "2026-10-22T20:29:55.989925Z",
+      "age_days": 2,
+      "stale": false,
+      "stale_after_days": 30,
+      "poi_count": 23852,
+      "district_count": 8,
+      "diagnostics": {
+        "pois": 23852,
+        "districts": 8,
+        "unnamed_pois": 9540,
+        "center_outside_bbox": 17
+      },
+      "limitations": [
+        "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+        "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+        "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+        "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+        "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+        "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+        "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+      ]
+    }
+  ],
+  "walking_graph": {
+    "id": "03af3943-bd2f-5d99-b4ca-48f0f79704b3",
+    "manifest": {
+      "origin": "open_data",
+      "source_name": "OpenStreetMap via Overpass API",
+      "slug": "kazan-centre",
+      "city": "Казань",
+      "bbox": {
+        "west": 49.08,
+        "south": 55.76,
+        "east": 49.18,
+        "north": 55.82
+      },
+      "source_url": "https://overpass-api.de/api/interpreter",
+      "query": "[out:json][timeout:90][maxsize:134217728];way[\"highway\"](55.76,49.08,55.82,49.18)->.roads;(.roads;node(w.roads);rel(bw.roads)[\"type\"=\"restriction\"];);out meta;",
+      "sha256": "c688d0dfd37dcf8fbef4536321271e85f335f9eec85cbc2fe75efed4b71a827e",
+      "source_sha256": "6d51c56b38147b9cd46bb2200b973d5ff6228b3482c671c83b811f381cc8726b",
+      "osm_base": "2026-10-23T21:04:36Z",
+      "fetched_at": "2026-10-23T21:06:13.009074Z",
+      "normalization": "walking_minimal_v1",
+      "license": "ODbL-1.0",
+      "attribution": "© OpenStreetMap contributors"
+    },
+    "graph_version": "a63822aec055fe6fc4190edd6ed424ffa9bbf0ef2657b6fe970b3232d91ce045",
+    "build_version": "osm-foot-node-topology-v2-components",
+    "spatial_runtime": "POSTGIS=\"3.5.2 dea6d0a\" [EXTENSION] PGSQL=\"170\" GEOS=\"3.9.0-CAPI-1.16.2\" PROJ=\"7.2.1 NETWORK_ENABLED=OFF URL_ENDPOINT=https://cdn.proj.org USER_WRITABLE_DIRECTORY=/var/lib/postgresql/.local/share/proj DATABASE_PATH=/usr/share/proj/proj.db\" (compiled against PROJ 7.2.1) LIBXML=\"2.9.10\" LIBJSON=\"0.15\" LIBPROTOBUF=\"1.3.3\" WAGYU=\"0.5.0 (Internal)\" TOPOLOGY",
+    "metric_crs": 32639,
+    "edge_count": 41640,
+    "node_count": 36496,
+    "component_count": 612,
+    "diagnostics": {
+      "excluded_ways": 1439,
+      "blocked_segments": 3191,
+      "boundary_segments_excluded": 1720
+    },
+    "imported_at": "2026-10-23T21:20:28.126983Z"
+  },
+  "algorithms": {
+    "candidates": "utm-grid-dispersion-v1",
+    "candidate_policy": "osm-anchor-policy-v1",
+    "scoring": "osm-cohort-minmax-v1",
+    "walking_build": "osm-foot-node-topology-v2-components",
+    "walking": "osm-foot-dijkstra-segments-v1",
+    "finance": "business-finance-decimal-v1",
+    "bank_matching": "bank-relevance-three-valued-v1"
+  },
+  "bank_catalogue_version": "vtb-demo-public-references-2026-10-23-v1",
+  "backup": {
+    "format": "f00-pgdump-v1",
+    "created_at": "2026-10-25T17:56:58.482015+00:00",
+    "archive_sha256": "690133a959640c3ee0167c46bc39eea13b966f2fff615f4158c10eda85e74feb",
+    "archive_bytes": 5949397,
+    "backup_seconds": 15.016,
+    "limitations": [
+      "Single database; no roles, tablespaces, WAL/PITR or encryption",
+      "Trusted local archive only; protect directory with OS ACL/encrypted storage",
+      "Do not run DDL or sequence-changing writers during backup"
+    ]
+  },
+  "restore": {
+    "database": "f00_restore_20261025_a2",
+    "checked_at": "2026-10-25T17:57:14.883229+00:00",
+    "restore_verify_seconds": 15.093,
+    "checks": {
+      "tables": true,
+      "schema_sha256": true,
+      "extensions": true,
+      "invalid_indexes": true,
+      "server_version": true
+    },
+    "tables": {
+      "alembic_version": {
+        "rows": 1,
+        "sha256": "4a09254987428a11ced53d79bd5ef35ce26792293a85dc0183bab82c5d106f85"
+      },
+      "analysis_runs": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "analytical_reports": {
+        "rows": 5,
+        "sha256": "150c665f453406db3c2770273e5bac5d4e4714e05907852e30c7cebc1f7f6df5"
+      },
+      "audit_events": {
+        "rows": 76,
+        "sha256": "9e84f487a7120528222d36cf231f66f8c947c5823b289948f63824a0f342d123"
+      },
+      "business_profiles": {
+        "rows": 50,
+        "sha256": "a48922c0f4ceee3edb880850464bf87cd373a7a38f51264b71c589148d0ee47a"
+      },
+      "consents": {
+        "rows": 40,
+        "sha256": "4d5b6b11b4d1660b947535f46fac11a83c4375e287ccb181c6e8f746f00fd3f6"
+      },
+      "conversations": {
+        "rows": 50,
+        "sha256": "9410f3b97d714a222e0232632dd9f9e0c8c881b5f34a910e166b6687bcbc167d"
+      },
+      "geo_datasets": {
+        "rows": 1,
+        "sha256": "848f8f6f6e9d2245d3e86113ef89194b0b10d6193ca7f1e7275af1db0d80eae1"
+      },
+      "geo_districts": {
+        "rows": 8,
+        "sha256": "b80c1d7c0f7d9c34fb9a521da16f29b9f41fd68d7cccea769406d4aa3d5e1057"
+      },
+      "geo_pois": {
+        "rows": 23852,
+        "sha256": "928d0ca68323b8fb5859f68a439ce47850b8ee7eaecb76c4cbffc530ba4446e2"
+      },
+      "lead_drafts": {
+        "rows": 12,
+        "sha256": "71acab3e7ae0cbea9afd534ae97995c817b04803eadd26a742c2a7af66ff1a68"
+      },
+      "lead_submissions": {
+        "rows": 12,
+        "sha256": "168c753c53120355c88b73b18a5367f7f99ff047b7d5acbf885865a5f15be9d7"
+      },
+      "location_metrics": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "messages": {
+        "rows": 230,
+        "sha256": "46f64b7700c97252a3807ef73575c771f4f2a796cee71aed2ea98c9fa3de0d4c"
+      },
+      "profile_revisions": {
+        "rows": 160,
+        "sha256": "fdc846c696aa263653c3be5ce63a780bc69797f09e22c9701701c7e59d762839"
+      },
+      "provider_datasets": {
+        "rows": 1,
+        "sha256": "52c30a8202d96aeff782eca3e917067c1e644ba719c5d1d4f1591c02242bb391"
+      },
+      "spatial_ref_sys": {
+        "rows": 8500,
+        "sha256": "92ea221bf9d771d31af55f6d5876e2a2bcb2652685226447bce685e96fc73538"
+      },
+      "walk_edges": {
+        "rows": 83280,
+        "sha256": "d3bfd14a1c8f03e43b5b2c02bc98c2dcb2b8bfa753696e21762c8d8e54c68128"
+      },
+      "walk_graphs": {
+        "rows": 2,
+        "sha256": "f8279903388804d4784dc35d0476fdade994f210c8af5bfdde7bb2f1aa1c6e65"
+      }
+    },
+    "status": "PASS"
+  },
+  "source_schema_sha256": "54334b71124e264b00651d74d076989b6c3c229faeb6e79907fd1d7676decb90",
+  "database_server_version": "17.5 (Debian 17.5-1.pgdg110+1)",
+  "database_extensions": [
+    [
+      "fuzzystrmatch",
+      "1.2"
+    ],
+    [
+      "plpgsql",
+      "1.0"
+    ],
+    [
+      "postgis",
+      "3.5.2"
+    ],
+    [
+      "postgis_tiger_geocoder",
+      "3.5.2"
+    ],
+    [
+      "postgis_topology",
+      "3.5.2"
+    ]
+  ],
+  "results": {
+    "db_integration": {
+      "pass": 72,
+      "seconds": 76.29
+    },
+    "extended": {
+      "pass": 102,
+      "seconds": 6.17,
+      "property_examples": 1550
+    },
+    "browser_mock": {
+      "pass": 18,
+      "seconds": 26.9
+    },
+    "browser_real_qwen": {
+      "pass": 3,
+      "duration_display": "1.2m",
+      "isolated_database": "f00_restore_20261025_a1"
+    },
+    "readiness": {
+      "pass": 7,
+      "total": 7
+    },
+    "operator_unit": {
+      "pass": 11
+    },
+    "source_and_web_runtime_byte_comparison": "PASS",
+    "fast_api": {
+      "pass": 261,
+      "skip_db": 72,
+      "deselected_extended": 102,
+      "seconds": 3.62
+    },
+    "web_unit_mock": {
+      "pass": 35
+    },
+    "prek": {
+      "hooks_pass": 7
+    }
+  },
+  "initial_failures": [
+    {
+      "id": "demo-preflight",
+      "result": "5/7; demo disabled by default; explicit DATA_DEMO_ENABLED=true then 7/7"
+    },
+    {
+      "id": "default-alembic-check",
+      "exit_code": 255,
+      "cause": "TIGER extension tables reflected as removals through search_path; public-scoped check PASS; schema untouched"
+    }
+  ],
+  "known_defects": [
+    "D-01 foreign currency drops city",
+    "D-02 Kozani normalization",
+    "D-03 volatile UI draft/selection state",
+    "D-04 Alembic reflection includes extension-owned tables"
+  ],
+  "limitations": [
+    "Private archive outside Git, no encryption/PITR/roles; verifies public table/schema fingerprints and extension versions",
+    "Original database/role settings/search_path not automatically restored",
+    "BA-016 full LLM evaluation not repeated; three real Qwen browser scenarios separately PASS",
+    "No tag/release; proposed baseline/f00-mvp-20261025-v1 needs owner decision",
+    "Pristine restore reference is a2; separate a1 retains three new QA conversations"
+  ],
+  "restored_content_smoke": {
+    "database": "f00_restore_20261025_a2",
+    "report_integrity_pass": 5,
+    "mock_receipts_pass": 12,
+    "qa_copy_a1_http_health_geo": "PASS; real browser flow separately tested on a1"
+  },
+  "source_integrity": {
+    "source_unchanged": {
+      "tables": true,
+      "schema_sha256": true,
+      "extensions": true,
+      "invalid_indexes": true
+    },
+    "duplicate_restore_existing_target": "REFUSED before pg_restore",
+    "duplicate_exit_code": 1,
+    "source_database": "business_ai"
+  },
+  "download_checks": [
+    {
+      "file": "bakery-low-budget.json",
+      "bytes": 128256,
+      "sha256": "7038845125c8eccf0d6f999c2d44d7ac40de1bc04c144f680e479d2da7c13dfc",
+      "status": "PASS"
+    },
+    {
+      "file": "garage-uncovered-city.json",
+      "bytes": 93363,
+      "sha256": "d528f2ab48105dc9a4f0eca313cefe1903d217878d0ff7cf1b29876e814ab565",
+      "status": "PASS"
+    },
+    {
+      "file": "BA-015-kazan-coffee.json",
+      "bytes": 502171,
+      "sha256": "2fb5494755d1c79d68aaa24ff7c21c889577d9fd2689f34c58e676b6735b3f10",
+      "status": "PASS"
+    },
+    {
+      "file": "BA-015-kazan-coffee.pdf",
+      "bytes": 59914,
+      "sha256": "2ec3de7cb54f774f1f720f7f7777a98e5abcdfa63f3688c8a6cf02cb0d94d9a6",
+      "status": "PASS",
+      "pages": 12
+    }
+  ],
+  "model_execution": {
+    "context": 4096,
+    "seed": 42,
+    "temperature": 0,
+    "keep_alive": "10m",
+    "processor_snapshot": "18% CPU / 82% GPU; 2.9 GB working size; not SLA"
+  },
+  "source_search_path": "\"$user\", public, topology, tiger",
+  "operator_files_sha256": {
+    "scripts/backup_postgres.py": "59861d051e43f7fbc703c2b4a543da6598f51f6939aebc5ae5bc41e0e24506e7",
+    "apps/api/tests/test_backup_postgres.py": "6bda25fb9373340473eb2c9a71aae5030bf963d975fe678d515d1c932bf088f7"
+  }
+}
