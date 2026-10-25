@@ -1,6 +1,40 @@
 # Business AI — HANDOFF
 
-## F-00 baseline · 25.10.2026 (МСК)
+## H-01 · ранний triage · 25.10.2026 (МСК)
+
+- PR [#18](https://github.com/1nc-0gn1t0/Business_AI/pull/18) merged 18:33:42 UTC.
+  Main `6d2cee01473cb88ad4ce0f0632436fda4a32e9c0`, ff-only/divergence 0/0,
+  исходное дерево чистое. Ветка `codex/H-01-early-triage`; HEAD/PR/CI — в итоговом отчёте.
+- **Сознательное изменение порядка владельцем:** F-00 → H-01 → H-02 → H-03 → H-04 →
+  H-05 → H-06 → UX → Универсальность → UI → Комплексное QA → RC.
+  BA-017/018 вынесены в отдельный research track, **не отменены и не выполнены**.
+  Содержание карточек/зависимости roadmap не менялись; до UX/U требуется отдельное
+  решение о research dependencies/сроках. Этот PR не разрешает их обойти.
+- Scope — ограниченный H-01, не pentest/H-02. Проверены реальные owner/CAS/consent,
+  idempotency, stale report, safe errors/log sinks/paths и предварительные resource caps.
+  AnalysisRun DTO/ORM есть, HTTP CRUD пока нет — N/A, не PASS будущей авторизации.
+- **Выявлено P0=0; подтверждены 2 P1 и 1 P2:** H01-P1-01 caps/guest budgets (R-01/03),
+  H01-P1-02 DB transaction during inference (R-02), H01-P2-01 отражение собственного
+  synthetic input в request-validation422. Не считать их доказанным DoS/IDOR/утечкой
+  чужих секретов. Старые D-01…04 остаются; полный re-audit не проводился.
+- Новые tests: 2 PASS rollback после успешного SQL flush (profile/history и
+  submission/draft/audit); 3 strict XFAIL probes открытых findings. XFAIL не PASS,
+  исправление должно дать XPASS с удалением метки, сохранением desired assertion.
+- Свежий targeted offline:67 PASS/2 XFAIL (5,31 с); Postgres targeted:25 PASS/1 XFAIL
+  (40,95 с), UUID fixture DBs. Новые tests входят в числа, не суммировать повторно.
+  Воспроизводимые команды/матрица и все поля findings — SECURITY_TEST_REPORT;
+  статусы каждого старого риска — RISK_REGISTER. Новый prek: все 7 hooks PASS;
+  CI точного HEAD — в PR/итоговом сообщении, не в исторических результатах F-00 ниже.
+- Docker Desktop был выключен; запущен штатно. Тестовый Compose использовал
+  существующий db volume; рабочие write API не вызывались. Архив F-00 SHA неизменен,
+  baseline files/продуктовые исходники/публичные API/алгоритмы/миграции не менялись.
+- Не выполнялись live Qwen/GPU overload, load/soak, browser E2E, scanners/legal review.
+  Реальные token/PII в отчёты не добавлялись, вводы только синтетические.
+- **Далее:** review/решение владельца по H-01 PR. При отсутствии P0 допустим переход
+  к H-02 только после отдельного разрешения, в контролируемом loopback scope.
+  Не merge автоматически; H-02…06/BA-017/018 самостоятельно не начинать.
+
+## F-00 baseline · сохранённая передача (текущий статус H-01 выше)
 
 - PR [#17](https://github.com/1nc-0gn1t0/Business_AI/pull/17) merged 25.10 в 17:34:21 UTC.
   Main `709398cb48241df3c1202b0e7c958ab73bd9c99d`, fetch/ff-only, divergence 0/0,
