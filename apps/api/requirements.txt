@@ -8,6 +8,8 @@ annotated-types==0.8.0
     # via pydantic
 anyio==4.15.1
     # via starlette
+charset-normalizer==3.5.2
+    # via reportlab
 click==8.5.0
     # via uvicorn
 fastapi==0.146.0
@@ -22,6 +24,8 @@ markupsafe==3.0.4
     # via mako
 opentelemetry-api==1.45.1
     # via fastapi
+pillow==13.0.0
+    # via reportlab
 psycopg==3.3.6
     # via business-ai-api
 psycopg-binary==3.3.6 ; implementation_name != 'pypy'
@@ -30,6 +34,8 @@ pydantic==2.14.1
     # via fastapi
 pydantic-core==2.50.1
     # via pydantic
+reportlab==4.5.1
+    # via business-ai-api
 sqlalchemy==2.1.5
     # via
     #   alembic

@@ -38,6 +38,34 @@ export class ApiError extends Error {
   }
 }
 const messages: Record<string, string> = {
+  report_outdated:
+    "Профиль или источники изменились. Обновите отчёт перед скачиванием.",
+  report_results_changed:
+    "Результаты анализа изменились. Повторите расчёты и подготовьте отчёт заново.",
+  report_profile_mismatch:
+    "Результаты относятся к другой версии профиля. Повторите расчёты.",
+  report_no_analysis:
+    "Для отчёта нужен хотя бы геоанализ или финансовый расчёт.",
+  report_profile_not_confirmed: "Сначала подтвердите бизнес-профиль.",
+  report_geo_version_or_limit:
+    "Повторите геоанализ с фиксированной версией данных и не более пяти зон.",
+  report_invalid_zone:
+    "Выбранная зона не соответствует результатам анализа. Выберите её заново.",
+  report_invalid_walking_context:
+    "Повторите пешеходный анализ на той же версии геоданных.",
+  report_request_too_large: "Объём вводных отчёта превышает 128 КиБ.",
+  report_snapshot_too_large:
+    "Снимок отчёта слишком велик. Уменьшите область пешеходного анализа.",
+  report_pdf_too_large:
+    "PDF превышает допустимый размер. Уменьшите объём анализа.",
+  report_render_limit:
+    "Текст или таблицы превышают ограничения вёрстки. Сократите длинные вводные.",
+  report_not_found: "Отчёт не найден или недоступен в этой гостевой сессии.",
+  report_integrity_error:
+    "Снимок отчёта не прошёл проверку целостности. Подготовьте новый отчёт.",
+  report_limit_reached: "Достигнут лимит 20 отчётов для беседы.",
+  report_generation_timeout:
+    "Подготовка отчёта превысила лимит времени. Уменьшите объём анализа.",
   demo_data_disabled:
     "Демонстрационные данные запрещены текущим режимом или отключены сервером.",
   provider_version_not_found:
@@ -147,6 +175,31 @@ export async function history(credential: Credential, signal?: AbortSignal) {
     result.push(...page);
     if (page.length < 100) return result;
   }
+}
+
+export async function requestFile(
+  path: string,
+  credential: Credential,
+  signal?: AbortSignal,
+): Promise<Blob> {
+  if (!path.startsWith(`/api/v1/conversations/${credential.id}/reports/`))
+    throw new Error("Unsupported download path");
+  const response = await fetch(path, {
+    headers: { "X-Conversation-Token": credential.token },
+    signal: signal
+      ? AbortSignal.any([signal, AbortSignal.timeout(30_000)])
+      : AbortSignal.timeout(30_000),
+  });
+  if (!response.ok) {
+    const payload = await response.json().catch(() => null);
+    const code = payload?.detail?.code || `http_${response.status}`;
+    throw new ApiError(
+      response.status,
+      code,
+      messages[code] || "Не удалось скачать отчёт.",
+    );
+  }
+  return response.blob();
 }
 export const rub = (value: string | number | null | undefined) =>
   value == null

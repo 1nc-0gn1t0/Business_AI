@@ -551,6 +551,74 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/conversations/{conversation_id}/reports": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create Report */
+    post: operations["create_report_api_v1_conversations__conversation_id__reports_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/reports/{report_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Report Metadata */
+    get: operations["report_metadata_api_v1_conversations__conversation_id__reports__report_id__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/reports/{report_id}/file": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Download Report */
+    get: operations["download_report_api_v1_conversations__conversation_id__reports__report_id__file_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/conversations/{conversation_id}/reports/{report_id}/snapshot": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Report Snapshot */
+    get: operations["report_snapshot_api_v1_conversations__conversation_id__reports__report_id__snapshot_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/healthz": {
     parameters: {
       query?: never;
@@ -615,6 +683,12 @@ export interface components {
        * @constant
        */
       actor: "guest_session";
+    };
+    /** BankReportInput */
+    BankReportInput: {
+      request: components["schemas"]["MatchRequest"];
+      /** Fingerprint */
+      fingerprint: string;
     };
     /** BankingNeeds */
     BankingNeeds: {
@@ -1459,6 +1533,12 @@ export interface components {
       /** Limitations */
       limitations: string[];
     };
+    /** FinanceReportInput */
+    FinanceReportInput: {
+      request: components["schemas"]["FinanceRequest-Input"];
+      /** Fingerprint */
+      fingerprint: string;
+    };
     /** FinanceRequest */
     "FinanceRequest-Input": {
       profile: components["schemas"]["BusinessProfile-Input"];
@@ -1585,6 +1665,14 @@ export interface components {
      * @enum {string}
      */
     Funding: "own_funds" | "loan" | "mixed" | "undecided";
+    /** GeoReportInput */
+    GeoReportInput: {
+      /** Dataset */
+      dataset: string;
+      request: components["schemas"]["RankingRequest"];
+      /** Fingerprint */
+      fingerprint: string;
+    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -2239,6 +2327,12 @@ export interface components {
       /** Limitations */
       limitations: string[];
     };
+    /** ProviderReportInput */
+    ProviderReportInput: {
+      request: components["schemas"]["IndicatorQuery"];
+      /** Fingerprint */
+      fingerprint: string;
+    };
     /** ProximityRequirement */
     ProximityRequirement: {
       /** Category */
@@ -2381,6 +2475,125 @@ export interface components {
       properties: {
         [key: string]: number;
       };
+    };
+    /** ReportRequest */
+    ReportRequest: {
+      /** Expected Version */
+      expected_version: number;
+      geo?: components["schemas"]["GeoReportInput"] | null;
+      /** Selected Zone */
+      selected_zone?: string | null;
+      finance?: components["schemas"]["FinanceReportInput"] | null;
+      bank?: components["schemas"]["BankReportInput"] | null;
+      walking?: components["schemas"]["WalkReportInput"] | null;
+      /**
+       * Providers
+       * @default []
+       */
+      providers: components["schemas"]["ProviderReportInput"][];
+    };
+    /** ReportSnapshot */
+    ReportSnapshot: {
+      /**
+       * Schema Version
+       * @default business-ai-report-v1
+       * @constant
+       */
+      schema_version: "business-ai-report-v1";
+      /**
+       * Renderer Version
+       * @default reportlab-dejavu-v1
+       * @constant
+       */
+      renderer_version: "reportlab-dejavu-v1";
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** Profile Version */
+      profile_version: number;
+      /**
+       * Profile Updated At
+       * Format: date-time
+       */
+      profile_updated_at: string;
+      profile: components["schemas"]["BusinessProfile-Output"];
+      geo: components["schemas"]["RankingCollection"] | null;
+      /** Selected Zone */
+      selected_zone: string | null;
+      finance: components["schemas"]["FinanceResult"] | null;
+      bank: components["schemas"]["MatchResult"] | null;
+      walking: components["schemas"]["CatchmentResult"] | null;
+      /** Providers */
+      providers: components["schemas"]["IndicatorResult"][];
+      /** Summary */
+      summary: string[];
+      /** Missing Sections */
+      missing_sections: string[];
+      /**
+       * Provenance Rules
+       * @default [
+       *       "Profile parameters are user_input, source: confirmed BusinessProfile, version: profile_version; date: profile_updated_at.",
+       *       "Geo raw metrics inherit each evaluation.provenance (open_data); scores and zones are modelled, not profit forecasts.",
+       *       "Financial results are modelled and link formula_id/input_paths to request_snapshot and formulas; each input carries source.",
+       *       "Financial assumptions without generation dates were fixed at report.created_at, not independently observed then.",
+       *       "Provider values inherit dataset geography/license/quality and retain measurement.origin/version/date/unit.",
+       *       "Bank catalogue sources and reviewed_at are information only; credit_decision=not_assessed. No bank submission occurs."
+       *     ]
+       */
+      provenance_rules: string[];
+      /** Metric Units */
+      metric_units?: {
+        [key: string]: string;
+      };
+      /**
+       * Limitations
+       * @default [
+       *       "Географические зоны не являются свободными помещениями; OSM-score не прогнозирует прибыль.",
+       *       "Синтетические вводные и провайдерские значения не являются рынком Казани.",
+       *       "Операционный результат не является чистой прибылью или денежным потоком.",
+       *       "Экспорт не отправляет заявку или данные в ВТБ и не подтверждает кредитное одобрение."
+       *     ]
+       */
+      limitations: string[];
+    };
+    /** ReportView */
+    ReportView: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** Profile Version */
+      profile_version: number;
+      /** Snapshot Sha256 */
+      snapshot_sha256: string;
+      /** Pdf Sha256 */
+      pdf_sha256: string;
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: "current" | "outdated";
+      /** Reasons */
+      reasons: string[];
+      /** Missing Sections */
+      missing_sections: string[];
+      /** Json Bytes */
+      json_bytes: number;
+      /** Pdf Bytes */
+      pdf_bytes: number;
     };
     /** RequirementEvidence */
     RequirementEvidence: {
@@ -2793,6 +3006,14 @@ export interface components {
        * @constant
        */
       attribution: "© OpenStreetMap contributors";
+    };
+    /** WalkReportInput */
+    WalkReportInput: {
+      /** Dataset */
+      dataset: string;
+      request: components["schemas"]["CatchmentRequest"];
+      /** Fingerprint */
+      fingerprint: string;
     };
     /** WalkingPOI */
     WalkingPOI: {
@@ -4008,6 +4229,143 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["ConsentText"][];
+        };
+      };
+    };
+  };
+  create_report_api_v1_conversations__conversation_id__reports_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ReportRequest"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ReportView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  report_metadata_api_v1_conversations__conversation_id__reports__report_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+        report_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ReportView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  download_report_api_v1_conversations__conversation_id__reports__report_id__file_get: {
+    parameters: {
+      query: {
+        format: "pdf" | "json";
+        historical?: boolean;
+      };
+      header?: never;
+      path: {
+        conversation_id: string;
+        report_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/pdf": string;
+          "application/json": components["schemas"]["ReportSnapshot"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  report_snapshot_api_v1_conversations__conversation_id__reports__report_id__snapshot_get: {
+    parameters: {
+      query?: {
+        historical?: boolean;
+      };
+      header?: never;
+      path: {
+        conversation_id: string;
+        report_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ReportSnapshot"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };

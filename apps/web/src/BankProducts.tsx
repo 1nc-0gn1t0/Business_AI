@@ -65,11 +65,13 @@ export default function BankProducts({
   conversation,
   credential,
   onProfileConflict,
+  onReport,
 }: {
   active: boolean;
   conversation: Conversation | null;
   credential: Credential | null;
   onProfileConflict: () => void;
+  onReport?: (value: Schemas["MatchResult"] | null) => void;
 }) {
   const [catalogue, setCatalogue] = useState<Schemas["CatalogueView"] | null>(
     null,
@@ -80,6 +82,10 @@ export default function BankProducts({
   const [busy, setBusy] = useState(false);
   const [retry, setRetry] = useState(0);
   const pending = useRef<AbortController | null>(null);
+  useEffect(() => {
+    onReport?.(result);
+  }, [result, onReport]);
+  useEffect(() => () => onReport?.(null), [onReport]);
   useEffect(() => {
     if (!active) return;
     const controller = new AbortController();

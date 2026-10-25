@@ -3,6 +3,7 @@ import Chat from "./Chat";
 import Locations from "./Locations";
 import Finance from "./Finance";
 import BankProducts from "./BankProducts";
+import ReportExport from "./ReportExport";
 import {
   ApiError,
   errorText,
@@ -26,6 +27,18 @@ export default function App() {
   const [tab, setTab] = useState<"map" | "compare" | "finance" | "bank">("map");
   const [ranking, setRanking] = useState<Ranking | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
+  const [reportFinance, setReportFinance] = useState<
+    Schemas["FinanceResult"] | null
+  >(null);
+  const [reportBank, setReportBank] = useState<Schemas["MatchResult"] | null>(
+    null,
+  );
+  const [reportWalking, setReportWalking] = useState<
+    Schemas["CatchmentResult"] | null
+  >(null);
+  const [reportProvider, setReportProvider] = useState<
+    Schemas["IndicatorResult"] | null
+  >(null);
   const [financeContext, setFinanceContext] = useState(0);
   const [assistantConsent, setAssistantConsent] = useState(false);
   const [consentText, setConsentText] = useState<Schemas["ConsentText"] | null>(
@@ -330,6 +343,17 @@ export default function App() {
             </div>
           )}
           <div className="main-content">
+            <ReportExport
+              key={conversation?.id || "none"}
+              conversation={conversation}
+              credential={credential}
+              ranking={ranking}
+              selected={selected}
+              finance={reportFinance}
+              bank={reportBank}
+              walking={reportWalking}
+              provider={reportProvider}
+            />
             <div hidden={tab === "finance" || tab === "bank"}>
               <Locations
                 key={`${conversation?.id || "none"}:${conversation?.version ?? 0}`}
@@ -340,6 +364,8 @@ export default function App() {
                 onSelect={setSelected}
                 comparison={tab === "compare"}
                 onFinance={() => setTab("finance")}
+                onWalkingReport={setReportWalking}
+                onProviderReport={setReportProvider}
               />
             </div>
             <div hidden={tab !== "finance"}>
@@ -347,6 +373,7 @@ export default function App() {
                 key={`${financeContext}:${selected || "none"}`}
                 profile={conversation?.profile || null}
                 zone={zone}
+                onReport={setReportFinance}
               />
             </div>
             <div hidden={tab !== "bank"}>
@@ -355,6 +382,7 @@ export default function App() {
                 active={tab === "bank"}
                 conversation={conversation}
                 credential={credential}
+                onReport={setReportBank}
                 onProfileConflict={() => {
                   void action(async () => {
                     await refresh();

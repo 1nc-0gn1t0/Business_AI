@@ -12,7 +12,11 @@ const metrics = [
   "rent_monthly_rub",
   "purchases_daily",
 ];
-export default function DataSources() {
+export default function DataSources({
+  onReport,
+}: {
+  onReport?: (value: Schemas["IndicatorResult"] | null) => void;
+}) {
   const [mode, setMode] = useState<Mode>("real");
   const [policy, setPolicy] = useState<Schemas["DataPolicy"] | null>(null);
   const [sources, setSources] = useState<Provider[]>([]);
@@ -23,6 +27,10 @@ export default function DataSources() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [reload, setReload] = useState(0);
+  useEffect(() => {
+    onReport?.(result);
+  }, [result, onReport]);
+  useEffect(() => () => onReport?.(null), [onReport]);
   useEffect(() => {
     const c = new AbortController();
     Promise.all([

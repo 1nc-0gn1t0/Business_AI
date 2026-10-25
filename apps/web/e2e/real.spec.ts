@@ -7,6 +7,7 @@ import type { Ranking, Schemas } from "../src/api";
 test("real Qwen → confirmed profile → PostGIS zones → finance recalculation", async ({
   page,
 }) => {
+  page.setDefaultTimeout(20_000);
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => {
@@ -240,6 +241,112 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
   await expect(
     page.getByText("Подбор выполнен по явным правилам"),
   ).toBeVisible();
+  // BA-015: actual server reconstruction, one immutable snapshot, real browser downloads.
+  await page.getByRole("button", { name: "⌖ Карта и локации" }).click();
+  if (!(await walking.getByLabel("Долгота точки").isVisible())) {
+    await walking
+      .getByText("Задать точку координатами WGS84", { exact: true })
+      .click();
+  }
+  await walking.getByLabel("Долгота точки").fill("49.119");
+  await walking.getByLabel("Широта точки").fill("55.788");
+  await walking
+    .getByRole("button", { name: "Использовать координаты" })
+    .click();
+  const reportWalk = page.waitForResponse((r) =>
+    r.url().endsWith("/catchment"),
+  );
+  await walking
+    .getByRole("button", { name: "Рассчитать пешую доступность →" })
+    .click();
+  expect((await reportWalk).ok()).toBe(true);
+  const reportSources = page.locator(".data-sources");
+  await reportSources.locator("summary").first().click();
+  await reportSources.getByLabel("Режим данных").selectOption("demo");
+  await expect(reportSources.getByLabel("Режим данных")).toHaveValue("demo");
+  await reportSources
+    .getByLabel("Источник показателей")
+    .selectOption("synthetic");
+  await expect(
+    reportSources.getByRole("button", {
+      name: "Показать показатели источника",
+    }),
+  ).toBeEnabled();
+  const reportData = page.waitForResponse((r) =>
+    r.url().endsWith("/data-providers/indicators"),
+  );
+  await reportSources
+    .getByRole("button", { name: "Показать показатели источника" })
+    .click();
+  expect((await reportData).ok()).toBe(true);
+  const reportPanel = page.getByRole("region", {
+    name: "Экспорт аналитического отчёта",
+  });
+  await expect(reportPanel.getByText(/Финансы ✓/)).toBeVisible();
+  const preparedHttp = page.waitForResponse(
+    (r) => r.url().endsWith("/reports") && r.request().method() === "POST",
+  );
+  await reportPanel
+    .getByRole("button", { name: "Подготовить отчёт", exact: true })
+    .click();
+  const preparedResponse = await preparedHttp;
+  expect(preparedResponse.status()).toBe(201);
+  const report = (await preparedResponse.json()) as Schemas["ReportView"];
+  const jsonDownloaded = page.waitForEvent("download");
+  await reportPanel
+    .getByRole("button", { name: "Скачать JSON", exact: true })
+    .click();
+  await (
+    await jsonDownloaded
+  ).saveAs("../../docs/examples/BA-015-kazan-coffee.json");
+  const pdfDownloaded = page.waitForEvent("download");
+  await reportPanel
+    .getByRole("button", { name: "Скачать PDF", exact: true })
+    .click();
+  await (
+    await pdfDownloaded
+  ).saveAs("../../docs/examples/BA-015-kazan-coffee.pdf");
+  await reportPanel.screenshot({
+    path: "../../docs/screenshots/BA-015-report-export.png",
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await reportPanel.screenshot({
+    path: "../../docs/screenshots/BA-015-report-export-mobile.png",
+  });
+  await page.setViewportSize({ width: 1440, height: 1050 });
+  await page.getByRole("button", { name: "↗ Финансовая модель" }).click();
+  if (!(await page.getByLabel("Аренда", { exact: true }).isVisible())) {
+    await page.locator(".finance .assumptions > summary").click();
+  }
+  await page.getByLabel("Аренда", { exact: true }).fill("150000");
+  await expect(reportPanel.getByRole("status")).toContainText(
+    "Требуется обновить отчёт",
+  );
+  await expect(
+    reportPanel.getByRole("button", { name: "Скачать PDF", exact: true }),
+  ).toBeDisabled();
+  await page.getByRole("button", { name: "◇ Продукты ВТБ" }).click();
+  await writeFile(
+    "../../docs/screenshots/BA-015-verification.json",
+    JSON.stringify(
+      {
+        checked_at: new Date().toISOString(),
+        report,
+        real_services:
+          "Qwen/Ollama, PostGIS, walking, finance, bank matching, synthetic provider; no route mocks",
+        browser_downloaded: ["pdf", "json"],
+        stale_inputs_block_download: true,
+      },
+      null,
+      2,
+    ),
+  );
+
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
     path: `${directory}/BA-011-bank.png`,
@@ -437,7 +544,7 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     sources.getByText(/СИНТЕТИЧЕСКИЕ ДАННЫЕ · НЕ РЫНОК/),
   ).toBeVisible();
   await sources.screenshot({
-    path: "../../docs/screenshots/BA-014-data-providers.png",
+    path: `${directory}/BA-014-data-providers.png`,
   });
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
@@ -446,10 +553,10 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     ),
   ).toBe(true);
   await sources.screenshot({
-    path: "../../docs/screenshots/BA-014-data-providers-mobile.png",
+    path: `${directory}/BA-014-data-providers-mobile.png`,
   });
   await writeFile(
-    "../../docs/examples/BA-014-provider-indicators.json",
+    `${directory}/BA-014-provider-indicators.json`,
     JSON.stringify({ osm, synthetic }, null, 2),
   );
   await sources.getByLabel("Режим данных").selectOption("real");
