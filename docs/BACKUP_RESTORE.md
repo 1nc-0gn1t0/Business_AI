@@ -1,4 +1,9 @@
-# Локальный PostgreSQL backup и изолированный restore · F-00 / H-04
+# Локальный PostgreSQL backup и изолированный restore · H-04-FU
+
+**Актуальная процедура новых backup — age pipeline ниже.** F-00/H-04 команды
+оставлены для совместимости/исторической проверки; `backup_postgres.py backup`
+по-прежнему plaintext и не используется scheduler. Новая процедура не делает
+исторические копии зашифрованными. [H-04-FU report](qa/H-04-FU_RECOVERY_REPORT.md).
 
 Область: одна БД текущего Compose, PostgreSQL/PostGIS 17/3.5. Никаких DROP,
 `--clean`, восстановления поверх существующей БД или удаления volumes.
@@ -141,7 +146,7 @@ H-04 не переизмеряет его и не выдаёт меньший dr
 пригодного snapshot; потеряются все последующие committed writes. В данном drill
 writers остановлены, потери snapshot-данных нет. RPO≤24h и полный QG-OPS **не достигнуты**.
 
-## Политика шифрования и хранения (ещё не внедрена)
+## Политика шифрования и хранения H-04 (исторический план; реализация ниже)
 
 Архивы F-00/H-04 **не зашифрованы**. ACL защищает локальный доступ, не украденный диск,
 администратора или скопированный архив. Не передавать/offsite незашифрованные копии.
@@ -187,3 +192,195 @@ Restore одно-базовый: cluster roles/ACL/DB settings/model volume/host
 в публичный manifest. Правила [PostgreSQL dump](https://www.postgresql.org/docs/17/backup-dump.html)
 и [restore](https://www.postgresql.org/docs/17/app-pgrestore.html) применимы только к
 доверенному источнику: восстановление исполняет SQL из архива.
+
+## H-04-FU: первичная настройка оператором
+
+Требуются Python3.12, Docker Compose, Windows PowerShell7 либо Linux, pinned age1.3.2.
+Это stdlib operator tooling, не зависимость API/новый сервис. Источник — штатный
+Compose; для QA можно явно задать другой project/compose_files и isolated database.
+Перед backup не запускать DDL/sequence-changing writers; UUID DML покрыт exported
+snapshot F-00. Нужен запас до2GiB для ограниченного dump; при превышении — отказ.
+
+```powershell
+# Каждый download — новый каталог вне repo. SHA официального release зафиксирован в installer.
+$ageDir = ./scripts/install_age.ps1 -Directory (Join-Path $env:LOCALAPPDATA ('BusinessAI/tools/age-'+[guid]::NewGuid().ToString('N')))
+$ageBin = Join-Path $ageDir 'age.exe' # Linux: age, age-keygen, pwsh для installer
+$keygen = Join-Path $ageDir 'age-keygen.exe'
+# Выбрать реальные private directories: storage и identity НЕ вложены друг в друга.
+# Ключ — на управляемом владельцем encrypted/offline носителе с независимой recovery copy.
+# Следующие команды initial identity владелец выполняет сам, агент их за него не запускал.
+$keyDir = 'E:/BusinessAI-private-identity' # пример: заменить своим зашифрованным хранилищем
+$storage = Join-Path $env:LOCALAPPDATA 'BusinessAI/encrypted-backups'
+```
+
+Создать private каталоги через `encrypted_backup.private`, который выставляет и
+проверяет ACL/0700. Сохранять возвращённые **канонические** пути, особенно из packaged
+Codex/Windows AppData. Это устраняет разницу файловых путей с native Task Scheduler.
+
+```powershell
+$privateHelper = "import sys;sys.path.insert(0,'scripts');import encrypted_backup as b;print(b.private(sys.argv[1]))"
+$keyDir = uv run --locked --project apps/api python -c $privateHelper $keyDir
+$storage = uv run --locked --project apps/api python -c $privateHelper $storage
+$identity = Join-Path $keyDir 'identity.txt'
+& $keygen -o $identity
+if ($LASTEXITCODE) { throw 'Identity creation failed' }
+$recipient = & $keygen -y $identity
+# age_bin также канонизировать после установки; это публичный путь, не секрет.
+$ageBin = uv run --locked --project apps/api python -c 'import pathlib,sys;print(pathlib.Path(sys.argv[1]).resolve(strict=True))' $ageBin
+$backupConfig = Join-Path $storage 'operator-config.json'
+@{root=$storage;age_binary=$ageBin;recipient=$recipient} | ConvertTo-Json | Set-Content -LiteralPath $backupConfig -Encoding utf8NoBOM
+```
+
+Не сохранять key text в Git, env vars, arguments, screenshots, logs или CI artifacts.
+Identity не нужен backup job; подключать его только для controlled verify/restore.
+Нативный identity читается из ACL-protected файла: encryption его носителя/custody
+остаётся задачей владельца. Lost key = невозможность восстановить архив; независимая
+офлайн-копия ключа обязательна. На ротации не удалять старый ключ до проверки всех
+нужных архивов; новые backup использовать с новым public recipient, затем real drill.
+
+Для QA добавить `database=f00_restore_<id>`, `project=<isolated-project>` и
+`compose_files=[<absolute-compose>]`. В рабочем config `database` опустить: источник
+выбирается из штатного API service environment. Пароли остаются PG* внутри Compose;
+config требует только public recipient и пути. Compose files с credentials — private.
+
+## Создание, возраст и реальная проверка
+
+```powershell
+uv run --locked --project apps/api python scripts/encrypted_backup.py backup --config $backupConfig
+if ($LASTEXITCODE) { throw 'Backup failed: previous good copy preserved' }
+uv run --locked --project apps/api python scripts/encrypted_backup.py status --config $backupConfig
+# JSON содержит id последней cipher-checked копии; выбрать этот ID явно:
+$bundle = Join-Path $storage 'backup-<32hex>'
+uv run --locked --project apps/api python scripts/encrypted_backup.py verify --config $backupConfig --bundle $bundle --identity $identity
+if ($LASTEXITCODE) { throw 'Authentication failed; do not restore' }
+```
+
+Published bundle: `database.age`, `metadata.age`, `manifest.json`. Метаданные источника,
+source schema/counts/hashes и plaintext SHA зашифрованы. `pg_dump` не пишет plaintext
+файл: Python передаёт bounded chunks в age. При сбое producer/age/timeout/cancel
+публикации нет, удаляется только собственный UUID staging с ciphertext. Никакого
+fallback к plaintext. Каждый pipeline имеет deadline600s, дамп ограничен2GiB.
+Готовый каталог публикуется rename в том же filesystem после fsync файлов; hardware
+power-loss durability конкретного накопителя не сертифицирована.
+
+`status`: exit0 — свежая complete копия, exit2 — missing/stale (>24h), bad ciphertext
+или последняя неудачная попытка; exit1 — операция/конфигурация/доступ недоступны.
+JSON явно фиксирует snapshot_at/completed_at/age_seconds, invalid_bundles и last_attempt.
+Нельзя трактовать interval12h как обеспеченный RPO. Рутинный status проверяет cipher
+SHA/размеры; аутентификацию отдельно делает `verify --identity`. Manifest SHA не
+доказывает авторство; нужен доверенный storage, age не является подписью источника.
+
+`events.jsonl` — без secrets/SQL/ввода пользователя, ротация около1MiB + previous.
+Last success извлекается из complete проверенных bundles, failed attempt его не
+подменяет. Если destination недоступен, CLI exit1 — сигнал даже при невозможности
+записать локальный log. Нужен оператор/внешний монитор, который действительно реагирует.
+
+## Регулярный запуск, без автоматической активации
+
+Переносимый runner (foreground, пока процесс/компьютер работает):
+
+```powershell
+uv run --locked --project apps/api python scripts/encrypted_backup.py watch --config $backupConfig
+```
+
+Он выполняет backup сразу и далее через12h после попытки; ошибки не уничтожают
+предыдущую копию, печатается BACKUP_FAILED и обновляется private journal. Защита
+параллельности — OS lock на shared storage root, освобождается при завершении процесса.
+Это не distributed lock; два независимых root/host не координируются.
+
+Windows native расписание — **только после ручного запуска владельцем**:
+
+```powershell
+$python = Join-Path $PWD 'apps/api/.venv/Scripts/python.exe'
+# Preview: ничего не устанавливает. Installer канонизирует путь base Python/config.
+./scripts/register_backup_task.ps1 -Config $backupConfig -Python $python
+# Оператор разрешает постоянные задачи этой командой:
+./scripts/register_backup_task.ps1 -Config $backupConfig -Python $python -Install
+```
+
+12h backup + hourly status, logged-in user/limited principal, StartWhenAvailable,
+MultipleInstances IgnoreNew,20min execution limit. `run_backup_job.ps1` использует
+hidden process, передаёт exit code, хранит только последние job stdout/error logs в
+private root. Task name default `BusinessAIEncryptedBackup` и `…-Status`; существующие
+задачи installer не перезаписывает. Частичная установка требует проверки обоих имён.
+Не меняются security policy, global PATH, wake settings или права пользователя.
+
+Проверка фактического scheduled trigger **только с QA config** (не working DB):
+
+```powershell
+./scripts/register_backup_task.ps1 -Config $qaConfig -Python $python -TestOnly
+```
+
+Создаётся UUID task с trigger через15s, ожидаются реальный LastRunTime и exit0,
+проверяется completed archive, затем task удаляется. У H-04-FU этот запуск PASS.
+`watch --test-interval-seconds 2 --test-runs 2` дополнительно проверен с настоящей БД;
+short interval разрешён лишь для isolated `f00_restore_` config с1…3 runs.
+Не активировать постоянный scheduler из агентного сеанса без ручного решения.
+
+Оператор ежедневно проверяет Get-ScheduledTaskInfo LastRunTime/LastTaskResult и
+`status`, после пропуска/startup — запускает backup вручную. При выключенном/спящем
+ПК или отсутствии logged-in user эта схема RPO≤24h **не гарантирует**. Для пилота
+нужны постоянно доступный host, независимый encrypted storage и alert receiver.
+
+## Восстановление encrypted bundle
+
+```powershell
+$target = 'f00_restore_' + [guid]::NewGuid().ToString('N')
+uv run --locked --project apps/api python scripts/encrypted_backup.py restore --config $backupConfig --bundle $bundle --identity $identity --target $target
+if ($LASTEXITCODE) { throw 'Restore failed; do not switch application; retain target for diagnosis' }
+```
+
+До PostgreSQL authenticate **весь** age stream и сверить encrypted metadata/plaintext
+SHA. Controlled private TemporaryFile хранится только на время verify/restore и
+удаляется при close/error. Это единственный plaintext staging нового pipeline;
+использовать encrypted underlying storage, SSD secure erasure не обещается.
+После authentication: createdb template0 (existing/source target запрещён),
+pg_restore single-transaction/exit-on-error/no-owner/no-acl, schema/extensions/index/
+counts/hashes comparison. Не использовать `--clean/--create`, destructive downgrade,
+подмену working PGDATABASE или unknown/untrusted dumps. Скрипт ничего не переключает.
+
+Чистый recovery project использует готовый совместимый app image, новую network/
+volume/cluster; helper counts может запускаться oneoff API image без запущенного
+backend. [MIGRATIONS](MIGRATIONS.md) остаётся политикой совместимости/rollback.
+Восстановление ролей/ACL/globals/model/OS и key-loss — отдельные процедуры.
+
+## Retention и проверенная копия
+
+```powershell
+# По умолчанию dry-run: keep7 newest valid, все PIN сохранены.
+uv run --locked --project apps/api python scripts/encrypted_backup.py prune --config $backupConfig
+# Только после просмотра плана и проверки независимой копии оператор применяет:
+uv run --locked --project apps/api python scripts/encrypted_backup.py prune --config $backupConfig --apply
+```
+
+keep≥1, corrupted/partial bundles не удаляются автоматически. Последний действительно
+rehearsed archive помечается PIN helper-ом; pin можно поставить вручную после своего
+полного restore smoke. Не снимать последний PIN без новой проверенной копии.
+Scheduler автоматически ничего не prune-ит; inventory/retention решение у владельца.
+Никакого удаления F-00/старых plaintext archives или пользовательских volumes.
+
+## Воспроизводимые QA drills и эксплуатационные границы
+
+Small/large генератор: `tests.integration.h04fu_fixture seed|verify --database
+f00_restore_<id> --private /private --size small|large` в integration image, с private
+bind mount и только новой БД. Source Compose может быть отдельным проектом. Сохраняются
+private fixture state/credentials, в Git идут только hashes/counts.
+Large дополнительно использует200 profiles/199 actual reports/16k messages/20k authored
+POI/grid2500nodes. Caps seed увеличивает только внутри собственного процесса, не API.
+
+`scripts/recovery_rehearsal.py --context <private-context.json> --bundle <bundle>` —
+новый UUID project, cached app/db/web images, fresh cluster, restore, HTTP и настоящий
+Qwen smoke. Context содержит `private`, `age_binary`; private directory содержит
+`fixture/large-state.json`, `synthetic-keys/temporary-identity.txt`. Это QA-only имена,
+не инструкция хранить production identity рядом с storage; в QA они sibling directories.
+`recovery_negative_checks.py <context> <result.json>` останавливает/прерывает **только**
+project `h04fu-recovery-<uuid>`, не рабочий Compose.
+Никогда не направлять QA helpers на working project или заменять production key ими.
+
+Все11 локальных recovery этапов измерены:53.157s на58MB fixture/11MB ciphertext,
+включая настоящую Qwen и byte-identical exports. Это не восстановление потерянного
+Windows-хоста: OS/Docker/images/model/age/identity уже доступны. Observed RPO510.177s
+на probe,24h+1s stale обнаруживается. Реальных гарантий ≤24h/≤60min при выключенном
+ноутбуке, утрате локального диска или ключа нет. OPS-ENC инженерно проверен; owner
+должен создать реальные keys/custody, включить расписание и отдельно защитить
+исторические plaintext F-00/H-04. [Измерения и remaining risks](qa/H-04-FU_RECOVERY_REPORT.md).

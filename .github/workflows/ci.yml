@@ -37,8 +37,18 @@ jobs:
           cache-dependency-path: apps/web/package-lock.json
       - name: Install API dependencies from lock
         run: uv sync --locked --project apps/api
+      - name: Install pinned age for real encryption tests (temporary synthetic keys only)
+        shell: pwsh
+        run: |
+          $ageRoot = ./scripts/install_age.ps1 -Directory (Join-Path $env:RUNNER_TEMP 'business-ai-age')
+          $binary = if ($IsWindows) { 'age.exe' } else { 'age' }
+          "BA_AGE_BINARY=$(Join-Path $ageRoot $binary)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - name: Install web dependencies from lock
         run: npm --prefix apps/web ci
+      - name: Operator backup tooling checks
+        run: |
+          uv run --locked --project apps/api ruff check scripts/backup_postgres.py scripts/encrypted_backup.py scripts/recovery_rehearsal.py scripts/recovery_negative_checks.py
+          uv run --locked --project apps/api ruff format --check scripts/backup_postgres.py scripts/encrypted_backup.py scripts/recovery_rehearsal.py scripts/recovery_negative_checks.py
       - name: Check Docker requirements match the lock
         working-directory: apps/api
         shell: bash

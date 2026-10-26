@@ -75,8 +75,13 @@ def compose(*args):
     return ["docker", "compose", *args]
 
 
-def service_container(service):
-    ids = checked(compose("ps", "--all", "--quiet", service), stdout=subprocess.PIPE)
+def service_container(service, prefix=None):
+    command = (
+        compose("ps", "--all", "--quiet", service)
+        if prefix is None
+        else [*prefix, "ps", "--all", "--quiet", service]
+    )
+    ids = checked(command, stdout=subprocess.PIPE)
     regular = []
     for identifier in ids.stdout.decode().split():
         state = (
