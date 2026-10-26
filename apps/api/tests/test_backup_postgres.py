@@ -71,3 +71,71 @@ def test_worker_targets_explicit_regular_container(monkeypatch: pytest.MonkeyPat
     command = TOOL["worker_command"]("f00_restore_test")
     assert command[:3] == ["docker", "exec", "-i"]
     assert "regular" in command and "PGDATABASE=f00_restore_test" in command
+
+
+def test_invalid_backup_source_rejected_before_creating_files(tmp_path: Path) -> None:
+    target = tmp_path / "not-created"
+    with pytest.raises(ValueError):
+        TOOL["backup"](target, "business_ai")
+    assert not target.exists()
+
+
+def test_corrupt_archive_never_creates_database(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    (tmp_path / "database.dump").write_bytes(b"corrupt")
+    (tmp_path / "backup.json").write_text(
+        json.dumps({"format": "f00-pgdump-v1", "archive_sha256": "0" * 64})
+    )
+    globals_ = TOOL["restore"].__globals__
+    monkeypatch.setitem(
+        globals_, "service_container", lambda _: pytest.fail("Must not access Docker")
+    )
+    with pytest.raises(ValueError, match="checksum"):
+        TOOL["restore"](tmp_path, "f00_restore_test")
+
+
+def test_existing_target_refuses_without_restore(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    calls: list[list[str]] = []
+    globals_ = TOOL["restore"].__globals__
+    monkeypatch.setitem(
+        globals_, "archive_metadata", lambda _: {"source": {"database": "source", "role": "test"}}
+    )
+    monkeypatch.setitem(globals_, "service_container", lambda _: "test-container")
+
+    def checked(args: list[str], **kwargs: Any) -> None:
+        calls.append(args)
+        raise RuntimeError("Operation failed (details withheld)")
+
+    monkeypatch.setitem(globals_, "checked", checked)
+    with pytest.raises(RuntimeError):
+        TOOL["restore"](tmp_path, "f00_restore_existing")
+    assert len(calls) == 1 and "createdb" in calls[0]
+    assert not (tmp_path / "f00_restore_existing.json").exists()
+
+
+def test_worker_failures_do_not_echo_secret_arguments_or_stderr() -> None:
+    import sys
+
+    with pytest.raises(RuntimeError) as error:
+        TOOL["checked"](
+            [sys.executable, "-c", "import sys; sys.stderr.write('secret-fixture'); sys.exit(1)"]
+        )
+    assert "secret-fixture" not in str(error.value)
+
+
+def test_archive_size_mismatch_is_rejected(tmp_path: Path) -> None:
+    (tmp_path / "database.dump").write_bytes(b"fixture")
+    (tmp_path / "backup.json").write_text(
+        json.dumps(
+            {
+                "format": "f00-pgdump-v1",
+                "archive_sha256": hashlib.sha256(b"fixture").hexdigest(),
+                "archive_bytes": 999,
+            }
+        )
+    )
+    with pytest.raises(ValueError, match="size"):
+        TOOL["archive_metadata"](tmp_path)

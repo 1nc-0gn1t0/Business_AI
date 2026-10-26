@@ -1,0 +1,138 @@
+{
+  "task": "H-04",
+  "date": "2026-10-26",
+  "base_commit": "869453f4e5d3dd013ffa4117b7aefee80298fefb",
+  "previous_schema": "0007_data_providers",
+  "current_schema": "0008_analytical_reports",
+  "scope": "New synthetic user data; checked-in small OSM fixture; synthetic walking topology. No production writes.",
+  "archive_sha256": "6092bb27390f5394ee22be8519ae23aa9c01ad0e1f4647c3fdebc6524f31b5e6",
+  "archive_bytes": 117876,
+  "backup_seconds": 3.437,
+  "restore_seconds": 1.125,
+  "verification_seconds": 2.156,
+  "restore_verify_seconds": 3.281,
+  "checks": {
+    "tables": true,
+    "schema_sha256": true,
+    "extensions": true,
+    "invalid_indexes": true,
+    "server_version": true
+  },
+  "tables": {
+    "alembic_version": {
+      "rows": 1,
+      "sha256": "4a09254987428a11ced53d79bd5ef35ce26792293a85dc0183bab82c5d106f85"
+    },
+    "analysis_runs": {
+      "rows": 1,
+      "sha256": "bc53695f0094c5a91215f4e72456d2455debcb17f334f8f1a697dcfbe2eee2d4"
+    },
+    "analytical_reports": {
+      "rows": 1,
+      "sha256": "7a74ea8b936201eaa3b69c8cb5575bc8b8695e4b7355de4506877fefe119e8e8"
+    },
+    "audit_events": {
+      "rows": 9,
+      "sha256": "3b405fc77dfc54c8fb195c0d6925fef97c4753dfd2070166e7a5992560da50b3"
+    },
+    "business_profiles": {
+      "rows": 2,
+      "sha256": "4a0d7d1765029ed24670ba6607e625676226f1f885579f93d7702c30d6919c5b"
+    },
+    "consents": {
+      "rows": 5,
+      "sha256": "7454383237e57bd2d7aa381e4c9f9531ef0a7a1e641e096548b65015fe648da4"
+    },
+    "conversations": {
+      "rows": 2,
+      "sha256": "6c15a5ddeec06c3a2486c86e81923a799ef47fd52ea5eb902809b197f577fb34"
+    },
+    "geo_datasets": {
+      "rows": 2,
+      "sha256": "4806ccf3f0b6a50e5cbbd867b733714e546cc52491213ba16b18241075a5af90"
+    },
+    "geo_districts": {
+      "rows": 1,
+      "sha256": "935baf40be31ec2dfe29f0dbb39a9ef4be50c408456eacbe18243d05f6ec87b8"
+    },
+    "geo_pois": {
+      "rows": 153,
+      "sha256": "39e4ad37d99d8872351c1544fb4c10e48f8131e069af9c33e86468e2e2b21850"
+    },
+    "lead_drafts": {
+      "rows": 2,
+      "sha256": "1bb6eb037c0a82d8a904b2c9c5fc85300376a8cfb6c34cebdbfdbb27e693f3f1"
+    },
+    "lead_submissions": {
+      "rows": 1,
+      "sha256": "df9c2c6fcef8fb46c765f4fea9f6143c70c1a6f6eb632da3ce1776f9fc0acb86"
+    },
+    "location_metrics": {
+      "rows": 1,
+      "sha256": "3c742f40ff1add1e796bcdfda9ebc785aa0ca962b4735ba789ecfcd296a5b81b"
+    },
+    "messages": {
+      "rows": 4,
+      "sha256": "139d08c9f01d9824e6532194f6085ad1ea326ae53a5bd79511335ddf837a5c56"
+    },
+    "profile_revisions": {
+      "rows": 4,
+      "sha256": "87e4b13a53b3ead0dce900f89b2da6aab7ec3c7fdec3bea207de2d35960e1fbd"
+    },
+    "provider_datasets": {
+      "rows": 1,
+      "sha256": "8dc768cff5d22262c04314004edc2d32335de1402ac4ca2725f86d506272366a"
+    },
+    "spatial_ref_sys": {
+      "rows": 8500,
+      "sha256": "92ea221bf9d771d31af55f6d5876e2a2bcb2652685226447bce685e96fc73538"
+    },
+    "walk_edges": {
+      "rows": 5,
+      "sha256": "b1924d4b5ef5968a051b177a749f4bf0aca7faecc00dc786289c330d24171896"
+    },
+    "walk_graphs": {
+      "rows": 1,
+      "sha256": "c540ef14482c765086386c37cd382564c493f77ee8e5fcbcfb6c78ad7264f21f"
+    }
+  },
+  "schema_sha256": "54334b71124e264b00651d74d076989b6c3c229faeb6e79907fd1d7676decb90",
+  "pdf_sha256": "724180ba2272221d0cc0548fbb132666fd59cc008c4ff267fda6146787766433",
+  "json_sha256": "d690bcf236c3297102734907e1ce4da34f4fdcad212f7b38ddd1c52eb0b7313b",
+  "server_version": "17.5 (Debian 17.5-1.pgdg110+1)",
+  "extensions": [
+    [
+      "plpgsql",
+      "1.0"
+    ],
+    [
+      "postgis",
+      "3.5.2"
+    ]
+  ],
+  "hardware": {
+    "docker_memory_bytes": 8204406784,
+    "gpu": "RTX 3050 Ti 4GB (not used)",
+    "docker_cpus": 16,
+    "cpu": "Intel Core i7-11800H",
+    "host_ram_bytes": 16931676160
+  },
+  "encryption": "NOT IMPLEMENTED; protected local directory ACL; OPS-ENC follow-up required before RC",
+  "rpo": "No scheduled backup or PITR; <=24h policy not demonstrated",
+  "rto": "3.281s DB-only small-fixture drill; not full-service or production RTO",
+  "d04": {
+    "after": "PASS: no extension changes; real extra table/column detected",
+    "before": "FAIL: false TIGER remove_table"
+  },
+  "failure_drills": {
+    "terminated_backend": "transaction rollback PASS",
+    "working_database_and_volumes": "untouched",
+    "baseline_dump_sha256": "690133a959640c3ee0167c46bc39eea13b966f2fff615f4158c10eda85e74feb",
+    "old_f00_image_read_smoke": "PASS",
+    "sql_error": "transaction rollback PASS",
+    "retry_upgrade": "PASS",
+    "existing_target": "REFUSED",
+    "invalid_archive": "REFUSED; new target has zero public tables",
+    "restored_owner_pdf_json": "PASS"
+  }
+}

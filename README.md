@@ -13,6 +13,7 @@
 - **H-03:** очередь Qwen — один активный вызов и одно место ожидания (10s); PostgreSQL connection освобождается до очереди/inference, перед записью заново проверяются версии и согласия. Конфигурация/ошибки — в API_LIMITS, реальные pool measurements — в [PERFORMANCE](docs/PERFORMANCE.md). Многопроцессная очередь не заявлена.
 - **[Утверждённый Post-MVP roadmap](docs/roadmap/POST_MVP_ROADMAP.md)** — фактический аудит, BA-017/018 до 1 ноября, универсальность, UX/UI, качество и путь к локальному RC; статус исполнения — в HANDOFF.
 - **[Baseline F-00](docs/baselines/F-00_BASELINE.md)** — проверенная исходная версия, точные pins, регрессия, ограничения; [backup/restore](docs/BACKUP_RESTORE.md) без перезаписи рабочей БД.
+- **[Миграции и rollback H-04](docs/MIGRATIONS.md)** — populated upgrade, TIGER-safe Alembic check, запрет рабочего downgrade; [измерения восстановления](docs/evals/H-04-migration-restore.json). Шифрование/RPO пока не подтверждены.
 - **[Протокол AI-разработчиков](docs/AGENT_WORKFLOW.md)** — как начинать, завершать и передавать сеанс между Codex/Claude/людьми.
 - **[Пользовательский интерфейс BA-010](docs/USER_INTERFACE.md)** — сценарий в браузере, API, карта, безопасность гостевого доступа, реальные и mock-проверки, скриншоты.
 - **[Каталог и подбор ВТБ BA-011](docs/BANK_CATALOGUE.md)** — источники, статус проверки, обновление, правила, защищённый API и ограничения.

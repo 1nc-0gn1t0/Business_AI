@@ -24,8 +24,9 @@ def isolated_database() -> Iterator[str]:
 
 
 def migrate(database: str, *arguments: str) -> str:
+    options = ["-x", "allow_test_downgrade=true"] if "downgrade" in arguments else []
     result = subprocess.run(
-        [sys.executable, "-m", "alembic", "-c", str(CONFIG), *arguments],
+        [sys.executable, "-m", "alembic", "-c", str(CONFIG), *options, *arguments],
         env={**os.environ, "PGDATABASE": database},
         text=True,
         capture_output=True,

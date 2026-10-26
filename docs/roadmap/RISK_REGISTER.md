@@ -1,7 +1,7 @@
 # Post-MVP · реестр дефектов, рисков и внешних зависимостей
 
 25.10.2026. Реестр утверждённого roadmap, обновлён результатами F-00;
-добавлены H-01 triage, H-02 caps и H-03 inference lifecycle. Ответственный — владелец проекта.
+добавлены H-01 triage, H-02 caps, H-03 inference lifecycle и H-04 recovery. Ответственный — владелец проекта.
 `Подтверждено` означает код/артефакт, не новую эксплуатационную сертификацию.
 P0-дефектов, **доказанных в ограниченном H-01 triage**, не выявлено;
 непроверенные поверхности и нагрузки не объявляются безопасными.
@@ -11,7 +11,31 @@ P0-дефектов, **доказанных в ограниченном H-01 tri
 но H-01/H-04 не закрыты: нет полного DR/previous-version upgrade/encryption policy.
 Ниже исторические evidence сохранены; D-04 добавлен по фактической проверке F-00.
 
-## Обновление H-03 · 26.10.2026
+## Обновление H-04 · 26.10.2026
+
+- H-03 PR#21/fb74296 объединён, шесть CI SUCCESS; main869453f. H-04 branch
+  `codex/H-04-migrations-restore`. Результаты: [migration policy](../MIGRATIONS.md),
+  [backup runbook](../BACKUP_RESTORE.md), [агрегаты](../evals/H-04-migration-restore.json).
+- **D-04 исправлен, regression PASS:** старый env воспроизводит ложный TIGER DROP;
+  новый scoped public/extension-owned filter даёт clean check, но выявляет реальные
+  extra table/column. Extension/role search_path рабочей БД не изменены.
+- **R-12 частично закрыт:** populated0007→0008, retry после SQL error/backend termination,
+  все17 app tables/FK/unique/provenance, private backup/restore19 public tables,
+  owner/receipt/PDF/JSON и F-00 image read smoke PASS. CLI downgrade default-deny;
+  existing target/invalid archive отказы проверены без удаления рабочих данных.
+- **OPS-ENC / R-12 остаётся P1 до RC:** backups не зашифрованы; ACL не заменяет
+  encryption. Конкретный отдельный блок2–4ч: pinned age recipient encryption,
+  независимое custody/recovery ключа, encrypted staging/offsite, real roundtrip и
+  tamper/wrong-key tests. Выбор хранилища/ключа требует владельца; не начат автоматически.
+- **OPS-RPO / R-12 требует проверки:** RPO≤24h не обеспечен scheduler/monitoring;
+  restore3.281s — маленькая fixture DB, не полный RTO≤60min. Cluster globals/model/host
+  DR, encrypted offsite и permissions переноса на другой host не доказаны. Retention
+  policy предложена, автоматическое удаление не настроено. Scanners остаются H-06.
+- Новых подтверждённых P0 на выполненном scope нет. QG-PR локально пройден; QG-OPS
+  только migration/DB recovery subset, не весь RC gate. H-05/H-06, D-01…03 и
+  BA-017/018 не выполнены/не начаты. H-05 — только после отдельного разрешения.
+
+## Обновление H-03 · 26.10.2026 (исторический)
 
 - **H01-P1-02/R-02: исправлен в H-03**, ожидает review/merge. До изменения — 1 idle
   transaction/1 checked-out; после —0/0, разные read/write Session, повторные owner/
@@ -100,7 +124,7 @@ P0-дефектов, **доказанных в ограниченном H-01 tri
 | D-01 | Дефект модели, открыт: LLM-022 в [raw](../evals/BA-016-qwen-final.json) и repeats | Город теряется при иностранной валюте; P1 | U-04: независимые field deltas, RUB-only policy/clarification, regression + holdout + 3 real repeats |
 | D-02 | Дефект модели, открыт: LLM-028 «Козани» | Ненормализованный город, пустой анализ; P1 | U-03: city registry/предложение подтверждения, no silent fuzzy match; 3 repeats |
 | D-03 | Функциональный пробел, подтверждён: Finance useState, App/ReportExport lifecycle | Потеря черновика/выбора после reload/смены зоны; P1 | U-10/11: owner workspace resume и invalidation tests; отчёты BA-015 уже сохраняются, весь сценарий — нет |
-| D-04 | F-00: default Alembic check exit 255, отражает extension-owned TIGER tables; scoped public check PASS | Небезопасное autogenerate-предложение удаления extension tables, P1 для миграций | H-04: фильтр extension-owned objects + TIGER fixture, не скрывающий настоящий app schema drift; до исправления проверять public scope и вручную diff, ничего не удалять |
+| D-04 | Исправлен H-04; old-env FAIL/new-env PASS, actual TIGER fixture и app drift regression | Historical P1 закрыт в реализации; multi-schema вне текущего policy | Review/CI H-04; при новых schemas отдельный ADR/coverage; autogenerate всегда просматривать |
 | R-01 | Эксплуатационный риск: глобальных quotas/rate limits/semaphore в app/compose нет | Истощение ресурсов при расширении доступа; P0 при подтверждённом DoS/публичной экспозиции, сейчас P1 | H-01→H-02: bounded controlled reproducer, caps/429; до gate только loopback |
 | R-02 | Код подтверждает Session.begin + DB reads → LLM → final lock; impact не измерен | Connection pool занят во время inference; P1 | H-03: отдельные read snapshot/inference/write UoW, race tests и pool measurement |
 | R-03 | Partial: ProfilePatch ограничен, общий BusinessProfile/NonEmptyText без аналогичных max; body bound только reports | Неравномерные API resource limits; P1 | H-02: каждый публичный DTO/body имеет budget и negative tests, no breaking v1 без решения |
@@ -112,7 +136,7 @@ P0-дефектов, **доказанных в ограниченном H-01 tri
 | R-09 | Guest bearer token в sessionStorage, accounts/expiry/recovery отсутствуют | Потеря доступа/XSS impact; P1 для local RC, blocker public pilot | H-01/H-02, P-01/BA-020: threat model, expiry/retention decision, auth design; не переносить в localStorage автоматически |
 | R-10 | Consent/audit append-only на уровне приложения, не WORM; тексты demo | Нет юридически утверждённого основания пилота; внешний blocker | P-01/BA-020/021: legal/security review и approved texts; не удалять аудит без policy |
 | R-11 | Six bank products demonstration/unconfirmed/cached_only | Восприятие как действующих условий ВТБ; P1 | U-12/UI-05: demo/blocked display; действующие условия только после проверки источника/владельца |
-| R-12 | Supply-chain/secret scanning не настроены CI; F-00 basic restore PASS (19 public tables/5 reports/12 receipts), без encryption/cluster DR | Неизвестные CVE; неполная recovery policy; P1 | H-04/H-06 + Q-06: scanners, populated previous-version upgrade/DR/encryption policy; F-00 не закрывает весь риск |
+| R-12 | H-04 populated upgrade/fault/retry/restore PASS; ACL/private SHA verification; encryption/cluster DR/scanners не реализованы | Неполная recovery policy, RPO не обеспечен; P1 до RC | OPS-ENC/OPS-RPO по BACKUP_RESTORE + H-06/Q-06; весь риск не закрыт |
 | R-13 | BA-016 Chromium/3 real paths; нет Firefox/WebKit/полной a11y оценки | Потеря функций на других браузерах/для screen reader; P1 | Q-02 + UI PR gates; реальные iOS/Safari проверки требуют устройства |
 | R-14 | Нет soak/load/fault-restart evidence; BA-016 — небольшой serial benchmark | Неизвестные пределы, leaks/recovery; P1 | Q-04/06: 2 ч→8 ч isolated load, no external tile/Overpass load |
 | R-15 | Нет реальных интервью/маржи/конверсий банка, BA-017/018 не реализованы | Недоказанный product-market/value case, дедлайн 31.10; P0 бизнес-приоритет | BA-017-* /018-*; честные evidence gaps, реальные действия владельца |

@@ -22,7 +22,7 @@ WORKER = r"""
 import hashlib, json, sys
 import psycopg
 from psycopg import sql
-with psycopg.connect(autocommit=True) as db:
+with psycopg.connect(autocommit=True, connect_timeout=5) as db:
     db.execute("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY")
     db.execute("SET LOCAL statement_timeout = '60s'")
     db.execute("SET LOCAL idle_in_transaction_session_timeout = '600s'")
@@ -136,20 +136,33 @@ def file_hash(path):
 
 
 def archive_metadata(directory):
+    if any(
+        (directory / name).is_symlink() for name in ("backup.json", "database.dump")
+    ):
+        raise ValueError("Backup files must not be symbolic links")
     metadata = json.loads((directory / "backup.json").read_text(encoding="utf8"))
     if metadata.get("format") != "f00-pgdump-v1":
         raise ValueError("Unsupported backup format")
     if file_hash(directory / "database.dump") != metadata["archive_sha256"]:
         raise ValueError("Archive checksum mismatch; restore refused")
+    if (
+        "archive_bytes" in metadata
+        and (directory / "database.dump").stat().st_size != metadata["archive_bytes"]
+    ):
+        raise ValueError("Archive size mismatch; restore refused")
     return metadata
 
 
-def backup(directory):
+def backup(directory, database=None):
+    if database is not None:
+        database = restore_target(
+            database
+        )  # Explicit QA source only; never arbitrary names.
     directory = private_directory(directory)
     directory.mkdir(parents=True, exist_ok=False, mode=0o700)
     start = time.monotonic()
     keeper = subprocess.Popen(
-        worker_command(mode="hold"),
+        worker_command(database, mode="hold"),
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -160,6 +173,7 @@ def backup(directory):
         source = json.loads(keeper.stdout.readline())
         container = service_container("db")
         with (directory / "database.dump").open("xb") as archive:
+            (directory / "database.dump").chmod(0o600)
             checked(
                 [
                     "docker",
@@ -201,6 +215,7 @@ def backup(directory):
     (directory / "backup.json").write_text(
         json.dumps(metadata, indent=2) + "\n", encoding="utf8"
     )
+    (directory / "backup.json").chmod(0o600)
     print(
         json.dumps(
             {
@@ -254,6 +269,8 @@ def restore(directory, database):
             stdin=archive,
             stdout=subprocess.PIPE,
         )
+    restored_seconds = time.monotonic() - start
+    verify_start = time.monotonic()
     observed = json.loads(
         checked(worker_command(database), stdout=subprocess.PIPE).stdout
     )
@@ -269,12 +286,15 @@ def restore(directory, database):
         "database": database,
         "checked_at": datetime.now(UTC).isoformat(),
         "restore_verify_seconds": round(time.monotonic() - start, 3),
+        "restore_seconds": round(restored_seconds, 3),
+        "verification_seconds": round(time.monotonic() - verify_start, 3),
         "checks": checks,
         "tables": observed["tables"],
         "status": "PASS" if all(checks.values()) else "FAIL",
     }
     # An exclusive report also prevents silently replacing an earlier drill result.
     with (directory / f"{database}.json").open("x", encoding="utf8") as handle:
+        (directory / f"{database}.json").chmod(0o600)
         json.dump(report, handle, indent=2)
     print(json.dumps(report, indent=2))
     if not all(checks.values()):
@@ -285,17 +305,23 @@ def restore(directory, database):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=["backup", "restore"])
+    parser.add_argument("operation", choices=["backup", "verify", "restore"])
     parser.add_argument("--directory", required=True, type=Path)
-    parser.add_argument("--database", help="New f00_restore_<id>; required for restore")
+    parser.add_argument(
+        "--database",
+        help="New f00_restore_<id> target, or explicit isolated QA backup source",
+    )
     args = parser.parse_args()
     if args.operation == "restore" and not args.database:
         parser.error("restore requires --database")
     try:
         if args.operation == "backup":
-            backup(args.directory)
-        else:
+            backup(args.directory, args.database)
+        elif args.operation == "restore":
             restore(args.directory, args.database)
+        else:
+            archive_metadata(private_directory(args.directory))
+            print("Archive checksum PASS (trusted local manifest; not authentication)")
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError, KeyError):
         # Preserve partial artifacts/DB; no automatic cleanup of potentially useful data.
         parser.exit(

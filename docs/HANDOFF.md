@@ -1,6 +1,56 @@
 # Business AI — HANDOFF
 
-## H-03 · inference без PostgreSQL connection · 26.10.2026 (МСК)
+## H-04 · заполненная БД и recovery · 26.10.2026 (МСК)
+
+- PR[#21](https://github.com/1nc-0gn1t0/Business_AI/pull/21) H-03 headfb74296 merged
+  `2026-10-26T05:33:55Z`; шесть exact-head checks SUCCESS. Main ff-only869453f,
+  исходное дерево чистое; ветка `codex/H-04-migrations-restore`. PR/фактический HEAD/CI
+  фиксируются в финальном отчёте; не считать merge разрешённым.
+- Исправлен **D-04**: Alembic connection scoped public + catalog-based exclusion
+  extension-owned tables. Старый env воспроизводит ложный TIGER remove_table;
+  новый check PASS, настоящие лишние app table/column обнаруживаются. Default CLI
+  downgrade отказывает до подключения; исключение только explicit disposable UUID
+  tests. Нет новых миграций/изменений app DTO/business logic/LLM/geo/finance/bank.
+- Новый populated0007→0008 test:17 непустых app tables, counts/row SHA/FK/unique,
+  PostGIS geometry/provenance, profile versions/consents/withdrawal/draft/receipt/audit.
+  На0007 отчётов ещё нет; после upgrade создан immutable report, повторный upgrade
+  сохраняет его bytes. SQL error/terminated Alembic backend после create_table
+  полностью откатывают DDL/revision, retry PASS. Wrong user/config → safe503.
+- F-00 operator tool переиспользован; дополнен offline verify, size/symlink check,
+  POSIX0600, optional explicit isolated backup source, separate restore/verify timing,
+  connect timeout. Windows private parent ACL проверен: только текущий оператор.
+- Новый private QA archive117876 bytes, SHA6092bb27390f5394ee22be8519ae23aa9c01ad0e1f4647c3fdebc6524f31b5e6.
+  Backup3.437s; restore1.125s + verification2.156s =3.281s. Все19 public tables/hash/
+  schema/extensions/index/server checks PASS; owner/foreign-owner, receipt и старые
+  PDF/JSON через API byte-identical. Реальный F-00 immutable image read-smoke на
+  restored0008 PASS. Existing target refused; invalid pg archive оставил только
+  новую пустую QA БД, working DB/volumes не затронуты.
+- [MIGRATIONS](MIGRATIONS.md), [BACKUP_RESTORE](BACKUP_RESTORE.md), [evidence JSON](evals/H-04-migration-restore.json).
+  Private fixture credentials/dumps вне Git. F-00 dump SHA не изменён:
+  `690133a959640c3ee0167c46bc39eea13b966f2fff615f4158c10eda85e74feb`.
+  Три созданные H-04 UUID-БД удалены после проверок по точным именам без FORCE;
+  private archives/aggregate evidence сохранены, старые QA/F-00 БД и volumes не тронуты.
+- Проверки: DB/PostGIS102PASS/no XFAIL; extended102PASS/1550 property examples;
+  Chromium mock24PASS; frontend43PASS; build/TS/Ruff/mypy/prek7hooks PASS. Compose
+  migrate image built, штатный DB Alembic check и API/web/PostGIS smoke PASS.
+  Quick backend315PASS/102DB SKIP (они отдельно102PASS),102extended deselected.
+  Первый Windows pytest tmp отказал существующему temp parent; отдельный
+  PYTEST_DEBUG_TEMPROOT исправил окружение без изменения ACL старых каталогов.
+  Неправильный FK probe сначала затронул несколько rows и получил unique violation;
+  исправлен на один row, ожидаемый FK rejection подтверждён. Проверка private0600
+  state выполняется тем же QA root UID, который его создал; app user не повышался.
+- **Ограничения:** backup **не зашифрован**; OPS-ENC2–4ч с age/key custody/roundtrip
+  вынесен отдельно до RC. Retention policy описана, scheduler/offsite/PITR отсутствуют,
+  RPO≤24h/полный RTO≤60min не подтверждены; QG-OPS только DB recovery subset.
+  Programmatic/direct SQL downgrade обходит CLI guard — это не RBAC. Public-only
+  schema policy; nontransactional future migrations требуют собственного recovery.
+  Полный live Qwen evaluation не повторялся: LLM/API business contracts не менялись;
+  inference/concurrency/consent regression из H-01…03 вошла в DB102PASS.
+- Далее: review/CI/merge H-04 решает пользователь. **H-05 не начинать автоматически**.
+  BA-017/018 — отдельный невыполненный research track; сознательный технический
+  порядок F-00→H-01…06→UX→U→UI→QA→RC сохранён, UX/U research dependencies не сняты.
+
+## H-03 · inference без PostgreSQL connection · 26.10.2026 (МСК, исторический)
 
 - H-02 [PR#20](https://github.com/1nc-0gn1t0/Business_AI/pull/20) merged
   `2026-10-26T02:45:22Z`; headf000ecd, main `559a193503f12ca4156526c3ab86474a5fde8e2a`.
