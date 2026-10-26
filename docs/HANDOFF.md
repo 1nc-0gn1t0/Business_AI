@@ -4,8 +4,10 @@
 
 - PR[#21](https://github.com/1nc-0gn1t0/Business_AI/pull/21) H-03 headfb74296 merged
   `2026-10-26T05:33:55Z`; шесть exact-head checks SUCCESS. Main ff-only869453f,
-  исходное дерево чистое; ветка `codex/H-04-migrations-restore`. PR/фактический HEAD/CI
-  фиксируются в финальном отчёте; не считать merge разрешённым.
+  исходное дерево чистое; ветка `codex/H-04-migrations-restore`. Реализация
+  `c9b86c5494bd13260f1680d7e0d7b5b31bb906ba`, опубликован
+  [PR#22](https://github.com/1nc-0gn1t0/Business_AI/pull/22), прикреплён к чату.
+  PR открыт, не объединён; фактический финальный HEAD/CI — в PR/итоговом отчёте.
 - Исправлен **D-04**: Alembic connection scoped public + catalog-based exclusion
   extension-owned tables. Старый env воспроизводит ложный TIGER remove_table;
   новый check PASS, настоящие лишние app table/column обнаруживаются. Default CLI
