@@ -11,7 +11,33 @@ P0-дефектов, **доказанных в ограниченном H-01 tri
 но H-01/H-04 не закрыты: нет полного DR/previous-version upgrade/encryption policy.
 Ниже исторические evidence сохранены; D-04 добавлен по фактической проверке F-00.
 
-## Обновление H-04 · 26.10.2026
+## Обновление H-04-FU · 26.10.2026
+
+- PR#22/c39d4ac merged, main930b8e4; отдельная ветка `codex/H-04-FU-backup-recovery`.
+  [Отчёт](../qa/H-04-FU_RECOVERY_REPORT.md), [измерения](../qa/H-04-FU-evidence.json).
+- **OPS-ENC — инженерная часть подтверждена:** настоящий age1.3.2, потоковый encrypted
+  dump/metadata, atomic publish, pre-DB authentication, private controlled restore
+  TempFile, no plaintext residues. Wrong-key/tamper/truncate/missing/cancel tests PASS.
+  Owner production key не создавался. Реальное внедрение/ключи/custody — у владельца.
+- **OPS-RPO частично подтверждён:** два реальных watch runs и scheduled native trigger
+  exit0; последняя копия отдельно age-verified, observed age510.177s; управляемый clock
+  24h+1s → STALE. Постоянный scheduler **не включён**,24h availability/offsite не
+  обеспечены. Нельзя закрывать RPO-обязательство до ручной активации и эксплуатации.
+- **DB/app recovery подтверждён локально:** fresh project/cluster+restore+19 table
+  fingerprints+HTTP owner/PDF/receipt/geo/finance/bank+real Qwen, **53.157s** на58MB
+  fixture/11MB ciphertext. Реальный pg_restore termination →0 partial tables.
+  Это не OS/key-loss/model download/offsite disaster SLA и не весь QG-OPS.
+- Найденная bootstrap readiness race исправлена TCP pg_isready (temporary init
+  Unix socket больше не означает ready); working containers не пересоздавались.
+  Native Task failure в packaged AppData исправлен canonical paths, реальный rerun PASS.
+- **R-12 остаётся частично открытым/P1 до RC:** F-00/H-04 старые plaintext archives
+  сохранены по требованию и не зашифрованы задним числом; owner-controlled migration
+  после ключей и проверенного restore. Lost-key/offsite/24h monitoring/cluster globals/
+  host rebuild не подтверждены; supply-chain/secret scanners остаются H-06.
+- Новых подтверждённых P0 не выявлено на scope. H-05/H-06 и BA-017/018 не начаты;
+  дальнейший технический этап — только после review/merge и разрешения владельца.
+
+## Обновление H-04 · 26.10.2026 (исторический)
 
 - H-03 PR#21/fb74296 объединён, шесть CI SUCCESS; main869453f. H-04 branch
   `codex/H-04-migrations-restore`. Результаты: [migration policy](../MIGRATIONS.md),
@@ -136,7 +162,7 @@ P0-дефектов, **доказанных в ограниченном H-01 tri
 | R-09 | Guest bearer token в sessionStorage, accounts/expiry/recovery отсутствуют | Потеря доступа/XSS impact; P1 для local RC, blocker public pilot | H-01/H-02, P-01/BA-020: threat model, expiry/retention decision, auth design; не переносить в localStorage автоматически |
 | R-10 | Consent/audit append-only на уровне приложения, не WORM; тексты demo | Нет юридически утверждённого основания пилота; внешний blocker | P-01/BA-020/021: legal/security review и approved texts; не удалять аудит без policy |
 | R-11 | Six bank products demonstration/unconfirmed/cached_only | Восприятие как действующих условий ВТБ; P1 | U-12/UI-05: demo/blocked display; действующие условия только после проверки источника/владельца |
-| R-12 | H-04 populated upgrade/fault/retry/restore PASS; ACL/private SHA verification; encryption/cluster DR/scanners не реализованы | Неполная recovery policy, RPO не обеспечен; P1 до RC | OPS-ENC/OPS-RPO по BACKUP_RESTORE + H-06/Q-06; весь риск не закрыт |
+| R-12 | H-04-FU age pipeline/scheduled test/58MB local recovery53.157s PASS; old plaintext baseline, production custody/scheduler/offsite/host DR/scanners остаются | RPO условен, исходный plaintext и lost-key risk; P1 до RC | Владелец: реальные keys/backup/restore/schedule + historical archive protection; H-06/Q-06 scanners; не закрывать весь риск |
 | R-13 | BA-016 Chromium/3 real paths; нет Firefox/WebKit/полной a11y оценки | Потеря функций на других браузерах/для screen reader; P1 | Q-02 + UI PR gates; реальные iOS/Safari проверки требуют устройства |
 | R-14 | Нет soak/load/fault-restart evidence; BA-016 — небольшой serial benchmark | Неизвестные пределы, leaks/recovery; P1 | Q-04/06: 2 ч→8 ч isolated load, no external tile/Overpass load |
 | R-15 | Нет реальных интервью/маржи/конверсий банка, BA-017/018 не реализованы | Недоказанный product-market/value case, дедлайн 31.10; P0 бизнес-приоритет | BA-017-* /018-*; честные evidence gaps, реальные действия владельца |

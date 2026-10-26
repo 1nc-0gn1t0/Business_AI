@@ -1,6 +1,57 @@
 # Business AI — HANDOFF
 
-## H-04 · заполненная БД и recovery · 26.10.2026 (МСК)
+## H-04-FU · encrypted backup и recovery · 26.10.2026 (МСК)
+
+- PR[#22](https://github.com/1nc-0gn1t0/Business_AI/pull/22) H-04/c39d4ac merged
+  `2026-10-26T06:07:10Z`; main930b8e4 ff-only, исходное дерево чистое. Ветка
+  `codex/H-04-FU-backup-recovery`; фактический HEAD/PR/CI — в итоговом отчёте/PR.
+- Новый `scripts/encrypted_backup.py`: pg_dump→age1.3.2 streaming, encrypted
+  metadata, bounded buffers/deadline/atomic publication, OS lock, RPO/status exit2,
+  private logs и explicit dry-run prune/keep≥1/PIN. Restore полностью authenticates
+  в controlled private TempFile до createdb; no existing/source overwrite; hashes/
+  schema/extensions сверяются. F-00 backup helper переиспользован с optional Compose
+  prefix, legacy plaintext command сохранён только для совместимости/истории.
+- `install_age.ps1` проверяет pinned official Windows/Linux SHA; CI ставит binary
+  вне repo и реально тестирует crypto17 cases с disposable keys, без GPU/банка.
+  `register_backup_task.ps1` preview/install/TestOnly + hidden `run_backup_job.ps1`:
+  предложены12h backup/hourly status. **Постоянные задачи не включены.** Temporary
+  native trigger действительно выполнился exit0, age8.823s, отдельно verify PASS.
+  Два actual watch runs на PostgreSQL также PASS. Canonical paths решают packaged
+  AppData vs native Task/Docker; JSON explicit UTF8. Real owner key не создавался.
+- Fixtures small/large:17.54MB/58.15MB; large200 owners,16438 messages,8518 revisions,
+  199 PDF/JSON,303 consents,52drafts/51receipts,457audit,20153POI/4905edges/2graphs.
+  New synthetic users/data; small checked-in OSM extract,20k authored POI/grid.
+  Частотные caps повышены только внутри fixture seed, runtime limits неизменны.
+- Full clean Compose recovery **53.157s**: prepare/retrieve/cipher checks/auth,
+  fresh cluster, restore19public tables/source-equal hashes, Alembic check, API/web
+  readiness и реальные HTTP owner/history/receipt/audit/geo/finance/bank/PDF/JSON/
+  Qwen4B. Model actual ollama, coffee/Kazan/2m PASS; не полный LLM eval.
+  Large cipher11312502 bytes/backup8.406s; small133883bytes/backup4.375s,
+  small authenticated restore+verify5.235s и отдельный API DTO/owner/export PASS.
+- Реальные fault checks: wrong/missing identity/file, tamper/truncate (с пересчитанным
+  public SHA), DB unavailable, duplicate target отказаны. pg_restore backend terminated
+  только в owned QA DB:0 partial tables; target до/после сохраняется. Restore plaintext
+  residues отсутствуют. Последняя хорошая копия сохраняется при FS/producer failure;
+  PIN защищает реально rehearsed backup. Ошибка bootstrap readiness исправлена TCP
+  health (`pg_isready -h127.0.0.1`), working containers не пересоздавались.
+- [QA report](qa/H-04-FU_RECOVERY_REPORT.md), [evidence](qa/H-04-FU-evidence.json),
+  [операторский runbook](BACKUP_RESTORE.md). RPO age510.177s на probe; isolated clock
+  ровно24h OK/24h+1s STALE. Нет SLA для выключенного/спящего ПК, unlogged user,
+  lost disk/key/offsite. RTO — полный **локальный** цикл при cached images/модели и
+  доступном identity, не OS reinstall/model download/key-loss disaster.
+- Регрессия: quick332PASS/102DB SKIP (отдельно102PASS, no XFAIL); crypto17PASS;
+  extended102PASS/1550 property examples; frontend43PASS; Chromium24PASS; prek7hooks,
+  Ruff/mypy/TS/build/Compose smoke PASS. Final commit hooks/CI сверяются перед сдачей.
+  Без новых app dependencies/DTO/миграций/формул/гео/банк/LLM orchestration изменений.
+- **Остатки R-12:** инженерный OPS-ENC подтверждён для нового pipeline; owner должен
+  создать реальные keys/custody, проверить real backup/restore, включить scheduler и
+  защитить **исторические plaintext F-00/H-04** (они сохранены, не зашифрованы задним
+  числом). Baseline SHA прежний690133a959640c3ee0167c46bc39eea13b966f2fff615f4158c10eda85e74feb.
+  Offsite/globals/host/model DR/постоянный monitoring остаются; весь QG-OPS/RC не закрыт.
+- Далее: review/merge H-04-FU решает владелец; H-05/H-06 и BA-017/018 не начинать
+  автоматически. Исследовательский трек не отменён/не выполнен. Порядок roadmap сохранён.
+
+## H-04 · заполненная БД и recovery · 26.10.2026 (МСК, исторический)
 
 - PR[#21](https://github.com/1nc-0gn1t0/Business_AI/pull/21) H-03 headfb74296 merged
   `2026-10-26T05:33:55Z`; шесть exact-head checks SUCCESS. Main ff-only869453f,

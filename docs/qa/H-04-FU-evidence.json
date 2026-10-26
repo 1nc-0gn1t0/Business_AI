@@ -1,0 +1,344 @@
+{
+  "task": "H-04-FU",
+  "date": "2026-10-26",
+  "base_commit": "930b8e43e2b2da6255d9a5a29909231d5f2c7bc7",
+  "age_version": "v1.3.2",
+  "large_source_bytes": 58150035,
+  "small_source_bytes": 17542291,
+  "small_restored_bytes": 17411219,
+  "large_backup": {
+    "format": "business-ai-age-v1",
+    "id": "backup-ceb9b2d7a5aa4b108518ba68a595858f",
+    "snapshot_at": "2026-10-26T07:37:03.717689+00:00",
+    "completed_at": "2026-10-26T07:37:11.436730+00:00",
+    "backup_seconds": 8.406,
+    "files": {
+      "database.age": {
+        "sha256": "a273181d24ed82428c61b509e8b3e0aa1288fc6b9eb22d3132bd74df2bff9c64",
+        "bytes": 11309612
+      },
+      "metadata.age": {
+        "sha256": "2752e8b39812200031867b6b9dcd07868e08a9f34cd3bbda26f262b3ff97ac21",
+        "bytes": 2890
+      }
+    }
+  },
+  "large_source_plaintext": {
+    "sha256": "1bce2e07e11db811b24882f82a8a00c4c366d3d44555e1e12dbd954a79dc666b",
+    "bytes": 11306660
+  },
+  "large_source_server": "17.5 (Debian 17.5-1.pgdg110+1)",
+  "extensions": [
+    [
+      "plpgsql",
+      "1.0"
+    ],
+    [
+      "postgis",
+      "3.5.2"
+    ]
+  ],
+  "large_tables_source_equal_restored": {
+    "alembic_version": {
+      "rows": 1,
+      "sha256": "4a09254987428a11ced53d79bd5ef35ce26792293a85dc0183bab82c5d106f85"
+    },
+    "analysis_runs": {
+      "rows": 1,
+      "sha256": "96d44b47af9df236487975ccd5e669f68ed03e064376d12d5564631448b1375b"
+    },
+    "analytical_reports": {
+      "rows": 199,
+      "sha256": "7e823781f489b71fcf64b08a426cbe0fa68ea08e06762cc743da63cb4a46948d"
+    },
+    "audit_events": {
+      "rows": 457,
+      "sha256": "6fd8c196db0485ffd6ac448814b120e4312b977c2018bf54387d277ddd4cd969"
+    },
+    "business_profiles": {
+      "rows": 200,
+      "sha256": "fad34504e037083167b212c95f083557eada54f0024dbbfb0934a32b967aab11"
+    },
+    "consents": {
+      "rows": 303,
+      "sha256": "dfae824a22772b2d6adc36d6f12b0e5d7d1e7721169f3c05868cf7971de31d55"
+    },
+    "conversations": {
+      "rows": 200,
+      "sha256": "73b59d97ae1010946a803879d069745b6889d0639e4b3747144b3c7d14a56172"
+    },
+    "geo_datasets": {
+      "rows": 2,
+      "sha256": "df0a803a45f900080a4bd4b47038ae54988af04f416ff9a28da4ac3636a2fbc8"
+    },
+    "geo_districts": {
+      "rows": 1,
+      "sha256": "e4151d4cac2f8da82bbe43f4dbf493cbaeb4ff60df8488a26bab2350e4e509f7"
+    },
+    "geo_pois": {
+      "rows": 20153,
+      "sha256": "57be8cb4fc52e413eb1ab4c5ca1bc6f132c6cd7154726d75f3ab41c6b8e7ca03"
+    },
+    "lead_drafts": {
+      "rows": 52,
+      "sha256": "33ba8482d1c9ad94ea25fe36041b9bc71bb1e9a6f4e4452e5e138d06e3cdd7d2"
+    },
+    "lead_submissions": {
+      "rows": 51,
+      "sha256": "235ded732e5727a67285ac4b3e5ac6caf6b426a68fb2699626627ce0b64ddc3e"
+    },
+    "location_metrics": {
+      "rows": 1,
+      "sha256": "0ed7faa7dd6177e582385bb8811d41620acef25f5362632932a8709185d610e1"
+    },
+    "messages": {
+      "rows": 16438,
+      "sha256": "64ddab4bb7a6399320c2634098ca6e32286257f867993681295162c8f19c149d"
+    },
+    "profile_revisions": {
+      "rows": 8518,
+      "sha256": "1ea2ebf478fa3e56a738a8eb23cf05c5ab3bd3b3ee3d70b3661beea06fa76623"
+    },
+    "provider_datasets": {
+      "rows": 1,
+      "sha256": "4d87aac5e0f02487db86c16c9ec811ec4e156104399f0d1126281e87be74d211"
+    },
+    "spatial_ref_sys": {
+      "rows": 8500,
+      "sha256": "92ea221bf9d771d31af55f6d5876e2a2bcb2652685226447bce685e96fc73538"
+    },
+    "walk_edges": {
+      "rows": 4905,
+      "sha256": "43ff697c543a3fce92da629ad62de34d462e25c9f051e945121836d072117ef7"
+    },
+    "walk_graphs": {
+      "rows": 2,
+      "sha256": "a199b8ccfce41e750f525709e137511eca014eb98b8dc3a5e23c9a65b535c3ff"
+    }
+  },
+  "full_local_rto_seconds": 53.157,
+  "rto_phases": [
+    {
+      "stage": "01_prepare_clean_project_and_cached_images",
+      "seconds": 1.922
+    },
+    {
+      "stage": "02_retrieve_local_encrypted_copy",
+      "seconds": 0.016
+    },
+    {
+      "stage": "03_ciphertext_checksums",
+      "seconds": 0.015
+    },
+    {
+      "stage": "05_start_clean_PostgreSQL_PostGIS",
+      "seconds": 5.297
+    },
+    {
+      "stage": "07_08_schema_extensions_counts_fingerprints",
+      "seconds": 5.438
+    },
+    {
+      "stage": "04_decrypt_authenticate_private_temporary_file",
+      "seconds": 0.844
+    },
+    {
+      "stage": "06_createdb_pg_restore_including_stage05",
+      "seconds": 8.953
+    },
+    {
+      "stage": "08b_alembic_check",
+      "seconds": 2.579
+    },
+    {
+      "stage": "09_start_backend_and_frontend_readiness",
+      "seconds": 3.468
+    },
+    {
+      "stage": "10_readiness_HTTP",
+      "seconds": 0.11
+    },
+    {
+      "stage": "11_HTTP_user_scenarios_including_real_Qwen",
+      "seconds": 28.547
+    }
+  ],
+  "rto_checks": {
+    "owner_isolation": "PASS",
+    "receipt_audit": "PASS",
+    "geo_finance_bank": "PASS",
+    "pdf_json": "byte-identical",
+    "real_qwen": "PASS"
+  },
+  "rto_limitations": [
+    "Local warm host; cached images/age/Ollama model and private test identity available",
+    "No OS reinstall, remote/offsite transfer, key-loss or Ollama model-volume rebuild",
+    "Stage06 includes stage05; stages are not additive; total is independent wall clock"
+  ],
+  "small_backup": {
+    "format": "business-ai-age-v1",
+    "id": "backup-ee9e9e88d6044e6da9a66d5ad48d6737",
+    "snapshot_at": "2026-10-26T07:50:17.533497+00:00",
+    "completed_at": "2026-10-26T07:50:21.175497+00:00",
+    "backup_seconds": 4.375,
+    "files": {
+      "database.age": {
+        "sha256": "2e4719dadcc0574e191c1ac5dd9f883f8a3dc6149f0de194601202113f2f9150",
+        "bytes": 131019
+      },
+      "metadata.age": {
+        "sha256": "c635eaf70449ffe4a37ad0a320b1f9554761863ac0feee7dd8da8291a94becf5",
+        "bytes": 2864
+      }
+    }
+  },
+  "small_restore": {
+    "status": "PASS",
+    "id": "backup-ee9e9e88d6044e6da9a66d5ad48d6737",
+    "authentication_seconds": 0.688,
+    "restore_seconds": 2.25,
+    "verification_seconds": 2.297,
+    "total_seconds": 5.235,
+    "tables": {
+      "alembic_version": {
+        "rows": 1,
+        "sha256": "4a09254987428a11ced53d79bd5ef35ce26792293a85dc0183bab82c5d106f85"
+      },
+      "analysis_runs": {
+        "rows": 1,
+        "sha256": "486895516daf3619d3e52b2739fa105167ac784c52e5de4bc14aa48ce83a224b"
+      },
+      "analytical_reports": {
+        "rows": 1,
+        "sha256": "add161a1b75af0af42025aa5af61eab685c74a887cee2e4981ef3dca707e7c05"
+      },
+      "audit_events": {
+        "rows": 9,
+        "sha256": "29a1ba95202779c46fd2d404f1883477665e1e261765fb59fd011526e1661601"
+      },
+      "business_profiles": {
+        "rows": 2,
+        "sha256": "7b3c0c3368d2c0ac1ead5e7f965df1fb19b42e59ce00f9f9b9826526e063e305"
+      },
+      "consents": {
+        "rows": 5,
+        "sha256": "99bb00530a9e34c9fe57c20afe25fb36c8f2d6dd22f93b768eee390f477c9528"
+      },
+      "conversations": {
+        "rows": 2,
+        "sha256": "1e47682150d0e40e612c4d9bb2f27c7e90082a09f3a9cfddb8359bbf2665890e"
+      },
+      "geo_datasets": {
+        "rows": 2,
+        "sha256": "9b2bb6ecc89e7e521568888c4a031bcfc903e31538cfec4d835893be1639d67b"
+      },
+      "geo_districts": {
+        "rows": 1,
+        "sha256": "cb03ae2f4c4da0d5e38bcac395a40889fb419566d7f5d0b7308935ba232ea2fa"
+      },
+      "geo_pois": {
+        "rows": 153,
+        "sha256": "af0c068ee550c371065c555e7ac09eb1ccc9f2369eaef50a0b2f0157399a70e5"
+      },
+      "lead_drafts": {
+        "rows": 2,
+        "sha256": "2b8156288e223c0a720287b2df50b4d28be7ca5aa5226081becaf16cab78d75b"
+      },
+      "lead_submissions": {
+        "rows": 1,
+        "sha256": "ceab3f7de0dcd2e507947ca0edfdeb17c90d2ae8c72b31134ca8320807fb4d19"
+      },
+      "location_metrics": {
+        "rows": 1,
+        "sha256": "45700e80793036b4f12f082e6ff9b9936cd1de91f135a95c619358f3264f5b7b"
+      },
+      "messages": {
+        "rows": 4,
+        "sha256": "39d95d9b27530af74cbed9ec33a0e963b14330bfb647bab95278bcc39f115139"
+      },
+      "profile_revisions": {
+        "rows": 4,
+        "sha256": "19a9511693a1055f837e4b3d42b8a1f7bdaf05b91c574be95ca31e9f5226ee74"
+      },
+      "provider_datasets": {
+        "rows": 1,
+        "sha256": "2cfa5398797a971171ddc163555b13b2138fa4d91ef47c3f5a2704fec6eb8710"
+      },
+      "spatial_ref_sys": {
+        "rows": 8500,
+        "sha256": "92ea221bf9d771d31af55f6d5876e2a2bcb2652685226447bce685e96fc73538"
+      },
+      "walk_edges": {
+        "rows": 5,
+        "sha256": "50754aac5b8b9392f0f32fa43442a960a4075a97b0097f87ea394d4e9b1f77d6"
+      },
+      "walk_graphs": {
+        "rows": 1,
+        "sha256": "8abc5f1a269920abb41f61dfa489cceaf0e1409cf128fcab0757699bdc5a9e0a"
+      }
+    }
+  },
+  "small_api_verification": "PASS",
+  "negative_tests": {
+    "wrong_key": "REFUSED",
+    "missing_identity": "REFUSED",
+    "missing_file": "REFUSED",
+    "tampered": "REFUSED",
+    "truncated": "REFUSED",
+    "existing_target": "REFUSED",
+    "database_unavailable": "REFUSED",
+    "restore_interrupted": "REFUSED",
+    "age_24h_exact": "OK",
+    "age_24h_plus1": "OK",
+    "isolated_age_24h": "OK",
+    "isolated_age_24h_plus1": "STALE",
+    "observed_rpo": {
+      "status": "OK",
+      "id": "backup-e5a7c343a118496f88cf88595aa1a10e",
+      "snapshot_at": "2026-10-26T07:44:01.765059+00:00",
+      "completed_at": "2026-10-26T07:44:09.852250+00:00",
+      "age_seconds": 510.177,
+      "invalid_bundles": 0,
+      "verification": "pipeline completion and ciphertext SHA; age authentication requires identity"
+    },
+    "partial_database_tables": 0,
+    "plaintext_residue": false
+  },
+  "native_scheduler": {
+    "status": "ACTUAL_TRIGGER_PASS",
+    "observation": {
+      "status": "OK",
+      "id": "backup-e5a7c343a118496f88cf88595aa1a10e",
+      "snapshot_at": "2026-10-26T07:44:01.765059+00:00",
+      "completed_at": "2026-10-26T07:44:09.852250+00:00",
+      "age_seconds": 8.823,
+      "invalid_bundles": 0,
+      "verification": "pipeline completion and ciphertext SHA; age authentication requires identity"
+    },
+    "permanent_task_installed": false
+  },
+  "watch_schedule": {
+    "real_backups": 2,
+    "test_interval_seconds": 2,
+    "production_interval_seconds": 43200
+  },
+  "rpo_guarantee": "Conditional on running host/scheduler, readable source/writable storage; no offsite/PITR guarantee",
+  "keys": "Disposable synthetic only; owner production identity not generated",
+  "baseline_sha256": "690133a959640c3ee0167c46bc39eea13b966f2fff615f4158c10eda85e74feb",
+  "large_source_bytes_after_autovacuum": 58346643,
+  "large_source_bytes_label": "58,150,035 after seed; physical size later 58,346,643 without logical data changes",
+  "geometry_checks": {
+    "poi_valid_srid4326": true,
+    "walk_valid_srid4326": true
+  },
+  "tests": {
+    "backend_quick_pass": 332,
+    "db_skips_executed_separately": 102,
+    "postgres_integration_pass": 102,
+    "extended_pass": 102,
+    "hypothesis_examples": 1550,
+    "frontend_pass": 43,
+    "chromium_mock_pass": 24,
+    "crypto_tests_real_age": 17
+  }
+}
