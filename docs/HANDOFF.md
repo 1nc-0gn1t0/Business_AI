@@ -5,7 +5,11 @@
 - H-02 [PR#20](https://github.com/1nc-0gn1t0/Business_AI/pull/20) merged
   `2026-10-26T02:45:22Z`; headf000ecd, main `559a193503f12ca4156526c3ab86474a5fde8e2a`.
   CI merge SHA: Windows/Ubuntu/Compose SUCCESS. Main ff-only/divergence0/0, исходное
-  дерево чистое; ветка `codex/H-03-inference-isolation`. Итоговый SHA/PR/CI — в отчёте.
+  дерево чистое; ветка `codex/H-03-inference-isolation`. Реализация:
+  `eb9a67e2a68ea711e3a46ae36694e1c19fcbb15a`, push CI Windows/Ubuntu/Compose SUCCESS
+  ([run40264521878](https://github.com/1nc-0gn1t0/Business_AI/actions/runs/40264521878)).
+  [PR#21](https://github.com/1nc-0gn1t0/Business_AI/pull/21) открыт в main и прикреплён
+  к чату; не объединён. Итоговый SHA после этого doc commit/exact HEAD CI — в отчёте.
 - H-03 реализована: short locked read → immutable DTO snapshot → Session closed →
   bounded FIFO/Qwen без БД → новая короткая write Session с owner/CAS/consent revision/
   quotas/validation и atomic profile/messages/revision commit. Withdraw→grant не
@@ -53,9 +57,8 @@
   docs; последующая обычная Docker build успешно прошла, системные настройки не менялись.
   Окончательный локальный prek:7/7hooks PASS, OpenAPI TypeScript AST unchanged,
   doc links/evidence JSON/diff checks PASS. Commit hooks и exact HEAD CI — в PR/отчёте.
-- Создание PR требует браузерной авторизации GitHub (CLI отсутствует); пользователь
-  выбрал вход во встроенной вкладке, ожидается завершение входа. Credentials из Git
-  helper не извлекаются. После push открыть/attach PR в main и проверить exact HEAD CI.
+- Пользователь выполнил вход во встроенном браузере, PR создан через GitHub UI;
+  credentials из Git helper не извлекались. Работа не блокируется авторизацией.
 - **Далее:** review H-03. Не merge автоматически; H-04 только после отдельного
   разрешения. BA-017/018 остаются отдельным невыполненным исследовательским треком;
   порядок F-00→H-01…06→UX→U→UI→QA→RC сохранён, зависимости будущих UX/U не сняты.
