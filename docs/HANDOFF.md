@@ -4,7 +4,9 @@
 
 - PR[#22](https://github.com/1nc-0gn1t0/Business_AI/pull/22) H-04/c39d4ac merged
   `2026-10-26T06:07:10Z`; main930b8e4 ff-only, исходное дерево чистое. Ветка
-  `codex/H-04-FU-backup-recovery`; фактический HEAD/PR/CI — в итоговом отчёте/PR.
+  `codex/H-04-FU-backup-recovery`; реализация `8e40fc42bee97ca387f653f813faa2687a71c60d`,
+  [PR#23](https://github.com/1nc-0gn1t0/Business_AI/pull/23) открыт/прикреплён, не merged.
+  Финальный HEAD после исправления CI fixture/документации и exact SHA checks — в PR/отчёте.
 - Новый `scripts/encrypted_backup.py`: pg_dump→age1.3.2 streaming, encrypted
   metadata, bounded buffers/deadline/atomic publication, OS lock, RPO/status exit2,
   private logs и explicit dry-run prune/keep≥1/PIN. Restore полностью authenticates
@@ -43,6 +45,10 @@
   extended102PASS/1550 property examples; frontend43PASS; Chromium24PASS; prek7hooks,
   Ruff/mypy/TS/build/Compose smoke PASS. Final commit hooks/CI сверяются перед сдачей.
   Без новых app dependencies/DTO/миграций/формул/гео/банк/LLM orchestration изменений.
+  Первый Ubuntu CI:331PASS/1FAIL — watch test подменял общий time.sleep и захватывал
+  Linux subprocess backoff waits. Воспроизведено в local Linux, выделен scheduler-only
+  wait_interval без ослабления assertion; повторный Linux crypto17PASS. Не выдавать
+  прежний CI за успех, дождаться exact final HEAD Windows/Ubuntu/Compose.
 - **Остатки R-12:** инженерный OPS-ENC подтверждён для нового pipeline; owner должен
   создать реальные keys/custody, проверить real backup/restore, включить scheduler и
   защитить **исторические plaintext F-00/H-04** (они сохранены, не зашифрованы задним

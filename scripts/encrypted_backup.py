@@ -25,6 +25,7 @@ FORMAT = "business-ai-age-v1"
 MAX_BYTES = 2 * 1024**3
 MAX_METADATA = 4 * 1024**2
 NAME = re.compile(r"backup-[a-f0-9]{32}")
+wait_interval = time.sleep  # Scheduler seam; never monkeypatch stdlib subprocess waits.
 FAILURES = (
     OSError,
     ValueError,
@@ -622,7 +623,7 @@ def main():
                 count += 1
                 if args.test_runs is not None and count >= args.test_runs:
                     break
-                time.sleep(interval)
+                wait_interval(interval)
     except (*FAILURES, KeyboardInterrupt):
         print('{"status":"FAILED","details":"withheld"}')
         return 1

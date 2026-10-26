@@ -167,6 +167,13 @@ Crypto17PASS с реальным age; extended102PASS/1550 property examples; fr
 Chromium24PASS; Ruff/mypy/TS/build/prek/Compose smoke PASS. Финальный SHA/CI — в PR.
 Продуктовые API/DTO/формулы/гео/банк/LLM orchestration и immutable reports не менялись.
 
+Первый Ubuntu CI завершился331PASS/1FAIL: тест watch подменял общий `time.sleep`,
+перехватывая внутренние Linux `subprocess.wait` backoff sleeps. Ошибка воспроизведена
+локально на Linux с настоящим age. Исправлена точка injection (только scheduler
+`wait_interval`), assertion ровно одного ожидаемого интервала сохранён. Linux crypto
+17PASS после исправления; предыдущий failure не засчитывается как PASS, финальный
+CI сверяется на новом SHA.
+
 **OPS-ENC: инженерная реализация и rehearsals подтверждены.** Для реальной эксплуатации
 владелец должен создать собственный ключ/custody, выполнить backup/restore smoke,
 включить расписание и проверить LastRunTime/LastTaskResult/status. Исторические F-00/

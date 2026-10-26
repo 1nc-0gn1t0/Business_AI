@@ -261,7 +261,7 @@ def test_watch_dispatches_two_scheduled_real_encryptions(
     real_backup = b.backup
     delays: list[float] = []
     monkeypatch.setattr(b, "backup", lambda c, backend=None: real_backup(c, Fake()))
-    monkeypatch.setattr(b.time, "sleep", delays.append)
+    monkeypatch.setattr(b, "wait_interval", delays.append)
     monkeypatch.setattr(
         sys,
         "argv",
