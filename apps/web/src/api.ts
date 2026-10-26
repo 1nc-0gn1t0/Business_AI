@@ -59,7 +59,27 @@ const messages: Record<string, string> = {
     "Выбранная зона не соответствует результатам анализа. Выберите её заново.",
   report_invalid_walking_context:
     "Повторите пешеходный анализ на той же версии геоданных.",
-  report_request_too_large: "Объём вводных отчёта превышает 128 КиБ.",
+  report_request_too_large:
+    "Объём вводных отчёта превышает допустимый размер. Сократите вводные.",
+  request_body_too_large:
+    "Запрос слишком велик. Сократите текст или количество вводных.",
+  request_structure_too_large:
+    "Слишком много вложенных данных или элементов. Сократите вводные.",
+  invalid_request_structure:
+    "Проверьте формат вводных: сервер отклонил структуру запроса.",
+  request_text_too_long:
+    "Текст слишком длинный. Сократите сообщение или вводные.",
+  request_body_timeout:
+    "Передача запроса заняла слишком много времени. Проверьте соединение.",
+  request_target_too_large:
+    "Адрес запроса слишком длинный. Сократите параметры.",
+  request_headers_too_large: "Слишком большой объём заголовков запроса.",
+  request_capacity_busy:
+    "Сервис занят. Дождитесь завершения текущих операций и повторите действие.",
+  request_rate_limited:
+    "Превышен временный лимит запросов. Повторите действие позже.",
+  resource_quota_exceeded:
+    "Достигнут лимит сохраняемых данных. Обратитесь к владельцу локального сервиса; повтор запроса не сбросит квоту.",
   report_snapshot_too_large:
     "Снимок отчёта слишком велик. Уменьшите область пешеходного анализа.",
   report_pdf_too_large:
@@ -69,7 +89,8 @@ const messages: Record<string, string> = {
   report_not_found: "Отчёт не найден или недоступен в этой гостевой сессии.",
   report_integrity_error:
     "Снимок отчёта не прошёл проверку целостности. Подготовьте новый отчёт.",
-  report_limit_reached: "Достигнут лимит 20 отчётов для беседы.",
+  report_limit_reached:
+    "Достигнут лимит отчётов для беседы. Сохранённые отчёты остаются доступны.",
   report_generation_timeout:
     "Подготовка отчёта превысила лимит времени. Уменьшите объём анализа.",
   demo_data_disabled:
@@ -117,6 +138,24 @@ const messages: Record<string, string> = {
   conversation_not_found:
     "Беседа не найдена или гостевой доступ утрачен. Можно начать новую беседу.",
 };
+async function responseError(response: Response): Promise<ApiError> {
+  const payload = await response.json().catch(() => null);
+  const code =
+    typeof payload?.detail?.code === "string"
+      ? payload.detail.code
+      : `http_${response.status}`;
+  let message =
+    messages[code] ||
+    (response.status === 422
+      ? "Проверьте вводные: сервер отклонил значения. Проверьте длину текста, бюджет и допустимые диапазоны чисел."
+      : response.status >= 502
+        ? "Сервис временно недоступен. Если ошибка возникла в чате, проверьте Ollama и загруженную модель."
+        : `Не удалось выполнить запрос (${response.status}).`);
+  const retry = response.headers.get("Retry-After");
+  if (response.status === 429 && retry && /^\d{1,6}$/.test(retry))
+    message += ` Повторная попытка возможна через ${Number(retry)} с.`;
+  return new ApiError(response.status, code, message);
+}
 export async function request<T>(
   path: string,
   options: {
@@ -147,19 +186,7 @@ export async function request<T>(
         : AbortSignal.timeout(190_000),
     });
     if (!response.ok) {
-      const payload = await response.json().catch(() => null);
-      const code =
-        typeof payload?.detail?.code === "string"
-          ? payload.detail.code
-          : `http_${response.status}`;
-      const message =
-        messages[code] ||
-        (response.status === 422
-          ? "Проверьте вводные: сервер отклонил значения. Денежные суммы — неотрицательные, чек > 0, доля затрат < 1."
-          : response.status >= 502
-            ? "Сервис временно недоступен. Если ошибка возникла в чате, проверьте Ollama и загруженную модель."
-            : `Не удалось выполнить запрос (${response.status}).`);
-      throw new ApiError(response.status, code, message);
+      throw await responseError(response);
     }
     return (await response.json()) as T;
   } catch (error) {
@@ -197,13 +224,7 @@ export async function requestFile(
       : AbortSignal.timeout(30_000),
   });
   if (!response.ok) {
-    const payload = await response.json().catch(() => null);
-    const code = payload?.detail?.code || `http_${response.status}`;
-    throw new ApiError(
-      response.status,
-      code,
-      messages[code] || "Не удалось скачать отчёт.",
-    );
+    throw await responseError(response);
   }
   return response.blob();
 }

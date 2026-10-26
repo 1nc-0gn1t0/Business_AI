@@ -22,6 +22,7 @@ from app.geo.scoring import ALGORITHM_VERSION as GEO_VERSION
 from app.geo.walk_graph import ALGORITHM_VERSION as WALK_VERSION
 from app.geo.walking import catchment
 from app.leads.consents import require_consent
+from app.limits.storage import check_growth
 from app.reporting.schemas import ReportRequest, ReportSnapshot, ReportView
 from app.services.conversations import Conversations, VersionConflict
 
@@ -54,16 +55,7 @@ def prepare(session: Session, owner: UUID, token: str, body: ReportRequest) -> R
         fail("report_profile_not_confirmed", 422)
     if body.geo is None and body.finance is None:
         fail("report_no_analysis", 422)
-    count = (
-        session.scalar(
-            sa.select(sa.func.count())
-            .select_from(ReportRecord)
-            .where(ReportRecord.conversation_id == owner)
-        )
-        or 0
-    )
-    if count >= 20:
-        fail("report_limit_reached", 429)
+    check_growth(session, owner, {"reports": 1}, lock=False)
 
     def checked(actual: str, expected: str) -> None:
         if actual != expected:
@@ -193,6 +185,9 @@ def prepare(session: Session, owner: UUID, token: str, body: ReportRequest) -> R
         fail("report_pdf_too_large", 413)
     if monotonic() - started > 30:
         fail("report_generation_timeout", 503)
+    check_growth(
+        session, owner, {"reports": 1}, report_document=snapshot.model_dump(mode="json"), pdf=pdf
+    )
     row = ReportRecord(
         id=snapshot.id,
         conversation_id=owner,

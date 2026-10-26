@@ -41,6 +41,7 @@ services:
       LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-120}
       OLLAMA_NUM_CTX: ${OLLAMA_NUM_CTX:-4096}
       DATA_DEMO_ENABLED: ${DATA_DEMO_ENABLED:-false}
+      BA_API_LIMITS_JSON: ${BA_API_LIMITS_JSON:-}
     ports:
       - "127.0.0.1:${API_PORT:-8000}:8000"
     depends_on:

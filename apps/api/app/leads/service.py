@@ -27,6 +27,7 @@ from app.leads.schemas import (
     Purpose,
     SubmitRequest,
 )
+from app.limits.storage import check_growth
 from app.services.conversations import Conversations
 
 
@@ -82,6 +83,12 @@ class Leads:
             return self.consents(conversation_id)
         if body.decision == "withdraw" and current.status != "granted":
             raise LeadError("consent_not_granted")
+        check_growth(
+            self.session,
+            conversation_id,
+            {"consents": 1, "audit": 1},
+            deactivation=current.status == "granted" and body.decision in {"withdraw", "decline"},
+        )
         view = ConsentView.model_validate(
             {
                 "id": uuid4(),
@@ -193,6 +200,7 @@ class Leads:
             if not isinstance(body, DraftEdit) or previous.revision != body.expected_revision:
                 raise LeadError("lead_revision_conflict")
         payload = self.payload(view, body)
+        check_growth(self.session, view.id, {"audit": 1, **({"drafts": 1} if row is None else {})})
         now = datetime.now(UTC)
         result = LeadDraft(
             id=draft_id or uuid4(),
@@ -245,6 +253,7 @@ class Leads:
             raise LeadError("lead_already_submitted")
         if draft.state == "confirmed":
             return draft
+        check_growth(self.session, view.id, {"audit": 1})
         now = datetime.now(UTC)
         result = draft.model_copy(
             update={"state": "confirmed", "confirmed_at": now, "updated_at": now}
@@ -273,6 +282,7 @@ class Leads:
             return LeadReceipt.model_validate(replay.document)
         if draft.state != "confirmed" or draft.confirmed_at is None:
             raise LeadError("lead_confirmation_required")
+        check_growth(self.session, view.id, {"receipts": 1, "audit": 1})
         receipt = self.adapter.submit(draft, consents=consents, created_at=datetime.now(UTC))
         self.session.add(
             LeadSubmissionRecord(

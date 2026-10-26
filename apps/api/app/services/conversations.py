@@ -32,6 +32,7 @@ from app.domain.conversation import (
 )
 from app.domain.enums import ConversationState, MessageRole
 from app.leads.consents import require_consent
+from app.limits.storage import check_growth
 
 
 class ConversationNotFound(Exception):
@@ -99,6 +100,7 @@ class Conversations:
         )
 
     def create(self) -> ConversationCreated:
+        check_growth(self.session, None, {"conversations": 1, "revisions": 1, "messages": 1})
         token = secrets.token_urlsafe(32)
         now = datetime.now(UTC)
         record = ConversationRecord(
@@ -161,6 +163,12 @@ class Conversations:
         require_consent(self.session, conversation_id, "assistant")
         if record.version != expected_version:
             raise VersionConflict(record.version)
+        check_growth(
+            self.session,
+            record.id,
+            {"revisions": 1, "messages": 2 if content is not None else 1},
+            lock=False,
+        )
         profile = self._profile(record.id)
         source = "patch"
         answer = None
@@ -213,6 +221,9 @@ class Conversations:
         require_consent(self.session, conversation_id, "assistant")
         if record.version != expected_version:
             raise VersionConflict(record.version)
+        check_growth(
+            self.session, record.id, {"revisions": 1, "messages": 2 if content is not None else 1}
+        )
         if patch is not None:
             try:
                 profile = apply_patch(profile, patch)

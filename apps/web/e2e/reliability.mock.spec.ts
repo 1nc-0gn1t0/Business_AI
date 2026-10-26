@@ -111,10 +111,16 @@ for (const [code, status, message] of [
   ["llm_unavailable", 503, "Ollama"],
   ["llm_timeout", 504, "время"],
   ["llm_invalid_response", 502, "ответ"],
+  ["request_body_too_large", 413, "слишком велик"],
+  ["request_text_too_long", 422, "длинный"],
+  ["resource_quota_exceeded", 429, "лимит сохраняемых"],
+  ["request_capacity_busy", 429, "занят"],
 ] as const)
-  test(`REL-chat-${status} preserves draft and confirmed state`, async ({
+  test(`REL-chat-${code} preserves draft and confirmed state`, async ({
     page,
   }) => {
+    if (code === "resource_quota_exceeded")
+      await page.setViewportSize({ width: 390, height: 844 });
     await setup(page);
     await page.route("**/messages", (r) =>
       r.request().method() === "POST"
@@ -123,7 +129,7 @@ for (const [code, status, message] of [
     );
     await page.goto("/");
     await page.getByLabel("Сообщение помощнику").fill("Меняю город на Самару");
-    await page.getByLabel("Отправить сообщение").click();
+    await page.getByLabel("Отправить сообщение").press("Enter");
     await expect(page.getByRole("alert")).toContainText(
       new RegExp(message, "i"),
     );

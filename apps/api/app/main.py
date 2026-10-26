@@ -1,8 +1,11 @@
 import logging
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from typing import Annotated, Literal
 
 import psycopg
 from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ValidationError
 from sqlalchemy.exc import SQLAlchemyError
@@ -16,14 +19,23 @@ from app.api.geo import router as geo_router
 from app.api.leads import public_router as consent_text_router
 from app.api.leads import router as leads_router
 from app.api.reports import router as reports_router
+from app.api.schemas import Contract
 from app.db.health import check_postgis
 from app.leads.policy import LeadError
-from app.reporting.limits import ReportBodyLimit
+from app.limits.http import ApiLimits, reset_admission
 from app.services.conversations import ConversationNotFound, IncompleteProfile, VersionConflict
 
 logger = logging.getLogger(__name__)
-app = FastAPI(title="Business AI", version="0.1.0")
-app.add_middleware(ReportBodyLimit)
+
+
+@asynccontextmanager
+async def lifespan(application: FastAPI) -> AsyncIterator[None]:
+    reset_admission()
+    yield
+
+
+app = FastAPI(title="Business AI", version="0.1.0", lifespan=lifespan)
+app.add_middleware(ApiLimits)
 app.include_router(router)
 app.include_router(geo_router)
 app.include_router(finance_router)
@@ -32,6 +44,32 @@ app.include_router(data_router)
 app.include_router(leads_router)
 app.include_router(consent_text_router)
 app.include_router(reports_router)
+
+
+@app.exception_handler(RequestValidationError)
+async def invalid_request(request: Request, error: RequestValidationError) -> JSONResponse:
+    # Preserve useful type/known field locations; never reflect input, ctx or arbitrary keys.
+    names = {"body", "path", "query", "header", "report_id"}
+    models = list(Contract.__subclasses__())
+    while models:
+        model = models.pop()
+        names.update(model.model_fields)
+        models.extend(model.__subclasses__())
+    messages = {
+        "string_too_long": "Строка превышает допустимую длину",
+        "too_long": "Слишком много элементов",
+        "missing": "Обязательное поле",
+        "extra_forbidden": "Лишние поля не принимаются",
+    }
+    details = [
+        {
+            "type": item["type"],
+            "loc": [v if isinstance(v, int) or v in names else "<field>" for v in item["loc"][:16]],
+            "msg": messages.get(item["type"], "Недопустимое значение или тип"),
+        }
+        for item in error.errors()[:16]
+    ]
+    return JSONResponse(status_code=422, content={"detail": details})
 
 
 @app.exception_handler(SQLAlchemyError)

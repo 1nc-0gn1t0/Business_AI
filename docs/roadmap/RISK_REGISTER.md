@@ -11,7 +11,28 @@ P0-дефектов, **доказанных в ограниченном H-01 tri
 но H-01/H-04 не закрыты: нет полного DR/previous-version upgrade/encryption policy.
 Ниже исторические evidence сохранены; D-04 добавлен по фактической проверке F-00.
 
-## Срез H-01 · 25.10.2026
+## Обновление H-02 · 26.10.2026
+
+- **H01-P1-01/R-01/R-03:** подтверждённый пробел закрыт для текущего loopback,
+  single-worker deployment: 18 write API, bounded ASGI/DTO, общие persistent quotas
+  PostgreSQL и process-local admission; доказательства отказов без побочных эффектов
+  и параллельной атомарности — [API_LIMITS](../API_LIMITS.md) и
+  [SECURITY_TEST_REPORT](../SECURITY_TEST_REPORT.md). Не объявляем полную защиту от DoS.
+- **H01-P2-01:** исправлен standard request-validation422, assertions теперь PASS
+  вместо strict XFAIL; raw input/context/arbitrary extra keys не отражаются.
+- **H01-P1-02/R-02:** подтверждён, **открыт H-03**, соответствующий XFAIL сохранён.
+- **R-04:** предварительная защита admission реализована, hard execution bounds/
+  реальная CPU/lock нагрузка требуют Q-04/H-03; не закрыт целиком.
+- **R-09:** existing owner/consent/idempotency tests повторно PASS; public accounts,
+  XSS/TTL/retention не реализованы. Общую локальную квоту можно исчерпать новым guest
+  в пределах общего window, но нельзя превысить её новыми ID/restart. Stock rows
+  координируются БД; временные/concurrency лимиты **не multi-worker**.
+- D-01…04, external/legal/data quality и остальные незатронутые риски сохраняются
+  в прежних статусах. Новых P0 не обнаружено в выполненном bounded scope.
+- H-02 не разрешает H-03/исследования автоматически. Порядок, принятый владельцем,
+  сохранён; BA-017/018 — отдельный невыполненный трек.
+
+## Срез H-01 · 25.10.2026 (исторический)
 
 Подробные evidence/reproducer/expected/impact/regression/files:
 [SECURITY_TEST_REPORT](../SECURITY_TEST_REPORT.md). Технический счёт текущего triage:

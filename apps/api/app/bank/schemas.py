@@ -4,6 +4,7 @@ from typing import Annotated, Literal, Self
 from pydantic import Field, StrictBool, StringConstraints, model_validator
 
 from app.api.schemas import BusinessProfile, Contract
+from app.limits.config import VersionNumber
 
 Key = Annotated[str, StringConstraints(pattern=r"^[a-z][a-z0-9_-]{0,99}$")]
 Digest = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
@@ -154,7 +155,7 @@ class CatalogueView(Contract):
 
 
 class MatchRequest(Contract):
-    expected_version: int = Field(strict=True, ge=0)
+    expected_version: VersionNumber
     needs: BankingNeeds = Field(default_factory=BankingNeeds)
     catalogue_fingerprint: Digest | None = None
 
