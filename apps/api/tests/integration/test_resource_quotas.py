@@ -79,7 +79,7 @@ def test_profile_message_and_confirmation_share_stock_no_inference_or_writes(
     def never(*args: Any, **kwargs: Any) -> Any:
         raise AssertionError("Rejected operation started inference")
 
-    monkeypatch.setattr("app.services.conversations.get_llm", never)
+    monkeypatch.setattr("app.services.dialogue.get_llm", never)
     for endpoint, method, body in (
         ("/messages", "post", {"expected_version": 0, "content": "Кофейня в Казани"}),
         ("/profile", "patch", {"expected_version": 0, "patch": {"city": "Казань"}}),
@@ -113,7 +113,7 @@ def test_http_and_full_profile_refusals_create_nothing(
     def never(*args: Any, **kwargs: Any) -> Any:
         raise AssertionError("Rejected request invoked Qwen")
 
-    monkeypatch.setattr("app.services.conversations.get_llm", never)
+    monkeypatch.setattr("app.services.dialogue.get_llm", never)
     assert client.post(url + "/messages", headers=headers, content=b"x" * 65537).status_code == 413
     assert (
         client.post(

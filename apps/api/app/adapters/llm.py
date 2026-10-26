@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 import os
@@ -12,6 +13,7 @@ from urllib.parse import urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 from uuid import uuid4
 
+import httpx2
 from pydantic import Field, StringConstraints, ValidationError, model_validator
 
 from app.api.conversation_schemas import ProfilePatch
@@ -221,9 +223,9 @@ class OllamaLLM:
     def __init__(self, settings: LLMSettings):
         self.settings = settings
 
-    def extract(
+    def payload(
         self, content: str, profile: BusinessProfile, history: tuple[Turn, ...]
-    ) -> ProfileToolCall:
+    ) -> dict[str, object]:
         # Current state + the last question avoid treating historical user facts as new input.
         state = profile.model_dump(mode="json", exclude={"id", "conversation_id"})
         compact = {key: state[key] for key in ("city", "category", "budget", "funding")}
@@ -259,6 +261,69 @@ class OllamaLLM:
                 "num_predict": 384,
             },
         }
+        return body
+
+    def parse(self, raw: bytes, content: str, profile: BusinessProfile) -> ProfileToolCall:
+        state = profile.model_dump(mode="json", exclude={"id", "conversation_id"})
+        if len(raw) > 65536:
+            raise LLMError("llm_invalid_response", 502)
+        data = json.loads(raw)
+        if (
+            data.get("done") is not True
+            or data.get("done_reason") != "stop"
+            or data.get("message", {}).get("tool_calls")
+        ):
+            raise LLMError("llm_invalid_response", 502)
+        wire = OllamaToolCall.model_validate_json(data["message"]["content"])
+        updates: dict[str, object] = {}
+        clarification = wire.needs_clarification
+        seen: set[str] = set()
+        for update in wire.extracted:
+            if update.field in seen:
+                raise LLMError("llm_invalid_response", 502)
+            seen.add(update.field)
+            current = (
+                profile.preferences.format
+                if update.field == "preferences.format"
+                else state[update.field]
+            )
+            proposed: object = update.value
+            if update.field == "budget" and current is not None and proposed is not None:
+                try:
+                    current, proposed = Decimal(str(current)), Decimal(str(proposed))
+                except InvalidOperation:
+                    raise LLMError("llm_invalid_response", 502) from None
+            # Models sometimes repeat old facts. Equal values cause no operation;
+            # every actual change still requires evidence in this turn only.
+            if (
+                update.field == "budget"
+                and update.value is not None
+                and update.evidence.casefold() in content.casefold()
+                and not budget_evidence_matches(update.value, update.evidence, content)
+            ):
+                clarification = "budget"
+                continue
+            if current == proposed:
+                continue
+            if update.evidence.casefold() not in content.casefold():
+                raise LLMError("llm_invalid_response", 502)
+            if update.field != wire.needs_clarification:
+                updates[update.field] = update.value
+        if "preferences.format" in updates:
+            updates["preferences"] = {"format": updates.pop("preferences.format")}
+        result = ProfileToolCall(
+            tool=wire.tool,
+            arguments=ProfilePatch.model_validate(updates),
+            clarification=clarification,
+            intent=wire.intent,
+        )
+        logger.info("Local LLM turn completed trace_id=%s", uuid4())
+        return result
+
+    def extract(
+        self, content: str, profile: BusinessProfile, history: tuple[Turn, ...]
+    ) -> ProfileToolCall:
+        body = self.payload(content, profile, history)
         request = Request(
             self.settings.base_url.rstrip("/") + "/api/chat",
             data=json.dumps(body, ensure_ascii=False).encode(),
@@ -273,60 +338,7 @@ class OllamaLLM:
                     timeout=max(0.01, self.settings.timeout - (time.monotonic() - started)),
                 ) as response:
                     raw = response.read(65537)
-                if len(raw) > 65536:
-                    raise LLMError("llm_invalid_response", 502)
-                data = json.loads(raw)
-                if (
-                    data.get("done") is not True
-                    or data.get("done_reason") != "stop"
-                    or data.get("message", {}).get("tool_calls")
-                ):
-                    raise LLMError("llm_invalid_response", 502)
-                wire = OllamaToolCall.model_validate_json(data["message"]["content"])
-                updates: dict[str, object] = {}
-                clarification = wire.needs_clarification
-                seen: set[str] = set()
-                for update in wire.extracted:
-                    if update.field in seen:
-                        raise LLMError("llm_invalid_response", 502)
-                    seen.add(update.field)
-                    current = (
-                        profile.preferences.format
-                        if update.field == "preferences.format"
-                        else state[update.field]
-                    )
-                    proposed: object = update.value
-                    if update.field == "budget" and current is not None and proposed is not None:
-                        try:
-                            current, proposed = Decimal(str(current)), Decimal(str(proposed))
-                        except InvalidOperation:
-                            raise LLMError("llm_invalid_response", 502) from None
-                    # Models sometimes repeat old facts. Equal values cause no operation;
-                    # every actual change still requires evidence in this turn only.
-                    if (
-                        update.field == "budget"
-                        and update.value is not None
-                        and update.evidence.casefold() in content.casefold()
-                        and not budget_evidence_matches(update.value, update.evidence, content)
-                    ):
-                        clarification = "budget"
-                        continue
-                    if current == proposed:
-                        continue
-                    if update.evidence.casefold() not in content.casefold():
-                        raise LLMError("llm_invalid_response", 502)
-                    if update.field != wire.needs_clarification:
-                        updates[update.field] = update.value
-                if "preferences.format" in updates:
-                    updates["preferences"] = {"format": updates.pop("preferences.format")}
-                result = ProfileToolCall(
-                    tool=wire.tool,
-                    arguments=ProfilePatch.model_validate(updates),
-                    clarification=clarification,
-                    intent=wire.intent,
-                )
-                logger.info("Local LLM turn completed trace_id=%s", uuid4())
-                return result
+                return self.parse(raw, content, profile)
             except TimeoutError:
                 raise LLMError("llm_timeout", 504) from None
             except HTTPError as error:
@@ -342,6 +354,50 @@ class OllamaLLM:
             except OSError:
                 raise LLMError("llm_unavailable", 503) from None
             time.sleep(0.25)
+        raise LLMError("llm_unavailable", 503)
+
+    async def aextract(
+        self, content: str, profile: BusinessProfile, history: tuple[Turn, ...]
+    ) -> ProfileToolCall:
+        # API transport is cancellable, unlike a blocking urllib call in a thread.
+        # Both transports use the same payload, schema and grounding rules.
+        try:
+            async with (
+                asyncio.timeout(self.settings.timeout),
+                httpx2.AsyncClient(
+                    timeout=self.settings.timeout,
+                    trust_env=False,
+                    follow_redirects=False,
+                    headers={"Accept-Encoding": "identity"},
+                ) as client,
+            ):
+                for attempt in range(2):
+                    try:
+                        async with client.stream(
+                            "POST",
+                            self.settings.base_url.rstrip("/") + "/api/chat",
+                            json=self.payload(content, profile, history),
+                        ) as response:
+                            response.raise_for_status()
+                            raw = bytearray()
+                            async for chunk in response.aiter_raw():
+                                if len(raw) + len(chunk) > 65536:
+                                    raise LLMError("llm_invalid_response", 502)
+                                raw.extend(chunk)
+                        return self.parse(bytes(raw), content, profile)
+                    except httpx2.TimeoutException:
+                        raise LLMError("llm_timeout", 504) from None
+                    except httpx2.HTTPStatusError as error:
+                        if error.response.status_code not in {429, 500, 502, 503} or attempt:
+                            raise LLMError("llm_unavailable", 503) from None
+                    except httpx2.RequestError:
+                        if attempt:
+                            raise LLMError("llm_unavailable", 503) from None
+                    await asyncio.sleep(0.25)
+        except TimeoutError:
+            raise LLMError("llm_timeout", 504) from None
+        except (ValueError, KeyError, TypeError, AttributeError):
+            raise LLMError("llm_invalid_response", 502) from None
         raise LLMError("llm_unavailable", 503)
 
 

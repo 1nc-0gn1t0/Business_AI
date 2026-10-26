@@ -1,10 +1,11 @@
 """BA-016: real transactions, controlled Ollama transport, no GPU/network dependency."""
 
-import io
 import json
 import os
+from collections.abc import AsyncIterator
 from decimal import Decimal
 
+import httpx2
 import pytest
 from fastapi.testclient import TestClient
 
@@ -51,12 +52,17 @@ def test_invalid_budget_grounding_preserves_transactional_state(
         }
     ).encode()
 
-    class Opener:
-        def open(self, *args: object, **kwargs: object) -> io.BytesIO:
-            return io.BytesIO(raw)
+    class ResponseStream(httpx2.AsyncByteStream):
+        async def __aiter__(self) -> AsyncIterator[bytes]:
+            yield raw
 
-    monkeypatch.setattr("app.adapters.llm.build_opener", lambda *args: Opener())
-    monkeypatch.setattr("app.services.conversations.get_llm", lambda: OllamaLLM(LLMSettings()))
+    real_client = httpx2.AsyncClient
+    transport = httpx2.MockTransport(lambda request: httpx2.Response(200, stream=ResponseStream()))
+    monkeypatch.setattr(
+        "app.adapters.llm.httpx2.AsyncClient",
+        lambda **kwargs: real_client(transport=transport, **kwargs),
+    )
+    monkeypatch.setattr("app.services.dialogue.get_llm", lambda: OllamaLLM(LLMSettings()))
     response = client.post(
         url + "/messages",
         headers=headers,

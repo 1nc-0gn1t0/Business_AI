@@ -26,7 +26,7 @@ class Admission:
         self.since = clock()
         self.requests = self.heavy = self.active = self.active_heavy = 0
 
-    def enter(self, heavy: bool, *, control: bool = False) -> None:
+    def enter(self, heavy: bool, *, control: bool = False, model: bool = False) -> None:
         cfg = policy()
         with self.lock:
             if self.active >= cfg.active_requests or (
@@ -34,7 +34,7 @@ class Admission:
             ):
                 raise Rejected("request_capacity_busy", 429)
             if not control:
-                self._charge(heavy)
+                self._charge(heavy or model)
             self.active += 1
             self.active_heavy += int(heavy)
 
@@ -155,7 +155,10 @@ class ApiLimits:
             else "request_body_too_large"
         )
         controller, admitted = CONTROLLER, False
-        heavy = heavy_request(path, method)
+        model = method == "POST" and path.endswith("/messages")
+        # Message inference has its own 1-active bounded queue. Preserve H-02 heavy
+        # frequency accounting without consuming the analytical concurrency slots.
+        heavy = heavy_request(path, method) and not model
         try:
             if (
                 len(scope["path"].encode("utf-8")) > cfg.path_bytes
@@ -171,7 +174,7 @@ class ApiLimits:
                 if int(lengths[0]) > maximum:
                     raise Rejected(size_code, 413)
             control_route = consent_control(path, method)
-            controller.enter(heavy, control=control_route)
+            controller.enter(heavy, control=control_route, model=model)
             admitted = True
             body = bytearray()
             try:

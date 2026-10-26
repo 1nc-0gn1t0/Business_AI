@@ -5,11 +5,11 @@ import pytest
 import sqlalchemy as sa
 from fastapi.testclient import TestClient
 from sqlalchemy.engine import Engine
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.api.schemas import AnalysisRun, BusinessProfile
 from app.db.models import AnalysisRunRecord
-from app.db.session import get_session
+from app.db.session import get_session, get_session_factory
 from app.main import app
 
 from .support import isolated_database, migrate
@@ -27,11 +27,15 @@ def client(
             yield db
 
     app.dependency_overrides[get_session] = session
+    app.dependency_overrides[get_session_factory] = lambda: sessionmaker(
+        engine, expire_on_commit=False
+    )
     try:
         with TestClient(app) as test_client:
             yield test_client
     finally:
         app.dependency_overrides.pop(get_session)
+        app.dependency_overrides.pop(get_session_factory)
 
 
 @pytest.fixture(scope="module")

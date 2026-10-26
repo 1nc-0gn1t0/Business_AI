@@ -15,6 +15,8 @@ describe("same-origin API client (explicit fetch mocks)", () => {
     [429, "resource_quota_exceeded", "не сбросит"],
     [429, "report_limit_reached", "остаются доступны"],
     [429, "request_capacity_busy", "Сервис занят"],
+    [429, "llm_queue_full", "Очередь"],
+    [429, "llm_queue_timeout", "ожидания"],
   ])(
     "handles limits without automatic retries: %s %s",
     async (status, code, expected) => {

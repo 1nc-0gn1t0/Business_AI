@@ -6,6 +6,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
     "alembic>=1.16,<2",
     "fastapi>=0.115,<1",
+    "httpx2",
     "psycopg[binary]>=3.2,<4",
     "reportlab>=4.4,<5",
     "sqlalchemy>=2.0,<3",
@@ -14,7 +15,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "httpx2",
     "hypothesis>=6,<7",
     "mypy>=1.15,<2",
     "pypdf>=6,<7",

@@ -1,13 +1,14 @@
 import hashlib
 import hmac
 import secrets
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
 
-from app.adapters.llm import DialogueLLM, LLMError, Mode, ProfileToolCall, Turn, get_llm
+from app.adapters.llm import LLMError, Mode, ProfileToolCall, Turn
 from app.api.conversation_schemas import (
     ConversationCreated,
     ConversationView,
@@ -32,6 +33,7 @@ from app.domain.conversation import (
 )
 from app.domain.enums import ConversationState, MessageRole
 from app.leads.consents import require_consent
+from app.leads.policy import LeadError
 from app.limits.storage import check_growth
 
 
@@ -49,10 +51,21 @@ class IncompleteProfile(Exception):
         self.missing = missing
 
 
+@dataclass(frozen=True)
+class MessageInput:
+    profile: BusinessProfile
+    history: tuple[Turn, ...]
+    version: int
+    consent_revision: int
+
+
+def needs_inference(content: str) -> bool:
+    return content.casefold().strip(" .!") not in CONFIRMATIONS
+
+
 class Conversations:
-    def __init__(self, session: Session, llm: DialogueLLM | None = None):
+    def __init__(self, session: Session):
         self.session = session
-        self.llm = llm
 
     def _authorise(
         self, conversation_id: UUID, token: str, *, lock: bool = False
@@ -148,6 +161,28 @@ class Conversations:
             )
         )
 
+    def message_input(self, conversation_id: UUID, token: str, version: int) -> MessageInput:
+        # Short row lock makes the profile/history/consent snapshot internally consistent.
+        record = self._authorise(conversation_id, token, lock=True)
+        consent = require_consent(self.session, conversation_id, "assistant")
+        if record.version != version:
+            raise VersionConflict(record.version)
+        check_growth(self.session, record.id, {"revisions": 1, "messages": 2}, lock=False)
+        recent = list(
+            self.session.scalars(
+                sa.select(MessageRecord)
+                .where(MessageRecord.conversation_id == record.id)
+                .order_by(MessageRecord.version.desc(), MessageRecord.role.desc())
+                .limit(4)
+            )
+        )
+        return MessageInput(
+            self._profile(record.id),
+            tuple(Turn(row.role.value, row.content) for row in reversed(recent)),
+            record.version,
+            consent.revision,
+        )
+
     def update(
         self,
         conversation_id: UUID,
@@ -157,45 +192,32 @@ class Conversations:
         content: str | None = None,
         patch: ProfilePatch | None = None,
         confirmation: bool = False,
+        call: ProfileToolCall | None = None,
+        mode: Mode | None = None,
+        consent_revision: int | None = None,
     ) -> ConversationView:
-        # Inference holds no row lock. Re-check the version under lock before any write.
-        record = self._authorise(conversation_id, token)
-        require_consent(self.session, conversation_id, "assistant")
+        record = self._authorise(conversation_id, token, lock=True)
+        consent = require_consent(self.session, conversation_id, "assistant")
         if record.version != expected_version:
             raise VersionConflict(record.version)
-        check_growth(
-            self.session,
-            record.id,
-            {"revisions": 1, "messages": 2 if content is not None else 1},
-            lock=False,
-        )
+        if consent_revision is not None and consent.revision != consent_revision:
+            raise LeadError("consent_revision_conflict")
         profile = self._profile(record.id)
         source = "patch"
         answer = None
-        mode: Mode | None = None
         if content is not None:
             source = "message"
-            if content.casefold().strip(" .!") in CONFIRMATIONS:
+            if not needs_inference(content):
                 confirmation = not missing_fields(profile)
             else:
-                llm = self.llm or get_llm()
-                recent = list(
-                    self.session.scalars(
-                        sa.select(MessageRecord)
-                        .where(MessageRecord.conversation_id == record.id)
-                        .order_by(MessageRecord.version.desc(), MessageRecord.role.desc())
-                        .limit(4)
-                    )
-                )
-                history = tuple(Turn(row.role.value, row.content) for row in reversed(recent))
-                call = llm.extract(content, profile, history)
+                if call is None:
+                    raise LLMError("llm_invalid_response", 502)
                 # Validate even custom/mock adapter output at the service boundary.
                 try:
                     call = ProfileToolCall.model_validate(call.model_dump(exclude_unset=True))
                 except ValueError:
                     raise LLMError("llm_invalid_response", 502) from None
                 patch = call.arguments
-                mode = llm.mode
                 if call.intent == "analytics":
                     answer = (
                         "Географический анализ и финансовые расчёты доступны в разделах "
@@ -217,10 +239,6 @@ class Conversations:
                     }[call.clarification]
                 elif answer:
                     answer += reply_for(profile)
-        record = self._authorise(conversation_id, token, lock=True)
-        require_consent(self.session, conversation_id, "assistant")
-        if record.version != expected_version:
-            raise VersionConflict(record.version)
         check_growth(
             self.session, record.id, {"revisions": 1, "messages": 2 if content is not None else 1}
         )

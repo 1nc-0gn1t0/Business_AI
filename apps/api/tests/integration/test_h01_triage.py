@@ -1,10 +1,12 @@
 """H-01: isolated UUID databases only; no real Ollama or bank HTTP calls."""
 
+import json
 import os
 from collections.abc import Sequence
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date
 from threading import Event
+from time import perf_counter
 from typing import Any
 from uuid import UUID, uuid4
 
@@ -14,6 +16,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
+from sqlalchemy.pool import QueuePool
 
 from app.adapters.llm import Mode, ProfileToolCall, Turn
 from app.api.schemas import BusinessProfile
@@ -119,11 +122,6 @@ class RetainedInferenceTransaction(AssertionError):
     pass
 
 
-@pytest.mark.xfail(
-    strict=True,
-    raises=RetainedInferenceTransaction,
-    reason="H01-P1-02: read transaction held during inference; H-03",
-)
 def test_h01_no_idle_transaction_during_inference(
     client: TestClient,
     migrated_database: tuple[Engine, UUID],
@@ -146,7 +144,7 @@ def test_h01_no_idle_transaction_during_inference(
                 {"tool": "extract_business_profile", "arguments": {"city": "Казань"}}
             )
 
-    monkeypatch.setattr("app.services.conversations.get_llm", ControlledLLM)
+    monkeypatch.setattr("app.services.dialogue.get_llm", ControlledLLM)
     _, headers, url = create(client)
     engine, _ = migrated_database
     with ThreadPoolExecutor(max_workers=1) as pool:
@@ -158,6 +156,8 @@ def test_h01_no_idle_transaction_during_inference(
         )
         try:
             assert entered.wait(5)
+            assert isinstance(engine.pool, QueuePool)
+            held = engine.pool.checkedout()
             with engine.connect() as inspector:
                 idle = inspector.scalar(
                     sa.text(
@@ -165,9 +165,20 @@ def test_h01_no_idle_transaction_during_inference(
                         "AND state='idle in transaction' AND pid<>pg_backend_pid()"
                     )
                 )
+            started = perf_counter()
             assert client.get(url, headers=headers).status_code == 200
+            print(
+                json.dumps(
+                    {
+                        "probe": "H01-P1-02",
+                        "idle_in_transaction": idle,
+                        "pool_checked_out_during_inference": held,
+                        "concurrent_read_ms": round((perf_counter() - started) * 1000, 2),
+                    }
+                )
+            )
         finally:
             release.set()
         assert pending.result(timeout=10).status_code == 200
-    if idle:
+    if idle or held:
         raise RetainedInferenceTransaction(f"Observed {idle} idle transaction(s) in isolated DB")

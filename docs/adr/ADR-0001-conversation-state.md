@@ -33,6 +33,11 @@ X-Conversation-Token. Токен возвращается один раз, в Б
 состояние и снимок сохраняются одной транзакцией. Function-scope dependency FastAPI
 завершает commit до отправки успешного ответа. История/сообщения имеют пагинацию.
 
+Уточнение H-03 (26.10.2026): для POST messages вместо request-scoped Session используется
+factory. Read snapshot и final write имеют разные Session/короткие транзакции с commit
+до возврата DTO; во время очереди/inference соединение возвращено в pool. Patch/confirm
+и остальные операции сохраняют function-scope dependency. См. [ADR-0002](ADR-0002-local-llm.md).
+
 Миграция 0002 добавляет conversations/messages/profile_revisions и FK профиля.
 Старые профили сохраняются со снимком legacy_import, без выдачи гостевого доступа
 (хеш-заглушка). Автоматического восстановления доступа к ним нет. Downgrade удаляет

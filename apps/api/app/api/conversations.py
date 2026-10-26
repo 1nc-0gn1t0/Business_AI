@@ -1,10 +1,13 @@
+import asyncio
+from threading import Event
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Security
+import anyio
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Security
 from fastapi.security import APIKeyHeader
 from pydantic import ValidationError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.adapters.llm import LLMError
 from app.api.conversation_schemas import (
@@ -16,13 +19,14 @@ from app.api.conversation_schemas import (
     PatchRequest,
     RevisionView,
 )
-from app.db.session import get_session
+from app.db.session import get_session, get_session_factory
 from app.services.conversations import (
     ConversationNotFound,
     Conversations,
     IncompleteProfile,
     VersionConflict,
 )
+from app.services.dialogue import send_message
 
 router = APIRouter(prefix="/api/v1/conversations", tags=["conversations"])
 access_key = APIKeyHeader(name="X-Conversation-Token", auto_error=False)
@@ -59,10 +63,37 @@ def get(conversation_id: UUID, token: Token, service: Service) -> ConversationVi
 
 
 @router.post("/{conversation_id}/messages", response_model=ConversationView)
-def send(
-    conversation_id: UUID, body: MessageRequest, token: Token, service: Service
+async def send(
+    conversation_id: UUID,
+    body: MessageRequest,
+    token: Token,
+    request: Request,
+    factory: Annotated[sessionmaker[Session], Depends(get_session_factory)],
 ) -> ConversationView:
-    return service.update(conversation_id, token, body.expected_version, content=body.content)
+    cancelled = Event()
+    work = asyncio.create_task(
+        send_message(
+            factory, conversation_id, token, body.expected_version, body.content, cancelled
+        )
+    )
+
+    async def disconnected() -> None:
+        while (await request.receive())["type"] != "http.disconnect":
+            pass
+        cancelled.set()
+
+    watch = asyncio.create_task(disconnected())
+    try:
+        done, _ = await asyncio.wait((work, watch), return_when=asyncio.FIRST_COMPLETED)
+        if watch in done:
+            raise HTTPException(499, detail={"code": "request_cancelled"})
+        return await work
+    finally:
+        cancelled.set()
+        work.cancel()
+        watch.cancel()
+        with anyio.CancelScope(shield=True):
+            await asyncio.gather(work, watch, return_exceptions=True)
 
 
 @router.patch("/{conversation_id}/profile", response_model=ConversationView)
