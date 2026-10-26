@@ -45,10 +45,11 @@ LLM понимает свободный ввод и определяет, что
 
 ## Состояние, ошибки и совместимость
 
-Inference выполняется без FOR UPDATE. Затем строка перечитывается под блокировкой,
-`expected_version` проверяется повторно: результат устаревшего inference получает 409.
-Все записи шага остаются одной транзакцией. Ошибка модели не пишет сообщение,
-профиль или историю; клиент может повторить запрос с той же версией.
+С H-03 используются разные короткие read/write транзакции; во время inference нет
+Session/connection/cursor/row lock PostgreSQL. Перед записью повторяются owner/CAS/
+consent revision checks: stale inference получает409, revoked consent —403.
+Все записи шага остаются одной финальной транзакцией. Ошибка модели не пишет
+сообщение, профиль или историю; повтор возможен с актуальной версией.
 
 503 `llm_unavailable`/`llm_configuration_error`, 504 `llm_timeout`,
 502 `llm_invalid_response`: только код и trace_id, без текста запроса/ответа/URL.
@@ -68,3 +69,49 @@ Inference выполняется без FOR UPDATE. Затем строка пе
 
 Источники: [Ollama model tag](https://ollama.com/library/qwen3:4b-instruct-2507-q4_K_M),
 [Chat API](https://docs.ollama.com/api/chat), [Windows](https://docs.ollama.com/windows).
+
+## H-03 · изоляция и очередь · 26.10.2026
+
+`message_input` читает владельца, версию, assistant consent revision, профиль и четыре
+последних сообщения под короткой owner row lock. Immutable dataclass содержит только
+frozen DTO/tuple, без ORM объектов/токенов. `sessionmaker.begin()` закрывает Session
+до ожидания очереди/модели. Новая Session перед записью повторяет auth/CAS/consent/
+quota checks и читает актуальный профиль. Даже withdraw→grant во время inference
+делает старый snapshot непригодным (revision conflict). Значения повторно валидируются.
+
+FIFO: один активный вызов и default один ожидающий, wait≤10s; конфигурация через
+BA_API_LIMITS_JSON. Один процесс/asyncio loop, без Redis/Celery. POST messages сохраняет
+heavy frequency budget H-02 и общий active cap8; модель ограничивается своей очередью,
+не занимает два аналитических active_heavy slots. Analytics сохраняет active_heavy=2.
+Queue overflow/wait timeout →429 без вымышленного Retry-After; frontend сохраняет текст.
+
+Async capability `aextract` реализована Ollama через httpx2 **2.14.0**, уже имевшийся
+в lock/dev (BSD-3-Clause), теперь runtime. Lock versions не обновлялись. Async и прежний
+sync `extract` используют одни payload/schema/grounding/parser; prompt и доменные
+правила не изменялись. Async stream ограничен64KiB до накопления, redirects запрещены,
+environment proxy не используется. LLM_TIMEOUT_SECONDS (default120,1…180) охватывает
+попытки и retry delay; cancellation закрывает клиент/HTTP stream. Sync интерфейс
+оставлен для offline adapters/evaluation без БД.
+
+HTTP disconnect отменяет ожидание/async inference и предотвращает дальнейшую запись.
+Короткий DB worker получает cancellation flag; вызывающий код дожидается rollback/close.
+Проверка есть до записи и после flush перед commit. Если disconnect пришёл **после
+commit**, успех мог сохраниться без доставленного ответа — нужно перечитать версию;
+CAS защищает повтор, exactly-once HTTP delivery не обещается. Локальный ASGI probe
+получает safe499 request_cancelled; отключённый сетевой клиент обычно уже не читает ответ.
+
+Произвольный sync adapter thread нельзя безопасно убить: результат отменённого шага
+отбрасывается, но lease занят до завершения worker. Это предотвращает скрытый второй
+inference; cancellable inference-server adapter должен реализовать async capability.
+В штатном Ollama API path sync inference не используется. Мгновенная остановка GPU
+внутри Ollama после закрытия socket не сертифицируется.
+
+Proxy240s/browser250s учитывают queue≤30s + model≤180s + запас коротким DB phases,
+не являются hard wall-clock SLA всех SQL операций. `WEB_CONCURRENCY!=1` по-прежнему
+запрещён; CLI workers/replicas и прямые клиенты Ollama не координируются. Новых
+таблиц/миграций/сервисов/public DTO нет. Результаты: [PERFORMANCE](../PERFORMANCE.md),
+[API_LIMITS](../API_LIMITS.md).
+
+API основания: [SQLAlchemy sessionmaker.begin](https://docs.sqlalchemy.org/en/20/orm/session_api.html#sqlalchemy.orm.sessionmaker.begin),
+[HTTPX async lifecycle](https://www.python-httpx.org/async/); сигнатуры установленного
+httpx2 сверены локально. Полная supply-chain проверка остаётся H-06.

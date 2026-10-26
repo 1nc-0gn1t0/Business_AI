@@ -115,6 +115,8 @@ for (const [code, status, message] of [
   ["request_text_too_long", 422, "длинный"],
   ["resource_quota_exceeded", 429, "лимит сохраняемых"],
   ["request_capacity_busy", 429, "занят"],
+  ["llm_queue_full", 429, "Очередь"],
+  ["llm_queue_timeout", 429, "ожидания"],
 ] as const)
   test(`REL-chat-${code} preserves draft and confirmed state`, async ({
     page,

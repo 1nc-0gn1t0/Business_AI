@@ -1,5 +1,39 @@
 # Business AI · безопасность и ранний triage
 
+## H-03 · 26.10.2026 · transaction lifecycle и queue
+
+Основание: H-02 PR#20 merged, main559a193503f12ca4156526c3ab86474a5fde8e2a,
+чистое дерево; ветка `codex/H-03-inference-isolation`. **H01-P1-02 исправлен**:
+контролируемый before1idle/1pool → after0/0, PASS после фактического XPASS.
+`PERFORMANCE.md` содержит точные pg_stat_activity/pool/live measurements и методику;
+не только API-коды. Нет новых P0 в выполненных сценариях.
+
+Изолированные tests подтверждают: snapshot без ORM/открытой Session; новая write
+транзакция; CAS при city/budget edits и двух сообщениях; revoke403/regrant409;
+rollback после successful flush/SQL error, отсутствие новых history/messages при
+отказе; owner isolation и H-02 storage quotas. Один active + один waiting, overflow/
+wait timeout429 без вымышленного Retry-After; async socket deadline/cancellation,
+HTTP disconnect active/queued, promotion/cancel race и повтор после ошибки/timeout.
+Пять параллельных metadata reads работают с pool_size1 при blocked inference.
+
+Регрессия: быстрые **310 PASS/95 DB SKIP** (БД выполнена отдельно), extended **102 PASS**
+с1550 successful property examples, **95 PostgreSQL/PostGIS PASS, без XFAIL**;
+frontend **43 PASS**, Chromium mock **24 PASS**, настоящий Qwen/browser **3 PASS/57.4s**.
+Отдельный live pool probe —538 samples/27.609s, peak checked-out0 и idle transaction0.
+Прежние два urllib transport mocks адаптированы к async streaming transport с теми же
+assertions бюджетной безопасности; исходный полный DB run93PASS/2FAIL сохранён как
+промежуточный результат, окончательный полный95PASS. Не ослаблялись tests ради CI.
+
+Новых таблиц/миграций/public DTO/доменных алгоритмов нет. httpx2 ранее был в dev/lock,
+перенесён в runtime для cancellable HTTP; версии пакетов прежние. Секреты/guest keys/
+приватные snapshots не включены в evidence, ошибка БД503 не отражает SQL/sentinel.
+Рабочая БД не использовалась для write tests, backup F-00 не менялся, volumes сохранены.
+
+Ограничения: single-worker, произвольный sync thread держит lease до завершения,
+direct Ollama не регулируется; отмена после commit не стирает законные записи.
+Queue/connection tests не заменяют public security/pilot/8ч soak/Q-04. H-04/H-05/H-06
+и старые D-01…04 остаются. Состояние PR/CI точного HEAD — HANDOFF/финальный отчёт.
+
 ## H-02 · 26.10.2026 · input/resource hardening
 
 PR #19 merged, база `c3c8c73d92c1f63664b440faee62d69c9c5fce2e`, исходное дерево

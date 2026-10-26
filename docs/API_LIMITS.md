@@ -1,5 +1,44 @@
 # H-02 · API limits и квоты локального deployment
 
+## Дополнение H-03 · действующее управление inference · 26.10.2026
+
+Body/DTO/stock quotas H-02 и 18 write API не меняются. POST messages учитывается в
+общем window600/60s и heavy window120/60s, общем active cap8, но **не занимает
+аналитические active_heavy=2 slots**: модель имеет отдельную FIFO — 1 active и default
+1 waiting. Без этого два диалога блокировали бы доступ к аналитике. Только настоящая
+операция inference занимает model slot; точная фраза подтверждения его не требует.
+
+Новые BA_API_LIMITS_JSON параметры (restart API): `inference_queue_size=1`, strict int
+0…4 (0 — без ожидания), `inference_wait_seconds=10`, число(0,30]. Active inference всегда1.
+Snapshot read/Session закрыты до очереди; очередь и Qwen не резервируют PostgreSQL
+connection/row lock. После получения результата — новая Session, owner/profile CAS/
+assistant consent revision/quota checks; withdraw→grant тоже инвалидирует snapshot.
+Квоты хранения и атомарность H-02 действуют до записи, без повторного списания.
+
+| Событие | Ответ |
+|---|---|
+| Очередь заполнена | 429 llm_queue_full |
+| Ожидание превысило configured wait | 429 llm_queue_timeout |
+| Активный inference превысил LLM_TIMEOUT_SECONDS | 504 llm_timeout, прежний код |
+| Отзыв/смена согласия или версии | 403 consent_required_assistant /409 consent_revision_conflict /409 version_conflict |
+| HTTP disconnect до записи | результат не сохраняется; локальный ASGI ответ499 request_cancelled, сетевой клиент уже отключён |
+
+У queue429 нет Retry-After: точное время освобождения неизвестно. React сохраняет
+сообщение, объясняет повтор без автоматической отправки. Таймаут Ollama default120s,
+до180s; proxy240s/browser250s учитывают максимальное ожидание30s и запас на DB phases.
+Отмена active async HTTP закрывает stream; отмена queued удаляет ticket. DB worker
+дожидается безопасного rollback/close. Disconnect после commit не отменяет уже
+сохранённые данные: перечитать профиль перед повтором (CAS).
+
+Scope — **один worker/asyncio loop**. Никакой distributed queue, Redis/Celery или
+защиты от прямых запросов к Ollama. Sync mock/legacy adapter не прерывается убийством
+thread: слот освобождается только после его реального завершения, без второй модели
+параллельно. Штатный Ollama path — async. Дальнейшие hard API/CPU budgets и soak — Q-04.
+Измерения/ограничения: [PERFORMANCE](PERFORMANCE.md), [ADR-0002](adr/ADR-0002-local-llm.md).
+
+Ниже сохранена исходная инвентаризация/политика H-02; описание общей heavy concurrency
+для сообщений и переноса H01-P1-02 в H-03 заменено этим дополнением.
+
 ## Инвентаризация ДО изменения кода · 26.10.2026
 
 Источник: main `c3c8c73d92c1f63664b440faee62d69c9c5fce2e`, OpenAPI и реальные

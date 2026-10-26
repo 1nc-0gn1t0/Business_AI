@@ -317,7 +317,7 @@ def test_revocation_during_inference_prevents_write(
                 {"tool": "extract_business_profile", "arguments": {"city": "Казань"}}
             )
 
-    monkeypatch.setattr("app.services.conversations.get_llm", SlowLLM)
+    monkeypatch.setattr("app.services.dialogue.get_llm", SlowLLM)
     _, headers, url = create(client)
     with ThreadPoolExecutor(max_workers=2) as pool:
         pending = pool.submit(

@@ -6,7 +6,7 @@ from fastapi import HTTPException
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 
 logger = logging.getLogger(__name__)
 
@@ -27,3 +27,8 @@ def get_session() -> Iterator[Session]:
     except SQLAlchemyError:
         logger.warning("Conversation database operation failed")
         raise HTTPException(503, detail={"code": "database_unavailable"}) from None
+
+
+def get_session_factory() -> sessionmaker[Session]:
+    # No Session/connection is opened by this dependency. Each message phase owns one.
+    return sessionmaker(get_engine(), expire_on_commit=False)

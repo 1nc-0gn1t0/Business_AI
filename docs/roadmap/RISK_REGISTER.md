@@ -1,7 +1,7 @@
 # Post-MVP · реестр дефектов, рисков и внешних зависимостей
 
 25.10.2026. Реестр утверждённого roadmap, обновлён результатами F-00;
-добавлен H-01 triage, исправления H-02…06 не начаты. Ответственный — владелец проекта.
+добавлены H-01 triage, H-02 caps и H-03 inference lifecycle. Ответственный — владелец проекта.
 `Подтверждено` означает код/артефакт, не новую эксплуатационную сертификацию.
 P0-дефектов, **доказанных в ограниченном H-01 triage**, не выявлено;
 непроверенные поверхности и нагрузки не объявляются безопасными.
@@ -11,7 +11,26 @@ P0-дефектов, **доказанных в ограниченном H-01 tri
 но H-01/H-04 не закрыты: нет полного DR/previous-version upgrade/encryption policy.
 Ниже исторические evidence сохранены; D-04 добавлен по фактической проверке F-00.
 
-## Обновление H-02 · 26.10.2026
+## Обновление H-03 · 26.10.2026
+
+- **H01-P1-02/R-02: исправлен в H-03**, ожидает review/merge. До изменения — 1 idle
+  transaction/1 checked-out; после —0/0, разные read/write Session, повторные owner/
+  version/consent revision checks. Старый XFAIL дал XPASS, затем стал обычным PASS
+  с сохранённым desired assertion. Пул из одного connection обслуживает пять чтений
+  при blocked inference; реальная Qwen:538 samples, peak pool0/idle transaction0.
+  [Методика/границы](../PERFORMANCE.md), [данные](../evals/H-03-inference-pool.json).
+- Queue overflow, wait timeout, HTTP disconnect active/queued, revoke/regrant, city/
+  budget edits и SQL error после flush проверены с отсутствием частичных записей.
+  **Новых P0 не выявлено** в выполненном scope; 95 Postgres/PostGIS PASS без XFAIL.
+- Ограничения R-02/R-04: один процесс/loop, direct Ollama и другие replicas вне queue;
+  произвольный sync thread нельзя немедленно остановить, lease сохраняется до его
+  завершения. Для Ollama API работает async cancellation. Disconnect после commit
+  требует reread/CAS; exactly-once HTTP delivery не обещается.
+- Полный GPU cancellation/нагрузка/8ч soak/p95 не сертифицированы. R-04 не закрыт
+  целиком, QG-OPS подтверждён только в части H-03. H-04…06/D-01…04 и внешние gates
+  сохраняются. BA-017/018 не начаты, следующий H-04 требует разрешения владельца.
+
+## Обновление H-02 · 26.10.2026 (исторический)
 
 - **H01-P1-01/R-01/R-03:** подтверждённый пробел закрыт для текущего loopback,
   single-worker deployment: 18 write API, bounded ASGI/DTO, общие persistent quotas

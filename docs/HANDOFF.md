@@ -1,6 +1,66 @@
 # Business AI — HANDOFF
 
-## H-02 · input/resource limits · 26.10.2026 (МСК)
+## H-03 · inference без PostgreSQL connection · 26.10.2026 (МСК)
+
+- H-02 [PR#20](https://github.com/1nc-0gn1t0/Business_AI/pull/20) merged
+  `2026-10-26T02:45:22Z`; headf000ecd, main `559a193503f12ca4156526c3ab86474a5fde8e2a`.
+  CI merge SHA: Windows/Ubuntu/Compose SUCCESS. Main ff-only/divergence0/0, исходное
+  дерево чистое; ветка `codex/H-03-inference-isolation`. Итоговый SHA/PR/CI — в отчёте.
+- H-03 реализована: short locked read → immutable DTO snapshot → Session closed →
+  bounded FIFO/Qwen без БД → новая короткая write Session с owner/CAS/consent revision/
+  quotas/validation и atomic profile/messages/revision commit. Withdraw→grant не
+  легализует старый snapshot. Непосредственный inference вынесен из Conversations.update.
+- Ollama async capability использует закреплённый httpx2 2.14.0 (из dev в runtime,
+  без обновления lock versions). Sync API для offline adapters/eval сохранён; оба
+  используют общий prompt/schema/grounding/parser. Новых таблиц/миграций/infra services/
+  BusinessProfile schemas/geo/finance/bank/provenance/report formats нет.
+- FIFO: active1/waiting1, wait10s; config `inference_queue_size`0…4,
+  `inference_wait_seconds`(0,30]. LLM_TIMEOUT_SECONDS default120/max180 остаётся одним
+  inference deadline. H-02 body/DTO/stock/window limits действуют. Messages считаются
+  в heavy frequency, но не занимают аналитические active_heavy2 slots; общий active8.
+  Queue429 без Retry-After, клиент сохраняет текст. Proxy240s/browser250s согласованы
+  с максимальными queue/model settings и запасом на короткие DB phases.
+- Cancellation: disconnect удаляет queued ticket/отменяет async Ollama и предотвращает
+  запись. DB worker дожидается rollback/close, cancellation flag проверяется до записи
+  и после flush перед commit. После уже выполненного commit ответ может потеряться —
+  перечитать версию, CAS; не обещать exactly-once delivery. Sync fallback thread не
+  убивается: lease держится до завершения, второй inference не запускается скрыто.
+- **H01-P1-02 закрыт в реализации**: before probe1 idle tx/1pool; after0/0, реальный
+  XPASS, затем xfail marker снят с desired assertion. Узкий pool1 обслужил пять
+  параллельных GET geo/datasets (67–72ms) при модели; разные Session подтверждены.
+  Реальная Qwen4B/Q4_K_M ID0edcdef34593:538 samples, pool peak0/idle tx peak0,
+  request27.609s, кофейня/Казань/2млн корректны. [PERFORMANCE](PERFORMANCE.md),
+  [сырые агрегаты](evals/H-03-inference-pool.json), ADR-0001/0002/API_LIMITS обновлены.
+- Проверки: quick310PASS/95DB SKIP; extended102PASS/1550 property examples; отдельный
+  Postgres/PostGIS **95PASS без XFAIL**; frontend43PASS; Chromium mock24PASS;
+  real Qwen browser3PASS/57.4s (пекарня/автосервис/полная кофейня).
+  Промежуточный full DB93PASS/2FAIL: старые transport mocks urllib обновлены на async
+  без изменения assertions, targeted14PASS и финальный full95PASS. Никакой mock не
+  выдан за live. Ruff/mypy/build/Compose smoke/ранний prek7hooks PASS; окончательные
+  commit hooks/CI проверяются перед завершением.
+- Live UI использовал новые API8017/web5177 и **новую копию** F-00 `f00_restore_h03_<uuid>`.
+  Restore checks tables/schema/extensions/indexes/version PASS (14s), это подготовка
+  изолированных тестов, **не выполнение H-04**. Named QA upstream исключает случайное
+  попадание web в рабочий API alias. Source archive SHA неизменен
+  `690133a959640c3ee0167c46bc39eea13b966f2fff615f4158c10eda85e74feb`.
+  Не удалять существующие volumes/пользовательские/старые QA БД. Временная H-03 БД
+  и её два QA-контейнера после проверки удалены по проверенному UUID/именам;
+  исходная БД, старые QA и volumes сохранены.
+- Новых P0 нет на выполненном scope. QG-OPS — доказаны connection lifecycle, bounded
+  queue и доступность small reads; **не** p95/5-heavy-load/8ч soak/GPU kernel cancel.
+  Single-worker/asyncio loop, не distributed protection. D-01…04/H-04…06 остаются.
+  Первоначальные DockerHub/Context7 fetch timeouts обойдены existing images/первичными
+  docs; последующая обычная Docker build успешно прошла, системные настройки не менялись.
+  Окончательный локальный prek:7/7hooks PASS, OpenAPI TypeScript AST unchanged,
+  doc links/evidence JSON/diff checks PASS. Commit hooks и exact HEAD CI — в PR/отчёте.
+- Создание PR требует браузерной авторизации GitHub (CLI отсутствует); пользователь
+  выбрал вход во встроенной вкладке, ожидается завершение входа. Credentials из Git
+  helper не извлекаются. После push открыть/attach PR в main и проверить exact HEAD CI.
+- **Далее:** review H-03. Не merge автоматически; H-04 только после отдельного
+  разрешения. BA-017/018 остаются отдельным невыполненным исследовательским треком;
+  порядок F-00→H-01…06→UX→U→UI→QA→RC сохранён, зависимости будущих UX/U не сняты.
+
+## H-02 · input/resource limits · 26.10.2026 (МСК, исторический)
 
 - PR [#19](https://github.com/1nc-0gn1t0/Business_AI/pull/19) merged
   `2026-10-25T22:02:19Z`, main `c3c8c73d92c1f63664b440faee62d69c9c5fce2e`.

@@ -23,6 +23,7 @@ from app.api.schemas import Contract
 from app.db.health import check_postgis
 from app.leads.policy import LeadError
 from app.limits.http import ApiLimits, reset_admission
+from app.limits.inference import reset_inference
 from app.services.conversations import ConversationNotFound, IncompleteProfile, VersionConflict
 
 logger = logging.getLogger(__name__)
@@ -31,6 +32,7 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(application: FastAPI) -> AsyncIterator[None]:
     reset_admission()
+    reset_inference()
     yield
 
 

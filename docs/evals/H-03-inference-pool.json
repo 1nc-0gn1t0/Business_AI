@@ -1,0 +1,54 @@
+{
+  "version": "h03-pool-v1",
+  "date": "2026-10-26",
+  "scope": "isolated PostgreSQL databases; one API worker; no working-data writes",
+  "baseline": {
+    "source_main": "559a193503f12ca4156526c3ab86474a5fde8e2a",
+    "probe": "test_h01_no_idle_transaction_during_inference",
+    "adapter": "blocking controlled stub",
+    "idle_in_transaction": 1,
+    "pool_checked_out_during_inference": 1,
+    "concurrent_read_ms": 25.83,
+    "result": "XFAIL, original finding reproduced"
+  },
+  "after": {
+    "same_probe_idle_in_transaction": 0,
+    "same_probe_pool_checked_out": 0,
+    "same_probe_concurrent_read_ms": 17.67,
+    "single_connection_pool": {
+      "pool_size": 1,
+      "max_overflow": 0,
+      "checked_out_during_inference": 0,
+      "pg_states": { "idle": 1 },
+      "concurrent_dataset_readers": 5,
+      "reader_ms": [70.73, 72.26, 70.77, 70.44, 67.28],
+      "separate_read_write_sessions": true
+    },
+    "queue_timeout": {
+      "configured_wait_seconds": 0.05,
+      "request_seconds_including_read": 0.0728,
+      "response": 429,
+      "queued_model_calls": 0
+    }
+  },
+  "live": {
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "model_id": "0edcdef34593",
+    "quantization": "Q4_K_M",
+    "transport": "real async Ollama HTTP through ASGI message endpoint",
+    "stub": false,
+    "samples": 538,
+    "sampling_interval_seconds": 0.05,
+    "pool_checked_out_peak_during_inference": 0,
+    "idle_in_transaction_peak": 0,
+    "request_seconds": 27.609,
+    "extracted": { "city": "Казань", "category": "кофейня", "budget": "2000000.00" },
+    "browser_real": { "passed": 3, "total_seconds": 57.4 }
+  },
+  "limitations": [
+    "Small controlled probes, not a load/soak or p95 benchmark.",
+    "Five readers query geo dataset metadata, not five concurrent full ranking jobs.",
+    "Live samples exclude phase boundaries; inspector uses a separate database/connection.",
+    "Direct Ollama clients and multiple API workers are outside this queue."
+  ]
+}

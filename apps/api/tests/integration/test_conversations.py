@@ -129,7 +129,7 @@ def test_llm_result_persists_with_safe_questions(
                 }
             )
 
-    monkeypatch.setattr("app.services.conversations.get_llm", MockLLM)
+    monkeypatch.setattr("app.services.dialogue.get_llm", MockLLM)
     _, headers, url = create(client)
     result = client.post(
         url + "/messages",
@@ -176,7 +176,7 @@ def test_model_failure_does_not_write_partial_state(
         ) -> ProfileToolCall:
             raise LLMError(code, status)
 
-    monkeypatch.setattr("app.services.conversations.get_llm", FailingLLM)
+    monkeypatch.setattr("app.services.dialogue.get_llm", FailingLLM)
     before, headers, url = create(client)
     result = client.post(
         url + "/messages",
@@ -220,7 +220,7 @@ def test_edit_during_inference_wins_without_lost_update(
                 }
             )
 
-    monkeypatch.setattr("app.services.conversations.get_llm", SlowLLM)
+    monkeypatch.setattr("app.services.dialogue.get_llm", SlowLLM)
     _, headers, url = create(client)
     with ThreadPoolExecutor(max_workers=2) as pool:
         pending = pool.submit(

@@ -42,6 +42,11 @@ const messages: Record<string, string> = {
     "База данных временно недоступна. Повторите действие после восстановления сервиса.",
   llm_timeout:
     "Ollama превысила время ожидания. Текст сохранён, повторите запрос.",
+  llm_queue_full:
+    "Очередь локальной модели заполнена. Дождитесь завершения текущего диалога и повторите сообщение.",
+  llm_queue_timeout:
+    "Время ожидания локальной модели истекло. Текст сохранён, повторите сообщение позже.",
+  request_cancelled: "Запрос отменён. Обновите беседу перед повторной отправкой.",
   llm_invalid_response:
     "Ответ локальной модели не прошёл проверку. Текст сохранён, повторите запрос или исправьте профиль вручную.",
   report_outdated:
@@ -182,8 +187,8 @@ export async function request<T>(
       body:
         options.body === undefined ? undefined : JSON.stringify(options.body),
       signal: options.signal
-        ? AbortSignal.any([options.signal, AbortSignal.timeout(190_000)])
-        : AbortSignal.timeout(190_000),
+        ? AbortSignal.any([options.signal, AbortSignal.timeout(250_000)])
+        : AbortSignal.timeout(250_000),
     });
     if (!response.ok) {
       throw await responseError(response);

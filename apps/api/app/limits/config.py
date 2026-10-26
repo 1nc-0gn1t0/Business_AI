@@ -50,6 +50,8 @@ class Limits(BaseModel):
     heavy_per_window: Count = 120
     active_requests: Count = 8
     active_heavy: Count = 2
+    inference_queue_size: int = Field(default=1, strict=True, ge=0, le=4)
+    inference_wait_seconds: float = Field(default=10, gt=0, le=30)
     report_storage_bytes: int = Field(default=134217728, strict=True, ge=1, le=1073741824)
     global_records: dict[Resource, Count] = Field(default_factory=GLOBAL_RECORDS.copy)
     owner_records: dict[Resource, Count] = Field(default_factory=OWNER_RECORDS.copy)
