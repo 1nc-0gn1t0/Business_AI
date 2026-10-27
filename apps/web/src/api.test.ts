@@ -9,6 +9,41 @@ import {
 } from "./api";
 
 describe("same-origin API client (explicit fetch mocks)", () => {
+  it("sanitizes download transport failures without retry", async () => {
+    const mock = vi
+      .spyOn(globalThis, "fetch")
+      .mockRejectedValue(new Error("SYNTHETIC_SECRET"));
+    await expect(
+      requestFile("/api/v1/conversations/id/reports/r/file?format=pdf", {
+        id: "id",
+        token: "private",
+      }),
+    ).rejects.toThrow("Файл не получен");
+    expect(mock).toHaveBeenCalledTimes(1);
+  });
+  it("shows a valid correlation ID, rejects arbitrary header text", async () => {
+    const mock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(
+        new Response(
+          JSON.stringify({ detail: { code: "llm_model_missing" } }),
+          { status: 503, headers: { "X-Request-ID": "a".repeat(32) } },
+        ),
+      );
+    await expect(request("/api/v1/conversations")).rejects.toThrow(
+      "Код диагностики: " + "a".repeat(32),
+    );
+    mock.mockResolvedValue(
+      new Response("{}", {
+        status: 500,
+        headers: { "X-Request-ID": "SYNTHETIC_SECRET" },
+      }),
+    );
+    await expect(request("/api/v1/conversations")).rejects.not.toThrow(
+      "SYNTHETIC_SECRET",
+    );
+    expect(mock).toHaveBeenCalledTimes(2);
+  });
   it.each([
     [413, "request_body_too_large", "Сократите"],
     [422, "request_text_too_long", "длинный"],
@@ -20,13 +55,11 @@ describe("same-origin API client (explicit fetch mocks)", () => {
   ])(
     "handles limits without automatic retries: %s %s",
     async (status, code, expected) => {
-      const mock = vi
-        .spyOn(globalThis, "fetch")
-        .mockResolvedValue(
-          new Response(JSON.stringify({ detail: { code } }), {
-            status: Number(status),
-          }),
-        );
+      const mock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+        new Response(JSON.stringify({ detail: { code } }), {
+          status: Number(status),
+        }),
+      );
       await expect(
         request("/api/v1/conversations/id/messages"),
       ).rejects.toThrow(String(expected));

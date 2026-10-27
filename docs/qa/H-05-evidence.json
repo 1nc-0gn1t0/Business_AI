@@ -1,0 +1,57 @@
+{
+  "faults": {
+    "body_limit": {
+      "status": 413,
+      "code": "request_body_too_large"
+    },
+    "validation": {
+      "status": 422,
+      "code": "http_422"
+    },
+    "live_db_down": {
+      "status": 200,
+      "seconds": 0.0
+    },
+    "ready_db_down": {
+      "status": 503,
+      "code": "database_unavailable",
+      "seconds": 4.015
+    },
+    "write_db_down": {
+      "status": 503,
+      "code": "database_unavailable"
+    },
+    "db_recovery_no_writes": true,
+    "missing_model": {
+      "status": 503,
+      "code": "llm_model_missing",
+      "seconds": 0.109,
+      "readiness": 200,
+      "model": "missing",
+      "overall": "degraded"
+    },
+    "ollama_down": {
+      "status": 503,
+      "code": "llm_unavailable",
+      "seconds": 0.36,
+      "readiness": 200,
+      "model": "unknown",
+      "overall": "degraded"
+    },
+    "final_recovery": "ready_unverified",
+    "synthetic_markers_absent_from_api_logs": true
+  },
+  "live": {
+    "status": 200,
+    "mode": "ollama",
+    "city": "Казань",
+    "category": "кофейня",
+    "budget": "2000000.00",
+    "seconds": 8.094,
+    "request_id": "3c0fbeb67ecf41d3a8705b585a1df240",
+    "samples": 34,
+    "active_samples": 34,
+    "pool_peak": 0,
+    "active_pool_peak": 0
+  }
+}

@@ -29,7 +29,8 @@ def test_health_returns_503_without_database_and_hides_details(
     with TestClient(app) as client:
         response = client.get("/healthz")
     assert response.status_code == 503
-    assert response.json() == {"detail": "Database is unavailable"}
+    assert response.json()["detail"] == "Database is unavailable"
+    assert response.json()["request_id"] == response.headers["x-request-id"]
 
 
 def test_business_api_database_failure_is_sanitized(caplog: pytest.LogCaptureFixture) -> None:
@@ -43,7 +44,8 @@ def test_business_api_database_failure_is_sanitized(caplog: pytest.LogCaptureFix
         with TestClient(app, raise_server_exceptions=False) as client:
             response = client.post("/api/v1/conversations")
         assert response.status_code == 503
-        assert response.json() == {"detail": {"code": "database_unavailable"}}
+        assert response.json()["detail"] == {"code": "database_unavailable"}
+        assert response.json()["code"] == "database_unavailable"
         for secret in ("private_statement", "private-secret"):
             assert secret not in response.text
             assert secret not in caplog.text

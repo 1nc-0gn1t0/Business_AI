@@ -2,10 +2,11 @@
 
 import argparse
 import json
+import os
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 
 def main():
@@ -16,6 +17,11 @@ def main():
         "--manifest", type=Path, default=Path("data/demo-manifest.json")
     )
     parser.add_argument("--require-demo-data", action="store_true")
+    parser.add_argument(
+        "--diagnostics",
+        action="store_true",
+        help="Opt-in protected bounded bundle; token from environment only",
+    )
     args = parser.parse_args()
     for url in (args.api, args.ollama):
         parsed = urlsplit(url)
@@ -28,9 +34,13 @@ def main():
     pins = json.loads(args.manifest.read_text(encoding="utf8"))
     checks = []
 
-    def fetch(base, path):
-        with urlopen(base.rstrip("/") + path, timeout=10) as reply:
-            return json.load(reply)
+    def fetch(base, path, headers=None):
+        request = Request(base.rstrip("/") + path, headers=headers or {})
+        with urlopen(request, timeout=10) as reply:
+            raw = reply.read(1048577)
+            if len(raw) > 1048576:
+                raise ValueError("Preflight response too large")
+            return json.loads(raw)
 
     def check(name, operation):
         try:
@@ -54,6 +64,19 @@ def main():
             )
 
     check("postgres_postgis", lambda: fetch(args.api, "/healthz")["database"] == "ok")
+    if args.diagnostics:
+        check("schema_ready", lambda: fetch(args.api, "/readyz")["status"] == "ok")
+        check(
+            "protected_diagnostics",
+            lambda: (
+                fetch(
+                    args.api,
+                    "/api/v1/diagnostics",
+                    {"X-Diagnostics-Token": os.getenv("BA_DIAGNOSTICS_TOKEN", "")},
+                )["version"]
+                == 1
+            ),
+        )
     check(
         "pinned_osm",
         lambda: any(

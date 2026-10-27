@@ -1,5 +1,36 @@
 # Business AI — HANDOFF
 
+## H-05 · safe diagnostics · 27.10.2026 (МСК)
+
+- PR23/a50e6da merged (REST verified), main365bff3 ff-only/чистый;
+  ветка `codex/H-05-safe-diagnostics`. [QA report](qa/H-05_DIAGNOSTICS_REPORT.md),
+  [evidence](qa/H-05-evidence.json), [runbook](DIAGNOSTICS.md),
+  [checkpoint](qa/H-05_CHECKPOINT.md). Фактический финальный SHA/PR — в итоговом отчёте.
+- /livez отдельно от DB/модели; /readyz bounded PostgreSQL/PostGIS/schema0008;
+  legacy /healthz сохранён. Opt-in diagnostics default404, отдельный≥32char token,
+  model presence≠inference PASS. Queue/pool/counters/recent32 process-local.
+- Server-generated32hex request ID, error envelope additive с прежним detail,
+  allowlisted JSON logs, no raw exception/URL/body/SQL, Docker10MiB×3. Frontend
+  показывает ID/понятные pool/model/export ошибки, сохраняет draft, без auto retry.
+  No dependencies/миграций/изменений формул/гео/банк/consent/backup архитектуры.
+- Реальные isolated faults: DB down /livez200 /readyz503 за4.015s; recovery без
+  записей/утраты профиля. Missing model503/.109s; Ollama down503/.360s; /readyz200,
+  bundle degraded, recovery PASS. Synthetic secret/tokens отсутствуют в проверенных API logs.
+- Actual Qwen4B coffee/Kazan/2m: HTTP200/extraction_mode=ollama,8.094s warm,
+ 34 active-phase samples/pool0. Две ранние measurement assertions ошиблись на
+  Decimal string и границах фаз; проверки исправлены, модельные поля были корректны.
+  Не полный live eval/p95/soak. DB H-03 tests отдельно подтверждают0 idle transaction.
+- Проверки: quick359PASS/104DB SKIP (DB отдельно104uniquePASS, no XFAIL);
+  extended102PASS/1550 examples; frontend45PASS; Chromium mock27PASS, в т.ч.390px/ID;
+  Ruff/mypy122files/TS/build/prek7hooks/Compose smoke PASS. Exact CI после push
+  фиксируется в PR/итоге; SKIP не засчитаны как PASS. QG-OPS только diagnostics subset.
+- Baseline/рабочие containers/volumes сохранены; synthetic QA project изолирован.
+  Остатки: single-worker/volatile counters, нет automatic alerts, loading/export health
+  не сертифицируется; pre-ASGI/proxy/startup failures без backend ID; R-12 owner
+  keys/scheduler/offsite, H-06 scanners, public auth/TTL и RC gates остаются открыты.
+- Далее только review/merge владельцем. H-06 не начинать без разрешения.
+  BA-017/018 — отдельный незавершённый исследовательский трек, не отменены.
+
 ## H-04-FU · encrypted backup и recovery · 26.10.2026 (МСК)
 
 - PR[#22](https://github.com/1nc-0gn1t0/Business_AI/pull/22) H-04/c39d4ac merged

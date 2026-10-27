@@ -1,9 +1,11 @@
 import asyncio
+import time
 from collections import deque
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from app.adapters.llm import LLMError
+from app.diagnostics import event
 from app.limits.config import policy
 
 
@@ -22,8 +24,10 @@ class InferenceQueue:
 
     @asynccontextmanager
     async def slot(self) -> AsyncIterator[None]:
+        started = time.monotonic()
         if self.active:
             if len(self.waiters) >= policy().inference_queue_size:
+                event("queue", 429, 0, "llm_queue_full")
                 raise LLMError("llm_queue_full", 429)
             ticket: asyncio.Future[None] = asyncio.get_running_loop().create_future()
             self.waiters.append(ticket)
@@ -37,11 +41,13 @@ class InferenceQueue:
                     # Cancellation can race with promotion to the active slot.
                     self.release()
                 if isinstance(error, TimeoutError):
+                    event("queue", 429, time.monotonic() - started, "llm_queue_timeout")
                     raise LLMError("llm_queue_timeout", 429) from None
                 raise
         else:
             self.active = True
         try:
+            event("queue", 200, time.monotonic() - started)
             yield
         finally:
             self.release()

@@ -1,5 +1,21 @@
 # Business AI · измерения производительности
 
+## H-05 · диагностика · 27.10.2026
+
+[Aggregate evidence](qa/H-05-evidence.json), [method/runbook](DIAGNOSTICS.md).
+Отдельный новый Compose project, cached local model, RTX3050Ti4GB/16GB host/WSL2,
+один worker. Реальный Qwen coffee/Kazan/2m HTTP200 **8.094s**,34 active-phase
+samples защищённого работающего bundle, pool peak0 во время active inference.
+На стадияхA/C connection кратко занят — это не дефект H-03. PostgreSQL tests отдельно
+проверяют idle-in-transaction0/отмену/CAS/rollback. Это один warm smoke, не p95/eval.
+
+QA DB down: liveness200, readiness503 за4.015s (probe deadline4s плюс HTTP overhead).
+Missing model503 за0.109s, Ollama down503 за0.360s, recovery PASS; /readyz при model
+faults200. DB connect2s/query1s/overall4s, tags HTTP2s/overall3s/raw64KiB; no generation.
+Pool_timeout5s. Counters/суммы/latest32 process-local; codes считают **события**, один
+запрос может дать queue/inference/HTTP events. Нет обещания p95/throughput/8h soak/
+полного QG-OPS или распределённого мониторинга.
+
 ## H-03 · PostgreSQL во время inference · 26.10.2026
 
 Источник: main559a193 (H-02 PR#20 merged), новая feature-ветка H-03. До изменения

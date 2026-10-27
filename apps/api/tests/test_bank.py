@@ -267,4 +267,5 @@ def test_broken_catalogue_is_sanitised_and_does_not_use_internet(
     with TestClient(app) as client:
         response = client.get("/api/v1/bank-products")
     assert response.status_code == 503
-    assert response.json() == {"detail": {"code": "bank_catalogue_unavailable"}}
+    assert response.json()["detail"] == {"code": "bank_catalogue_unavailable"}
+    assert response.json()["request_id"] == response.headers["x-request-id"]
