@@ -1,0 +1,107 @@
+{
+  "api": {
+    "os": {
+      "Family": "debian",
+      "Name": "13.7"
+    },
+    "package_occurrences": {
+      "LOW": 62,
+      "HIGH": 44,
+      "MEDIUM": 63,
+      "UNKNOWN": 1
+    },
+    "unique_by_severity": {
+      "LOW": 34,
+      "HIGH": 8,
+      "MEDIUM": 34,
+      "UNKNOWN": 1
+    },
+    "findings_file": "H-06-advisories.csv"
+  },
+  "web": {
+    "os": {
+      "Family": "alpine",
+      "Name": "3.24.3"
+    },
+    "package_occurrences": {
+      "HIGH": 3,
+      "MEDIUM": 2,
+      "LOW": 44
+    },
+    "unique_by_severity": {
+      "HIGH": 2,
+      "MEDIUM": 1,
+      "LOW": 22
+    },
+    "findings_file": "H-06-advisories.csv"
+  },
+  "db": {
+    "os": {
+      "Family": "debian",
+      "Name": "11.11",
+      "EOSL": true
+    },
+    "package_occurrences": {
+      "LOW": 567,
+      "HIGH": 239,
+      "MEDIUM": 448,
+      "CRITICAL": 26,
+      "UNKNOWN": 45
+    },
+    "unique_by_severity": {
+      "LOW": 333,
+      "HIGH": 151,
+      "MEDIUM": 276,
+      "CRITICAL": 16,
+      "UNKNOWN": 41
+    },
+    "findings_file": "H-06-advisories.csv"
+  },
+  "ollama": {
+    "os": {
+      "Family": "ubuntu",
+      "Name": "24.04"
+    },
+    "package_occurrences": {
+      "MEDIUM": 63,
+      "LOW": 10,
+      "HIGH": 50,
+      "UNKNOWN": 2
+    },
+    "unique_by_severity": {
+      "MEDIUM": 57,
+      "LOW": 8,
+      "HIGH": 46,
+      "UNKNOWN": 2
+    },
+    "findings_file": "H-06-advisories.csv"
+  },
+  "api-after": {
+    "os": {
+      "Family": "debian",
+      "Name": "13.7"
+    },
+    "package_occurrences": {
+      "LOW": 61,
+      "HIGH": 44,
+      "MEDIUM": 58,
+      "UNKNOWN": 1
+    },
+    "unique_by_severity": {
+      "LOW": 33,
+      "HIGH": 8,
+      "MEDIUM": 29,
+      "UNKNOWN": 1
+    },
+    "findings_file": "H-06-advisories.csv"
+  },
+  "web-after": {
+    "os": {
+      "Family": "alpine",
+      "Name": "3.24.3"
+    },
+    "package_occurrences": {},
+    "unique_by_severity": {},
+    "findings_file": "H-06-advisories.csv"
+  }
+}

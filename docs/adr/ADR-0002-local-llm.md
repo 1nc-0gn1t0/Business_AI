@@ -2,6 +2,13 @@
 
 Дата: 22.10.2026. Решение принято владельцем проекта в задании BA-005.
 
+H-06 verification27.10.2026: установленный GGUF manifest0edcdef34593… сверён с registry;
+license blob d18a5cc7… проверен SHA256 и совпадает с installed /api/show license.
+Apache2 относится к конкретному Q4_K_M artifact; веса повторно не скачивались.
+Demo manifestv2 проверяет digest, а не только mutable tag. Полные identity/обязательства:
+[THIRD_PARTY_NOTICES](../../THIRD_PARTY_NOTICES.md). Ollama0.40.8 не обновлялась;
+её MIT source license не заменяет лицензии GPU/native image dependencies.
+
 MVP использует открытую Qwen локально, без платных API, облачного inference,
 обучения и дообучения. Веса не входят в Git или Docker-образ приложения.
 

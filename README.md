@@ -1,5 +1,10 @@
 # Business AI — Sab0tage
 
+H-06: [supply-chain audit / открытые release-блокеры](docs/qa/H-06_SUPPLY_CHAIN_REPORT.md),
+[проверки](docs/SUPPLY_CHAIN.md), [third-party notices](THIRD_PARTY_NOTICES.md).
+Python/npm audits и scoped CI не означают принятие старого DB/native image baseline:
+оставшиеся CRITICAL/HIGH требуют отдельного follow-up и решения владельца.
+
 H-05: [безопасная диагностика и runbook](docs/DIAGNOSTICS.md),
 [fault-injection и проверки](docs/qa/H-05_DIAGNOSTICS_REPORT.md).
 `/livez` — процесс; `/readyz` — PostgreSQL/PostGIS/схема; `/healthz` сохранён.

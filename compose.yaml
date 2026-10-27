@@ -2,7 +2,8 @@ name: business-ai
 
 services:
   db:
-    image: postgis/postgis:17-3.5
+    # Audit identity only: legacy Debian11/PG17.5 needs H-06 follow-up before release.
+    image: postgis/postgis:17-3.5@sha256:01a6a70e41e6c4467c8f55f6063555ed72db2d6662cd0d571040d42eadaeb6f6
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-business_ai}
       POSTGRES_USER: ${POSTGRES_USER:-business_ai}
@@ -17,6 +18,8 @@ services:
       start_period: 10s
 
   migrate:
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
     build:
       context: ./apps/api
     command: ["alembic", "upgrade", "head"]
@@ -31,6 +34,8 @@ services:
         condition: service_healthy
 
   api:
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
     logging: &bounded-logs
       driver: json-file
       options:

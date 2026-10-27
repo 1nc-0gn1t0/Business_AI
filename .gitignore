@@ -28,6 +28,12 @@ tmp/ba016-*
 .hypothesis/
 *.gguf
 .ollama/
+*.key
+*.pem
+*.age
+*.dump
+*.backup
+age-identity*.txt
 data/osm/*.raw.json
 data/osm/*.manifest.json
 data/osm/*.osm.pbf

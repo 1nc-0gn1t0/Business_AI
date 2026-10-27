@@ -4,3 +4,11 @@ dist
 test-results
 playwright-report
 .env*
+.git
+.npmrc
+*.key
+*.pem
+*.age
+*.dump
+*.backup
+*.log

@@ -1,0 +1,7 @@
+title = "Business AI directory scope; Git history uses strict .gitleaks.toml"
+[extend]
+path = ".gitleaks.toml"
+
+[[allowlists]]
+description = "Installed dependencies and Git object database; never excludes tracked history"
+paths = ['''(^|[/\\])(\.git|\.venv|node_modules)([/\\]|$)''']

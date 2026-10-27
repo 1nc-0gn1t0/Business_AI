@@ -1,0 +1,60 @@
+name: Supply chain
+on:
+  push:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supply-chain-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: "0.13.1"
+          python-version: "3.12"
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+      - name: Audit full pinned Python set (no source or environment uploads)
+        shell: bash
+        run: |
+          uv export --locked --project apps/api --no-emit-project --format requirements-txt --output-file "$RUNNER_TEMP/audit-requirements.txt"
+          uv tool run --from pip-audit==2.10.1 pip-audit --require-hashes --no-deps --disable-pip --strict -r "$RUNNER_TEMP/audit-requirements.txt"
+      - name: Audit npm lock (includes dev tools; no install scripts)
+        run: npm --prefix apps/web audit --audit-level=low --registry=https://registry.npmjs.org
+      - name: Install checksum-pinned offline secret scanner
+        shell: pwsh
+        run: |
+          $binary = ./scripts/install_gitleaks.ps1 -Directory (Join-Path $env:RUNNER_TEMP 'gitleaks')
+          "BA_GITLEAKS_BINARY=$binary" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Check detector and redaction with synthetic fixtures
+        shell: pwsh
+        run: uv run --locked --project apps/api python scripts/check_secret_scanner.py --binary $env:BA_GITLEAKS_BINARY
+      - name: Scan reachable history and first-party files (redacted, no artifacts)
+        shell: pwsh
+        run: |
+          foreach ($scope in @('git', 'dir')) {
+            $config = if ($scope -eq 'git') { '.gitleaks.toml' } else { '.gitleaks-dir.toml' }
+            [string[]]$options = if ($scope -eq 'git') { @('--log-opts=--all --full-history') } else { @() }
+            $report = Join-Path $env:RUNNER_TEMP "private-$scope-secrets.json"
+            $log = Join-Path $env:RUNNER_TEMP "private-$scope-secrets.log"
+            & $env:BA_GITLEAKS_BINARY $scope . @options --config $config --ignore-gitleaks-allow --redact=100 --no-banner --report-format json --report-path $report *> $log
+            if ($LASTEXITCODE) {
+              Write-Output "Secret scan failed or found a candidate ($scope); raw details withheld. Reproduce privately using docs/SUPPLY_CHAIN.md."
+              exit $LASTEXITCODE
+            }
+            Write-Output "Secret scan PASS ($scope)"
+          }

@@ -11,6 +11,30 @@ P0-дефектов, **доказанных в ограниченном H-01 tri
 но H-01/H-04 не закрыты: нет полного DR/previous-version upgrade/encryption policy.
 Ниже исторические evidence сохранены; D-04 добавлен по фактической проверке F-00.
 
+## Обновление H-06 · 27.10.2026
+
+- PR24/ed8774d merged, clean base6405a1a; [audit report](../qa/H-06_SUPPLY_CHAIN_REPORT.md),
+  [license obligations](../../THIRD_PARTY_NOTICES.md), [exception register](../SECURITY_TEST_REPORT.md).
+- **Подтверждено:** Python/npm0 advisories; strict reachable Git/current/build/image
+  secret scans0 real findings; synthetic positive/redaction test PASS. Образы/Actions
+  закреплены, Python artifact hashes enforced, API/migrate capabilities dropped.
+- **Исправлено:** unused curl closure удалён, Brotli1.2.1-r0; web rescan0. Runtime pip
+  removed,6 advisories eliminated from API runtime. App dependency versions unchanged.
+- **H06-P1-DB-01 / release blocker:** DB Debian11.11 EOSL, PG17.5, image16uniqueCRITICAL/
+  151HIGH плюс отдельные official PG advisories. Проверка эксплуатации каждого native
+  path не завершена, исключений владельца нет. Не считать H-блок/RC принятым.
+- **H06-P1-NATIVE-02:** API8HIGH/Ollama46HIGH unique остаются. Mount/nsenter/infocmp/
+  homed/Perl не вызываются app paths, но это не полное VEX/эксплуатационное доказательство.
+  Loopback/capabilities — ограничения риска, не исправление всех CVE. Follow-up до release.
+- **H06-P1-LIC-03:** фактические package license texts + Qwen artifact license проверены,
+  но GPL/LGPL/native/GPU redistribution и лицензия собственного кода требуют решения.
+- **H06-P2-TOOLS-04:** не вся сборка bit-reproducible; scanner transitive/CI patch/network
+  variables документированы. Ни один critical/high не скрыт broad ignore.
+- H-05 QA volume108.7MiB, только известные synthetic profiles в bounded read-only check;
+  содержит test auth hashes, снова stopped, не удалён. Рабочие volumes/baseline сохранены.
+  Предложен H-06-FU (не начат): supported DB image + H-04 migration/recovery + native
+  triage/Ollama image review. UX/U/UI и BA-017/018 не начинались.
+
 ## Обновление H-05 · 27.10.2026
 
 - PR23/a50e6da merged, base365bff3. [Диагностика](../DIAGNOSTICS.md),

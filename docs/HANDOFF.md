@@ -1,5 +1,45 @@
 # Business AI — HANDOFF
 
+## H-06 · supply-chain audit/hardening · 27.10.2026 (МСК)
+
+- PR24/ed8774d merged, main6405a1a ff-only, исходное дерево чистое; ветка
+  `codex/H-06-supply-chain-security`. Итоговый SHA/PR/CI — в сообщении сдачи.
+  [Отчёт](qa/H-06_SUPPLY_CHAIN_REPORT.md), [runbook](SUPPLY_CHAIN.md),
+  [лицензии](../THIRD_PARTY_NOTICES.md), [checkpoint](qa/H-06_CHECKPOINT.md).
+- Python lock43 entries (41 evaluated Windows distributions)/npm337 entries:
+  0 package advisories. Strict Git65 reachable commits/current/build/image secrets0;
+  PAT/age/DSN positive/redaction self-test PASS. .env отсутствуют, template placeholder
+  публичный; реальные user keys/credential stores не читались.2 upstream .venv false
+  positives проверены; history policy не имеет path exclusions.
+- Actions full SHA/persist-credentials:false, base digests, Python artifact hashes,
+  test uv wheel hashes; runtime pip removed, curl closure removed/Brotli1.2.1-r0.
+  Web rescan0; API pip6 findings removed. API/migrate cap_dropALL/no-new-privileges;
+  context key/env/archive exclusions. New scoped Supply chain CI с fail-closed
+  pip/npm/Gitleaks и без raw findings в output/artifacts. App dependency versions,
+  бизнес-логика, миграции, LLM orchestration и backup architecture не менялись.
+- **H-блок пока НЕ принят для RC:** final image unique union16CRITICAL/174HIGH/
+  305MEDIUM/329LOW/42UNKNOWN. DB Debian11.11 EOSL/PG17.5 (16critical/151high unique)
+  и official PG advisories требуют отдельного supported image/migration/recovery
+  follow-up. API8high/Ollama46high частично triaged; owner-approved exceptions нет.
+  Это не число доказанных эксплойтов API. Изменения working DB/images не применялись.
+- Runtime notices shipped API/web,43Python/337npm license inventory. Конкретный Qwen
+  manifest/license blob совпали с installed artifact (Apache2), model digest в
+  demo-manifestv2. LGPL/native/GPL/GPU redistribution и собственная app license
+  требуют review. Нельзя объявлять legal compatibility/bitwise reproducibility.
+- Регрессия: quick364PASS/104DB SKIP до финального source-policy test; затем6config
+  tests PASS (итоговый hook включает365quick); DB104PASS, extended102PASS/1550examples,
+  frontend45PASS/Chromium27PASS, Ruff/mypy123/TS/build PASS. Prek/final CI проверяются
+  перед сдачей, SKIP не PASS. Actual tmpfs Compose/new runtime smoke: миграции,
+  API/web/notices, finance, PDF39762bytes/JSON38733bytes/same hash/no token PASS.
+  Product Ollama/Qwen не обновлялись; real inference не повторялся, preflight5PASS.
+- H-05 volume `h05qa-a1016d75d85a_postgres_data`113994692bytes (~108.7MiB), labels QA,
+  read-only check3 expected profiles/9messages/0reports; снова stopped, не удалён.
+  Test auth hashes есть; это не утверждение полного отсутствия credential material.
+  H-06 smoke DB — tmpfs256MiB, persistent volume не создаётся; existing volumes/F-00 сохранены.
+- Следующее — review PR/решение владельца по H-06-FU proposal (не начат): supported
+  DB image + H-04 populated/restore proof + native CVE triage; Ollama image review
+  отдельно. Не начинать UX/U/UI/BA-017/018 или иные работы автоматически.
+
 ## H-05 · safe diagnostics · 27.10.2026 (МСК)
 
 - PR23/a50e6da merged (REST verified), main365bff3 ff-only/чистый;
