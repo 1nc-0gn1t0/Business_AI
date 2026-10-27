@@ -1,495 +1,340 @@
-/* Responsive composition, not a second feature implementation. */
-@media (min-width: 1650px) {
-  .main-panel {
-    padding: 40px 48px;
-  }
-  .home-view {
-    margin-top: 52px;
+@media (min-width: 1600px) {
+  .idea-screen {
+    margin-top: 30px;
   }
   .map-canvas {
-    height: 630px;
-  }
-  .zone-list .zone-grid {
-    max-height: 633px;
+    height: 600px;
   }
 }
-@media (max-width: 1200px) {
-  .app-sidebar {
-    width: 196px;
-    padding-inline: 12px;
+@media (max-width: 1000px) {
+  .flow-header {
+    padding-inline: 32px;
+    height: 80px;
   }
-  .app-body {
-    margin-left: 196px;
+  .flow-main {
+    padding: 24px 32px 40px;
   }
-  .main-panel {
-    padding: 27px 25px;
+  .stage-idea {
+    padding-bottom: 100px;
   }
-  .topbar {
-    padding: 0 25px;
+  .stage-chat {
+    padding-top: 0;
+    padding-bottom: 0;
   }
-  .home-layout {
-    grid-template-columns: minmax(0, 1.5fr) minmax(250px, 1fr);
-    gap: 20px;
-  }
-  .journey-preview {
-    padding: 20px;
-    margin-top: -140px;
-  }
-  .ai-workspace {
-    grid-template-columns: minmax(0, 1fr) 274px;
-    gap: 17px;
-  }
-  .map-and-zones {
-    grid-template-columns: 265px minmax(0, 1fr);
-    gap: 14px;
+  .location-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
   .map-canvas {
-    height: 520px;
+    height: 420px;
   }
-  .zone-list .zone-grid {
-    max-height: 523px;
-  }
-  .capital-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .scenario-card {
-    padding: 17px;
-  }
-}
-@media (max-width: 1000px) and (min-width: 601px) {
-  .app-sidebar {
-    width: 78px;
-    padding: 25px 10px;
-    align-items: center;
-  }
-  .brand {
-    padding: 0;
-  }
-  .brand > span:last-child,
-  .nav-caption,
-  .product-nav button > span,
-  .sidebar-note {
-    display: none;
-  }
-  .product-nav {
-    margin-top: 36px;
-    width: 100%;
-  }
-  .product-nav button {
-    justify-content: center;
-    padding: 13px;
-  }
-  .sidebar-bottom {
-    padding: 20px 0 0;
-    width: 100%;
-  }
-  .new-project {
-    font-size: 0;
-    padding: 5px;
-  }
-  .new-project span {
-    font-size: 23px;
-  }
-  .app-body {
-    margin-left: 78px;
-  }
-  .home-heading h1 {
-    font-size: 52px;
-  }
-  .home-layout {
-    grid-template-columns: 1fr;
-  }
-  .journey-preview {
-    margin-top: 8px;
-  }
-  .journey-preview > h2 br {
-    display: none;
-  }
-  .journey-preview ol {
+  .zone-list {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-  }
-  .journey-preview li {
-    padding: 0;
-  }
-  .journey-preview li::after {
-    display: none;
-  }
-  .ai-workspace {
-    grid-template-columns: 1fr;
-  }
-  .chat-panel {
-    height: 590px;
-  }
-  .profile-summary {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .map-and-zones {
-    grid-template-columns: 1fr;
-  }
-  .map-column {
-    grid-row: 1;
-    position: static;
-  }
-  .zone-list .zone-grid {
     grid-template-columns: 1fr 1fr;
     max-height: none;
   }
-  .scenario-inputs,
-  .scenario-results {
+  .scenario-card {
+    padding: 22px;
+  }
+  .scenario-card > strong {
+    font-size: 25px;
+  }
+  .bank-product-grid {
     grid-template-columns: 1fr;
   }
-  .scenario-card dl {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 18px;
+  .input-columns {
+    gap: 18px;
   }
-  .bank-needs-grid {
-    grid-template-columns: 1fr 1fr;
+  .chat-screen {
+    height: calc(100dvh - 200px);
   }
-  .chart-row {
-    grid-template-columns: 110px minmax(0, 1fr) 100px;
-    gap: 10px;
+  .summary-list dd {
+    max-width: 58%;
   }
 }
 @media (max-width: 600px) {
   :root {
-    font-size: 13px;
+    font-size: 15px;
   }
-  .app-sidebar {
-    width: 100%;
-    position: sticky;
-    top: 0;
-    padding: 16px 0 0;
-    display: block;
-  }
-  .brand {
-    padding: 0 16px 15px;
-    font-size: 19px;
-  }
-  .brand small {
-    font-size: 7px;
-  }
-  .brand-icon {
-    width: 32px;
-    height: 32px;
-  }
-  .nav-caption,
-  .sidebar-note {
-    display: none;
-  }
-  .product-nav {
-    flex-direction: row;
-    overflow-x: auto;
-    padding: 0 10px 8px;
-    gap: 4px;
-    scrollbar-width: thin;
-  }
-  .product-nav button {
-    flex-direction: column;
-    justify-content: center;
-    min-width: 88px;
-    width: auto;
-    min-height: 61px;
-    gap: 5px;
-    font-size: 10px;
-    padding: 8px;
-  }
-  .product-nav small,
-  .nav-check {
-    display: none;
-  }
-  .product-nav button > svg {
-    width: 17px;
-    height: 17px;
-  }
-  .sidebar-bottom {
-    position: absolute;
-    top: 16px;
-    right: 12px;
-    padding: 0;
-    width: auto;
-    margin: 0;
-  }
-  .new-project {
-    padding: 6px 9px;
-    font-size: 10px;
-    min-height: 35px;
-    gap: 5px;
-  }
-  .new-project span {
-    font-size: 17px;
-  }
-  .app-body {
-    margin-left: 0;
-  }
-  .topbar {
-    height: 46px;
-    padding: 0 17px;
-  }
-  .breadcrumb {
-    font-size: 10px;
-  }
-  .breadcrumb span {
-    margin: 0 5px;
-  }
-  .health {
-    display: none;
-  }
-  .avatar {
-    width: 25px;
-    height: 25px;
-    font-size: 10px;
-  }
-  .main-panel {
-    padding: 24px 16px;
-  }
-  .home-view {
-    margin-top: 4px;
-  }
-  .home-heading h1 {
-    font-size: 43px;
-    letter-spacing: -1.8px;
-    margin: 19px 0 14px;
-  }
-  .home-heading > p {
-    font-size: 13px;
-  }
-  .home-layout {
-    display: block;
-    margin-top: 24px;
-  }
-  .idea-form {
-    padding: 16px;
-  }
-  .idea-form textarea {
-    font-size: 14px;
-    min-height: 145px;
-  }
-  .idea-form-footer {
-    flex-wrap: wrap;
-  }
-  .idea-form-footer .button {
-    width: 100%;
-    margin-top: 5px;
-  }
-  .idea-form-footer > span {
-    display: none;
-  }
-  .idea-examples button {
-    min-height: 40px;
-  }
-  .journey-preview {
-    margin-top: 25px;
-    padding: 20px;
-  }
-  .journey-preview > h2 {
-    font-size: 23px;
-  }
-  .journey-preview > h2 br {
-    display: none;
-  }
-  .journey-preview li {
-    padding-bottom: 20px;
-  }
-  .home-principles {
+  .flow-header {
+    height: 72px;
+    padding: 0 22px;
     gap: 12px;
-    flex-wrap: wrap;
   }
-  .home-principles span,
-  .home-limits {
+  .wordmark {
+    font-size: 21px;
+  }
+  .new-conversation {
+    margin-left: 0;
+    font-size: 11px;
+  }
+  .progress {
+    font-size: 11px;
+  }
+  .flow-main {
+    padding: 18px 22px 32px;
+  }
+  .flow-footer {
     font-size: 10px;
+    padding: 16px 22px;
+  }
+  .stage-idea {
+    padding: 16px 22px 100px;
+  }
+  .idea-screen h1 {
+    font-size: 42px;
+    letter-spacing: -1.7px;
+  }
+  .idea-composer {
+    margin-top: 32px;
+    padding: 18px;
+    border-radius: 24px;
+    display: block;
+  }
+  .idea-composer textarea {
+    font-size: 16px;
+    min-height: 108px;
+  }
+  .idea-composer .button {
+    width: 100%;
+    margin-top: 16px;
+    min-height: 52px;
+  }
+  .back-button {
+    margin-bottom: 20px;
   }
   .section-heading {
-    display: block;
+    margin-bottom: 26px;
   }
   .section-heading h1 {
-    font-size: 27px;
-  }
-  .section-heading > .tag {
-    margin-top: 12px;
+    font-size: 37px;
+    letter-spacing: -1.4px;
   }
   .section-heading p {
-    font-size: 12px;
+    font-size: 14px;
+    margin-top: 16px;
   }
-  .ai-workspace {
-    display: block;
+  .stage-chat {
+    padding-top: 0;
+    padding-bottom: 0;
   }
-  .chat-panel {
-    min-height: 530px;
-    height: 65vh;
+  .stage-chat .back-button {
+    margin-bottom: 0;
   }
-  .chat-heading {
-    padding: 16px;
+  .chat-screen {
+    height: calc(100dvh - 190px);
+    min-height: 390px;
   }
-  .chat-scroll {
-    padding: 17px;
-  }
-  .chat-heading h2 {
+  .message p {
     font-size: 16px;
   }
+  .message.user {
+    max-width: 93%;
+    padding: 14px 17px;
+  }
+  .message.assistant {
+    margin-right: 0;
+  }
   .composer {
-    margin-inline: 12px;
+    padding: 12px;
+    border-radius: 22px;
   }
-  .message {
-    max-width: 96%;
+  .composer textarea {
+    font-size: 16px;
+    padding: 4px;
   }
-  .context-panel {
-    margin-top: 20px;
+  .send-button {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
   }
-  .business-context {
-    padding: 16px;
+  .chat-meta {
+    gap: 12px;
+    font-size: 11px;
   }
-  .geo-toolbar {
-    padding: 14px;
+  .consent-dialog {
+    padding: 26px;
+  }
+  .consent-dialog h2 {
+    font-size: 27px;
+  }
+  .review-screen {
+    margin: 32px auto;
+  }
+  .review-screen h1 {
+    font-size: 43px;
+  }
+  .project-title {
+    margin-top: 32px;
+  }
+  .project-title h2 {
+    font-size: 30px;
+  }
+  .project-title p {
+    font-size: 19px;
+  }
+  .profile-form {
+    grid-template-columns: 1fr;
+  }
+  .profile-form > .button {
+    width: 100%;
+  }
+  .review-screen .actions {
+    flex-direction: column;
     gap: 10px;
   }
-  .geo-toolbar > label {
-    flex-basis: 100%;
-  }
-  .geo-toolbar > .button {
+  .review-screen .actions > .button {
     width: 100%;
   }
-  .settings-grid {
-    grid-template-columns: 1fr 1fr;
+  .location-toolbar {
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
   }
-  .map-and-zones {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 16px;
-  }
-  .map-column,
-  .zone-list {
+  .location-toolbar .button {
     width: 100%;
-    position: static;
   }
   .map-canvas {
-    height: 365px;
+    height: 370px;
+  }
+  .map-wrap {
+    border-radius: 20px;
   }
   .map-legend {
+    font-size: 10px;
     gap: 10px;
-    padding: 10px;
-    font-size: 9px;
   }
-  .zone-grid,
-  .zone-list .zone-grid {
+  .zone-list {
     grid-template-columns: 1fr;
-    max-height: none;
+    gap: 4px;
   }
   .zone-card {
     padding: 16px;
   }
-  .detail-panel {
-    padding: 17px;
-  }
-  .detail-panel > .row {
-    flex-wrap: wrap;
+  .zone-card h2 {
+    font-size: 17px;
   }
   .metrics-row {
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
   }
-  .finance-context {
+  .step-action .button {
+    width: 100%;
+  }
+  .quick-assumptions {
     grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 17px;
-  }
-  .finance-context > div {
-    border: 0;
-    border-bottom: 1px solid #e5ecf5;
-    padding: 0 0 12px;
+    gap: 18px;
   }
   .input-columns,
   .scenario-inputs,
-  .scenario-results,
-  .bank-product-grid,
   .bank-needs-grid,
-  .lead-columns,
-  .report-sections {
+  .lead-columns {
     grid-template-columns: 1fr;
   }
   .capital-grid {
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
-  .stat-card {
-    padding: 14px;
+  .capital-grid strong {
+    font-size: 30px;
   }
-  .stat-card strong {
-    font-size: 18px;
+  .capital-grid > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+  }
+  .capital-grid small {
+    max-width: 45%;
+    font-size: 12px;
+  }
+  .capital-grid strong {
+    margin: 0;
+    font-size: 25px;
+  }
+  .scenario-results {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .scenario-card {
+    padding: 23px;
   }
   .scenario-card > strong {
-    font-size: 28px;
+    font-size: 34px;
   }
-  .assumptions {
-    padding: 4px 13px 14px;
-  }
-  .calculation-controls {
-    flex-wrap: wrap;
-  }
-  .calculation-controls .button {
-    width: 100%;
+  .scenario-card details {
+    margin: 10px 0 0;
   }
   .chart-row {
-    grid-template-columns: 94px minmax(0, 1fr);
-    gap: 9px;
-    margin: 18px 0;
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 12px;
+    font-size: 11px;
   }
   .chart-row strong {
     grid-column: 2;
-    font-size: 11px;
+    font-size: 12px;
   }
-  .chart-row > span {
-    font-size: 10px;
+  .model-note {
+    font-size: 12px;
   }
-  .chart-track {
-    height: 24px;
+  .bank-question {
+    margin: 32px 0;
   }
-  .chart-track i {
-    top: 4px;
+  .bank-question h2 {
+    font-size: 27px;
   }
-  .bank-product-card,
-  .lead-card {
-    padding: 17px;
+  .answer-options {
+    gap: 10px;
   }
-  .bank-product-card h2 {
-    font-size: 17px;
+  .answer-button {
+    min-height: 48px;
+    padding: 12px 20px;
+    font-size: 14px;
   }
-  .lead-field {
-    grid-template-columns: 1fr;
-    gap: 3px;
+  .bank-product-card {
+    padding: 24px;
   }
-  .report-project {
-    padding: 18px;
-    gap: 12px;
-    flex-wrap: wrap;
+  .summary-screen {
+    margin-top: 12px;
   }
-  .report-project > .status-badge {
-    margin-left: 66px;
+  .summary-screen h1 {
+    font-size: 39px;
   }
-  .report-section-card {
-    padding: 20px;
+  .summary-intro {
+    font-size: 18px;
+  }
+  .summary-list > div {
+    display: block;
+    padding: 18px 0;
+  }
+  .summary-list dd {
+    max-width: none;
+    text-align: left;
+    margin-top: 9px;
+    font-size: 20px;
+  }
+  .summary-list dt {
+    font-size: 12px;
+  }
+  .report-actions {
+    gap: 14px;
   }
   .report-actions .button {
-    flex: 1;
-    min-width: 135px;
+    width: 100%;
   }
-  .report-export {
-    padding: 17px;
+  .lead-card {
+    padding: 20px;
   }
-  .next-step {
-    flex-wrap: wrap;
-  }
-  .product-footer {
-    padding: 16px;
-    font-size: 9px;
+  .consent-row {
     display: block;
   }
-  .product-footer span {
-    display: block;
-    margin-bottom: 5px;
+  .consent-row .button {
+    margin-top: 12px;
+  }
+  .consent-row .row {
+    gap: 12px;
+  }
+  .calculation-controls .button {
+    width: 100%;
   }
 }
 @media (prefers-reduced-motion: reduce) {

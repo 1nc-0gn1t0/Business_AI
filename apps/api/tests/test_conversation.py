@@ -31,8 +31,7 @@ def test_multi_turn_extract_correct_confirm_and_clear() -> None:
     assert state_for(profile) == ConversationState.AWAITING_CONFIRMATION
     profile = confirm(profile)
     assert state_for(profile) == ConversationState.CONFIRMED
-    assert "разделы карты и финансовой модели" in reply_for(profile)
-    assert "Банковские интеграции пока не подключены" in reply_for(profile)
+    assert reply_for(profile) == "Профиль подтверждён. Можно выбрать локацию."
     edited = apply_patch(
         profile, extract_business_profile("Не Казань, а Москва; бюджет: 3 млн", profile)
     )
@@ -135,3 +134,17 @@ def test_database_failure_is_a_sanitised_503(monkeypatch: pytest.MonkeyPatch) ->
         assert response.json()["request_id"] == response.headers["x-request-id"]
     finally:
         engine.dispose()
+
+
+def test_concise_questions_follow_missing_state_without_repeating_profile() -> None:
+    profile = BusinessProfile(conversation_id=uuid4(), category="кофейня", city="Казань")
+    assert reply_for(profile) == "Какой у вас бюджет в рублях?"
+    profile = apply_patch(profile, ProfilePatch(budget=Decimal("2000000")))
+    assert reply_for(profile) == "Какой формат бизнеса рассматриваете?"
+    profile = apply_patch(
+        profile, ProfilePatch.model_validate({"preferences": {"format": "навынос"}})
+    )
+    assert reply_for(profile).count("?") == 1
+    profile = apply_patch(profile, ProfilePatch(funding=Funding.OWN_FUNDS))
+    assert reply_for(profile) == "Всё необходимое собрано. Проверьте ваш проект."
+    assert "2000000" not in reply_for(profile)

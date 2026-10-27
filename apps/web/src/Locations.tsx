@@ -182,78 +182,20 @@ export default function Locations(props: Props) {
       return rank(a.id) - rank(b.id) || a.id.localeCompare(b.id);
     },
   );
-  const zoneCards = (
-    <div className="zone-grid">
-      {features.map((f, i) => {
-        const e = props.ranking!.evaluations.find(
-          (v) => v.candidate_id === f.id,
-        );
-        return (
-          <button
-            className={`zone-card ${props.selected === f.id ? "chosen" : ""}`}
-            key={f.id}
-            onClick={() => selectZone(f.id)}
-            aria-pressed={props.selected === f.id}
-          >
-            <div className="row">
-              <span className="zone-number">
-                {e?.rank ? `#${e.rank}` : `Зона ${i + 1}`}
-              </span>
-              <strong className="score">
-                {e?.score == null ? "Нет оценки" : `${e.score.toFixed(1)}`}
-                <small>{e?.score != null ? "/ 100" : ""}</small>
-              </strong>
-            </div>
-            <h3>
-              {f.properties.anchor.properties.name ||
-                `Зона ${f.properties.grid_i} / ${f.properties.grid_j}`}
-            </h3>
-            <p>
-              {f.properties.representative_point.coordinates
-                .map((n) => n.toFixed(4))
-                .join(", ")}{" "}
-              · {(f.properties.area_m2 / 10000).toFixed(1)} га
-            </p>
-            {e && (
-              <div className="factor-list">
-                {e.components.map((c) => (
-                  <div key={c.criterion}>
-                    <span>{criteria[c.criterion]}</span>
-                    <div className="bar">
-                      <i
-                        style={{
-                          width: `${c.normalized == null ? 0 : c.normalized * 100}%`,
-                        }}
-                      />
-                    </div>
-                    <b>
-                      {c.normalized == null
-                        ? "—"
-                        : (c.normalized * 100).toFixed(0)}
-                    </b>
-                  </div>
-                ))}
-              </div>
-            )}
-            <span className="card-link">
-              {props.selected === f.id ? "✓ Выбрана" : "Подробнее о зоне →"}
-            </span>
-          </button>
-        );
-      })}
-    </div>
+  const evaluation = props.ranking?.evaluations.find(
+    (e) => e.candidate_id === props.selected,
   );
   return (
-    <div className="locations">
+    <section className="locations">
       <div className="section-heading">
-        <div>
-          <span className="eyebrow">ГЕОГРАФИЯ ВАШЕГО БИЗНЕСА</span>
-          <h1>
-            {props.comparison ? "Сравнение локаций" : "Найдите место для идеи"}
-          </h1>
-          <p>Исследуйте зоны по проверяемым географическим признакам.</p>
-        </div>
-        <span className="tag outline">Казань · MVP</span>
+        <h1>
+          Где лучше открыть <br />
+          ваш бизнес?
+        </h1>
+        <p>
+          Выберите зону для исследования. Это не предложение свободного
+          помещения.
+        </p>
       </div>
       {error && (
         <div className="alert" role="alert">
@@ -270,385 +212,420 @@ export default function Locations(props: Props) {
         </div>
       )}
       {loading ? (
-        <div className="empty" role="status">
-          Загружаем геоданные…
-        </div>
+        <p role="status">Загружаем локации…</p>
       ) : !dataset ? (
         <div className="empty">
           <h2>Нет загруженных геоданных</h2>
           <p>
-            Импортируйте набор OSM по инструкции README. Отсутствие объектов не
-            означает отсутствие бизнеса.
+            Для этой территории анализ пока недоступен. Вернитесь к профилю,
+            чтобы проверить город.
           </p>
         </div>
       ) : (
         <>
-          <div className="geo-toolbar">
-            <label>
-              Набор данных
-              <select
-                value={dataset.slug}
-                disabled={busy}
-                onChange={(e) => {
-                  setDataset(datasets.find((d) => d.slug === e.target.value)!);
-                  setWalking(null);
-                  setWalkPoint(null);
-                  setPois(null);
-                  setDistricts(null);
-                  props.onRanking(null);
-                  props.onSelect(null);
-                }}
-              >
-                {datasets.map((d) => (
-                  <option key={d.slug} value={d.slug}>
-                    {d.city} · {d.slug}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Объекты на карте
-              <select
-                value={category}
-                onChange={(e) => {
-                  setPois(null);
-                  setCategory(e.target.value);
-                }}
-              >
-                <option value="amenity:cafe">Кафе</option>
-                <option value="highway:bus_stop">Остановки</option>
-                <option value="shop:supermarket">Супермаркеты</option>
-                <option value="amenity:pharmacy">Аптеки</option>
-              </select>
-            </label>
-            <button
-              className="button"
-              disabled={
-                busy || props.profile?.confirmation_state !== "confirmed"
-              }
-              onClick={() => void analyze()}
-            >
-              {busy
-                ? "Анализируем…"
-                : props.ranking
-                  ? "Пересчитать зоны ↗"
-                  : "Найти зоны →"}
-            </button>
-          </div>
-          {props.profile?.confirmation_state !== "confirmed" && (
-            <p className="notice">
-              Сначала заполните и подтвердите профиль в AI-чате.
-            </p>
-          )}
-          {!props.comparison && (
-            <div className={`map-and-zones ${props.ranking ? "" : "no-zones"}`}>
-              {props.ranking && (
-                <aside className="zone-list">
-                  <h2>
-                    Зоны-кандидаты{" "}
-                    <span className="count">{features.length}</span>
-                  </h2>
-                  {zoneCards}
-                </aside>
-              )}
-              <div className="map-column">
-                <GeoMap
-                  key={`${dataset.slug}:${dataset.data_version}`}
-                  dataset={dataset}
-                  pois={pois}
-                  districts={districts}
-                  ranking={props.ranking}
-                  selected={props.selected}
-                  onSelect={selectZone}
-                  walking={walking}
-                  onPoint={(p) => {
-                    setWalking(null);
-                    setWalkPoint(p);
-                  }}
-                />
-                <div className="row source-strip">
-                  <span>
-                    <i className="dot mint-dot" /> OSM ·{" "}
-                    {date(dataset.osm_base)}
-                    {dataset.stale ? " · данные устарели" : ""}
-                  </span>
-                  <span>
-                    {pois
-                      ? `${pois.returned_count} POI на карте${pois.next_offset != null ? " · выборка ограничена 500" : ""}`
-                      : "POI загружаются / недоступны"}{" "}
-                    · {dataset.poi_count.toLocaleString("ru-RU")} в наборе
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-          <details className="settings">
-            <summary>Параметры поиска и веса оценки</summary>
-            <div className="settings-grid">
-              {Object.entries(weights).map(([key, value]) => (
-                <label key={key}>
-                  {criteria[key]}
-                  <input
-                    aria-label={`Вес: ${criteria[key]}`}
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="0.1"
-                    value={value}
-                    disabled={
-                      busy || (key === "competitors" && mode === "neutral")
-                    }
-                    onChange={(e) => {
-                      invalidateAnalysis();
-                      setWeights({ ...weights, [key]: Number(e.target.value) });
-                    }}
-                  />
-                </label>
-              ))}
-              <label>
-                Роль конкурентов
-                <select
-                  value={mode}
-                  disabled={busy}
-                  onChange={(e) => {
-                    const m = e.target.value as typeof mode;
-                    invalidateAnalysis();
-                    setMode(m);
-                    setWeights((w) => ({
-                      ...w,
-                      competitors: m === "neutral" ? 0 : 1,
-                    }));
-                  }}
-                >
-                  <option value="neutral">Без влияния на балл</option>
-                  <option value="cluster">Признак кластера</option>
-                  <option value="separation">Меньше конкурентов</option>
-                </select>
-              </label>
-            </div>
-            <label className="check-label">
-              <input
-                type="checkbox"
-                checked={interior}
-                disabled={busy}
-                onChange={(e) => {
-                  invalidateAnalysis();
-                  setInterior(e.target.checked);
-                }}
-              />
-              Внутренняя область Казани: 49.065, 55.71 — 49.235, 55.84
-            </label>
+          <div className="location-toolbar">
             <p>
-              Ячейки 500 м, интервал 1000 м, радиус оценки 500 м по прямой. Веса
-              по умолчанию равные; конкуренты нейтральны. Изменения применятся
-              после «Пересчитать». Это сравнительная оценка OSM, не спрос и не
-              прибыльность.
+              {dataset.city} · покрытие части города
+              {dataset.stale ? " · данные устарели" : ""}
             </p>
-          </details>
-          {!props.comparison && (
-            <details className="walking-disclosure">
-              <summary>Пешеходная доступность по дорожной сети</summary>
-              <Walking
-                dataset={dataset}
-                ranking={props.ranking}
-                point={
-                  walkPoint ||
-                  (props.ranking?.candidates.features.find(
-                    (f) => f.id === props.selected,
-                  )?.properties.representative_point.coordinates as
-                    | [number, number]
-                    | undefined) ||
-                  null
+            {!props.ranking && (
+              <button
+                className="button"
+                disabled={
+                  busy || props.profile?.confirmation_state !== "confirmed"
                 }
-                result={walking}
-                onSearchBounds={
-                  props.profile?.confirmation_state === "confirmed" && !busy
-                    ? (b) => {
-                        void analyze(b);
-                      }
-                    : undefined
-                }
-                onPoint={setWalkPoint}
-                onResult={setWalking}
-              />
-            </details>
-          )}
-          {!props.ranking && (
-            <div className="empty compact">
-              <span className="empty-symbol">⌖</span>
-              <h3>Локация начинается с контекста</h3>
-              <p>
-                Подтвердите идею и запустите поиск. Здесь появятся
-                зоны-кандидаты и прозрачное сравнение.
-              </p>
-            </div>
-          )}
-          {props.ranking && (
-            <>
-              <div className="row results-heading">
-                <h2>
-                  Зоны-кандидаты{" "}
-                  <span className="count">
-                    {props.ranking.candidates.features.length}
-                  </span>
-                </h2>
-                <span className="subtle">
-                  {props.ranking.status === "ok"
-                    ? "Оценка рассчитана"
-                    : "Данные ограничены"}{" "}
-                  · не свободные помещения
-                </span>
+                onClick={() => void analyze()}
+              >
+                {busy ? "Ищем локации…" : "Найти локации"}
+              </button>
+            )}
+            {props.ranking && (
+              <span>
+                {features.length
+                  ? `${features.length} зон для сравнения`
+                  : "Подходящие зоны не найдены"}
+              </span>
+            )}
+          </div>
+          <div className="location-layout">
+            <GeoMap
+              key={`${dataset.slug}:${dataset.data_version}`}
+              dataset={dataset}
+              pois={pois}
+              districts={districts}
+              ranking={props.ranking}
+              selected={props.selected}
+              onSelect={selectZone}
+              walking={walking}
+              onPoint={(point) => {
+                setWalking(null);
+                setWalkPoint(point);
+              }}
+            />
+            {features.length > 0 && (
+              <div className="zone-list" aria-label="Зоны-кандидаты">
+                {features.map((f, i) => {
+                  const e = props.ranking?.evaluations.find(
+                    (v) => v.candidate_id === f.id,
+                  );
+                  return (
+                    <button
+                      className={`zone-card ${props.selected === f.id ? "chosen" : ""}`}
+                      key={f.id}
+                      onClick={() => selectZone(f.id)}
+                      aria-pressed={props.selected === f.id}
+                    >
+                      <span className="zone-number">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <h2>
+                          {f.properties.anchor.properties.name ||
+                            `Зона ${i + 1}`}
+                        </h2>
+                        <p>
+                          {(f.properties.area_m2 / 10000).toFixed(1)} га ·{" "}
+                          {e?.score == null
+                            ? "Недостаточно данных для оценки"
+                            : `${e.score.toFixed(1)} / 100 по геопризнакам`}
+                        </p>
+                        <span className="selection-label">
+                          {props.selected === f.id
+                            ? "✓ Выбрана"
+                            : "Выбрать зону"}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
-              {(props.ranking.reasons.length > 0 ||
-                props.ranking.candidates.reasons.length > 0) && (
-                <div className="notice">
+            )}
+          </div>
+          <p className="fine-print">
+            OpenStreetMap · {date(dataset.osm_base)}. Сравнительная геооценка,
+            не прогноз спроса или прибыльности.
+            {pois?.next_offset != null ? " На карте показаны не все POI." : ""}
+            {props.ranking?.status && props.ranking.status !== "ok"
+              ? " Покрытие данных ограничено."
+              : ""}
+          </p>
+          <details className="analysis-options">
+            <summary>Подробнее о зоне и анализе</summary>
+            {selected && evaluation && (
+              <section className="zone-detail">
+                <h2>
+                  {selected.properties.anchor.properties.name ||
+                    "Выбранная зона"}
+                </h2>
+                <dl className="metrics-row">
+                  <div>
+                    <dt>Остановки в 500 м</dt>
+                    <dd>{evaluation.raw.transit_count}</dd>
+                  </div>
+                  <div>
+                    <dt>Ближайшая остановка</dt>
+                    <dd>
+                      {evaluation.raw.nearest_transit_m == null
+                        ? "Нет данных"
+                        : `${Math.round(evaluation.raw.nearest_transit_m)} м`}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Конкуренты OSM</dt>
+                    <dd>{evaluation.raw.competitor_count}</dd>
+                  </div>
+                  <div>
+                    <dt>Объекты окружения</dt>
+                    <dd>{evaluation.raw.complementary_count}</dd>
+                  </div>
+                </dl>
+                <p className="fine-print">
+                  Расстояния по прямой. Неполнота OSM не означает отсутствия
+                  объектов.
+                </p>
+                <ul>
+                  {evaluation.explanations.map((x) => (
+                    <li key={x.criterion}>{x.text}</li>
+                  ))}
+                </ul>
+                <div className="factor-list">
+                  {evaluation.components.map((c) => (
+                    <p key={c.criterion}>
+                      {criteria[c.criterion]}:{" "}
+                      {c.normalized == null
+                        ? "Нет данных"
+                        : (c.normalized * 100).toFixed(0)}
+                    </p>
+                  ))}
+                </div>
+                <details>
+                  <summary>Исходные показатели и происхождение</summary>
+                  <pre>
+                    {JSON.stringify(
+                      {
+                        raw: evaluation.raw,
+                        components: evaluation.components,
+                        provenance: evaluation.provenance,
+                        missing_data: evaluation.missing_data,
+                      },
+                      null,
+                      2,
+                    )}
+                  </pre>
+                </details>
+              </section>
+            )}
+            {props.ranking && (
+              <>
+                <h2>Как сравниваются зоны</h2>
+                <div className="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Зона</th>
+                        <th>Оценка</th>
+                        {Object.values(criteria).map((c) => (
+                          <th key={c}>{c}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {features.map((f, i) => {
+                        const e = props.ranking?.evaluations.find(
+                          (v) => v.candidate_id === f.id,
+                        );
+                        return (
+                          <tr key={f.id}>
+                            <td>
+                              {f.properties.anchor.properties.name ||
+                                `Зона ${i + 1}`}
+                            </td>
+                            <td>{e?.score?.toFixed(1) ?? "Нет данных"}</td>
+                            {Object.keys(criteria).map((key) => (
+                              <td key={key}>
+                                {e?.components.find((c) => c.criterion === key)
+                                  ?.normalized == null
+                                  ? "—"
+                                  : (
+                                      e!.components.find(
+                                        (c) => c.criterion === key,
+                                      )!.normalized! * 100
+                                    ).toFixed(0)}
+                              </td>
+                            ))}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                <ul>
                   {[
                     ...props.ranking.reasons,
                     ...props.ranking.candidates.reasons,
-                  ]
-                    .map(readable)
-                    .join(" · ")}
-                </div>
-              )}
-              {props.comparison && zoneCards}
-              {selected && (
-                <section className="detail-panel">
-                  <div className="row">
-                    <div>
-                      <span className="eyebrow">
-                        ВЫБРАННАЯ ЗОНА · НЕ ПОМЕЩЕНИЕ
-                      </span>
-                      <h2>
-                        {selected.properties.anchor.properties.name ||
-                          selected.id.slice(0, 12)}
-                      </h2>
-                    </div>
-                    <button
-                      className="button secondary"
-                      onClick={props.onFinance}
-                    >
-                      К финансовой модели →
-                    </button>
-                  </div>
-                  {props.ranking.evaluations
-                    .filter((e) => e.candidate_id === selected.id)
-                    .map((e) => (
-                      <div key={e.candidate_id}>
-                        <div className="metrics-row">
-                          <div>
-                            <small>Остановки в 500 м</small>
-                            <strong>{e.raw.transit_count}</strong>
-                          </div>
-                          <div>
-                            <small>Ближайшая остановка</small>
-                            <strong>
-                              {e.raw.nearest_transit_m == null
-                                ? "Нет данных"
-                                : `${Math.round(e.raw.nearest_transit_m)} м`}
-                            </strong>
-                          </div>
-                          <div>
-                            <small>Конкуренты OSM</small>
-                            <strong>{e.raw.competitor_count}</strong>
-                          </div>
-                          <div>
-                            <small>Объекты окружения</small>
-                            <strong>{e.raw.complementary_count}</strong>
-                          </div>
-                        </div>
-                        <p className="subtle">
-                          Расстояния по прямой. Неполнота OSM не равна
-                          отсутствию объектов на местности.
-                        </p>
-                        <ul className="explanations">
-                          {e.explanations.map((x) => (
-                            <li key={x.criterion} className={x.effect}>
-                              {x.text}
-                            </li>
-                          ))}
-                        </ul>
-                        <details>
-                          <summary>
-                            Исходные показатели, нормализация и происхождение
-                          </summary>
-                          <pre>
-                            {JSON.stringify(
-                              {
-                                raw: e.raw,
-                                components: e.components,
-                                provenance: e.provenance,
-                                missing_data: e.missing_data,
-                              },
-                              null,
-                              2,
-                            )}
-                          </pre>
-                        </details>
-                      </div>
-                    ))}
-                </section>
-              )}
-              <details className="provenance">
-                <summary>Методология и ограничения результата</summary>
-                <p>
-                  Алгоритм: {props.ranking.algorithm_version}. Политика:{" "}
-                  {props.ranking.policy.version}. Порядок: балл ↓, ID ↑ при
-                  равенстве.
-                </p>
-                <p>{props.ranking.policy.weight_rationale}</p>
+                  ].map((t, i) => (
+                    <li key={i}>{readable(t)}</li>
+                  ))}
+                </ul>
                 <ul>
                   {props.ranking.limitations.map((t) => (
                     <li key={t}>{t}</li>
                   ))}
                 </ul>
-                <pre>
-                  {JSON.stringify(
-                    {
-                      fingerprint: props.ranking.request_fingerprint,
-                      policy: props.ranking.policy,
-                      request: props.ranking.candidates.request_snapshot,
-                    },
-                    null,
-                    2,
-                  )}
-                </pre>
+                <p>
+                  Алгоритм: {props.ranking.algorithm_version}.{" "}
+                  {props.ranking.policy.weight_rationale}
+                </p>
+              </>
+            )}
+            <details>
+              <summary>Настройки анализа</summary>
+              <div className="geo-toolbar">
+                <label>
+                  Набор данных
+                  <select
+                    value={dataset.slug}
+                    disabled={busy}
+                    onChange={(e) => {
+                      setDataset(
+                        datasets.find((d) => d.slug === e.target.value)!,
+                      );
+                      setWalking(null);
+                      setWalkPoint(null);
+                      setPois(null);
+                      setDistricts(null);
+                      props.onRanking(null);
+                      props.onSelect(null);
+                    }}
+                  >
+                    {datasets.map((d) => (
+                      <option key={d.slug} value={d.slug}>
+                        {d.city} · {d.slug}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Объекты на карте
+                  <select
+                    value={category}
+                    onChange={(e) => {
+                      setPois(null);
+                      setCategory(e.target.value);
+                    }}
+                  >
+                    <option value="amenity:cafe">Кафе</option>
+                    <option value="highway:bus_stop">Остановки</option>
+                    <option value="shop:supermarket">Супермаркеты</option>
+                    <option value="amenity:pharmacy">Аптеки</option>
+                  </select>
+                </label>
+                <button
+                  className="button"
+                  disabled={
+                    busy || props.profile?.confirmation_state !== "confirmed"
+                  }
+                  onClick={() => void analyze()}
+                >
+                  {busy
+                    ? "Анализируем…"
+                    : props.ranking
+                      ? "Пересчитать зоны ↗"
+                      : "Найти зоны →"}
+                </button>
+              </div>
+              {props.profile?.confirmation_state !== "confirmed" && (
+                <p className="notice">
+                  Сначала заполните и подтвердите профиль в AI-чате.
+                </p>
+              )}
+              <details className="settings">
+                <summary>Параметры поиска и веса оценки</summary>
+                <div className="settings-grid">
+                  {Object.entries(weights).map(([key, value]) => (
+                    <label key={key}>
+                      {criteria[key]}
+                      <input
+                        aria-label={`Вес: ${criteria[key]}`}
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        value={value}
+                        disabled={
+                          busy || (key === "competitors" && mode === "neutral")
+                        }
+                        onChange={(e) => {
+                          invalidateAnalysis();
+                          setWeights({
+                            ...weights,
+                            [key]: Number(e.target.value),
+                          });
+                        }}
+                      />
+                    </label>
+                  ))}
+                  <label>
+                    Роль конкурентов
+                    <select
+                      value={mode}
+                      disabled={busy}
+                      onChange={(e) => {
+                        const m = e.target.value as typeof mode;
+                        invalidateAnalysis();
+                        setMode(m);
+                        setWeights((w) => ({
+                          ...w,
+                          competitors: m === "neutral" ? 0 : 1,
+                        }));
+                      }}
+                    >
+                      <option value="neutral">Без влияния на балл</option>
+                      <option value="cluster">Признак кластера</option>
+                      <option value="separation">Меньше конкурентов</option>
+                    </select>
+                  </label>
+                </div>
+                <label className="check-label">
+                  <input
+                    type="checkbox"
+                    checked={interior}
+                    disabled={busy}
+                    onChange={(e) => {
+                      invalidateAnalysis();
+                      setInterior(e.target.checked);
+                    }}
+                  />
+                  Внутренняя область Казани: 49.065, 55.71 — 49.235, 55.84
+                </label>
+                <p>
+                  Ячейки 500 м, интервал 1000 м, радиус оценки 500 м по прямой.
+                  Веса по умолчанию равные; конкуренты нейтральны. Изменения
+                  применятся после «Пересчитать». Это сравнительная оценка OSM,
+                  не спрос и не прибыльность.
+                </p>
               </details>
-            </>
-          )}
-          <details className="provenance">
-            <summary>Источник и фактическое покрытие</summary>
-            <p>
-              <a
-                href="https://www.openstreetmap.org/copyright"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {dataset.attribution}
-              </a>{" "}
-              · {dataset.license}. Источник:{" "}
-              <a href={dataset.source_url} target="_blank" rel="noreferrer">
-                {dataset.source_name}
-              </a>
-            </p>
-            <p>
-              OSM: {date(dataset.osm_base)} · импорт:{" "}
-              {date(dataset.imported_at)} · районов/полигонов:{" "}
-              {dataset.district_count}
-              {districts?.truncated ? " (показаны не все)" : ""}.
-            </p>
-            <p>
-              Версия: <code>{dataset.data_version}</code>. Жёлтый контур —
-              граница сохранённой выборки, а не всего города.
-            </p>
-            <ul>
-              {dataset.limitations.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
+              {
+                <details className="walking-disclosure">
+                  <summary>Пешеходная доступность по дорожной сети</summary>
+                  <Walking
+                    dataset={dataset}
+                    ranking={props.ranking}
+                    point={
+                      walkPoint ||
+                      (props.ranking?.candidates.features.find(
+                        (f) => f.id === props.selected,
+                      )?.properties.representative_point.coordinates as
+                        [number, number] | undefined) ||
+                      null
+                    }
+                    result={walking}
+                    onSearchBounds={
+                      props.profile?.confirmation_state === "confirmed" && !busy
+                        ? (b) => {
+                            void analyze(b);
+                          }
+                        : undefined
+                    }
+                    onPoint={setWalkPoint}
+                    onResult={setWalking}
+                  />
+                </details>
+              }
+            </details>
+            <details>
+              <summary>Источник и фактическое покрытие</summary>
+              <p>
+                <a
+                  href="https://www.openstreetmap.org/copyright"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {dataset.attribution}
+                </a>{" "}
+                · {dataset.license}
+              </p>
+              <p>
+                <a href={dataset.source_url} target="_blank" rel="noreferrer">
+                  {dataset.source_name}
+                </a>{" "}
+                · {dataset.data_version} · импорт {date(dataset.imported_at)}
+              </p>
+              <p>
+                {dataset.poi_count.toLocaleString("ru-RU")} POI в наборе,{" "}
+                {pois?.returned_count ?? 0} в выборке карты. Граница сохранённой
+                выборки не равна границе всего города.
+              </p>
+              <ul>
+                {dataset.limitations.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            </details>
+            <DataSources onReport={props.onProviderReport} />
           </details>
         </>
       )}
-      <DataSources onReport={props.onProviderReport} />
-    </div>
+    </section>
   );
 }

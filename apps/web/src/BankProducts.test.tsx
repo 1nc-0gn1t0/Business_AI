@@ -49,7 +49,8 @@ describe("bank product interface with explicit mocked APIs", () => {
         onProfileConflict={vi.fn()}
       />,
     );
-    await screen.findByText("Демо-каталог");
+    await screen.findByText(/Демо-каталог/);
+    fireEvent.click(screen.getByText("Изменить или дополнить потребности"));
     fireEvent.change(screen.getByLabelText("Регистрация бизнеса"), {
       target: { value: "ip" },
     });
@@ -59,7 +60,7 @@ describe("bank product interface with explicit mocked APIs", () => {
     fireEvent.click(
       screen.getByRole("button", { name: "Подобрать по потребностям →" }),
     );
-    await screen.findByText("Подбор выполнен по явным правилам");
+    await screen.findByText("Возможности для вашего проекта");
     const call = fetch.mock.calls.find(
       ([, options]) => options?.method === "POST",
     )!;
@@ -76,16 +77,15 @@ describe("bank product interface with explicit mocked APIs", () => {
       needs_settlement_account: true,
     });
     expect(body).not.toHaveProperty("profile");
+    fireEvent.click(screen.getByText("Все продукты, источники и ограничения"));
     expect(
-      screen.getByText(
-        /Потенциальные соответствия по проверенным источникам: 0/,
-      ),
+      screen.getByText(/Подтверждённых действующих предложений: 0/),
     ).toBeVisible();
     fireEvent.change(screen.getByLabelText("Нужен расчётный счёт"), {
       target: { value: "false" },
     });
     expect(
-      screen.queryByText("Подбор выполнен по явным правилам"),
+      screen.queryByText("Возможности для вашего проекта"),
     ).not.toBeInTheDocument();
   });
   it("requires confirmed profile and shows catalogue load failures", async () => {
@@ -101,7 +101,8 @@ describe("bank product interface with explicit mocked APIs", () => {
         onProfileConflict={vi.fn()}
       />,
     );
-    await screen.findByText("Демо-каталог");
+    await screen.findByText(/Демо-каталог/);
+    fireEvent.click(screen.getByText("Изменить или дополнить потребности"));
     expect(
       screen.getByRole("button", { name: "Подобрать по потребностям →" }),
     ).toBeDisabled();
@@ -123,7 +124,8 @@ describe("bank product interface with explicit mocked APIs", () => {
         onProfileConflict={conflict}
       />,
     );
-    await screen.findByText("Демо-каталог");
+    await screen.findByText(/Демо-каталог/);
+    fireEvent.click(screen.getByText("Изменить или дополнить потребности"));
     fireEvent.click(
       screen.getByRole("button", { name: "Подобрать по потребностям →" }),
     );

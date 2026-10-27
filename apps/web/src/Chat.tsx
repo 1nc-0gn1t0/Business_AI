@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Conversation, Schemas } from "./api";
-import { rub } from "./api";
 
 export type ChatProps = {
   conversation: Conversation | null;
@@ -10,21 +9,13 @@ export type ChatProps = {
   onRefresh: () => void;
   onSend: (content: string) => Promise<void>;
   onPatch: (patch: Schemas["ProfilePatch"]) => Promise<void>;
-  onConfirm: () => void;
+  onConfirm?: () => void;
+  onReview?: () => void;
   consentControl?: ReactNode;
-  showProfile?: boolean;
   draft?: string;
   onDraft?: (value: string) => void;
 };
-const fields: Record<string, string> = {
-  city: "город",
-  category: "тип бизнеса",
-  budget: "бюджет",
-  format: "формат",
-  "preferences.format": "формат",
-  funding: "источник средств",
-};
-function ProfileEditor({
+export function ProfileEditor({
   conversation,
   busy,
   onPatch,
@@ -33,38 +24,12 @@ function ProfileEditor({
   const [editing, setEditing] = useState(false);
   return (
     <section className="profile-box">
-      <div className="row">
-        <h3>Профиль бизнеса</h3>
-        <span
-          className={`tag ${p.confirmation_state === "confirmed" ? "mint" : ""}`}
-        >
-          {p.confirmation_state === "confirmed" ? "Подтверждён" : "Черновик"}
-        </span>
-      </div>
-      <dl className="profile-summary">
-        <div>
-          <dt>Направление</dt>
-          <dd>{p.category || "Не указано"}</dd>
-        </div>
-        <div>
-          <dt>Город</dt>
-          <dd>{p.city || "Не указан"}</dd>
-        </div>
-        <div>
-          <dt>Бюджет</dt>
-          <dd>{rub(p.budget)}</dd>
-        </div>
-        <div>
-          <dt>Формат</dt>
-          <dd>{p.preferences?.format || "Уточняется"}</dd>
-        </div>
-      </dl>
       <button
         className="text-button"
         onClick={() => setEditing(!editing)}
         disabled={busy}
       >
-        {editing ? "Скрыть редактор" : "Редактировать профиль ↗"}
+        {editing ? "Скрыть редактор" : "Изменить"}
       </button>
       {editing && (
         <form
@@ -157,181 +122,59 @@ function ProfileEditor({
     </section>
   );
 }
-export function BusinessProfilePanel(
-  props: Pick<ChatProps, "busy" | "onPatch" | "onConfirm"> & {
-    conversation: Conversation;
-  },
-) {
-  const c = props.conversation;
-  return (
-    <div className="business-context">
-      <ProfileEditor
-        key={`${c.id}:${c.version}`}
-        conversation={c}
-        busy={props.busy}
-        onPatch={props.onPatch}
-      />
-      {c.profile.confirmation_state !== "confirmed" ? (
-        <>
-          <p className="subtle">
-            {c.missing_fields.length
-              ? `Нужно уточнить: ${c.missing_fields.map((f) => fields[f] || f).join(", ")}.`
-              : "Проверьте параметры и подтвердите профиль для геоанализа."}
-          </p>
-          <button
-            className="button full"
-            disabled={props.busy || c.missing_fields.length > 0}
-            onClick={props.onConfirm}
-          >
-            Подтвердить профиль →
-          </button>
-        </>
-      ) : (
-        <p className="context-ready">
-          Профиль готов к анализу. Изменения потребуют нового подтверждения.
-        </p>
-      )}
-      <div className="context-note">
-        <h3>Вы управляете решением</h3>
-        <p>
-          Параметры извлечены из ваших сообщений. Локации — зоны для
-          исследования, а финансовые вводные — явные допущения. Заявки в банк не
-          отправляются.
-        </p>
-      </div>
-    </div>
-  );
-}
 
 export default function Chat(props: ChatProps) {
-  const { conversation: c, messages, busy } = props;
   const scroll = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (scroll.current) scroll.current.scrollTop = scroll.current.scrollHeight;
-  }, [messages, busy]);
   const [localText, setLocalText] = useState("");
   const text = props.draft ?? localText;
   const setText = props.onDraft ?? setLocalText;
+  useEffect(() => {
+    if (scroll.current) scroll.current.scrollTop = scroll.current.scrollHeight;
+  }, [props.messages, props.busy]);
   return (
-    <aside className="chat-panel" aria-label="AI-помощник">
-      <div className="chat-heading">
-        <div>
-          <span className="eyebrow">BUSINESS ASSISTANT</span>
-          <h2>
-            <span className="spark">✦</span> От идеи к решению
-          </h2>
-        </div>
-        {props.showProfile !== false && (
-          <button
-            className="icon-button"
-            title="Новая беседа"
-            aria-label="Новая беседа"
-            onClick={props.onNew}
-            disabled={busy}
-          >
-            ＋
-          </button>
-        )}
-      </div>
+    <section className="chat-screen" aria-label="AI-помощник">
+      <h1 className="sr-only">Ваша бизнес-идея</h1>
       <div className="chat-scroll" ref={scroll}>
-        <div className="assistant-intro">
-          <span className="assistant-avatar">✦</span>
-          <p>
-            Расскажите о вашей идее.
-            <br />
-            <span>Разберём профиль, географию и экономику — шаг за шагом.</span>
-          </p>
-        </div>
-        {props.consentControl}
-        {!c && (
-          <button
-            className="prompt-card"
-            disabled={busy}
-            onClick={() =>
-              setText(
-                "Хочу открыть кофейню в Казани. Бюджет — 2 миллиона рублей",
-              )
-            }
-          >
-            Открыть кофейню в Казани <span>↗</span>
-            <small>Начать с бизнес-идеи</small>
-          </button>
-        )}
         <div
           className="messages"
           role="log"
           aria-label="История диалога"
           aria-live="polite"
         >
-          {messages.map((m) => (
+          {props.messages.map((m) => (
             <div key={m.id} className={`message ${m.role}`}>
-              <span className="message-author">
+              <span className="sr-only">
                 {m.role === "user" ? "Вы" : "Business AI"}
               </span>
               <p>{m.content}</p>
             </div>
           ))}
         </div>
-        {busy && (
-          <div className="loading" role="status">
-            Обрабатываем запрос…
-          </div>
+        {props.busy && (
+          <p className="thinking" role="status">
+            <span aria-hidden="true">●</span> Обдумываю…
+          </p>
         )}
-        {c && (
-          <>
-            <div className="row subtle">
-              <span>
-                {c.extraction_mode === "ollama"
-                  ? "Локальная Qwen · Ollama"
-                  : `Режим ${c.extraction_mode} · не LLM`}
-              </span>
-              <button
-                className="text-button"
-                disabled={busy}
-                onClick={props.onRefresh}
-              >
-                Обновить
-              </button>
-            </div>
-            {props.showProfile !== false && (
-              <ProfileEditor
-                key={`${c.id}:${c.version}`}
-                conversation={c}
-                busy={busy}
-                onPatch={props.onPatch}
-              />
-            )}
-            {props.showProfile !== false &&
-              c.profile.confirmation_state !== "confirmed" && (
-                <>
-                  <p className="subtle">
-                    {c.missing_fields.length
-                      ? `Нужно уточнить: ${c.missing_fields.map((f) => fields[f] || f).join(", ")}.`
-                      : "Проверьте параметры и подтвердите профиль для геоанализа."}
-                  </p>
-                  <button
-                    className="button full"
-                    disabled={busy || c.missing_fields.length > 0}
-                    onClick={props.onConfirm}
-                  >
-                    Подтвердить профиль →
-                  </button>
-                </>
-              )}
-          </>
+        {props.conversation && (
+          <button
+            className="text-button review-link"
+            disabled={props.busy}
+            onClick={props.onReview}
+          >
+            Проверить параметры проекта
+          </button>
         )}
       </div>
       <form
         className="composer"
         onSubmit={async (e) => {
           e.preventDefault();
-          if (!text.trim()) return;
-          const sent = text;
+          if (!text.trim() || props.busy) return;
           try {
-            await props.onSend(sent);
+            await props.onSend(text);
             setText("");
           } catch {
-            /* Keep draft when delivery fails. */
+            /* Keep unsent text. */
           }
         }}
       >
@@ -340,27 +183,45 @@ export default function Chat(props: ChatProps) {
         </label>
         <textarea
           id="message"
-          placeholder="Опишите бизнес или уточните параметры…"
+          placeholder="Напишите ответ…"
           value={text}
           onChange={(e) => setText(e.target.value)}
           maxLength={4000}
           rows={2}
-          disabled={busy}
+          disabled={props.busy}
         />
-        <div className="row">
-          <small>Локальная модель. Данные проверяет сервер.</small>
-          <button
-            className="send-button"
-            aria-label="Отправить сообщение"
-            disabled={busy || !text.trim()}
-          >
-            ↑
-          </button>
-        </div>
+        <button
+          className="send-button"
+          aria-label="Отправить сообщение"
+          disabled={props.busy || !text.trim()}
+        >
+          ↑
+        </button>
       </form>
-      <p className="privacy">
-        Ключ гостевого доступа хранится в этой вкладке браузера.
-      </p>
-    </aside>
+      <div className="chat-meta">
+        {props.conversation?.extraction_mode &&
+          props.conversation.extraction_mode !== "ollama" && (
+            <span className="test-mode">
+              Тестовый режим {props.conversation.extraction_mode} · не Qwen
+            </span>
+          )}
+        <details>
+          <summary>О диалоге</summary>
+          <p>
+            Локальная Qwen через Ollama, если включён режим модели. Не сообщайте
+            личные и банковские данные. Доступ к беседе сохраняется в этой
+            вкладке.
+          </p>
+          <button
+            className="text-button"
+            onClick={props.onRefresh}
+            disabled={props.busy}
+          >
+            Обновить беседу
+          </button>
+          {props.consentControl}
+        </details>
+      </div>
+    </section>
   );
 }

@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 import example from "../../../docs/examples/BA-011-coffee.json" with { type: "json" };
+import { mockGeography, goBank } from "./flow.mock";
+import finance from "../../../docs/examples/BA-009-coffee-result.json" with { type: "json" };
 import { mockConsents } from "./consent.mock";
 import type { Schemas } from "../src/api";
 
@@ -51,6 +53,15 @@ test("demo catalogue, explicit needs, protected matching and mobile layout (mock
     route.fulfill({ json: fixture.catalogue }),
   );
   await mockConsents(page);
+  await mockGeography(page);
+  await page.route("**/finance/calculate", (r) =>
+    r.fulfill({
+      json: {
+        ...finance.response,
+        request_snapshot: r.request().postDataJSON(),
+      },
+    }),
+  );
   let draft: Schemas["LeadDraft"] | null = null;
   let receipt: Schemas["LeadReceipt"] | null = null;
   await page.route(/\/leads$/, (route) =>
@@ -123,9 +134,11 @@ test("demo catalogue, explicit needs, protected matching and mobile layout (mock
     },
   );
   await page.goto("/");
-  await expect(page.getByText("Подтверждён", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "◇ Продукты ВТБ" }).click();
-  await expect(page.getByText("Демо-каталог", { exact: true })).toBeVisible();
+  await goBank(page);
+  await expect(page.getByText(/Демо-каталог/)).toBeVisible();
+  await page
+    .getByText("Изменить или дополнить потребности", { exact: true })
+    .click();
   await page
     .getByLabel("Регистрация бизнеса", { exact: true })
     .selectOption("ip");
@@ -141,12 +154,13 @@ test("demo catalogue, explicit needs, protected matching and mobile layout (mock
   await page
     .getByRole("button", { name: "Подобрать по потребностям →" })
     .click();
-  await expect(
-    page.getByText("Подбор выполнен по явным правилам"),
-  ).toBeVisible();
+  await expect(page.getByText("Возможности для вашего проекта")).toBeVisible();
   await expect(page.locator(".bank-product-card")).toHaveCount(6);
+  await page
+    .getByText("Все продукты, источники и ограничения", { exact: true })
+    .click();
   await expect(
-    page.getByText(/Потенциальные соответствия по проверенным источникам: 0/),
+    page.getByText(/Подтверждённых действующих предложений: 0/),
   ).toBeVisible();
   expect(page.url()).not.toContain(credential.token);
   await page.setViewportSize({ width: 390, height: 844 });
@@ -156,9 +170,10 @@ test("demo catalogue, explicit needs, protected matching and mobile layout (mock
     ),
   ).toBe(true);
   await page.getByLabel("Канал продаж", { exact: true }).selectOption("online");
-  await expect(page.getByText("Подбор выполнен по явным правилам")).toHaveCount(
-    0,
-  );
+  await expect(page.getByText("Возможности для вашего проекта")).toHaveCount(0);
+  await page
+    .getByText("Демонстрационная заявка и согласия", { exact: true })
+    .click();
   const lead = page.getByRole("region", { name: "Демонстрационная заявка" });
   await lead.getByRole("checkbox", { name: /Расчётно-кассовое/ }).check();
   await lead.getByLabel("Бюджет заявки").fill("");
@@ -204,7 +219,10 @@ test("demo catalogue, explicit needs, protected matching and mobile layout (mock
     ),
   ).toBe(true);
   await page.reload();
-  await page.getByRole("button", { name: "◇ Продукты ВТБ" }).click();
+  await goBank(page);
+  await page
+    .getByText("Демонстрационная заявка и согласия", { exact: true })
+    .click();
   await expect(
     page.getByRole("heading", {
       name: "Демонстрационная заявка создана. Данные в ВТБ не отправлены",

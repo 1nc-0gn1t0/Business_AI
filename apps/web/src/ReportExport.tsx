@@ -114,17 +114,35 @@ export default function ReportExport(props: Props) {
     }
   }
   async function download(format: "pdf" | "json") {
-    if (!prepared || outdated || !props.credential) return;
+    if (
+      outdated ||
+      !props.credential ||
+      props.conversation?.profile.confirmation_state !== "confirmed" ||
+      (!props.ranking && !props.finance)
+    )
+      return;
     const c = new AbortController();
     controller.current = c;
     setBusy(true);
     setError("");
     try {
+      let snapshot = prepared?.value;
+      if (!snapshot) {
+        const body = reportRequest(props);
+        if (!body) return;
+        snapshot = await request<Schemas["ReportView"]>(base, {
+          method: "POST",
+          credential: props.credential,
+          body,
+          signal: c.signal,
+        });
+        setPrepared({ context, value: snapshot });
+      }
       const current = await request<Schemas["ReportView"]>(
-        `${base}/${prepared.value.id}`,
+        `${base}/${snapshot.id}`,
         { credential: props.credential, signal: c.signal },
       );
-      setPrepared({ context: prepared.context, value: current });
+      setPrepared({ context: prepared?.context || context, value: current });
       if (current.status === "outdated")
         throw new Error("Источники или профиль изменились. Обновите отчёт.");
       const blob = await requestFile(
@@ -146,81 +164,88 @@ export default function ReportExport(props: Props) {
       if (!c.signal.aborted) setBusy(false);
     }
   }
+  const unavailable =
+    busy ||
+    !props.credential ||
+    props.conversation?.profile.confirmation_state !== "confirmed" ||
+    (!props.ranking && !props.finance);
   return (
     <section
       className="report-export"
       aria-label="Экспорт аналитического отчёта"
     >
-      <div>
-        <span className="eyebrow">РЕЗУЛЬТАТЫ ВАШЕГО АНАЛИЗА</span>
-        <h2>Скачать отчёт</h2>
-        <p>
-          PDF и JSON из одного проверенного снимка. Без отправки заявки в банк.
-        </p>
-      </div>
-      <p className="subtle">
-        {props.ranking ? "Геоанализ ✓" : "Геоанализ не включён"} ·{" "}
-        {props.finance
-          ? "Финансы ✓"
-          : "Финансы не рассчитаны / вводные изменены"}{" "}
-        · {props.bank ? "Подбор продуктов ✓" : "Подбор продуктов не включён"}
-        {props.provider?.dataset.origin === "synthetic"
-          ? " · СИНТЕТИЧЕСКИЙ ПРОВАЙДЕР"
-          : ""}
-      </p>
       {error && (
         <div className="alert" role="alert">
           {error}
         </div>
       )}
       {outdated && (
-        <div className="notice" role="status">
+        <p className="notice" role="status">
           Вводные, профиль или источники изменились. Требуется обновить отчёт;
           старый снимок не выдаётся за актуальный.
-        </div>
+        </p>
       )}
       <div className="report-actions">
+        {outdated && (
+          <button
+            className="button"
+            disabled={unavailable}
+            onClick={() => void prepare()}
+          >
+            Обновить отчёт
+          </button>
+        )}
         <button
-          className="button secondary"
-          disabled={
-            busy ||
-            !props.credential ||
-            props.conversation?.profile.confirmation_state !== "confirmed" ||
-            (!props.ranking && !props.finance)
-          }
-          onClick={() => void prepare()}
-        >
-          {busy
-            ? "Обработка…"
-            : prepared
-              ? "Обновить отчёт"
-              : "Подготовить отчёт"}
-        </button>
-        <button
-          className="button primary"
-          disabled={busy || !prepared || !!outdated}
+          className={`button ${outdated ? "secondary" : ""}`}
+          disabled={unavailable || !!outdated}
           onClick={() => void download("pdf")}
         >
-          Скачать PDF
+          {busy ? "Готовим документ…" : "Скачать PDF"}
         </button>
         <button
-          className="button secondary"
-          disabled={busy || !prepared || !!outdated}
+          className="text-button"
+          disabled={unavailable || !!outdated}
           onClick={() => void download("json")}
         >
           Скачать JSON
         </button>
       </div>
-      {prepared && (
-        <small>
-          Снимок {prepared.value.id.slice(0, 8)} · профиль v
-          {prepared.value.profile_version} · SHA{" "}
-          {prepared.value.snapshot_sha256.slice(0, 12)}
-          {prepared.value.missing_sections.length
-            ? ` · Не включены: ${prepared.value.missing_sections.join(", ")}`
+      <p className="fine-print">
+        Оба формата — из одного проверенного снимка. Ничего не отправляется в
+        банк.
+      </p>
+      <details className="report-composition">
+        <summary>Состав и источники отчёта</summary>
+        <p>
+          {props.ranking ? "Геоанализ ✓" : "Геоанализ не включён"} ·{" "}
+          {props.finance
+            ? "Финансы ✓"
+            : "Финансы не рассчитаны / вводные изменены"}{" "}
+          · {props.bank ? "Подбор продуктов ✓" : "Подбор продуктов не включён"}
+          {props.provider?.dataset.origin === "synthetic"
+            ? " · СИНТЕТИЧЕСКИЙ ПРОВАЙДЕР"
             : ""}
-        </small>
-      )}
+        </p>
+        {!outdated && (
+          <button
+            className="text-button"
+            disabled={unavailable}
+            onClick={() => void prepare()}
+          >
+            {prepared ? "Обновить отчёт" : "Подготовить отчёт"}
+          </button>
+        )}
+        {prepared && (
+          <p>
+            Снимок {prepared.value.id.slice(0, 8)} · профиль v
+            {prepared.value.profile_version} · SHA{" "}
+            {prepared.value.snapshot_sha256.slice(0, 12)}
+            {prepared.value.missing_sections.length
+              ? ` · Не включены: ${prepared.value.missing_sections.join(", ")}`
+              : ""}
+          </p>
+        )}
+      </details>
     </section>
   );
 }

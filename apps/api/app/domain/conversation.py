@@ -6,13 +6,11 @@ from app.api.schemas import BusinessProfile
 from app.domain.enums import ConfirmationState, ConversationState, Funding
 
 QUESTIONS = {
-    "category": "Какой бизнес вы хотите открыть? Можно написать «бизнес: ...».",
-    "city": "В каком городе планируете открыть бизнес? Можно написать «город: ...».",
-    "budget": "Какой общий бюджет запуска в рублях? Например: «бюджет: 2 млн».",
-    "preferences.format": "Какой формат бизнеса рассматриваете? Напишите «формат: ...».",
-    "funding": (
-        "Как планируете финансирование: свои средства, кредит, смешанное или пока не решили?"
-    ),
+    "category": "Какой бизнес вы хотите открыть?",
+    "city": "В каком городе?",
+    "budget": "Какой у вас бюджет в рублях?",
+    "preferences.format": "Какой формат бизнеса рассматриваете?",
+    "funding": "На какие средства: свои, кредит, смешанные или пока не решили?",
 }
 CONFIRMATIONS = {"подтверждаю", "всё верно", "все верно", "да, всё верно", "да, все верно"}
 CITY_FORMS = {
@@ -65,23 +63,9 @@ def reply_for(profile: BusinessProfile) -> str:
     missing = missing_fields(profile)
     if missing:
         return QUESTIONS[missing[0]]
-    summary = (
-        f"Город: {profile.city}; бизнес: {profile.category}; бюджет: {profile.budget} ₽; "
-        f"формат: {profile.preferences.format}; финансирование: "
-        + {
-            Funding.OWN_FUNDS: "свои средства",
-            Funding.LOAN: "кредит",
-            Funding.MIXED: "смешанное",
-            Funding.UNDECIDED: "пока не определено",
-        }[profile.funding or Funding.UNDECIDED]
-        + "."
-    )
     if profile.confirmation_state == ConfirmationState.CONFIRMED:
-        return (
-            summary + " Вводные подтверждены. Откройте разделы карты и финансовой модели "
-            "для расчётов. Банковские интеграции пока не подключены."
-        )
-    return summary + " Проверьте вводные: исправьте их или напишите «подтверждаю»."
+        return "Профиль подтверждён. Можно выбрать локацию."
+    return "Всё необходимое собрано. Проверьте ваш проект."
 
 
 def apply_patch(profile: BusinessProfile, patch: ProfilePatch) -> BusinessProfile:

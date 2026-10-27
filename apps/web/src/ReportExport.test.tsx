@@ -58,7 +58,8 @@ describe("report export (mock API)", () => {
       .spyOn(HTMLAnchorElement.prototype, "click")
       .mockImplementation(() => {});
     const { rerender } = render(<ReportExport {...props} />);
-    expect(screen.getByRole("button", { name: "Скачать PDF" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Скачать PDF" })).toBeEnabled();
+    fireEvent.click(screen.getByText("Состав и источники отчёта"));
     fireEvent.click(screen.getByRole("button", { name: "Подготовить отчёт" }));
     await waitFor(() =>
       expect(screen.getByRole("button", { name: "Скачать PDF" })).toBeEnabled(),
@@ -89,6 +90,7 @@ describe("report export (mock API)", () => {
         json({ ...metadata, status: "outdated", reasons: ["Changed profile"] }),
       );
     render(<ReportExport {...props} />);
+    fireEvent.click(screen.getByText("Состав и источники отчёта"));
     fireEvent.click(screen.getByRole("button", { name: "Подготовить отчёт" }));
     await waitFor(() =>
       expect(
@@ -101,15 +103,50 @@ describe("report export (mock API)", () => {
     );
     expect(fetch).toHaveBeenCalledTimes(2);
   });
-  it("shows preparation errors without enabling downloads", async () => {
+  it("shows preparation errors and permits explicit retry without downloading a file", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
       json({ detail: { code: "report_results_changed" } }, 409),
     );
     render(<ReportExport {...props} />);
+    fireEvent.click(screen.getByText("Состав и источники отчёта"));
     fireEvent.click(screen.getByRole("button", { name: "Подготовить отчёт" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Результаты анализа изменились",
     );
-    expect(screen.getByRole("button", { name: "Скачать PDF" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Скачать PDF" })).toBeEnabled();
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+  });
+  it("prepares on the first PDF click and reuses that snapshot after a failed file transfer", async () => {
+    let fileCalls = 0;
+    const fetch = vi
+      .spyOn(globalThis, "fetch")
+      .mockImplementation(async (path) => {
+        if (String(path).includes("/file?")) {
+          fileCalls++;
+          return fileCalls === 1 ? json({}, 503) : new Response("%PDF-test");
+        }
+        return json(metadata);
+      });
+    Object.defineProperty(URL, "createObjectURL", {
+      configurable: true,
+      value: vi.fn(() => "blob:report"),
+    });
+    Object.defineProperty(URL, "revokeObjectURL", {
+      configurable: true,
+      value: vi.fn(),
+    });
+    const click = vi
+      .spyOn(HTMLAnchorElement.prototype, "click")
+      .mockImplementation(() => {});
+    render(<ReportExport {...props} />);
+    fireEvent.click(screen.getByRole("button", { name: "Скачать PDF" }));
+    await screen.findByRole("alert");
+    expect(click).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Скачать PDF" }));
+    await waitFor(() => expect(click).toHaveBeenCalledOnce());
+    expect(
+      fetch.mock.calls.filter(([, init]) => init?.method === "POST"),
+    ).toHaveLength(1);
+    expect(fileCalls).toBe(2);
   });
 });
