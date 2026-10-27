@@ -152,6 +152,7 @@ for (const [code, status, message] of [
 test("REL-05 empty geography does not fabricate zones", async ({ page }) => {
   await setup(page);
   await page.goto("/");
+  await page.getByRole("button", { name: "⌖ Карта и локации" }).click();
   await expect(page.getByText("Нет загруженных геоданных")).toBeVisible();
   await expect(page.locator(".zone-card")).toHaveCount(0);
 });
@@ -250,6 +251,7 @@ test("REL-12 new conversation leaves previous state behind", async ({
   await page.goto("/");
   await expect(page.getByText("Подтверждён", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: /Новая беседа/ }).click();
+  await page.getByRole("button", { name: "AI-помощник", exact: true }).click();
   await expect(page.getByText("Черновик", { exact: true })).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Подтвердить профиль →" }),

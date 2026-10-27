@@ -182,6 +182,67 @@ export default function Locations(props: Props) {
       return rank(a.id) - rank(b.id) || a.id.localeCompare(b.id);
     },
   );
+  const zoneCards = (
+    <div className="zone-grid">
+      {features.map((f, i) => {
+        const e = props.ranking!.evaluations.find(
+          (v) => v.candidate_id === f.id,
+        );
+        return (
+          <button
+            className={`zone-card ${props.selected === f.id ? "chosen" : ""}`}
+            key={f.id}
+            onClick={() => selectZone(f.id)}
+            aria-pressed={props.selected === f.id}
+          >
+            <div className="row">
+              <span className="zone-number">
+                {e?.rank ? `#${e.rank}` : `Зона ${i + 1}`}
+              </span>
+              <strong className="score">
+                {e?.score == null ? "Нет оценки" : `${e.score.toFixed(1)}`}
+                <small>{e?.score != null ? "/ 100" : ""}</small>
+              </strong>
+            </div>
+            <h3>
+              {f.properties.anchor.properties.name ||
+                `Зона ${f.properties.grid_i} / ${f.properties.grid_j}`}
+            </h3>
+            <p>
+              {f.properties.representative_point.coordinates
+                .map((n) => n.toFixed(4))
+                .join(", ")}{" "}
+              · {(f.properties.area_m2 / 10000).toFixed(1)} га
+            </p>
+            {e && (
+              <div className="factor-list">
+                {e.components.map((c) => (
+                  <div key={c.criterion}>
+                    <span>{criteria[c.criterion]}</span>
+                    <div className="bar">
+                      <i
+                        style={{
+                          width: `${c.normalized == null ? 0 : c.normalized * 100}%`,
+                        }}
+                      />
+                    </div>
+                    <b>
+                      {c.normalized == null
+                        ? "—"
+                        : (c.normalized * 100).toFixed(0)}
+                    </b>
+                  </div>
+                ))}
+              </div>
+            )}
+            <span className="card-link">
+              {props.selected === f.id ? "✓ Выбрана" : "Подробнее о зоне →"}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
   return (
     <div className="locations">
       <div className="section-heading">
@@ -194,7 +255,6 @@ export default function Locations(props: Props) {
         </div>
         <span className="tag outline">Казань · MVP</span>
       </div>
-      <DataSources onReport={props.onProviderReport} />
       {error && (
         <div className="alert" role="alert">
           {error}
@@ -280,6 +340,48 @@ export default function Locations(props: Props) {
               Сначала заполните и подтвердите профиль в AI-чате.
             </p>
           )}
+          {!props.comparison && (
+            <div className={`map-and-zones ${props.ranking ? "" : "no-zones"}`}>
+              {props.ranking && (
+                <aside className="zone-list">
+                  <h2>
+                    Зоны-кандидаты{" "}
+                    <span className="count">{features.length}</span>
+                  </h2>
+                  {zoneCards}
+                </aside>
+              )}
+              <div className="map-column">
+                <GeoMap
+                  key={`${dataset.slug}:${dataset.data_version}`}
+                  dataset={dataset}
+                  pois={pois}
+                  districts={districts}
+                  ranking={props.ranking}
+                  selected={props.selected}
+                  onSelect={selectZone}
+                  walking={walking}
+                  onPoint={(p) => {
+                    setWalking(null);
+                    setWalkPoint(p);
+                  }}
+                />
+                <div className="row source-strip">
+                  <span>
+                    <i className="dot mint-dot" /> OSM ·{" "}
+                    {date(dataset.osm_base)}
+                    {dataset.stale ? " · данные устарели" : ""}
+                  </span>
+                  <span>
+                    {pois
+                      ? `${pois.returned_count} POI на карте${pois.next_offset != null ? " · выборка ограничена 500" : ""}`
+                      : "POI загружаются / недоступны"}{" "}
+                    · {dataset.poi_count.toLocaleString("ru-RU")} в наборе
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
           <details className="settings">
             <summary>Параметры поиска и веса оценки</summary>
             <div className="settings-grid">
@@ -344,58 +446,33 @@ export default function Locations(props: Props) {
             </p>
           </details>
           {!props.comparison && (
-            <Walking
-              dataset={dataset}
-              ranking={props.ranking}
-              point={
-                walkPoint ||
-                (props.ranking?.candidates.features.find(
-                  (f) => f.id === props.selected,
-                )?.properties.representative_point.coordinates as
-                  | [number, number]
-                  | undefined) ||
-                null
-              }
-              result={walking}
-              onSearchBounds={
-                props.profile?.confirmation_state === "confirmed" && !busy
-                  ? (b) => {
-                      void analyze(b);
-                    }
-                  : undefined
-              }
-              onPoint={setWalkPoint}
-              onResult={setWalking}
-            />
+            <details className="walking-disclosure">
+              <summary>Пешеходная доступность по дорожной сети</summary>
+              <Walking
+                dataset={dataset}
+                ranking={props.ranking}
+                point={
+                  walkPoint ||
+                  (props.ranking?.candidates.features.find(
+                    (f) => f.id === props.selected,
+                  )?.properties.representative_point.coordinates as
+                    | [number, number]
+                    | undefined) ||
+                  null
+                }
+                result={walking}
+                onSearchBounds={
+                  props.profile?.confirmation_state === "confirmed" && !busy
+                    ? (b) => {
+                        void analyze(b);
+                      }
+                    : undefined
+                }
+                onPoint={setWalkPoint}
+                onResult={setWalking}
+              />
+            </details>
           )}
-          {!props.comparison && (
-            <GeoMap
-              key={`${dataset.slug}:${dataset.data_version}`}
-              dataset={dataset}
-              pois={pois}
-              districts={districts}
-              ranking={props.ranking}
-              selected={props.selected}
-              onSelect={selectZone}
-              walking={walking}
-              onPoint={(p) => {
-                setWalking(null);
-                setWalkPoint(p);
-              }}
-            />
-          )}
-          <div className="row source-strip">
-            <span>
-              <i className="dot mint-dot" /> OSM · {date(dataset.osm_base)}
-              {dataset.stale ? " · данные устарели" : ""}
-            </span>
-            <span>
-              {pois
-                ? `${pois.returned_count} POI на карте${pois.next_offset != null ? " · выборка ограничена 500" : ""}`
-                : "POI загружаются / недоступны"}{" "}
-              · {dataset.poi_count.toLocaleString("ru-RU")} в наборе
-            </span>
-          </div>
           {!props.ranking && (
             <div className="empty compact">
               <span className="empty-symbol">⌖</span>
@@ -433,69 +510,7 @@ export default function Locations(props: Props) {
                     .join(" · ")}
                 </div>
               )}
-              <div className="zone-grid">
-                {features.map((f, i) => {
-                  const e = props.ranking!.evaluations.find(
-                    (v) => v.candidate_id === f.id,
-                  );
-                  return (
-                    <button
-                      className={`zone-card ${props.selected === f.id ? "chosen" : ""}`}
-                      key={f.id}
-                      onClick={() => selectZone(f.id)}
-                      aria-pressed={props.selected === f.id}
-                    >
-                      <div className="row">
-                        <span className="zone-number">
-                          {e?.rank ? `#${e.rank}` : `Зона ${i + 1}`}
-                        </span>
-                        <strong className="score">
-                          {e?.score == null
-                            ? "Нет оценки"
-                            : `${e.score.toFixed(1)}`}
-                          <small>{e?.score != null ? "/ 100" : ""}</small>
-                        </strong>
-                      </div>
-                      <h3>
-                        {f.properties.anchor.properties.name ||
-                          `Зона ${f.properties.grid_i} / ${f.properties.grid_j}`}
-                      </h3>
-                      <p>
-                        {f.properties.representative_point.coordinates
-                          .map((n) => n.toFixed(4))
-                          .join(", ")}{" "}
-                        · {(f.properties.area_m2 / 10000).toFixed(1)} га
-                      </p>
-                      {e && (
-                        <div className="factor-list">
-                          {e.components.map((c) => (
-                            <div key={c.criterion}>
-                              <span>{criteria[c.criterion]}</span>
-                              <div className="bar">
-                                <i
-                                  style={{
-                                    width: `${c.normalized == null ? 0 : c.normalized * 100}%`,
-                                  }}
-                                />
-                              </div>
-                              <b>
-                                {c.normalized == null
-                                  ? "—"
-                                  : (c.normalized * 100).toFixed(0)}
-                              </b>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                      <span className="card-link">
-                        {props.selected === f.id
-                          ? "✓ Выбрана"
-                          : "Подробнее о зоне →"}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+              {props.comparison && zoneCards}
               {selected && (
                 <section className="detail-panel">
                   <div className="row">
@@ -633,6 +648,7 @@ export default function Locations(props: Props) {
           </details>
         </>
       )}
+      <DataSources onReport={props.onProviderReport} />
     </div>
   );
 }
