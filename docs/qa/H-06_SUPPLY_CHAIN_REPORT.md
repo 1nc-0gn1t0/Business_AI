@@ -1,5 +1,9 @@
 # H-06 · Dependency, license and secrets audit · 27.10.2026
 
+Follow-up: [H-06-FU](H-06-FU_CONTAINER_REPORT.md) repeats image scans with a newer,
+internally frozen DB and verifies an isolated encrypted PG17/PostGIS upgrade.
+Tables below are historical H-06 evidence; do not overwrite/mix their advisory date.
+
 **Audit/hardening result; not an accepted secure release baseline.** Legacy DB image
 contains unresolved CRITICAL/HIGH findings and PostgreSQL17.5 needs a security update.
 No owner-approved risk exceptions have been invented. H-01…H-06 cannot yet be called

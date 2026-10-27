@@ -10,7 +10,11 @@ ROOT = Path(__file__).resolve().parents[3]
 
 
 def test_external_docker_bases_are_digest_pinned() -> None:
-    for path in (ROOT / "apps/api/Dockerfile", ROOT / "infra/docker/web.Dockerfile"):
+    for path in (
+        ROOT / "apps/api/Dockerfile",
+        ROOT / "infra/docker/web.Dockerfile",
+        ROOT / "infra/docker/postgis.Dockerfile",
+    ):
         stages = set()
         for line in path.read_text().splitlines():
             if not line.startswith("FROM "):

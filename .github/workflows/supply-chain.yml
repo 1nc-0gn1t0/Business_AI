@@ -13,6 +13,41 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  images:
+    name: Container fixable Critical/High gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      COMPOSE_PROJECT_NAME: business-ai-image-ci
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: "0.13.1"
+          python-version: "3.12"
+      - name: Build pinned runtime images (no databases or model weights)
+        run: docker compose build db api web
+      - name: Install verified Trivy and freeze advisory DB for this job
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          curl -fL --retry 2 -o trivy.tar.gz https://github.com/aquasecurity/trivy/releases/download/v0.76.1/trivy_0.76.1_Linux-64bit.tar.gz
+          echo 'c7cbe3137fb8a48a17574bede3dd6beb16742d1e9772929940fc90082c39d9c0  trivy.tar.gz' | sha256sum --check
+          tar -xzf trivy.tar.gz trivy
+          ./trivy image --cache-dir "$RUNNER_TEMP/trivy-cache" --download-db-only
+      - name: Scan all runtime images and gate known fixable Critical/High
+        shell: bash
+        run: |
+          set -euo pipefail
+          scan() { "$RUNNER_TEMP/trivy" image --cache-dir "$RUNNER_TEMP/trivy-cache" --skip-db-update --scanners vuln --timeout 8m --format json --output "$RUNNER_TEMP/$1.json" "$2"; }
+          scan api business-ai-image-ci-api
+          scan web business-ai-image-ci-web
+          scan db business-ai-postgis-hardened
+          scan ollama ollama/ollama:0.40.11@sha256:dea72d1e22270fe095b68fdf756d2b489d615643c5a2eaebbc5f569181e322d8
+          uv run --locked --project apps/api python scripts/image_security.py --db-metadata "$RUNNER_TEMP/trivy-cache/db/metadata.json" --report "api=$RUNNER_TEMP/api.json" --report "web=$RUNNER_TEMP/web.json" --report "db=$RUNNER_TEMP/db.json" --report "ollama=$RUNNER_TEMP/ollama.json" --output "$RUNNER_TEMP/image-security-summary.json"
+          echo 'Scoped gate only. Unfixed or unassessed Critical/High keep release baseline OPEN; see docs/qa/H-06-FU_CONTAINER_REPORT.md.'
   audit:
     runs-on: ubuntu-latest
     timeout-minutes: 10

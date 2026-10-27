@@ -1,5 +1,10 @@
 # Локальный PostgreSQL backup и изолированный restore · H-04-FU
 
+**H-06-FU:** обычный restore ниже по-прежнему требует совпадения server/extensions.
+Для проверенного перехода PG17.5/PostGIS3.5.2 →17.11/3.6.4 используется отдельный
+[upgrade drill](CONTAINER_UPGRADE.md), новый кластер и строгие fingerprints.
+Не менять существующий PGDATA/marker и не ослаблять общий backup verifier.
+
 **Актуальная процедура новых backup — age pipeline ниже.** F-00/H-04 команды
 оставлены для совместимости/исторической проверки; `backup_postgres.py backup`
 по-прежнему plaintext и не используется scheduler. Новая процедура не делает
