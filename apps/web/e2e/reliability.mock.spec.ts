@@ -109,6 +109,9 @@ test("REL-01 restores profile and keeps credential out of URL", async ({
 
 for (const [code, status, message] of [
   ["llm_unavailable", 503, "Ollama"],
+  ["llm_model_missing", 503, "Qwen"],
+  ["llm_server_error", 502, "технической"],
+  ["database_capacity_busy", 503, "соединения"],
   ["llm_timeout", 504, "время"],
   ["llm_invalid_response", 502, "ответ"],
   ["request_body_too_large", 413, "слишком велик"],
@@ -126,7 +129,11 @@ for (const [code, status, message] of [
     await setup(page);
     await page.route("**/messages", (r) =>
       r.request().method() === "POST"
-        ? r.fulfill({ status, json: { detail: { code } } })
+        ? r.fulfill({
+            status,
+            json: { detail: { code } },
+            headers: { "X-Request-ID": "d".repeat(32) },
+          })
         : r.fallback(),
     );
     await page.goto("/");
@@ -135,6 +142,7 @@ for (const [code, status, message] of [
     await expect(page.getByRole("alert")).toContainText(
       new RegExp(message, "i"),
     );
+    await expect(page.getByRole("alert")).toContainText("d".repeat(32));
     await expect(page.getByLabel("Сообщение помощнику")).toHaveValue(
       "Меняю город на Самару",
     );

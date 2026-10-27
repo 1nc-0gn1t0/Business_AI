@@ -68,7 +68,8 @@ def test_h01_receipt_and_audit_rollback_after_successful_flush(
         )
     assert injected == [True]
     assert response.status_code == 503
-    assert response.json() == {"detail": {"code": "database_unavailable"}}
+    assert response.json()["detail"] == {"code": "database_unavailable"}
+    assert response.json()["request_id"] == response.headers["x-request-id"]
     assert "H01_SYNTHETIC_SQL_SECRET" not in response.text + caplog.text
     assert client.get(endpoint, headers=headers).json()["state"] == "confirmed"
     assert client.get(url + "/audit", headers=headers).json() == before

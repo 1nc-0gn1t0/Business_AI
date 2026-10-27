@@ -1,5 +1,10 @@
 # BA-016 · воспроизводимая демонстрация
 
+H-05: [health/readiness, безопасные логи и troubleshooting](DIAGNOSTICS.md).
+`/livez` проверяет процесс, `/readyz` — DB/PostGIS/schema; legacy `/healthz` сохранён.
+`scripts/demo_ready.py --diagnostics` — opt-in protected bundle (отдельный token
+только из окружения). Наличие модели не означает успешный live диалог.
+
 Post-MVP checkpoint: [F-00 baseline](baselines/F-00_BASELINE.md),
 [точный manifest](baselines/F-00-manifest.json),
 [backup/изолированный restore](BACKUP_RESTORE.md). Это локальный MVP, не RC/пилот.

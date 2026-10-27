@@ -1,4 +1,5 @@
 import asyncio
+import time
 from collections.abc import Callable
 from threading import Event
 from typing import Protocol, runtime_checkable
@@ -10,6 +11,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.adapters.llm import LLMError, LLMSettings, ProfileToolCall, Turn, get_llm
 from app.api.conversation_schemas import ConversationView
 from app.api.schemas import BusinessProfile
+from app.diagnostics import event
 from app.limits import inference
 from app.services.conversations import Conversations, MessageInput, needs_inference
 
@@ -56,6 +58,8 @@ async def send_message(
         async with inference.QUEUE.slot():
             llm = get_llm()
             settings = getattr(llm, "settings", LLMSettings())
+            started = time.monotonic()
+            status, code = 200, "ok"
             try:
                 async with asyncio.timeout(settings.timeout):
                     if isinstance(llm, AsyncLLM):
@@ -66,7 +70,19 @@ async def send_message(
                             cancelled,
                         )
             except TimeoutError:
+                status, code = 504, "llm_timeout"
                 raise LLMError("llm_timeout", 504) from None
+            except LLMError as error:
+                status, code = error.status, error.code
+                raise
+            except asyncio.CancelledError:
+                status, code = 499, "request_cancelled"
+                raise
+            except Exception:
+                status, code = 500, "inference_failed"
+                raise
+            finally:
+                event("inference", status, time.monotonic() - started, code)
             mode = llm.mode
 
     def write() -> ConversationView:

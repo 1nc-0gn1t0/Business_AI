@@ -31,6 +31,11 @@ services:
         condition: service_healthy
 
   api:
+    logging: &bounded-logs
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     build:
       context: ./apps/api
     environment:
@@ -42,6 +47,7 @@ services:
       OLLAMA_NUM_CTX: ${OLLAMA_NUM_CTX:-4096}
       DATA_DEMO_ENABLED: ${DATA_DEMO_ENABLED:-false}
       BA_API_LIMITS_JSON: ${BA_API_LIMITS_JSON:-}
+      BA_DIAGNOSTICS_TOKEN: ${BA_DIAGNOSTICS_TOKEN:-}
     ports:
       - "127.0.0.1:${API_PORT:-8000}:8000"
     depends_on:
@@ -50,13 +56,14 @@ services:
       migrate:
         condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=5)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/readyz', timeout=5)"]
       interval: 5s
       timeout: 6s
       retries: 10
       start_period: 5s
 
   web:
+    logging: *bounded-logs
     build:
       context: ./apps/web
       dockerfile: ../../infra/docker/web.Dockerfile

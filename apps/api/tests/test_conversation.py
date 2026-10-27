@@ -131,6 +131,7 @@ def test_database_failure_is_a_sanitised_503(monkeypatch: pytest.MonkeyPatch) ->
         with TestClient(app) as client:
             response = client.post("/api/v1/conversations")
         assert response.status_code == 503
-        assert response.json() == {"detail": {"code": "database_unavailable"}}
+        assert response.json()["detail"] == {"code": "database_unavailable"}
+        assert response.json()["request_id"] == response.headers["x-request-id"]
     finally:
         engine.dispose()

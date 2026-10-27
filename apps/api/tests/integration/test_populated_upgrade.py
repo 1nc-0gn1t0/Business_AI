@@ -257,7 +257,8 @@ def test_populated_previous_upgrade_preserves_data_and_report_bytes(
                     state["url"] + "/reports/" + str(uuid4()), headers=state["headers"]
                 )
                 assert response.status_code == 503
-                assert response.json() == {"detail": {"code": "database_unavailable"}}
+                assert response.json()["detail"] == {"code": "database_unavailable"}
+                assert response.json()["request_id"] == response.headers["x-request-id"]
             assert fingerprints(name) == before
             migrate(name, "upgrade", "head")
             assert {k: v for k, v in fingerprints(name).items() if k in before} == before
@@ -394,7 +395,8 @@ def test_database_connection_failures_have_safe_responses(failure: str) -> None:
         with api(engine) as client:
             response = client.post("/api/v1/conversations")
             assert response.status_code == 503
-            assert response.json() == {"detail": {"code": "database_unavailable"}}
+            assert response.json()["detail"] == {"code": "database_unavailable"}
+            assert response.json()["request_id"] == response.headers["x-request-id"]
             assert "Traceback" not in response.text and "password" not in response.text
     finally:
         engine.dispose()

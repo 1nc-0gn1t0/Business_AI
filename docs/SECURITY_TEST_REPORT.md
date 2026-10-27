@@ -1,5 +1,26 @@
 # Business AI · безопасность и ранний triage
 
+## H-05 · 27.10.2026 · safe diagnostics
+
+[QA report](qa/H-05_DIAGNOSTICS_REPORT.md), [runbook](DIAGNOSTICS.md).
+Новых подтверждённых P0 в ограниченном scope не обнаружено.25 diagnostic tests
+проверяют controlled400/404/409/413/422/429/500/502/503/504, correlation/log injection,
+синтетические секреты, bounded storage, защищённый bundle, pool timeout и failure после
+headers. Error detail сохранён, произвольный request ID не принимается. Body/422
+H-02 не ослаблены; реальные H-01/H-03 PostgreSQL ownership, consent/revocation/
+idempotency/rollback/CAS/queue tests повторно PASS.
+
+В отдельном Compose UUID project реально отключена только тестовая PostgreSQL,
+изменены только QA Ollama endpoint/model:503/degraded и recovery подтверждены без
+новых записей. Raw API logs проверенных fault paths не содержат marker/токены;
+структурированный formatter не выводит сторонние exception strings.
+Public health не выдаёт DSN/SQL/model endpoint; deep bundle default404 и отдельный
+constant-time server-side token guard. Это не auth для публичного пилота.
+
+Scope не включает full pentest, scanners H-06, raw host/DB/Ollama logs, GPU fault
+injection, distributed workers и8h soak. Эти поверхности не объявляются безопасными.
+F-00/рабочие volumes не изменялись.
+
 ## H-03 · 26.10.2026 · transaction lifecycle и queue
 
 Основание: H-02 PR#20 merged, main559a193503f12ca4156526c3ab86474a5fde8e2a,

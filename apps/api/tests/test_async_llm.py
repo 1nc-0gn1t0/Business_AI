@@ -56,6 +56,24 @@ def wire() -> dict[str, Any]:
     }
 
 
+@pytest.mark.parametrize("status,code", [(404, "llm_model_missing"), (500, "llm_server_error")])
+def test_missing_model_has_distinct_safe_code(
+    monkeypatch: pytest.MonkeyPatch, status: int, code: str
+) -> None:
+    async def handler(request: httpx2.Request) -> httpx2.Response:
+        return reply(status, b"synthetic private server detail")
+
+    install(monkeypatch, handler)
+    with pytest.raises(LLMError) as error:
+        asyncio.run(
+            OllamaLLM(LLMSettings()).aextract(
+                "Кофейня", BusinessProfile(conversation_id=uuid4()), ()
+            )
+        )
+    assert error.value.code == code
+    assert error.value.status == (503 if status == 404 else 502)
+
+
 def test_async_transport_same_grounding_and_bounded_retry(monkeypatch: pytest.MonkeyPatch) -> None:
     calls = []
 

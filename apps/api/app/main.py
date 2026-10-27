@@ -1,4 +1,6 @@
 import logging
+import os
+import secrets
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Annotated, Literal
@@ -21,9 +23,11 @@ from app.api.leads import router as leads_router
 from app.api.reports import router as reports_router
 from app.api.schemas import Contract
 from app.db.health import check_postgis
+from app.diagnostics import Diagnostics, configure_logging, database_failure_code
 from app.leads.policy import LeadError
 from app.limits.http import ApiLimits, reset_admission
 from app.limits.inference import reset_inference
+from app.readiness import Readiness, bundle, database_probe
 from app.services.conversations import ConversationNotFound, IncompleteProfile, VersionConflict
 
 logger = logging.getLogger(__name__)
@@ -31,6 +35,7 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(application: FastAPI) -> AsyncIterator[None]:
+    configure_logging()
     reset_admission()
     reset_inference()
     yield
@@ -38,6 +43,7 @@ async def lifespan(application: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(title="Business AI", version="0.1.0", lifespan=lifespan)
 app.add_middleware(ApiLimits)
+app.add_middleware(Diagnostics)
 app.include_router(router)
 app.include_router(geo_router)
 app.include_router(finance_router)
@@ -78,7 +84,7 @@ async def invalid_request(request: Request, error: RequestValidationError) -> JS
 async def database_error(request: Request, error: SQLAlchemyError) -> JSONResponse:
     # SQLAlchemy exception strings can contain SQL parameters and connection details.
     logger.warning("Database operation failed")
-    return JSONResponse(status_code=503, content={"detail": {"code": "database_unavailable"}})
+    return JSONResponse(status_code=503, content={"detail": {"code": database_failure_code(error)}})
 
 
 @app.exception_handler(LeadError)
@@ -121,3 +127,34 @@ def get_postgis_version() -> str:
 @app.get("/healthz", response_model=HealthResponse)
 def healthz(postgis_version: Annotated[str, Depends(get_postgis_version)]) -> HealthResponse:
     return HealthResponse(postgis_version=postgis_version)
+
+
+@app.get("/livez")
+async def livez() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+@app.get("/readyz", response_model=Readiness)
+async def readyz() -> JSONResponse:
+    result = await database_probe()
+    payload = result.model_dump()
+    if result.status != "ok":
+        code = (
+            "database_schema_incompatible"
+            if result.schema_status == "incompatible"
+            else "postgis_unavailable"
+            if result.postgis in {"missing", "unavailable"}
+            else "database_unavailable"
+        )
+        return JSONResponse({**payload, "detail": {"code": code}}, 503)
+    return JSONResponse(payload)
+
+
+@app.get("/api/v1/diagnostics", include_in_schema=False)
+async def diagnostics(request: Request) -> dict[str, object]:
+    secret = os.getenv("BA_DIAGNOSTICS_TOKEN", "")
+    if len(secret) < 32 or not secrets.compare_digest(
+        request.headers.get("X-Diagnostics-Token", "").encode(), secret.encode()
+    ):
+        raise HTTPException(404, detail={"code": "not_found"})
+    return await bundle()

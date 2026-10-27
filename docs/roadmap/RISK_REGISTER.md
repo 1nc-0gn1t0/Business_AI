@@ -11,6 +11,27 @@ P0-дефектов, **доказанных в ограниченном H-01 tri
 но H-01/H-04 не закрыты: нет полного DR/previous-version upgrade/encryption policy.
 Ниже исторические evidence сохранены; D-04 добавлен по фактической проверке F-00.
 
+## Обновление H-05 · 27.10.2026
+
+- PR23/a50e6da merged, base365bff3. [Диагностика](../DIAGNOSTICS.md),
+  [QA/fault evidence](../qa/H-05_DIAGNOSTICS_REPORT.md).
+- **Подтверждено тестами:** server request ID, безопасные JSON events,
+  sanitized500/422/413/429, bounded counters/recent32 и Docker rotation; в проверенных
+  emitted logs/HTTP fault responses нет synthetic secrets/tokens/SQL/prompt.
+  H01-P2-01 уже закрыт H-02; H-05 сохраняет redaction общего error path.
+- **Подтверждено:** отдельные live/schema-ready/model probes; DB down→503,
+  liveness200; Ollama down/model missing→явная деградация, прочие DB workflows доступны.
+  Model present и настоящий inference — разные факты; loading state не выдуман.
+- **Уже покрыто и повторено:** H-03 queue/cancellation/CAS/consent/rollback/owner tests,
+  pool0 в active real Qwen smoke; H01-P1-01/02 остаются закрытыми.
+- **Требует дальнейшей проверки:** full QG-OPS soak/p95, public deployment/auth/TTL,
+  startup/proxy failures до ASGI, произвольные сторонние custom log handlers и полный
+  host/DB/Ollama log сбор. Safe bundle их не включает. Distributed metrics/alerts
+  не реализованы; подробный endpoint default404 до отдельного operator token.
+- Новых доказанных P0 в этом scope нет. R-12 custody/scheduler/offsite и
+  H-06 scanners остаются открытыми. BA-017/018 — незавершённый research track.
+  H-06 только после решения владельца.
+
 ## Обновление H-04-FU · 26.10.2026
 
 - PR#22/c39d4ac merged, main930b8e4; отдельная ветка `codex/H-04-FU-backup-recovery`.

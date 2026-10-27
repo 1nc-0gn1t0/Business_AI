@@ -33,11 +33,22 @@ export class ApiError extends Error {
     public status: number,
     public code: string,
     message: string,
+    public requestId?: string,
   ) {
     super(message);
   }
 }
 const messages: Record<string, string> = {
+  database_capacity_busy:
+    "Все соединения с базой заняты. Повторите действие позже.",
+  llm_server_error:
+    "Локальный inference-сервис сообщил о технической ошибке. Текст сохранён, повторите запрос после проверки сервиса.",
+  llm_model_missing:
+    "Нужная модель Qwen отсутствует или endpoint Ollama несовместим. Проверьте установку модели.",
+  llm_unavailable:
+    "Ollama временно недоступна. Текст сохранён, повторите запрос после восстановления сервиса.",
+  export_failed:
+    "Не удалось подготовить файл. Обновите сведения об отчёте перед повторной попыткой.",
   database_unavailable:
     "База данных временно недоступна. Повторите действие после восстановления сервиса.",
   llm_timeout:
@@ -46,7 +57,8 @@ const messages: Record<string, string> = {
     "Очередь локальной модели заполнена. Дождитесь завершения текущего диалога и повторите сообщение.",
   llm_queue_timeout:
     "Время ожидания локальной модели истекло. Текст сохранён, повторите сообщение позже.",
-  request_cancelled: "Запрос отменён. Обновите беседу перед повторной отправкой.",
+  request_cancelled:
+    "Запрос отменён. Обновите беседу перед повторной отправкой.",
   llm_invalid_response:
     "Ответ локальной модели не прошёл проверку. Текст сохранён, повторите запрос или исправьте профиль вручную.",
   report_outdated:
@@ -159,7 +171,10 @@ async function responseError(response: Response): Promise<ApiError> {
   const retry = response.headers.get("Retry-After");
   if (response.status === 429 && retry && /^\d{1,6}$/.test(retry))
     message += ` Повторная попытка возможна через ${Number(retry)} с.`;
-  return new ApiError(response.status, code, message);
+  const rawId = response.headers.get("X-Request-ID");
+  const requestId = rawId && /^[a-f0-9]{32}$/.test(rawId) ? rawId : undefined;
+  if (requestId) message += ` Код диагностики: ${requestId}.`;
+  return new ApiError(response.status, code, message, requestId);
 }
 export async function request<T>(
   path: string,
@@ -222,16 +237,23 @@ export async function requestFile(
 ): Promise<Blob> {
   if (!path.startsWith(`/api/v1/conversations/${credential.id}/reports/`))
     throw new Error("Unsupported download path");
-  const response = await fetch(path, {
-    headers: { "X-Conversation-Token": credential.token },
-    signal: signal
-      ? AbortSignal.any([signal, AbortSignal.timeout(30_000)])
-      : AbortSignal.timeout(30_000),
-  });
-  if (!response.ok) {
-    throw await responseError(response);
+  try {
+    const response = await fetch(path, {
+      headers: { "X-Conversation-Token": credential.token },
+      signal: signal
+        ? AbortSignal.any([signal, AbortSignal.timeout(30_000)])
+        : AbortSignal.timeout(30_000),
+    });
+    if (!response.ok) throw await responseError(response);
+    return await response.blob();
+  } catch (error) {
+    if (error instanceof ApiError || signal?.aborted) throw error;
+    throw new ApiError(
+      0,
+      "export_network",
+      "Файл не получен: сервис недоступен или истекло время ожидания. Обновите сведения об отчёте перед повторной попыткой.",
+    );
   }
-  return response.blob();
 }
 export const rub = (value: string | number | null | undefined) =>
   value == null

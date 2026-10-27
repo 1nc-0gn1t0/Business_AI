@@ -317,7 +317,6 @@ class OllamaLLM:
             clarification=clarification,
             intent=wire.intent,
         )
-        logger.info("Local LLM turn completed trace_id=%s", uuid4())
         return result
 
     def extract(
@@ -342,6 +341,10 @@ class OllamaLLM:
             except TimeoutError:
                 raise LLMError("llm_timeout", 504) from None
             except HTTPError as error:
+                if error.code == 404:
+                    raise LLMError("llm_model_missing", 503) from None
+                if error.code == 500 and attempt:
+                    raise LLMError("llm_server_error", 502) from None
                 if error.code not in {429, 500, 502, 503} or attempt:
                     raise LLMError("llm_unavailable", 503) from None
             except URLError as error:
@@ -388,6 +391,10 @@ class OllamaLLM:
                     except httpx2.TimeoutException:
                         raise LLMError("llm_timeout", 504) from None
                     except httpx2.HTTPStatusError as error:
+                        if error.response.status_code == 404:
+                            raise LLMError("llm_model_missing", 503) from None
+                        if error.response.status_code == 500 and attempt:
+                            raise LLMError("llm_server_error", 502) from None
                         if error.response.status_code not in {429, 500, 502, 503} or attempt:
                             raise LLMError("llm_unavailable", 503) from None
                     except httpx2.RequestError:
