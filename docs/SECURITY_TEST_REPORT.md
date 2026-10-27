@@ -1,5 +1,38 @@
 # Business AI · безопасность и ранний triage
 
+## H-06 · 27.10.2026 · supply chain
+
+[Отчёт](qa/H-06_SUPPLY_CHAIN_REPORT.md), [runbook](SUPPLY_CHAIN.md),
+[лицензии](../THIRD_PARTY_NOTICES.md). Package audits: Python41 evaluated distributions
+и npm lock337 entries —0 advisories; Git65 commits/current files/actual image secret
+scans —0 real findings. Два первоначальных upstream SQLAlchemy false positives
+проверены; strict history ничего не исключает. Three synthetic credential rules и
+redaction реально проверены, источники/.env в advisory services не отправлялись.
+
+**Release baseline не принят:** final image union16CRITICAL/174HIGH/305MEDIUM/329LOW/
+42UNKNOWN unique IDs (max vendor severity per ID). Это не доказанные эксплойты продукта.
+Web patched→0; runtime pip6 advisory removed. DB Debian11.11/PG17.5 и native image risks
+остаются, green scoped CI не закрывает их. H-01…H-06 нельзя объявлять полностью закрытым
+до отдельного image/migration/native triage follow-up и решения владельца.
+
+### Dependency exception register
+
+Одобренных scanner ignores/исключений **нет**; CI не содержит ignore-vuln,
+continue-on-error или исключения dev dependencies. Следующие записи — открытые
+вопросы, а не разрешения пропустить уязвимости:
+
+| ID | Компонент | Status / owner | Следующий контроль |
+|---|---|---|---|
+| H06-P1-DB-01 | legacy PostGIS/PG17.5 +16critical/151high unique in image | Требует исправления/анализа; владелец проекта; approval отсутствует | До любого внешнего release; предлагаемый re-triage10.11.2026 |
+| H06-P1-NATIVE-02 | API8high и Ollama46high unique | Business-path reachability частично изучена; не одобрено | Upstream stable fixes/native review, предлагаемый re-triage10.11.2026 |
+| H06-P1-LIC-03 | LGPL/native/GPL/GPU distribution + собственная лицензия проекта | Тексты собраны; юридическая совместимость не сертифицирована | До передачи дистрибутива третьим лицам |
+| H06-P2-TOOLS-04 | Mutable CI patch selection/scanner transitive packages | Ограничение воспроизводимости подтверждено | Toolchain lock/RC review; без заявления bit-for-bit |
+
+Для настоящего исключения нужны конкретные CVE/package/version/path, обоснование,
+имя и явное approval владельца, expiry и условие пересмотра. Предлагаемый срок анализа
+не является датой окончания несуществующего разрешения. Рабочие данные не удалялись;
+H-05 QA volume сохранён, проверен отдельно и снова остановлен.
+
 ## H-05 · 27.10.2026 · safe diagnostics
 
 [QA report](qa/H-05_DIAGNOSTICS_REPORT.md), [runbook](DIAGNOSTICS.md).

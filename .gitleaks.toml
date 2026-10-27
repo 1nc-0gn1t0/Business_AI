@@ -1,0 +1,15 @@
+title = "Business AI first-party secret policy"
+[extend]
+useDefault = true
+
+[[rules]]
+id = "age-private-identity"
+description = "Private age identity (public recipients are not secrets)"
+regex = '''AGE-SECRET-KEY-1[0-9A-Z]{58}'''
+
+[[rules]]
+id = "database-password-url"
+description = "Password-bearing PostgreSQL connection URL"
+regex = '''(?i)postgres(?:ql)?(?:\+[a-z]+)?://[^:\s/]+:([^@\s/]+)@'''
+secretGroup = 1
+

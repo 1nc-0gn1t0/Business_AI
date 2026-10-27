@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-27",
+  "scanner": "trivy 0.76.1",
+  "final_unique_union": {
+    "LOW": 329,
+    "HIGH": 174,
+    "MEDIUM": 305,
+    "CRITICAL": 16,
+    "UNKNOWN": 42
+  },
+  "counting": "Highest reported vendor severity per CVE across four final/runtime images. Does not include manual PostgreSQL entries; no exploit claim."
+}

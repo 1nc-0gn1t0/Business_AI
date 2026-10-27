@@ -98,7 +98,7 @@ def main():
     check(
         "installed_qwen",
         lambda: any(
-            m["name"] == pins["model"]
+            m["name"] == pins["model"] and m["digest"] == pins["model_digest"]
             for m in fetch(args.ollama, "/api/tags")["models"]
         ),
     )
