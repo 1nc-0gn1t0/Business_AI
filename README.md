@@ -1,5 +1,10 @@
 # Business AI — Sab0tage
 
+**Существующая установка перед обновлением H-06-FU:** не запускайте новый DB-образ
+поверх старого volume. Нужен зашифрованный dump/restore в новый проект/кластер;
+entrypoint намеренно откажет старому PGDATA. [Порядок обновления](docs/CONTAINER_UPGRADE.md),
+[результаты и открытые риски](docs/qa/H-06-FU_CONTAINER_REPORT.md).
+
 H-06: [supply-chain audit / открытые release-блокеры](docs/qa/H-06_SUPPLY_CHAIN_REPORT.md),
 [проверки](docs/SUPPLY_CHAIN.md), [third-party notices](THIRD_PARTY_NOTICES.md).
 Python/npm audits и scoped CI не означают принятие старого DB/native image baseline:
@@ -226,7 +231,7 @@ ollama serve
 (именно этот вариант используется для локальной проверки BA-005):
 
 ```powershell
-docker run -d --name business-ai-ollama --gpus all -p 127.0.0.1:11434:11434 -e OLLAMA_NO_CLOUD=1 -e OLLAMA_NUM_PARALLEL=1 -e OLLAMA_MAX_LOADED_MODELS=1 -v business-ai_ollama_data:/root/.ollama ollama/ollama:0.40.8
+docker run -d --name business-ai-ollama --gpus all -p 127.0.0.1:11434:11434 -e OLLAMA_NO_CLOUD=1 -e OLLAMA_NUM_PARALLEL=1 -e OLLAMA_MAX_LOADED_MODELS=1 -v business-ai_ollama_data:/root/.ollama ollama/ollama:0.40.11@sha256:dea72d1e22270fe095b68fdf756d2b489d615643c5a2eaebbc5f569181e322d8
 docker exec business-ai-ollama ollama pull qwen3:4b-instruct-2507-q4_K_M
 # При следующем запуске существующего контейнера:
 docker start business-ai-ollama

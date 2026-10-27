@@ -1,5 +1,27 @@
 # Post-MVP · реестр дефектов, рисков и внешних зависимостей
 
+## H-06-FU · 27.10.2026 · baseline OPEN
+
+- **Подтверждено:** [изолированный перенос](../qa/H-06-FU_CONTAINER_REPORT.md)
+  PG17.5/PostGIS3.5.2→17.11/3.6.4, пять extensions; age,19public hashes/schema/indexes,
+  ownership/consent/receipts/audit/immutable reports сохранены. D-04 check и104DB tests PASS.
+  H06-P1-DB-01: проверенное обновление подготовлено, **рабочая установка не переключена**.
+- H06-P1-NATIVE-02: кандидат Ollama0.40.11 без Critical/High, GPU/CPU Qwen smoke PASS;
+  API8High остаются. Удалены gosu/mount/nsenter/infocmp; shared-library rows сохранены.
+- **H06FU-P1-NATIVE-01, подтверждённые advisory matches, требует проверки достижимости:**
+  новый DB3Critical/36High; API0Critical/8High. Среди Critical libxml2/CVE-2026-6653
+  и MariaDB/CVE-2026-44172; supported repo fix не найден. CVE-2026-49261 требует
+  отсутствующего MariaDB server/Galera (raw finding сохранён, без scanner waiver).
+  Все505before/after package rows классифицированы в CSV; это не505эксплойтов.
+- **H06FU-P1-OPS-02, требует действия владельца:** перед реальным cutover новый
+  кластер/backup/restore, roles/custom schemas/данные topology и новый write-freeze план.
+  PGDATA guard блокирует случайный in-place up; ручное подделывание marker запрещено.
+- Scoped CI0fixableCritical/High не равно принятой release baseline. Unknown/unfixed
+  риски не waived; owner-approved исключений нет. Повторный triage10.11.2026 —
+  предложение, не утверждённый срок исключения. H-блок и переход к UX не объявлять принятыми.
+- H-05 QA volume/F-00/пользовательские volumes сохранены. H06 лицензионные и offsite/
+  RPO ограничения H04FU остаются. Следующая задача — только по решению владельца.
+
 25.10.2026. Реестр утверждённого roadmap, обновлён результатами F-00;
 добавлены H-01 triage, H-02 caps, H-03 inference lifecycle и H-04 recovery. Ответственный — владелец проекта.
 `Подтверждено` означает код/артефакт, не новую эксплуатационную сертификацию.

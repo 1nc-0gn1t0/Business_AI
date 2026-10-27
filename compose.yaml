@@ -2,8 +2,14 @@ name: business-ai
 
 services:
   db:
-    # Audit identity only: legacy Debian11/PG17.5 needs H-06 follow-up before release.
-    image: postgis/postgis:17-3.5@sha256:01a6a70e41e6c4467c8f55f6063555ed72db2d6662cd0d571040d42eadaeb6f6
+    # Existing legacy PGDATA is refused by the entrypoint; use NEW project/volume
+    # and encrypted dump/restore (docs/CONTAINER_UPGRADE.md), never an in-place up.
+    image: business-ai-postgis-hardened
+    build:
+      context: ./infra/docker
+      dockerfile: postgis.Dockerfile
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-business_ai}
       POSTGRES_USER: ${POSTGRES_USER:-business_ai}

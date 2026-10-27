@@ -1,0 +1,168 @@
+{
+  "api": [
+    {
+      "image_id": "sha256:e6482470fcf740d222021efdb2907724d1c0706ca61a43662534f761ac9c64d8",
+      "os": {
+        "Family": "debian",
+        "Name": "13.7"
+      },
+      "unique": {
+        "LOW": 33,
+        "HIGH": 8,
+        "MEDIUM": 29,
+        "UNKNOWN": 1
+      },
+      "package_occurrences": {
+        "LOW": 61,
+        "HIGH": 44,
+        "MEDIUM": 58,
+        "UNKNOWN": 1
+      }
+    },
+    {
+      "image_id": "sha256:84ae7dc9baa8138b64250244882e568ad4b5cf9de23556fe817876f7de661d6c",
+      "os": {
+        "Family": "debian",
+        "Name": "13.7"
+      },
+      "unique": {
+        "LOW": 33,
+        "HIGH": 8,
+        "MEDIUM": 29,
+        "UNKNOWN": 1
+      },
+      "package_occurrences": {
+        "LOW": 60,
+        "HIGH": 40,
+        "MEDIUM": 57,
+        "UNKNOWN": 1
+      }
+    }
+  ],
+  "web": [
+    {
+      "image_id": "sha256:f0313b474ea435e06c7313a57ff9ed186b50f5e2566695919f80f8d101786395",
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "unique": {},
+      "package_occurrences": {}
+    },
+    {
+      "image_id": "sha256:f0313b474ea435e06c7313a57ff9ed186b50f5e2566695919f80f8d101786395",
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "unique": {},
+      "package_occurrences": {}
+    }
+  ],
+  "db": [
+    {
+      "image_id": "sha256:2ed748fc602dd3031c6724db8cb289e1578c2deb552a4f6e291f6f7e5e6e4f69",
+      "os": {
+        "Family": "debian",
+        "Name": "11.11",
+        "EOSL": true
+      },
+      "unique": {
+        "LOW": 333,
+        "HIGH": 151,
+        "MEDIUM": 277,
+        "CRITICAL": 16,
+        "UNKNOWN": 40
+      },
+      "package_occurrences": {
+        "LOW": 567,
+        "HIGH": 239,
+        "MEDIUM": 449,
+        "CRITICAL": 26,
+        "UNKNOWN": 44
+      }
+    },
+    {
+      "image_id": "sha256:c1344008581e3fb2879e3c253a1f38caf182352e739274bfb8fbd0bcfcdcdcef",
+      "os": {
+        "Family": "debian",
+        "Name": "13.7"
+      },
+      "unique": {
+        "LOW": 195,
+        "HIGH": 36,
+        "MEDIUM": 92,
+        "UNKNOWN": 5,
+        "CRITICAL": 3
+      },
+      "package_occurrences": {
+        "LOW": 364,
+        "HIGH": 101,
+        "MEDIUM": 201,
+        "UNKNOWN": 10,
+        "CRITICAL": 5
+      }
+    }
+  ],
+  "ollama": [
+    {
+      "image_id": "sha256:a95ca06aa736fc602819a6df80b5dbf8448a3bba189e12836e1aa631c1ebbb80",
+      "os": {
+        "Family": "ubuntu",
+        "Name": "24.04"
+      },
+      "unique": {
+        "MEDIUM": 57,
+        "LOW": 8,
+        "HIGH": 46,
+        "UNKNOWN": 2
+      },
+      "package_occurrences": {
+        "MEDIUM": 63,
+        "LOW": 10,
+        "HIGH": 50,
+        "UNKNOWN": 2
+      }
+    },
+    {
+      "image_id": "sha256:5aefd07598b55ea910b65abe42d1b5ad8ce3311d35b598c16586a318b5294459",
+      "os": {
+        "Family": "ubuntu",
+        "Name": "24.04"
+      },
+      "unique": {
+        "MEDIUM": 21,
+        "LOW": 5,
+        "UNKNOWN": 1
+      },
+      "package_occurrences": {
+        "MEDIUM": 23,
+        "LOW": 7,
+        "UNKNOWN": 1
+      }
+    }
+  ],
+  "union_before": {
+    "LOW": 329,
+    "HIGH": 174,
+    "MEDIUM": 306,
+    "UNKNOWN": 41,
+    "CRITICAL": 16
+  },
+  "union_after": {
+    "LOW": 190,
+    "HIGH": 36,
+    "MEDIUM": 107,
+    "UNKNOWN": 6,
+    "CRITICAL": 3
+  },
+  "scanner": "Trivy0.76.1",
+  "advisory_db": {
+    "Version": 2,
+    "NextUpdate": "2026-10-28T07:13:33.504286922Z",
+    "UpdatedAt": "2026-10-27T07:13:33.504287223Z",
+    "DownloadedAt": "2026-10-27T10:30:44.795885Z"
+  },
+  "release_baseline": "OPEN",
+  "exceptions": []
+}

@@ -25,5 +25,9 @@ CMD ["/app/.venv/bin/python", "-m", "pytest", "tests/integration", "-v", "-p", "
 
 FROM base AS runtime
 USER root
-RUN python -m pip uninstall -y pip
+# No mount/namespace/terminal administration is needed by the API. Keep shared
+# libraries/essential packages: their unresolved advisories remain in the report.
+RUN python -m pip uninstall -y pip \
+    && apt-get purge -y mount \
+    && rm /usr/bin/nsenter /usr/bin/infocmp
 USER app

@@ -1,0 +1,498 @@
+{
+  "upgrade-result.json": {
+    "status": "PASS",
+    "source_server": "17.5 (Debian 17.5-1.pgdg110+1)",
+    "target_server": "17.11 (Debian 17.11-1.pgdg13+2)",
+    "source_extensions": [
+      [
+        "plpgsql",
+        "1.0"
+      ],
+      [
+        "postgis",
+        "3.5.2"
+      ]
+    ],
+    "target_extensions": [
+      [
+        "plpgsql",
+        "1.0"
+      ],
+      [
+        "postgis",
+        "3.6.4"
+      ]
+    ],
+    "tables": {
+      "alembic_version": {
+        "rows": 1,
+        "sha256": "4a09254987428a11ced53d79bd5ef35ce26792293a85dc0183bab82c5d106f85"
+      },
+      "analysis_runs": {
+        "rows": 1,
+        "sha256": "d7970a06b9f0b9b573da39ecbe63b0fc29eedaef8605fd82bfd1b2db6e536f59"
+      },
+      "analytical_reports": {
+        "rows": 199,
+        "sha256": "32027e3486b510a8532bef53228bf21686021c1d340abad74f5a3c0ce91a5298"
+      },
+      "audit_events": {
+        "rows": 457,
+        "sha256": "40f4e7fb45a45ab89cb69edc47a96570caf494d291300d20256eb0fccf961502"
+      },
+      "business_profiles": {
+        "rows": 200,
+        "sha256": "ef374a502177337cb1a6613697469e16d9b59eab265e9dfa55612af99cf6e435"
+      },
+      "consents": {
+        "rows": 303,
+        "sha256": "9b5b1d9bb63db157d68fe67278569e7feb05e4b78cf4526dd03359a08d2f4940"
+      },
+      "conversations": {
+        "rows": 200,
+        "sha256": "bfd8e98f47a821776ab693b49bb600c4ec445313ebb51c9cd262b59dbef862cc"
+      },
+      "geo_datasets": {
+        "rows": 2,
+        "sha256": "9077d4a190f3dadba3edb8740b4751e46d673e929b79768fc0bbde34517b9d45"
+      },
+      "geo_districts": {
+        "rows": 1,
+        "sha256": "f62ef0e927bcf72f792130cec15b0603b329677d14558deb4de70bc107f31776"
+      },
+      "geo_pois": {
+        "rows": 20153,
+        "sha256": "dcb27aaaee87413b0514ddc6767c16f26651e2a5fd20a91a786a80845bfdd397"
+      },
+      "lead_drafts": {
+        "rows": 52,
+        "sha256": "4a8ca06d21225832f6a8e571b049b7699baf8ba7fbcf03cc9ae62ede3fc9e47c"
+      },
+      "lead_submissions": {
+        "rows": 51,
+        "sha256": "e5df46678fb97c564a198a9dd3d8bb9543763fa9420225c0ecd116ea1b2e636a"
+      },
+      "location_metrics": {
+        "rows": 1,
+        "sha256": "6409fa9efc9d27cb4cfe5c3ac046ba6d24a752d1c14bde743be81a121a14306e"
+      },
+      "messages": {
+        "rows": 16438,
+        "sha256": "e245edfdd5dbed44f4e8677c343ebfb3c0c2493012a9cd17499656097da7bb29"
+      },
+      "profile_revisions": {
+        "rows": 8518,
+        "sha256": "3a1bdd082ee74afe2b75c21768d71a5769c3a9ea14b0bc4949421c979cc204b2"
+      },
+      "provider_datasets": {
+        "rows": 1,
+        "sha256": "e565bf055bc707ab7c8fa001d7a6891110f01a1a169915638fc0ecaf7ed3d95c"
+      },
+      "spatial_ref_sys": {
+        "rows": 8500,
+        "sha256": "92ea221bf9d771d31af55f6d5876e2a2bcb2652685226447bce685e96fc73538"
+      },
+      "walk_edges": {
+        "rows": 4905,
+        "sha256": "e11e3c44912213bf97bbb2a6614f5974a2b7e3500011b060d6c7dbddd11b5afb"
+      },
+      "walk_graphs": {
+        "rows": 2,
+        "sha256": "75b84ad7489330e1096ff02f794652f77d50f28c22f33fc31950a6010a11a900"
+      }
+    },
+    "schema_sha256": "54334b71124e264b00651d74d076989b6c3c229faeb6e79907fd1d7676decb90",
+    "authentication_seconds": 1.656,
+    "restore_seconds": 3.25,
+    "verification_seconds": 5.766,
+    "total_seconds": 10.672
+  },
+  "upgrade-full-result.json": {
+    "status": "PASS",
+    "source_server": "17.5 (Debian 17.5-1.pgdg110+1)",
+    "target_server": "17.11 (Debian 17.11-1.pgdg13+2)",
+    "source_extensions": [
+      [
+        "fuzzystrmatch",
+        "1.2"
+      ],
+      [
+        "plpgsql",
+        "1.0"
+      ],
+      [
+        "postgis",
+        "3.5.2"
+      ],
+      [
+        "postgis_tiger_geocoder",
+        "3.5.2"
+      ],
+      [
+        "postgis_topology",
+        "3.5.2"
+      ]
+    ],
+    "target_extensions": [
+      [
+        "fuzzystrmatch",
+        "1.2"
+      ],
+      [
+        "plpgsql",
+        "1.0"
+      ],
+      [
+        "postgis",
+        "3.6.4"
+      ],
+      [
+        "postgis_tiger_geocoder",
+        "3.6.4"
+      ],
+      [
+        "postgis_topology",
+        "3.6.4"
+      ]
+    ],
+    "tables": {
+      "alembic_version": {
+        "rows": 1,
+        "sha256": "4a09254987428a11ced53d79bd5ef35ce26792293a85dc0183bab82c5d106f85"
+      },
+      "analysis_runs": {
+        "rows": 1,
+        "sha256": "d7970a06b9f0b9b573da39ecbe63b0fc29eedaef8605fd82bfd1b2db6e536f59"
+      },
+      "analytical_reports": {
+        "rows": 199,
+        "sha256": "32027e3486b510a8532bef53228bf21686021c1d340abad74f5a3c0ce91a5298"
+      },
+      "audit_events": {
+        "rows": 457,
+        "sha256": "40f4e7fb45a45ab89cb69edc47a96570caf494d291300d20256eb0fccf961502"
+      },
+      "business_profiles": {
+        "rows": 200,
+        "sha256": "ef374a502177337cb1a6613697469e16d9b59eab265e9dfa55612af99cf6e435"
+      },
+      "consents": {
+        "rows": 303,
+        "sha256": "9b5b1d9bb63db157d68fe67278569e7feb05e4b78cf4526dd03359a08d2f4940"
+      },
+      "conversations": {
+        "rows": 200,
+        "sha256": "bfd8e98f47a821776ab693b49bb600c4ec445313ebb51c9cd262b59dbef862cc"
+      },
+      "geo_datasets": {
+        "rows": 2,
+        "sha256": "9077d4a190f3dadba3edb8740b4751e46d673e929b79768fc0bbde34517b9d45"
+      },
+      "geo_districts": {
+        "rows": 1,
+        "sha256": "f62ef0e927bcf72f792130cec15b0603b329677d14558deb4de70bc107f31776"
+      },
+      "geo_pois": {
+        "rows": 20153,
+        "sha256": "dcb27aaaee87413b0514ddc6767c16f26651e2a5fd20a91a786a80845bfdd397"
+      },
+      "lead_drafts": {
+        "rows": 52,
+        "sha256": "4a8ca06d21225832f6a8e571b049b7699baf8ba7fbcf03cc9ae62ede3fc9e47c"
+      },
+      "lead_submissions": {
+        "rows": 51,
+        "sha256": "e5df46678fb97c564a198a9dd3d8bb9543763fa9420225c0ecd116ea1b2e636a"
+      },
+      "location_metrics": {
+        "rows": 1,
+        "sha256": "6409fa9efc9d27cb4cfe5c3ac046ba6d24a752d1c14bde743be81a121a14306e"
+      },
+      "messages": {
+        "rows": 16438,
+        "sha256": "e245edfdd5dbed44f4e8677c343ebfb3c0c2493012a9cd17499656097da7bb29"
+      },
+      "profile_revisions": {
+        "rows": 8518,
+        "sha256": "3a1bdd082ee74afe2b75c21768d71a5769c3a9ea14b0bc4949421c979cc204b2"
+      },
+      "provider_datasets": {
+        "rows": 1,
+        "sha256": "e565bf055bc707ab7c8fa001d7a6891110f01a1a169915638fc0ecaf7ed3d95c"
+      },
+      "spatial_ref_sys": {
+        "rows": 8500,
+        "sha256": "92ea221bf9d771d31af55f6d5876e2a2bcb2652685226447bce685e96fc73538"
+      },
+      "walk_edges": {
+        "rows": 4905,
+        "sha256": "e11e3c44912213bf97bbb2a6614f5974a2b7e3500011b060d6c7dbddd11b5afb"
+      },
+      "walk_graphs": {
+        "rows": 2,
+        "sha256": "75b84ad7489330e1096ff02f794652f77d50f28c22f33fc31950a6010a11a900"
+      }
+    },
+    "schema_sha256": "54334b71124e264b00651d74d076989b6c3c229faeb6e79907fd1d7676decb90",
+    "authentication_seconds": 1.468,
+    "restore_seconds": 3.782,
+    "verification_seconds": 5.843,
+    "total_seconds": 11.093
+  },
+  "image-gate.json": {
+    "api": {
+      "package_occurrences": {
+        "LOW": 60,
+        "HIGH": 40,
+        "MEDIUM": 57,
+        "UNKNOWN": 1
+      },
+      "fixable_critical_high": 0,
+      "critical_high": 40,
+      "release_baseline": "OPEN",
+      "gate": "PASS"
+    },
+    "db": {
+      "package_occurrences": {
+        "LOW": 364,
+        "HIGH": 101,
+        "MEDIUM": 201,
+        "UNKNOWN": 10,
+        "CRITICAL": 5
+      },
+      "fixable_critical_high": 0,
+      "critical_high": 106,
+      "release_baseline": "OPEN",
+      "gate": "PASS"
+    },
+    "web": {
+      "package_occurrences": {},
+      "fixable_critical_high": 0,
+      "critical_high": 0,
+      "release_baseline": "NO_HIGH_CRITICAL_FOUND",
+      "gate": "PASS"
+    },
+    "ollama": {
+      "package_occurrences": {
+        "MEDIUM": 23,
+        "LOW": 7,
+        "UNKNOWN": 1
+      },
+      "fixable_critical_high": 0,
+      "critical_high": 0,
+      "release_baseline": "NO_HIGH_CRITICAL_FOUND",
+      "gate": "PASS"
+    }
+  },
+  "backup-full-safe.json": {
+    "format": "business-ai-age-v1",
+    "id": "backup-090b6a3377384f41a5402623d831ca2d",
+    "snapshot_at": "2026-10-27T10:48:27.852698+00:00",
+    "completed_at": "2026-10-27T10:48:36.860570+00:00",
+    "backup_seconds": 9.688,
+    "files": {
+      "database.age": {
+        "sha256": "d2d54910d9919e929fb0cd7c7443ffbe0def583475209a344d4389eea72a292b",
+        "bytes": 11316378
+      },
+      "metadata.age": {
+        "sha256": "6408c82868bfb2a81fd3c7887eaa88c3e7084593e2d88d4ac11b4617fefbb682",
+        "bytes": 2974
+      }
+    }
+  },
+  "source-seed-safe.json": {
+    "status": "PASS",
+    "fixture": "large",
+    "database_bytes": 57404563,
+    "tables": {
+      "analysis_runs": {
+        "rows": 1,
+        "sha256": "d7970a06b9f0b9b573da39ecbe63b0fc29eedaef8605fd82bfd1b2db6e536f59"
+      },
+      "analytical_reports": {
+        "rows": 199,
+        "sha256": "32027e3486b510a8532bef53228bf21686021c1d340abad74f5a3c0ce91a5298"
+      },
+      "audit_events": {
+        "rows": 457,
+        "sha256": "40f4e7fb45a45ab89cb69edc47a96570caf494d291300d20256eb0fccf961502"
+      },
+      "business_profiles": {
+        "rows": 200,
+        "sha256": "ef374a502177337cb1a6613697469e16d9b59eab265e9dfa55612af99cf6e435"
+      },
+      "consents": {
+        "rows": 303,
+        "sha256": "9b5b1d9bb63db157d68fe67278569e7feb05e4b78cf4526dd03359a08d2f4940"
+      },
+      "conversations": {
+        "rows": 200,
+        "sha256": "bfd8e98f47a821776ab693b49bb600c4ec445313ebb51c9cd262b59dbef862cc"
+      },
+      "geo_datasets": {
+        "rows": 2,
+        "sha256": "9077d4a190f3dadba3edb8740b4751e46d673e929b79768fc0bbde34517b9d45"
+      },
+      "geo_districts": {
+        "rows": 1,
+        "sha256": "f62ef0e927bcf72f792130cec15b0603b329677d14558deb4de70bc107f31776"
+      },
+      "geo_pois": {
+        "rows": 20153,
+        "sha256": "dcb27aaaee87413b0514ddc6767c16f26651e2a5fd20a91a786a80845bfdd397"
+      },
+      "lead_drafts": {
+        "rows": 52,
+        "sha256": "4a8ca06d21225832f6a8e571b049b7699baf8ba7fbcf03cc9ae62ede3fc9e47c"
+      },
+      "lead_submissions": {
+        "rows": 51,
+        "sha256": "e5df46678fb97c564a198a9dd3d8bb9543763fa9420225c0ecd116ea1b2e636a"
+      },
+      "location_metrics": {
+        "rows": 1,
+        "sha256": "6409fa9efc9d27cb4cfe5c3ac046ba6d24a752d1c14bde743be81a121a14306e"
+      },
+      "messages": {
+        "rows": 16438,
+        "sha256": "e245edfdd5dbed44f4e8677c343ebfb3c0c2493012a9cd17499656097da7bb29"
+      },
+      "profile_revisions": {
+        "rows": 8518,
+        "sha256": "3a1bdd082ee74afe2b75c21768d71a5769c3a9ea14b0bc4949421c979cc204b2"
+      },
+      "provider_datasets": {
+        "rows": 1,
+        "sha256": "e565bf055bc707ab7c8fa001d7a6891110f01a1a169915638fc0ecaf7ed3d95c"
+      },
+      "walk_edges": {
+        "rows": 4905,
+        "sha256": "e11e3c44912213bf97bbb2a6614f5974a2b7e3500011b060d6c7dbddd11b5afb"
+      },
+      "walk_graphs": {
+        "rows": 2,
+        "sha256": "75b84ad7489330e1096ff02f794652f77d50f28c22f33fc31950a6010a11a900"
+      }
+    }
+  },
+  "qwen-gpu-safe.json": {
+    "status": "PASS",
+    "provider": "ollama",
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+    "size_vram": 2344636907,
+    "seconds": 86.844,
+    "profile_fields": "city/category/budget PASS",
+    "new_conversation_only": true
+  },
+  "qwen-warm-safe.json": {
+    "status": "PASS",
+    "probe": "direct Ollama structured output, not a second full API dialogue",
+    "seconds": 2.438,
+    "eval_count": 39,
+    "eval_duration_ns": 1473263000
+  },
+  "qwen-cpu-safe.json": {
+    "status": "PASS",
+    "probe": "direct structured CPU fallback, not full browser E2E",
+    "seconds": 10.422,
+    "size_vram": 0,
+    "eval_count": 39,
+    "eval_duration_ns": 3102066000,
+    "digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0"
+  },
+  "upgrade-negatives-safe.json": {
+    "wrong-key": "REFUSED, no new DB",
+    "tampered": "REFUSED, no new DB",
+    "duplicate": "REFUSED existing target",
+    "unavailable-project": "REFUSED, no new DB"
+  },
+  "runtime-export-safe.json": {
+    "new_report": "PASS",
+    "old_result_reuse": "409 report_results_changed as expected (spatial_runtime is fingerprinted)",
+    "scores_identical": true,
+    "files": {
+      "pdf": {
+        "bytes": 48489,
+        "sha256": "ffa11b9385ba227c3a52fa363a3cf10b6e24d875fb79390665da182ea5fcf5a1",
+        "token_absent": true
+      },
+      "json": {
+        "bytes": 57185,
+        "sha256": "1b1137be223db108d9cf5f9cd7c3314b7dd8aa397a123ea1de05fcd2d01fa430",
+        "token_absent": true
+      }
+    },
+    "readyz": {
+      "status": "ok",
+      "database": "ok",
+      "postgis": "ok",
+      "schema_status": "ok"
+    },
+    "livez": {
+      "status": "ok"
+    }
+  },
+  "runtime-versions-safe.json": {
+    "source": [
+      "17.5 (Debian 17.5-1.pgdg110+1)",
+      "POSTGIS=\"3.5.2 dea6d0a\" [EXTENSION] PGSQL=\"170\" GEOS=\"3.9.0-CAPI-1.16.2\" PROJ=\"7.2.1 NETWORK_ENABLED=OFF URL_ENDPOINT=https://cdn.proj.org USER_WRITABLE_DIRECTORY=/var/lib/postgresql/.local/share/proj DATABASE_PATH=/usr/share/proj/proj.db\" (compiled against PROJ 7.2.1) LIBXML=\"2.9.10\" LIBJSON=\"0.15\" LIBPROTOBUF=\"1.3.3\" WAGYU=\"0.5.0 (Internal)\" TOPOLOGY",
+      "2.31|2.31"
+    ],
+    "target": [
+      "17.11 (Debian 17.11-1.pgdg13+2)",
+      "POSTGIS=\"3.6.4 94d984b\" [EXTENSION] PGSQL=\"170\" GEOS=\"3.14.1-CAPI-1.20.5\" (compiled against GEOS 3.13.1) PROJ=\"9.8.1 NETWORK_ENABLED=OFF URL_ENDPOINT=https://cdn.proj.org USER_WRITABLE_DIRECTORY=/var/lib/postgresql/.local/share/proj DATABASE_PATH=/usr/share/proj/proj.db\" (compiled against PROJ 9.6.0) LIBXML=\"2.9.14\" LIBJSON=\"0.18\" LIBPROTOBUF=\"1.5.1\" WAGYU=\"0.5.0 (Internal)\" TOPOLOGY",
+      "2.41|2.41"
+    ]
+  },
+  "image-gate-final.json": {
+    "api": {
+      "package_occurrences": {
+        "LOW": 60,
+        "HIGH": 40,
+        "MEDIUM": 57,
+        "UNKNOWN": 1
+      },
+      "fixable_critical_high": 0,
+      "critical_high": 40,
+      "eosl": false,
+      "release_baseline": "OPEN",
+      "gate": "PASS"
+    },
+    "db": {
+      "package_occurrences": {
+        "LOW": 364,
+        "HIGH": 101,
+        "MEDIUM": 201,
+        "UNKNOWN": 10,
+        "CRITICAL": 5
+      },
+      "fixable_critical_high": 0,
+      "critical_high": 106,
+      "eosl": false,
+      "release_baseline": "OPEN",
+      "gate": "PASS"
+    },
+    "web": {
+      "package_occurrences": {},
+      "fixable_critical_high": 0,
+      "critical_high": 0,
+      "eosl": false,
+      "release_baseline": "NO_HIGH_CRITICAL_FOUND",
+      "gate": "PASS"
+    },
+    "ollama": {
+      "package_occurrences": {
+        "MEDIUM": 23,
+        "LOW": 7,
+        "UNKNOWN": 1
+      },
+      "fixable_critical_high": 0,
+      "critical_high": 0,
+      "eosl": false,
+      "release_baseline": "NO_HIGH_CRITICAL_FOUND",
+      "gate": "PASS"
+    }
+  }
+}

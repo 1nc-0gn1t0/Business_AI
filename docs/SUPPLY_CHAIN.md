@@ -1,5 +1,9 @@
 # H-06 · воспроизводимый аудит зависимостей
 
+H-06-FU: [обновление контейнеров](CONTAINER_UPGRADE.md),
+[новые сканы и перенос](qa/H-06-FU_CONTAINER_REPORT.md). Старые H-06 результаты
+ниже исторические; оставшиеся native Critical/High не приняты автоматически.
+
 [Отчёт/открытые блокеры](qa/H-06_SUPPLY_CHAIN_REPORT.md),
 [лицензии и obligations](../THIRD_PARTY_NOTICES.md),
 [машинная инвентаризация](qa/H-06-dependencies.json).

@@ -1,5 +1,39 @@
 # Business AI — HANDOFF
 
+## H-06-FU · container hardening / safe upgrade · 27.10.2026
+
+- PR25/f09c0cc merged, main1bf0f5e, чистое исходное дерево; ветка
+  `codex/H-06-FU-container-hardening`. Итоговые SHA/PR/CI в сообщении сдачи.
+  [Отчёт](qa/H-06-FU_CONTAINER_REPORT.md), [upgrade runbook](CONTAINER_UPGRADE.md),
+  [505triage rows](qa/H-06-FU_TRIAGE.csv), [evidence](qa/H-06-FU_RECOVERY_EVIDENCE.json).
+- Новый DB runtime: PG17.11/PostGIS3.6.4/Debian13.7, upstream digest1ac10b25…;
+  nonroot postgres/cap_dropALL, gosu удалён. PGDATA guard отказывает старому/чужому
+  major без изменения sentinel. **Рабочая БД/volumes не обновлялись**; не запускать
+  in-place up, новый проект/кластер и encrypted dump/restore обязательны.
+- Source synthetic57.4MB/200profiles/16438messages/199reports/20153POI/4905edges:
+  age backup11,319,352bytes,9.688s. Два restore, включая пять рабочих extensions;
+  19public tables counts/SHA, schema/indexes равны. Full-extension restore11.093s,
+  это не новый полный RTO. Wrong key/tamper/duplicate/unavailable QA refused без
+  новых БД при отказах. General H04FU restore не ослаблен; отдельный bounded drill.
+- Real API/owner/history/consent/receipt/audit/oldPDFJSON PASS. Новый экспорт
+  PDF48489/JSON57185bytes PASS. Старый geo fingerprint корректно даёт409 после
+  смены spatial_runtime; reranking через API обновляет ссылку, fixture scores равны.
+- API удаляет mount/nsenter/infocmp, Python lock и формулы без изменений. Ollama
+  candidate0.40.11/digestdea72d1e…: реальный Qwen API диалог86.844s cold/2.34GBVRAM;
+  direct warm2.438s; CPU direct10.422s/0VRAM. Тот же digestQwen, weights read-only,
+  оригинальная Ollama не менялась. Это smoke, не новый полный eval/p95.
+- Замороженный Trivy DB2026-10-27T07:13:33Z: union16C/174H→3C/36H,
+  final107M/190L/6U.166oldC/H исчезли,15newC/H явно сохранены в triage. API8H,
+  DB3C/36H, Ollama/web0C/H. Нет supported reported fixes у оставшихся; CI scoped
+  gate0fixableC/H PASS **не принимает release baseline**. Одобренных исключений нет.
+- Regression382quickPASS/104DB SKIP отдельно104PASS;102extended/1550examples;
+  frontend45/Chromium27/TS/build PASS. Final prek7hooks/mypy124files PASS; CI после push.
+- **Baseline OPEN**, H-01…H-06 и UX transition не приняты: native/libxml2/MariaDB/
+  PostGIS paths требуют поддерживаемых fixes или отдельного решения владельца;
+  GPL/LGPL/GPU/own license и offsite/RPO ограничения остаются. H05QA volume/F00
+  сохранены; временные H06FU QA-контейнеры остановлены без volume deletion.
+- Не начинать UX/U/UI/BA-017/018 или дальнейшую работу автоматически.
+
 ## H-06 · supply-chain audit/hardening · 27.10.2026 (МСК)
 
 - PR24/ed8774d merged, main6405a1a ff-only, исходное дерево чистое; ветка

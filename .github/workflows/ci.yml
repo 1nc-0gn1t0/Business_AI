@@ -49,8 +49,8 @@ jobs:
         run: npm --prefix apps/web ci
       - name: Operator backup tooling checks
         run: |
-          uv run --locked --project apps/api ruff check scripts/backup_postgres.py scripts/encrypted_backup.py scripts/recovery_rehearsal.py scripts/recovery_negative_checks.py scripts/check_secret_scanner.py scripts/inventory_dependencies.py
-          uv run --locked --project apps/api ruff format --check scripts/backup_postgres.py scripts/encrypted_backup.py scripts/recovery_rehearsal.py scripts/recovery_negative_checks.py scripts/check_secret_scanner.py scripts/inventory_dependencies.py
+          uv run --locked --project apps/api ruff check scripts/backup_postgres.py scripts/encrypted_backup.py scripts/recovery_rehearsal.py scripts/recovery_negative_checks.py scripts/check_secret_scanner.py scripts/inventory_dependencies.py scripts/image_security.py scripts/restore_container_upgrade.py
+          uv run --locked --project apps/api ruff format --check scripts/backup_postgres.py scripts/encrypted_backup.py scripts/recovery_rehearsal.py scripts/recovery_negative_checks.py scripts/check_secret_scanner.py scripts/inventory_dependencies.py scripts/image_security.py scripts/restore_container_upgrade.py
       - name: Check Docker requirements match the lock
         working-directory: apps/api
         shell: bash
@@ -87,6 +87,9 @@ jobs:
       - name: Check API, PostGIS and web
         shell: pwsh
         run: ./scripts/smoke.ps1
+      - name: Reject unverified old PGDATA without modifying it
+        shell: pwsh
+        run: ./scripts/check_postgis_guard.ps1 -Image business-ai-postgis-hardened
       - name: Test migrations and database constraints in isolated databases
         run: docker compose --profile test run --build --rm db-tests
       - name: Service diagnostics on failure
