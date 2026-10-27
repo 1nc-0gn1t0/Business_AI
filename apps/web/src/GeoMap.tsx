@@ -48,13 +48,13 @@ export default function GeoMap(props: Props) {
             {
               id: "background",
               type: "background",
-              paint: { "background-color": "#142737" },
+              paint: { "background-color": "#e8edf2" },
             },
             {
               id: "osm",
               type: "raster",
               source: "osm",
-              paint: { "raster-opacity": 0.68, "raster-saturation": -0.7 },
+              paint: { "raster-opacity": 0.88, "raster-saturation": -0.35 },
             },
           ],
         },
@@ -167,20 +167,20 @@ export default function GeoMap(props: Props) {
         id: "zone-fill",
         type: "fill",
         source: "zones",
-        paint: { "fill-color": "#25d5bc", "fill-opacity": 0.23 },
+        paint: { "fill-color": "#2677d8", "fill-opacity": 0.23 },
       });
       instance.addLayer({
         id: "zone-lines",
         type: "line",
         source: "zones",
-        paint: { "line-color": "#13bda7", "line-width": 2 },
+        paint: { "line-color": "#1465df", "line-width": 2 },
       });
       instance.addLayer({
         id: "selected",
         type: "line",
         source: "zones",
         filter: ["==", ["id"], ""],
-        paint: { "line-color": "#f5b953", "line-width": 4 },
+        paint: { "line-color": "#1253ae", "line-width": 4 },
       });
       instance.addLayer({
         id: "poi-points",
@@ -198,7 +198,7 @@ export default function GeoMap(props: Props) {
         type: "line",
         source: "walk-network",
         paint: {
-          "line-color": "#b39aff",
+          "line-color": "#7369b3",
           "line-width": 4,
           "line-opacity": 0.85,
         },
@@ -208,7 +208,7 @@ export default function GeoMap(props: Props) {
         type: "circle",
         source: "walk-pois",
         paint: {
-          "circle-color": "#40dfc2",
+          "circle-color": "#087d79",
           "circle-radius": 5,
           "circle-stroke-color": "#072b24",
           "circle-stroke-width": 1,
@@ -221,7 +221,7 @@ export default function GeoMap(props: Props) {
         paint: {
           "circle-color": "#fff",
           "circle-radius": 8,
-          "circle-stroke-color": "#b39aff",
+          "circle-stroke-color": "#7369b3",
           "circle-stroke-width": 3,
         },
       });
@@ -374,7 +374,7 @@ export default function GeoMap(props: Props) {
       )}
       <div className="map-legend">
         <span>
-          <i className="dot mint-dot" />
+          <i className="zone-swatch" />
           Зоны-кандидаты
         </span>
         <span>
@@ -384,8 +384,8 @@ export default function GeoMap(props: Props) {
         <span>┄ Граница покрытия</span>
         {props.walking && (
           <>
-            <span style={{ color: "#b39aff" }}>━ Достижимая сеть</span>
-            <span style={{ color: "#40dfc2" }}>● POI по сети</span>
+            <span style={{ color: "#7369b3" }}>━ Достижимая сеть</span>
+            <span style={{ color: "#087d79" }}>● POI по сети</span>
           </>
         )}
       </div>

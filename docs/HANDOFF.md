@@ -1,5 +1,36 @@
 # Business AI — HANDOFF
 
+## DESIGN-01 · hackathon product UI · 27–28.10.2026
+
+- PR26/H-06-FU merged, main `d270675`, исходное дерево чистое; отдельная ветка
+  `codex/DESIGN-01-product-redesign`. Итоговые commit/PR/CI — в сообщении сдачи.
+- **Сознательное изменение приоритетов владельцем:** вместо нового hardening
+  реализован демонстрационный frontend. Release security baseline остаётся OPEN;
+  H-FINAL/BA-017/018 не начаты. Это не объявление всех UX-01/02/UI-01 выполненными.
+- [Концепция, API-карта и проверка](design/DESIGN-01_PRODUCT_UI.md),
+  [checkpoint](design/DESIGN-01_CHECKPOINT.md), [13 screenshots](qa/design-01/).
+- Реализованы overview с настоящим composer, AI workspace+профиль, map/list,
+  comparison, finance dashboard, существующие bank/consent/mock flow, report overview
+  и PDF/JSON. Локальный Golos Text/OFL, SVG-иконки, токены и четыре CSS-слоя;
+  responsive1440/768/390, focus/skip link/reduced motion. Новых npm-зависимостей нет.
+- Backend/API/DTO/доменные алгоритмы/consent/ownership/CAS/idempotency/provenance/
+  backup не менялись; нет миграций/volume операций. Прежние компоненты аналитики
+  mounted/hidden сохраняют вводные между шагами. Reload восстанавливает профиль/
+  историю, не все аналитические UI drafts. Прежняя маркировка synthetic сохранена.
+- Проверки перед финальным commit: Vitest48PASS, Chromium30mockPASS, backend59PASS
+  по conversation/finance/report; ESLint/TS/build PASS. Финальный prek7/7 hooks PASS;
+  финальный Chromium30/30 PASS за34.6s.
+  Firefox/WebKit не установлены и не проверены; формального WCAG AA/usability audit нет.
+- Реальный browser Vite5174 → рабочий API8000/PostGIS17.5/3.5.2/Ollama0.40.8:
+  два реальных Qwen-turns, кофейня/Казань/2млн → confirm v3 →5зон →compare →
+  finance285000→275000 при аренде80000→90000 →6демо bank cards → PDF53940bytes /
+  JSON128526bytes. Дополнительно catchment200 и реальная local mock receipt после
+  отказа от marketing/отдельного demo consent; никаких банковских HTTP-вызовов.
+- Working Docker image/PGDATA H-06-FU не переносились; не выполнять compose up поверх
+  старого volume. F-00/пользовательские volumes не изменялись. CI после push отдельно.
+- Следующая работа только по разрешению: usability/контраст/touch targets/другие
+  браузеры и отдельно согласованные UX/U/UI. Initial MapLibre bundle >500kB остаётся.
+
 ## H-06-FU · container hardening / safe upgrade · 27.10.2026
 
 - PR25/f09c0cc merged, main1bf0f5e, чистое исходное дерево; ветка

@@ -140,6 +140,11 @@ test("browser workflow with explicitly mocked APIs", async ({ page }) => {
   await page.getByRole("button", { name: "Пересчитать модель →" }).click();
   await expect(page.getByLabel("Результат финансового расчёта")).toBeVisible();
   expect(rent).toBe("90000");
+  await page.getByRole("button", { name: "Отчёт", exact: true }).click();
+  await expect(page.getByText("3 финансовых сценария", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "↗ Финансовая модель" }).click();
+  await expect(page.getByLabel("Аренда", { exact: true })).toHaveValue("90000");
+  await expect(page.getByLabel("Результат финансового расчёта")).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
     await page.evaluate(

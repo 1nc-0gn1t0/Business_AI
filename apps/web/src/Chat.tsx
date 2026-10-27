@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Conversation, Schemas } from "./api";
 import { rub } from "./api";
 
@@ -12,6 +12,9 @@ export type ChatProps = {
   onPatch: (patch: Schemas["ProfilePatch"]) => Promise<void>;
   onConfirm: () => void;
   consentControl?: ReactNode;
+  showProfile?: boolean;
+  draft?: string;
+  onDraft?: (value: string) => void;
 };
 const fields: Record<string, string> = {
   city: "город",
@@ -154,9 +157,61 @@ function ProfileEditor({
     </section>
   );
 }
+export function BusinessProfilePanel(
+  props: Pick<ChatProps, "busy" | "onPatch" | "onConfirm"> & {
+    conversation: Conversation;
+  },
+) {
+  const c = props.conversation;
+  return (
+    <div className="business-context">
+      <ProfileEditor
+        key={`${c.id}:${c.version}`}
+        conversation={c}
+        busy={props.busy}
+        onPatch={props.onPatch}
+      />
+      {c.profile.confirmation_state !== "confirmed" ? (
+        <>
+          <p className="subtle">
+            {c.missing_fields.length
+              ? `Нужно уточнить: ${c.missing_fields.map((f) => fields[f] || f).join(", ")}.`
+              : "Проверьте параметры и подтвердите профиль для геоанализа."}
+          </p>
+          <button
+            className="button full"
+            disabled={props.busy || c.missing_fields.length > 0}
+            onClick={props.onConfirm}
+          >
+            Подтвердить профиль →
+          </button>
+        </>
+      ) : (
+        <p className="context-ready">
+          Профиль готов к анализу. Изменения потребуют нового подтверждения.
+        </p>
+      )}
+      <div className="context-note">
+        <h3>Вы управляете решением</h3>
+        <p>
+          Параметры извлечены из ваших сообщений. Локации — зоны для
+          исследования, а финансовые вводные — явные допущения. Заявки в банк не
+          отправляются.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function Chat(props: ChatProps) {
   const { conversation: c, messages, busy } = props;
-  const [text, setText] = useState("");
+  const scroll = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (scroll.current) scroll.current.scrollTop = scroll.current.scrollHeight;
+  }, [messages, busy]);
+  const [localText, setLocalText] = useState("");
+  const text = props.draft ?? localText;
+  const setText = props.onDraft ?? setLocalText;
   return (
     <aside className="chat-panel" aria-label="AI-помощник">
       <div className="chat-heading">
@@ -166,17 +221,19 @@ export default function Chat(props: ChatProps) {
             <span className="spark">✦</span> От идеи к решению
           </h2>
         </div>
-        <button
-          className="icon-button"
-          title="Новая беседа"
-          aria-label="Новая беседа"
-          onClick={props.onNew}
-          disabled={busy}
-        >
-          ＋
-        </button>
+        {props.showProfile !== false && (
+          <button
+            className="icon-button"
+            title="Новая беседа"
+            aria-label="Новая беседа"
+            onClick={props.onNew}
+            disabled={busy}
+          >
+            ＋
+          </button>
+        )}
       </div>
-      <div className="chat-scroll">
+      <div className="chat-scroll" ref={scroll}>
         <div className="assistant-intro">
           <span className="assistant-avatar">✦</span>
           <p>
@@ -236,28 +293,31 @@ export default function Chat(props: ChatProps) {
                 Обновить
               </button>
             </div>
-            <ProfileEditor
-              key={`${c.id}:${c.version}`}
-              conversation={c}
-              busy={busy}
-              onPatch={props.onPatch}
-            />
-            {c.profile.confirmation_state !== "confirmed" && (
-              <>
-                <p className="subtle">
-                  {c.missing_fields.length
-                    ? `Нужно уточнить: ${c.missing_fields.map((f) => fields[f] || f).join(", ")}.`
-                    : "Проверьте параметры и подтвердите профиль для геоанализа."}
-                </p>
-                <button
-                  className="button full"
-                  disabled={busy || c.missing_fields.length > 0}
-                  onClick={props.onConfirm}
-                >
-                  Подтвердить профиль →
-                </button>
-              </>
+            {props.showProfile !== false && (
+              <ProfileEditor
+                key={`${c.id}:${c.version}`}
+                conversation={c}
+                busy={busy}
+                onPatch={props.onPatch}
+              />
             )}
+            {props.showProfile !== false &&
+              c.profile.confirmation_state !== "confirmed" && (
+                <>
+                  <p className="subtle">
+                    {c.missing_fields.length
+                      ? `Нужно уточнить: ${c.missing_fields.map((f) => fields[f] || f).join(", ")}.`
+                      : "Проверьте параметры и подтвердите профиль для геоанализа."}
+                  </p>
+                  <button
+                    className="button full"
+                    disabled={busy || c.missing_fields.length > 0}
+                    onClick={props.onConfirm}
+                  >
+                    Подтвердить профиль →
+                  </button>
+                </>
+              )}
           </>
         )}
       </div>

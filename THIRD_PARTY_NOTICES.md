@@ -21,6 +21,18 @@ not represented as verified. Inventory reflects the Windows audit environment;
 platform-specific package sets may differ on Linux. Generated notices are a
 practical attribution baseline, **not a legal compatibility certificate**.
 
+## DESIGN-01 bundled browser font
+
+Golos Text variable TrueType, Copyright 2019 The Golos Text Project Authors,
+licensed under SIL Open Font License 1.1. Distributed unmodified at
+`apps/web/public/fonts/GolosText.ttf`, with the complete upstream
+[OFL/copyright notice](apps/web/public/fonts/OFL.txt); both files ship in Vite output.
+Source: [Google Fonts official Golos Text directory](https://github.com/google/fonts/tree/main/ofl/golostext).
+Font SHA-256: `17bb58fb69aec2dfb047a2ebf52534023e9b688c97a6b7ac795b0a72912c2063`.
+No remote font/CDN requests. The npm inventory generator covers npm packages;
+this separate font notice and bundled OFL must also be retained on distribution.
+No VTB logos or licensed bank brand assets are bundled by DESIGN-01.
+
 ## Verified package obligations
 
 MIT/BSD/ISC/Apache notices and applicable copyright/license texts must remain with

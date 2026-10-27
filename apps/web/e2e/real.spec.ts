@@ -156,10 +156,11 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     page.getByRole("button", { name: "Подтвердить профиль →" }),
   ).toBeEnabled();
   await page.getByRole("button", { name: "Подтвердить профиль →" }).click();
-  await expect(page.getByText("Подтверждён", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Найти зоны →" })).toBeVisible();
   await page.reload();
   await expect(page.getByText(prompt, { exact: true })).toBeVisible();
   await expect(page.getByText("Подтверждён", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "⌖ Карта и локации" }).click();
   const rankResponse = page.waitForResponse((r) =>
     r.url().endsWith("/rankings"),
   );
@@ -198,6 +199,7 @@ test("real Qwen → confirmed profile → PostGIS zones → finance recalculatio
     fullPage: true,
   });
   // BA-013 real PostGIS network; no recorded geometry or route interception.
+  await page.locator(".walking-disclosure > summary").click();
   const walking = page.getByRole("region", { name: "Пешеходная доступность" });
   await walking
     .getByText("Задать точку координатами WGS84", { exact: true })

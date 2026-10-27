@@ -63,6 +63,13 @@ export default function Finance({
   const [dirty, setDirty] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const resultPanel = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (result) {
+      resultPanel.current?.scrollIntoView?.({ block: "start" });
+      resultPanel.current?.focus({ preventScroll: true });
+    }
+  }, [result]);
   const active = useRef<AbortController | null>(null);
   useEffect(() => {
     onReport?.(dirty ? null : result);
@@ -166,154 +173,12 @@ export default function Finance({
         спрос Казани. OSM-рейтинг не влияет на выручку. Выбранная зона — только
         контекст.
       </p>
-      {!input ? (
-        <div className="empty">
-          <span className="empty-symbol">↗</span>
-          <h2>Проверьте экономику идеи</h2>
-          <p>
-            Загрузите демонстрационный набор для кофейни из BA-009 и замените
-            его своими значениями. Это не отраслевая модель для других видов
-            бизнеса. Расчёт выполняется только после отправки на сервер.
-          </p>
-          <button
-            className="button"
-            disabled={!profile}
-            onClick={() => {
-              setDirty(true);
-              if (profile) setInput(demoInput(profile, zone));
-            }}
-          >
-            Загрузить демо-допущения
-          </button>
-        </div>
-      ) : (
-        <form onSubmit={calculate}>
-          <details className="assumptions" open>
-            <summary>
-              Вводные и допущения{" "}
-              <span className="tag amber">Синтетические</span>
-            </summary>
-            <div className="input-columns">
-              <fieldset>
-                <legend>Стартовые вложения, ₽</legend>
-                {Object.entries(startupLabels).map(([key, title]) => (
-                  <label key={key}>
-                    {title}
-                    <input
-                      aria-label={title}
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      required
-                      value={
-                        input.startup[key as keyof typeof startupLabels].value
-                      }
-                      onChange={(e) => edit("startup", key, e.target.value)}
-                    />
-                  </label>
-                ))}
-              </fieldset>
-              <fieldset>
-                <legend>Постоянные расходы, ₽ / мес.</legend>
-                {Object.entries(fixedLabels).map(([key, title]) => (
-                  <label key={key}>
-                    {title}
-                    <input
-                      aria-label={title}
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      required
-                      value={
-                        input.monthly_fixed_costs[
-                          key as keyof typeof fixedLabels
-                        ].value
-                      }
-                      onChange={(e) =>
-                        edit("monthly_fixed_costs", key, e.target.value)
-                      }
-                    />
-                  </label>
-                ))}
-                <label>
-                  Рабочих дней в месяц
-                  <input
-                    aria-label="Рабочих дней в месяц"
-                    type="number"
-                    min="1"
-                    max="31"
-                    step="1"
-                    required
-                    value={input.working_days_per_month.value}
-                    onChange={(e) =>
-                      edit("working_days_per_month", "", e.target.value)
-                    }
-                  />
-                </label>
-              </fieldset>
-            </div>
-            <div className="scenario-inputs">
-              {(Object.keys(scenarioNames) as Scenario[]).map((s) => (
-                <fieldset key={s}>
-                  <legend>{scenarioNames[s]}</legend>
-                  {Object.entries(scenarioLabels).map(([key, title]) => (
-                    <label key={key}>
-                      {title}
-                      <input
-                        aria-label={`${scenarioNames[s]}: ${title}`}
-                        type="number"
-                        required
-                        min={key === "average_check" ? "0.01" : "0"}
-                        max={
-                          key === "variable_cost_ratio" ? "0.999999" : undefined
-                        }
-                        step={
-                          key === "sales_per_day"
-                            ? "1"
-                            : key === "variable_cost_ratio"
-                              ? "0.01"
-                              : "0.01"
-                        }
-                        value={
-                          input.scenarios[s][key as keyof typeof scenarioLabels]
-                            .value
-                        }
-                        onChange={(e) => edit(s, key, e.target.value)}
-                      />
-                    </label>
-                  ))}
-                </fieldset>
-              ))}
-            </div>
-            <p className="subtle">
-              Каждое поле: synthetic · coffee-finance-demo-v1; после
-              редактирования — ui-assumptions-v1. Источник и значения передаются
-              серверу и входят в снимок расчёта.
-            </p>
-          </details>
-          <div className="row calculation-controls">
-            <p className="subtle">
-              {dirty
-                ? "Вводные изменены. Нужен пересчёт."
-                : result
-                  ? "Результат соответствует отправленным вводным."
-                  : "Проверьте вводные и запустите расчёт."}
-            </p>
-            <button className="button" disabled={busy}>
-              {busy ? "Рассчитываем…" : "Пересчитать модель →"}
-            </button>
-          </div>
-        </form>
-      )}
-      {error && (
-        <div className="alert" role="alert">
-          {error}
-        </div>
-      )}
       {result && (
         <section
           className={dirty ? "stale-result" : ""}
           aria-label="Результат финансового расчёта"
+          ref={resultPanel}
+          tabIndex={-1}
         >
           {dirty && (
             <div className="notice">
@@ -481,6 +346,150 @@ export default function Finance({
             </ul>
           </details>
         </section>
+      )}
+      {!input ? (
+        <div className="empty">
+          <span className="empty-symbol">↗</span>
+          <h2>Проверьте экономику идеи</h2>
+          <p>
+            Загрузите демонстрационный набор для кофейни из BA-009 и замените
+            его своими значениями. Это не отраслевая модель для других видов
+            бизнеса. Расчёт выполняется только после отправки на сервер.
+          </p>
+          <button
+            className="button"
+            disabled={!profile}
+            onClick={() => {
+              setDirty(true);
+              if (profile) setInput(demoInput(profile, zone));
+            }}
+          >
+            Загрузить демо-допущения
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={calculate}>
+          <details className="assumptions" open>
+            <summary>
+              Вводные и допущения{" "}
+              <span className="tag amber">Синтетические</span>
+            </summary>
+            <div className="input-columns">
+              <fieldset>
+                <legend>Стартовые вложения, ₽</legend>
+                {Object.entries(startupLabels).map(([key, title]) => (
+                  <label key={key}>
+                    {title}
+                    <input
+                      aria-label={title}
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      required
+                      value={
+                        input.startup[key as keyof typeof startupLabels].value
+                      }
+                      onChange={(e) => edit("startup", key, e.target.value)}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+              <fieldset>
+                <legend>Постоянные расходы, ₽ / мес.</legend>
+                {Object.entries(fixedLabels).map(([key, title]) => (
+                  <label key={key}>
+                    {title}
+                    <input
+                      aria-label={title}
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      required
+                      value={
+                        input.monthly_fixed_costs[
+                          key as keyof typeof fixedLabels
+                        ].value
+                      }
+                      onChange={(e) =>
+                        edit("monthly_fixed_costs", key, e.target.value)
+                      }
+                    />
+                  </label>
+                ))}
+                <label>
+                  Рабочих дней в месяц
+                  <input
+                    aria-label="Рабочих дней в месяц"
+                    type="number"
+                    min="1"
+                    max="31"
+                    step="1"
+                    required
+                    value={input.working_days_per_month.value}
+                    onChange={(e) =>
+                      edit("working_days_per_month", "", e.target.value)
+                    }
+                  />
+                </label>
+              </fieldset>
+            </div>
+            <div className="scenario-inputs">
+              {(Object.keys(scenarioNames) as Scenario[]).map((s) => (
+                <fieldset key={s}>
+                  <legend>{scenarioNames[s]}</legend>
+                  {Object.entries(scenarioLabels).map(([key, title]) => (
+                    <label key={key}>
+                      {title}
+                      <input
+                        aria-label={`${scenarioNames[s]}: ${title}`}
+                        type="number"
+                        required
+                        min={key === "average_check" ? "0.01" : "0"}
+                        max={
+                          key === "variable_cost_ratio" ? "0.999999" : undefined
+                        }
+                        step={
+                          key === "sales_per_day"
+                            ? "1"
+                            : key === "variable_cost_ratio"
+                              ? "0.01"
+                              : "0.01"
+                        }
+                        value={
+                          input.scenarios[s][key as keyof typeof scenarioLabels]
+                            .value
+                        }
+                        onChange={(e) => edit(s, key, e.target.value)}
+                      />
+                    </label>
+                  ))}
+                </fieldset>
+              ))}
+            </div>
+            <p className="subtle">
+              Каждое поле: synthetic · coffee-finance-demo-v1; после
+              редактирования — ui-assumptions-v1. Источник и значения передаются
+              серверу и входят в снимок расчёта.
+            </p>
+          </details>
+          <div className="row calculation-controls">
+            <p className="subtle">
+              {dirty
+                ? "Вводные изменены. Нужен пересчёт."
+                : result
+                  ? "Результат соответствует отправленным вводным."
+                  : "Проверьте вводные и запустите расчёт."}
+            </p>
+            <button className="button" disabled={busy}>
+              {busy ? "Рассчитываем…" : "Пересчитать модель →"}
+            </button>
+          </div>
+        </form>
+      )}
+      {error && (
+        <div className="alert" role="alert">
+          {error}
+        </div>
       )}
     </div>
   );
