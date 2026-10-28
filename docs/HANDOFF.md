@@ -1,5 +1,33 @@
 # Business AI — HANDOFF
 
+## Business AI 2.0 / U-00 · архитектура · 28.10.2026
+
+- PR30 merged; main `0c7749b05f17aad9ad16e4350d267a28ef45e119`, исходное дерево чистое.
+  Ветка `codex/U-00-universal-analysis-architecture`; фактические SHA/PR/CI — в сдаче.
+- Только docs/ADR: [аудит и профиль/совместимость](architecture/BUSINESS_AI_2_UNIVERSAL_ARCHITECTURE.md),
+  [planner/coverage/jobs/tools/sufficiency/events](architecture/BUSINESS_AI_2_DATA_AND_TOOLS.md),
+  [семь этапов/crosswalk](architecture/BUSINESS_AI_2_IMPLEMENTATION_PLAN.md),
+  [ADR0013 Proposed](adr/ADR-0013-universal-analysis.md), [checkpoint](architecture/U-00_CHECKPOINT.md).
+- Старые roadmap-v1/U-00…12 сохранены без переименования/закрытия. Новая инициатива
+  обозначена BA2/U-00…06; BA-017/018 и release security baseline остаются отдельными/open.
+- Переиспользовать DataOrigin/provenance/DataProvider/OSM imports/Decimal/H-02/H-03/reports.
+  Run DTO/table существуют, но ownerless/без live writes/nonempty dataset CHECK;
+  profile v1 strict extra-forbid, frontend map guard пока обязательный. Весь город в RAM нельзя.
+- Проект: отдельный ProfileV2/AnalysisPlan, backend-validated capabilities/DAG/budgets,
+  nullable unknown + explicit assumed review/lineage, per-layer/time coverage, short DB
+  phases, durable PG jobs+bounded CLI worker/fencing, source-ID-only egress, real Vi events.
+- 512MiB/tiles/queue/LLM planning limits — предложенные кандидаты для измерений, не SLA.
+  После lease expiry heavy slot fail-closed до остановки старого worker. No-map/partial
+  допустимы, car routing/digital finance не объявлены уже поддержанными.
+- Проверки U-00: consistency/link/ID/scope + existing contract probes и mandatory prek;
+  точные результаты в checkpoint/сдаче. Новые4сценария — design walkthrough, не live PASS.
+  Без GPU/E2E/import/restore ради docs-only; автоматический CI может выполнить регрессию.
+- Исполняемый код/API/DDL/алгоритмы/UI/Vi/volumes/F-00 не изменены. Не запускать новый
+  DB image на старом PGDATA. U-01 не начат; PR не объединять самостоятельно.
+- Перед U-01: владелец review ADR/crosswalk, подтверждает bounded scope U-01.a и source
+  policy; затем отдельное разрешение. Экспериментально проверить RSS/egress/lease recovery
+  и Qwen plan quality в соответствующих этапах, не выдавать их за выполненные сейчас.
+
 ## DESIGN-03-FU · главная и живой Ви · 28.10.2026
 
 - PR29 merged, чистый main718bcf936; ветка `codex/DESIGN-03-FU-landing-vi-animation`.
