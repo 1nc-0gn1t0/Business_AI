@@ -7,7 +7,7 @@ test("browser workflow with explicitly mocked APIs and server-checked transition
   await setupFlow(page, false);
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await page
     .getByLabel("Сообщение помощнику")
     .fill("Хочу открыть кофейню в Казани. Бюджет — 2 миллиона рублей");
@@ -105,7 +105,7 @@ test("Ollama error retains message and permits retry without pretending success"
         })
       : r.fallback(),
   );
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await openChat(page);
   await page.getByLabel("Сообщение помощнику").fill("Идея бизнеса");
   await page.getByLabel("Отправить сообщение").click();

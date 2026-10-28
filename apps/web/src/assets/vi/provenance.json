@@ -1,0 +1,271 @@
+{
+  "method": "Pixel-preserving rectangular extraction; proportional LANCZOS downscale only for avatar; WebP quality94/alpha_quality100. No AI redrawing, no colour correction or synthetic background removal. Original transparent glow retained.",
+  "sources": {
+    "B": {
+      "sha256": "9bcf1b1530de5e5278fbc032d426f9db44c15671823cd6a4524215aaab79a4c4",
+      "size": [
+        1536,
+        1024
+      ],
+      "kind": "User-supplied attachment"
+    },
+    "C": {
+      "sha256": "24a1f5a0e0debcd68c6ea4eb3a6c08c8879b2b182ef11e20bcce0fc582be4abb",
+      "size": [
+        1536,
+        1024
+      ],
+      "kind": "User-supplied attachment"
+    }
+  },
+  "sheet_labels": [
+    "Приветствие",
+    "Радость",
+    "Восторг",
+    "Одобрение",
+    "Благодарность",
+    "Любопытство",
+    "Размышление",
+    "Идея",
+    "Уверенность",
+    "Поддержка",
+    "Смех",
+    "Работа над ответом",
+    "Поиск информации",
+    "Готово",
+    "Ошибка",
+    "Не уверен",
+    "Нейтральное выражение",
+    "Печатает / Обрабатывает",
+    "Отдыхает",
+    "Поздравление / Успех",
+    "Разочарование",
+    "Прощание"
+  ],
+  "assets": {
+    "avatar": {
+      "source": "B",
+      "crop": [
+        1238,
+        458,
+        1499,
+        719
+      ],
+      "label": "Аватар из основного дизайна",
+      "size": [
+        192,
+        192
+      ],
+      "bytes": 5216,
+      "sha256": "0ea52f385d92a013c1ad3c76a77bf80d144703300f148362c9389cbc6620df77"
+    },
+    "greeting": {
+      "source": "B",
+      "crop": [
+        885,
+        247,
+        1230,
+        611
+      ],
+      "label": "Приветствие",
+      "size": [
+        327,
+        345
+      ],
+      "bytes": 11040,
+      "sha256": "61e38c2082e5b6b163252610b90613292088adef504edd9e90aa32eb019a573a"
+    },
+    "curious": {
+      "source": "C",
+      "crop": [
+        14,
+        299,
+        254,
+        514
+      ],
+      "label": "Любопытство",
+      "size": [
+        240,
+        215
+      ],
+      "bytes": 24024,
+      "sha256": "a3e83b78461dc21cdbe15e053127e30c4c015ab1ff761f3b21e1831367a9fc29"
+    },
+    "thinking": {
+      "source": "C",
+      "crop": [
+        266,
+        300,
+        518,
+        516
+      ],
+      "label": "Размышление",
+      "size": [
+        252,
+        216
+      ],
+      "bytes": 23652,
+      "sha256": "a1819f6ccf4a8d2531faa27b650373bf85084a3ce39fe9fa9e89a45a89424dee"
+    },
+    "idea": {
+      "source": "C",
+      "crop": [
+        528,
+        300,
+        776,
+        514
+      ],
+      "label": "Идея",
+      "size": [
+        248,
+        214
+      ],
+      "bytes": 23206,
+      "sha256": "5770f034a7b4932d0b68032bdedd1ca2f4f4f07631a6a8f795bce14ee5e4bd0f"
+    },
+    "confident": {
+      "source": "C",
+      "crop": [
+        787,
+        300,
+        1003,
+        516
+      ],
+      "label": "Уверенность",
+      "size": [
+        216,
+        216
+      ],
+      "bytes": 19458,
+      "sha256": "13181e42c3cc472ac230c9fb265b297aba3300f25ea060699d3d4743782cd61c"
+    },
+    "support": {
+      "source": "C",
+      "crop": [
+        1020,
+        300,
+        1262,
+        516
+      ],
+      "label": "Поддержка",
+      "size": [
+        242,
+        216
+      ],
+      "bytes": 22866,
+      "sha256": "f1bc3a1b52e1c18d42af22f349d90609e419bae5db4d5640b9a8e0a1c20f7685"
+    },
+    "working": {
+      "source": "C",
+      "crop": [
+        10,
+        563,
+        257,
+        781
+      ],
+      "label": "Работа над ответом",
+      "size": [
+        247,
+        218
+      ],
+      "bytes": 21438,
+      "sha256": "12dae67d96b085f238c149b04ff50a4344e94047fd353052a60cd6cc9ca2a9ef"
+    },
+    "search": {
+      "source": "C",
+      "crop": [
+        265,
+        563,
+        510,
+        781
+      ],
+      "label": "Поиск информации",
+      "size": [
+        245,
+        218
+      ],
+      "bytes": 22462,
+      "sha256": "2b020f5e0c8d6944976a30ed300b3f4d2b303f0509c78c4440885a18a6483bdc"
+    },
+    "ready": {
+      "source": "C",
+      "crop": [
+        520,
+        563,
+        767,
+        781
+      ],
+      "label": "Готово",
+      "size": [
+        247,
+        218
+      ],
+      "bytes": 23308,
+      "sha256": "d01c9a1f8146c4a806f149955879a8353c879645baa77a9deca5547fd808b98e"
+    },
+    "error": {
+      "source": "C",
+      "crop": [
+        776,
+        563,
+        1005,
+        781
+      ],
+      "label": "Ошибка",
+      "size": [
+        229,
+        218
+      ],
+      "bytes": 19498,
+      "sha256": "479378a61617ffd8c6c1e6b503bd2895e0eadd25666eef4456ae8227823b4fad"
+    },
+    "uncertain": {
+      "source": "C",
+      "crop": [
+        1023,
+        561,
+        1268,
+        781
+      ],
+      "label": "Не уверен",
+      "size": [
+        245,
+        220
+      ],
+      "bytes": 22738,
+      "sha256": "ac7ecc1d0193def38b237fcd4cbd87cc98a85921c5aa29cc5118f23637e72f98"
+    },
+    "neutral": {
+      "source": "C",
+      "crop": [
+        1274,
+        561,
+        1529,
+        781
+      ],
+      "label": "Нейтральное выражение",
+      "size": [
+        255,
+        220
+      ],
+      "bytes": 22370,
+      "sha256": "8203a3e118c1dcb9fa579ab33e02349b8b71c9386cf452e7b83fcde3ad29ca98"
+    },
+    "success": {
+      "source": "C",
+      "crop": [
+        778,
+        824,
+        1008,
+        978
+      ],
+      "label": "Поздравление / Успех",
+      "size": [
+        230,
+        154
+      ],
+      "bytes": 21200,
+      "sha256": "e66641a71c07fc2d2078a5cc1bec3b1b4be2e4332f94955e20534a3bf5f6fc3a"
+    }
+  }
+}

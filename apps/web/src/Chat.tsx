@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { ViAvatar } from "./Vi";
 import type { Conversation, Schemas } from "./api";
 
 export type ChatProps = {
   conversation: Conversation | null;
   messages: Schemas["MessageView"][];
   busy: boolean;
+  waitingForReply?: boolean;
   onNew: () => void;
   onRefresh: () => void;
   onSend: (content: string) => Promise<void>;
@@ -134,6 +136,32 @@ export default function Chat(props: ChatProps) {
   return (
     <section className="chat-screen" aria-label="AI-помощник">
       <h1 className="sr-only">Ваша бизнес-идея</h1>
+      <div
+        className="vi-chat"
+        data-emotion={
+          props.waitingForReply
+            ? "working"
+            : props.messages.some((m) => m.role === "user")
+              ? "curious"
+              : props.busy
+                ? "neutral"
+                : "greeting"
+        }
+      >
+        <ViAvatar
+          emotion={
+            props.waitingForReply
+              ? "working"
+              : props.messages.some((m) => m.role === "user")
+                ? "curious"
+                : props.busy
+                  ? "neutral"
+                  : "greeting"
+          }
+          size={44}
+        />
+        <span>Ви · Business AI</span>
+      </div>
       <div className="chat-scroll" ref={scroll}>
         <div
           className="messages"
@@ -152,7 +180,8 @@ export default function Chat(props: ChatProps) {
         </div>
         {props.busy && (
           <p className="thinking" role="status">
-            <span aria-hidden="true">●</span> Обдумываю…
+            <span aria-hidden="true">●</span>{" "}
+            {props.waitingForReply ? "Обдумываю…" : "Загружаем проект…"}
           </p>
         )}
         {props.conversation && (
@@ -200,7 +229,10 @@ export default function Chat(props: ChatProps) {
       </form>
       <div className="chat-meta">
         {props.conversation?.extraction_mode &&
-          props.conversation.extraction_mode !== "ollama" && (
+          props.conversation.extraction_mode !== "ollama" &&
+          (props.conversation.extraction_mode === "stub" ||
+            (!props.waitingForReply &&
+              props.messages.some((m) => m.role === "user"))) && (
             <span className="test-mode">
               Тестовый режим {props.conversation.extraction_mode} · не Qwen
             </span>

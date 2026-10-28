@@ -13,7 +13,7 @@ import Finance from "./Finance";
 import Locations from "./Locations";
 vi.mock("./Walking", () => ({ default: () => null }));
 vi.mock("./DataSources", () => ({ default: () => null }));
-import App from "./App";
+import BusinessFlow from "./BusinessFlow";
 import { saveCredential } from "./api";
 import geoExample from "../../../docs/examples/BA-008-kazan-coffee.json";
 import financeExample from "../../../docs/examples/BA-009-coffee-result.json";
@@ -251,7 +251,7 @@ describe("critical UI components with explicit API mocks", () => {
         ? json([])
         : json({ status: "ok", database: "ok" });
     });
-    render(<App />);
+    render(<BusinessFlow onHome={vi.fn()} />);
     await screen.findByRole("heading", { name: /Где лучше открыть/ });
     fireEvent.click(screen.getByRole("button", { name: "← Назад" }));
     fireEvent.click(screen.getByRole("button", { name: "Вернуться в диалог" }));
@@ -281,7 +281,7 @@ describe("critical UI components with explicit API mocks", () => {
         if (String(path).includes("/messages?")) return json([]);
         return json(view);
       });
-    render(<App />);
+    render(<BusinessFlow onHome={vi.fn()} />);
     await screen.findByRole("heading", { name: "Не удалось открыть проект" });
     expect(screen.queryByLabelText("Сообщение помощнику")).toBeNull();
     expect(

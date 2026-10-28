@@ -1,3 +1,4 @@
+import { ViStatus } from "./Vi";
 import { useEffect, useRef, useState } from "react";
 import { errorText, request, requestFile } from "./api";
 import type { Conversation, Credential, Ranking, Schemas } from "./api";
@@ -174,6 +175,27 @@ export default function ReportExport(props: Props) {
       className="report-export"
       aria-label="Экспорт аналитического отчёта"
     >
+      {(busy || error || prepared) && (
+        <ViStatus
+          emotion={
+            error
+              ? "error"
+              : busy
+                ? "working"
+                : outdated
+                  ? "uncertain"
+                  : "success"
+          }
+        >
+          {error
+            ? "Документ не удалось получить. Можно повторить попытку."
+            : busy
+              ? "Готовлю документ…"
+              : outdated
+                ? "Данные изменились. Обновите отчёт."
+                : "Готово! Ваш предварительный план подготовлен."}
+        </ViStatus>
+      )}
       {error && (
         <div className="alert" role="alert">
           {error}

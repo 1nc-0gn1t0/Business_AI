@@ -1,3 +1,4 @@
+import { ViStatus } from "./Vi";
 import { useEffect, useState } from "react";
 import type { Dataset, Profile, Ranking, Schemas } from "./api";
 import { date, errorText, request } from "./api";
@@ -210,6 +211,13 @@ export default function Locations(props: Props) {
             Повторить загрузку
           </button>
         </div>
+      )}
+      {(busy || error) && (
+        <ViStatus emotion={error ? "error" : "search"}>
+          {error
+            ? "Не получилось выполнить поиск. Можно повторить."
+            : "Ищу подходящие места…"}
+        </ViStatus>
       )}
       {loading ? (
         <p role="status">Загружаем локации…</p>

@@ -1,5 +1,33 @@
 # Business AI — HANDOFF
 
+## DESIGN-03 · Ви и хакатонная главная · 28.10.2026
+
+- PR28 merged, чистый main45c6a0d2; ветка `codex/DESIGN-03-vi-mascot`.
+  Итоговые commit/PR/CI — в сообщении сдачи.
+- [Концепция/источники/проверки](design/DESIGN-03_VI_MASCOT.md),
+  [checkpoint](design/DESIGN-03_CHECKPOINT.md), [реальные screenshots](qa/design-03/).
+- Новая синяя landing с собственной CSS-композицией, без банковской рекламы/логотипа/login.
+  2декоративных пузырька + единственная кнопка Ви → native welcome dialog → прежний flow.
+  Escape/крестик/backdrop/focus-return. Возврат на landing сохраняет mounted проект/draft.
+- Прежний App перемещён в BusinessFlow; guards/серверные операции неизменны. Backend/API,
+  extraction/LLM/CAS/ownership/consent/lead/финансы/гео/provenance/backup не менялись.
+- User B/C: фактически22подписанных состояния;14WebP282476bytes,avatar5216bytes.
+  Без AI-перерисовки; crop/hash/provenance manifest и QA contact sheet. Публичная лицензия
+  не предоставлена; дальнейшее коммерческое/банковское использование требует проверки прав.
+- Ви отражает actual pending/error/results; report success только после server prepare/current.
+  Отрицательный сценарий не выдаётся за успешный бизнес, подбор — не credit approval.
+  Исправлены воспроизведённые focus-return, responsive-scale/animation и inert consent при Browser Back.
+- Chromium37PASS (32регрессии+5Vi), focused Vi/report unit8PASS; TS/lint/build PASS.
+  Полный unit62PASS; итоговый prek — checkpoint/сообщение сдачи. initial JS230.11kB/gzip72.42,
+  lazy flow85.47kB, MapLibre1111.61kB; map chunk warning остаётся.
+- Настоящий браузер Vite5176→API8001→Qwen4B/PostGIS:4turns,profilev5,5зон,
+  rent80000→90000/base285000→275000,2demo matches/credit not_assessed,
+  PDF54646bytes/JSON128381bytes одного снимка; browser errors0. Pending screenshots настоящие.
+- Никаких DB migrations/volume операций/F00 изменений. Старый runtime не обновлялся;
+  не выполнять compose up нового DB image поверх рабочего старого PGDATA.
+- Firefox/WebKit/реальное iOS/a11y audit не проверены. Прежние data/demo/reload ограничения
+  сохраняются. Security release baseline OPEN. Следующая задача только по разрешению.
+
 ## DESIGN-02 · minimalist flow · 28.10.2026
 
 - PR27 merged; чистый main `357bbd5ec05a704af2cd82c1d09325647acefc87`, ветка
