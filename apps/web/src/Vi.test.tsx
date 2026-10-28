@@ -13,7 +13,7 @@ describe("Vi and the real workspace boundary", () => {
     expect(
       screen.getByRole("button", { name: "Познакомьтесь с Ви" }),
     ).toHaveAttribute("aria-expanded", "false");
-    expect(screen.getAllByRole("button")).toHaveLength(1);
+    expect(screen.getAllByRole("button")).toHaveLength(2);
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(screen.queryByLabelText("Сообщение помощнику")).toBeNull();
     expect(fetch).not.toHaveBeenCalled();

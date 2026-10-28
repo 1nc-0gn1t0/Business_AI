@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ViRig, type ViMotion } from "./ViMotion";
 import avatar from "./assets/vi/avatar.webp";
 import greeting from "./assets/vi/greeting.webp";
 import curious from "./assets/vi/curious.webp";
@@ -36,13 +37,36 @@ export type ViEmotion = keyof typeof viImages;
 export function ViAvatar({
   emotion = "avatar",
   size = 52,
+  motion,
 }: {
   emotion?: ViEmotion;
   size?: number;
+  motion?: ViMotion;
 }) {
+  const movement =
+    motion ||
+    (
+      {
+        avatar: "idle",
+        greeting: "greeting",
+        thinking: "thinking",
+        working: "thinking",
+        search: "searching",
+        idea: "idea",
+        success: "success",
+        error: "error",
+        uncertain: "error",
+      } as Partial<Record<ViEmotion, ViMotion>>
+    )[emotion] ||
+    "idle";
+  if (emotion === "avatar" || emotion === "greeting")
+    return (
+      <ViRig size={size} portrait={emotion === "avatar"} motion={movement} />
+    );
   return (
     <img
-      className={`vi-avatar vi-${emotion}`}
+      className={`vi-avatar vi-${emotion} vi-motion-${movement}`}
+      data-motion={movement}
       src={viImages[emotion]}
       alt=""
       aria-hidden="true"
@@ -129,16 +153,25 @@ export function ViWelcomePanel({
       >
         Начать с Ви
       </button>
-      <small>Business AI · хакатонный помощник</small>
     </dialog>
   );
 }
 
-export function ViFloatingButton({ onStart }: { onStart: () => void }) {
-  const [open, setOpen] = useState(false);
+export function ViFloatingButton({
+  onStart,
+  open,
+  onOpen,
+  onClose,
+}: {
+  onStart: () => void;
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}) {
+  const [reaction, setReaction] = useState(0);
   const trigger = useRef<HTMLButtonElement>(null);
   function close() {
-    setOpen(false);
+    onClose();
     trigger.current?.focus();
   }
   return (
@@ -184,9 +217,15 @@ export function ViFloatingButton({ onStart }: { onStart: () => void }) {
           aria-haspopup="dialog"
           aria-expanded={open}
           aria-controls={open ? "vi-welcome" : undefined}
-          onClick={() => setOpen(true)}
+          onClick={onOpen}
+          onPointerEnter={() => setReaction((n) => n + 1)}
+          onFocus={() => setReaction((n) => n + 1)}
         >
-          <ViAvatar size={56} />
+          <ViAvatar
+            key={reaction}
+            size={56}
+            motion={reaction ? "greeting" : "idle"}
+          />
           <span className="vi-tooltip" aria-hidden="true">
             Познакомьтесь с Ви
           </span>
@@ -196,7 +235,7 @@ export function ViFloatingButton({ onStart }: { onStart: () => void }) {
         <ViWelcomePanel
           onClose={close}
           onStart={() => {
-            setOpen(false);
+            onClose();
             onStart();
           }}
         />

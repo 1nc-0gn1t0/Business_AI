@@ -90,6 +90,7 @@ describe("DESIGN-02 guarded journey", () => {
       />,
     );
     expect(screen.getByText("Не включены — по вашему выбору")).toBeVisible();
+    fireEvent.click(screen.getByText("Об ограничениях"));
     expect(screen.getByText(/синтетических допущениях/)).toBeVisible();
     expect(
       screen.getByText("285 000 ₽ / мес.", { exact: false }),

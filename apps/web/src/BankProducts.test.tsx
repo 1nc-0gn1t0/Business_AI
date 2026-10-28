@@ -49,7 +49,7 @@ describe("bank product interface with explicit mocked APIs", () => {
         onProfileConflict={vi.fn()}
       />,
     );
-    await screen.findByText(/Демо-каталог/);
+    await screen.findByText(/Демонстрационный подбор/);
     fireEvent.click(screen.getByText("Изменить или дополнить потребности"));
     fireEvent.change(screen.getByLabelText("Регистрация бизнеса"), {
       target: { value: "ip" },
@@ -101,7 +101,7 @@ describe("bank product interface with explicit mocked APIs", () => {
         onProfileConflict={vi.fn()}
       />,
     );
-    await screen.findByText(/Демо-каталог/);
+    await screen.findByText(/Демонстрационный подбор/);
     fireEvent.click(screen.getByText("Изменить или дополнить потребности"));
     expect(
       screen.getByRole("button", { name: "Подобрать по потребностям →" }),
@@ -124,7 +124,7 @@ describe("bank product interface with explicit mocked APIs", () => {
         onProfileConflict={conflict}
       />,
     );
-    await screen.findByText(/Демо-каталог/);
+    await screen.findByText(/Демонстрационный подбор/);
     fireEvent.click(screen.getByText("Изменить или дополнить потребности"));
     fireEvent.click(
       screen.getByRole("button", { name: "Подобрать по потребностям →" }),

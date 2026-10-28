@@ -30,8 +30,8 @@ test("REL-01 restores profile and keeps credential out of URL", async ({
   expect(page.url()).not.toContain(key.token);
 });
 for (const [code, status, message] of [
-  ["llm_unavailable", 503, "Ollama"],
-  ["llm_model_missing", 503, "Qwen"],
+  ["llm_unavailable", 503, "Помощник"],
+  ["llm_model_missing", 503, "пока не готов"],
   ["llm_server_error", 502, "технической"],
   ["database_capacity_busy", 503, "соединения"],
   ["llm_timeout", 504, "время"],
@@ -231,7 +231,7 @@ test("REL-14 finance explicitly labels assumptions and handles API failure", asy
     .click();
   await page.getByRole("button", { name: "Продолжить к расчётам" }).click();
   await expect(
-    page.getByText(/Синтетические редактируемые допущения/),
+    page.getByText(/Сценарные допущения, не рыночные данные/),
   ).toBeVisible();
   await page.getByRole("button", { name: "Рассчитать сценарии" }).click();
   await expect(page.getByRole("alert")).toBeVisible();

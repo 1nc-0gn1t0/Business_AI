@@ -233,16 +233,13 @@ export default function Chat(props: ChatProps) {
           (props.conversation.extraction_mode === "stub" ||
             (!props.waitingForReply &&
               props.messages.some((m) => m.role === "user"))) && (
-            <span className="test-mode">
-              Тестовый режим {props.conversation.extraction_mode} · не Qwen
-            </span>
+            <span className="test-mode">Ответ без AI-модели</span>
           )}
         <details>
           <summary>О диалоге</summary>
           <p>
-            Локальная Qwen через Ollama, если включён режим модели. Не сообщайте
-            личные и банковские данные. Доступ к беседе сохраняется в этой
-            вкладке.
+            Не сообщайте личные и банковские данные. Доступ к беседе сохраняется
+            в этой вкладке.
           </p>
           <button
             className="text-button"

@@ -1,5 +1,33 @@
 # Business AI — HANDOFF
 
+## DESIGN-03-FU · главная и живой Ви · 28.10.2026
+
+- PR29 merged, чистый main718bcf936; ветка `codex/DESIGN-03-FU-landing-vi-animation`.
+  Фактические SHA/PR/CI — в сообщении сдачи, самостоятельно не объединять.
+- [Реализация/ограничения/команды](design/DESIGN-03-FU_LANDING_AND_ANIMATION.md),
+  [checkpoint](design/DESIGN-03-FU_CHECKPOINT.md), [screenshots и5WebM](qa/design-03-fu/).
+- Главная повторяет измеренную композицию пользовательского референса:7,3% margin,
+  шапка112px, синий hero, крупный текст слева/исходный Ви справа, миниатюры/скругление.
+  Абстрактная карточка удалена; банковские фото/логотип/login не копируются.
+- Убраны повторные dev-плашки; finance «Предварительный расчёт» + «Как рассчитано?»,
+  bank один demo notice + details. Синтетика, ограничения, mock/consent в точке действия
+  сохранены. Ошибки помощника без инфраструктурного жаргона, коды/correlation ID прежние.
+- Прежние14WebP не изменены.7новых слоёв66024bytes из проверенного B, manifest SHA/bounds;
+  deterministic helper `scripts/prepare_vi_motion.py`. Отдельные лапка/3пёрышка/исходные
+  глаза: приветствие1,8s, blink; bounded breathing/tilt/hop, finite/reduced-motion.
+  Это2D PoC с уже поднятой лапкой, без реконструкции скрытого тела/22полных rigs.
+- Frontend62PASS; Chromium42уникальных сценария проверены (первый41PASS/1copy expectation
+  FAIL; исправленное ожидание и затронутые Vi/motion/error14PASS). TS/build PASS;
+  mandatory prek hooks и точный CI — checkpoint/сообщение сдачи. initial JS232,00KB/
+  gzip73,27; слои не inline, карта по-прежнему lazy, прежний map chunk warning.
+- Реальный API8001/Qwen4B/PostGIS→PDF/JSON:1PASS/1,9min,4turns,profilev5,5зон,
+  rent80000→90000/base285000→275000,2demo matches/not_assessed, browser errors0.
+  Motion clips — реальный браузер с controlled mock операциями, не live Qwen footage.
+- Backend/алгоритмы/API/LLM extraction/ownership/CAS/consent/idempotency/отчёты/backup
+  не менялись. Working containers/volumes/F-00 не затронуты; старый PGDATA не обновлять
+  новым image. Следующие задачи не начаты. Security baseline OPEN. Физический iOS,
+  Firefox/WebKit/полный WCAG/LCP не проверены; на крупном растре возможен matte-контур.
+
 ## DESIGN-03 · Ви и хакатонная главная · 28.10.2026
 
 - PR28 merged, чистый main45c6a0d2; ветка `codex/DESIGN-03-vi-mascot`.

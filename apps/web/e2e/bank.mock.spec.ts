@@ -135,7 +135,7 @@ test("demo catalogue, explicit needs, protected matching and mobile layout (mock
   );
   await page.goto("/#business-ai");
   await goBank(page);
-  await expect(page.getByText(/Демо-каталог/)).toBeVisible();
+  await expect(page.getByText(/Демонстрационный подбор/)).toBeVisible();
   await page
     .getByText("Изменить или дополнить потребности", { exact: true })
     .click();
