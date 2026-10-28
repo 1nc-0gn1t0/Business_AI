@@ -14,7 +14,7 @@ test("REL-01 restores profile and keeps credential out of URL", async ({
   page,
 }) => {
   await setupFlow(page);
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await expect(
     page.getByRole("heading", { name: /Где лучше открыть/ }),
   ).toBeVisible();
@@ -58,7 +58,7 @@ for (const [code, status, message] of [
           })
         : r.fallback(),
     );
-    await page.goto("/");
+    await page.goto("/#business-ai");
     await openChat(page);
     await page.getByLabel("Сообщение помощнику").fill("Меняю город на Самару");
     await page.getByLabel("Отправить сообщение").press("Enter");
@@ -78,7 +78,7 @@ for (const [code, status, message] of [
 test("REL-05 empty geography does not fabricate zones", async ({ page }) => {
   await setupFlow(page);
   await page.route("**/geo/datasets", (r) => r.fulfill({ json: [] }));
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await expect(
     page.getByText("Нет загруженных геоданных", { exact: true }),
   ).toBeVisible();
@@ -97,7 +97,7 @@ test("REL-06 database outage is visible without an infrastructure dashboard", as
       json: { detail: { code: "database_unavailable" } },
     }),
   );
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await expect(page.getByRole("alert")).toContainText("База данных");
   await expect(
     page.getByRole("heading", { name: /Где лучше открыть/ }),
@@ -111,7 +111,7 @@ test("REL-07 foreign session never reveals profile", async ({ page }) => {
       json: { detail: { code: "conversation_not_found" } },
     }),
   );
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await expect(page.getByRole("alert")).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Не удалось открыть проект" }),
@@ -130,7 +130,7 @@ test("REL-08 conflict refreshes state without discarding message", async ({
         })
       : r.fallback(),
   );
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await openChat(page);
   await page.route(`**/conversations/${key.id}`, (r) =>
     r.fulfill({ json: { ...getView(), version: 3 } }),
@@ -154,7 +154,7 @@ test("REL-09 declined assistant consent prevents model request", async ({
     if (r.request().method() === "POST") calls++;
     return r.fulfill({ json: [] });
   });
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await page.getByLabel("Сообщение помощнику").fill("Кофейня");
   await page.getByLabel("Отправить сообщение").click();
   await page
@@ -166,7 +166,7 @@ test("REL-09 declined assistant consent prevents model request", async ({
 });
 test("REL-10 long message is bounded before request", async ({ page }) => {
   await setupFlow(page);
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await openChat(page);
   await page.getByLabel("Сообщение помощнику").fill("а".repeat(4100));
   await expect(page.getByLabel("Сообщение помощнику")).toHaveValue(
@@ -175,7 +175,7 @@ test("REL-10 long message is bounded before request", async ({ page }) => {
 });
 test("REL-11 profile correction clears confirmation", async ({ page }) => {
   await setupFlow(page);
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await page.getByRole("button", { name: "← Назад", exact: true }).click();
   await page.getByRole("button", { name: "Изменить", exact: true }).click();
   await page.getByLabel("Город", { exact: true }).fill("Самара");
@@ -190,7 +190,7 @@ test("REL-12 new conversation leaves previous state behind", async ({
   page,
 }) => {
   await setupFlow(page);
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await expect(
     page.getByRole("heading", { name: /Где лучше открыть/ }),
   ).toBeVisible();
@@ -213,7 +213,7 @@ test("REL-13 bank catalogue failure does not invent offers", async ({
       json: { detail: { code: "bank_catalogue_unavailable" } },
     }),
   );
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await goBank(page);
   await expect(page.getByRole("alert")).toContainText("Каталог");
   await expect(page.locator(".bank-product-card")).toHaveCount(0);
@@ -225,7 +225,7 @@ test("REL-14 finance explicitly labels assumptions and handles API failure", asy
   await page.route("**/finance/calculate", (r) =>
     r.fulfill({ status: 503, json: { detail: "Unavailable" } }),
   );
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await page
     .getByRole("button", { name: "Найти локации", exact: true })
     .click();
@@ -243,7 +243,7 @@ test("REL-14 finance explicitly labels assumptions and handles API failure", asy
 test("REL-15 mobile back navigation remains usable", async ({ page }) => {
   await setupFlow(page);
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await goFinance(page);
   await page.getByRole("button", { name: "← Назад", exact: true }).click();
   await expect(

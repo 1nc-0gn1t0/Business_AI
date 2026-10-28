@@ -2,6 +2,7 @@ import { Component, useEffect, useRef, type ReactNode } from "react";
 import type { Conversation, Ranking, Schemas } from "./api";
 import { rub } from "./api";
 import { ProfileEditor } from "./Chat";
+import { ViAvatar } from "./Vi";
 
 export function Idea({
   draft,
@@ -16,6 +17,9 @@ export function Idea({
 }) {
   return (
     <section className="idea-screen">
+      <div className="vi-intro">
+        <ViAvatar emotion="greeting" size={64} />
+      </div>
       <h1>
         Какой бизнес <br />
         вы хотите открыть?
@@ -69,7 +73,9 @@ export function ConsentDialog({
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
-    dialog.current?.showModal();
+    const element = dialog.current;
+    element?.showModal();
+    return () => element?.close();
   }, []);
   return (
     <dialog

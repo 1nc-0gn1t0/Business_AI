@@ -1,3 +1,4 @@
+import { ViStatus } from "./Vi";
 import { useEffect, useRef, useState } from "react";
 import template from "./finance-template.json";
 import type { Profile, Schemas } from "./api";
@@ -148,6 +149,21 @@ export default function Finance({
         </h1>
         <p>Сравните три сценария и проверьте свои предположения.</p>
       </div>
+      {(busy || error || result) && (
+        <ViStatus
+          emotion={
+            error ? "error" : busy ? "thinking" : dirty ? "uncertain" : "idea"
+          }
+        >
+          {error
+            ? "Не получилось выполнить расчёт. Проверьте вводные и попробуйте ещё раз."
+            : busy
+              ? "Рассчитываю сценарии…"
+              : dirty
+                ? "Вводные изменены. Пересчитайте модель."
+                : "Сценарии рассчитаны. Проверьте допущения."}
+        </ViStatus>
+      )}
       <p className="model-note">
         Синтетические редактируемые допущения кофейни — не реальные цены или
         спрос. Расчёт не зависит от георейтинга.

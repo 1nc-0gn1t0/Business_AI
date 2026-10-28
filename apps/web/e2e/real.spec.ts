@@ -4,13 +4,13 @@ import { env } from "node:process";
 import type { Conversation, Ranking, Schemas } from "../src/api";
 
 // Opt-in real services. No routes, model mocks, traces, credentials or prompts in artifacts.
-test("DESIGN02 real coffee: idea → Qwen → profile → PostGIS → finance → bank → PDF/JSON", async ({
+test("DESIGN03 real coffee: idea → Qwen → profile → PostGIS → finance → bank → PDF/JSON", async ({
   page,
 }) => {
   page.setDefaultTimeout(20_000);
-  const directory = env.BA010_ARTIFACT_DIR || "../../docs/qa/design-02";
+  const directory = env.BA010_ARTIFACT_DIR || "../../docs/qa/design-03";
   const downloads =
-    env.BA_DESIGN02_DOWNLOAD_DIR || "test-results/design02-downloads";
+    env.BA_DESIGN02_DOWNLOAD_DIR || "test-results/design03-downloads";
   await mkdir(directory, { recursive: true });
   await mkdir(downloads, { recursive: true });
   const errors: string[] = [];
@@ -32,6 +32,24 @@ test("DESIGN02 real coffee: idea → Qwen → profile → PostGIS → finance �
   };
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
+  await expect(page.getByRole("heading", { name: /Ваш бизнес/ })).toBeVisible();
+  await shot("01-landing-desktop");
+  await page
+    .locator(".vi-dock")
+    .screenshot({ path: `${directory}/02-three-bubbles.png` });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await shot("10-landing-mobile");
+  await page.getByRole("button", { name: "Познакомьтесь с Ви" }).click();
+  await shot("11-welcome-mobile");
+  await page.keyboard.press("Escape");
+  await page.setViewportSize({ width: 768, height: 1000 });
+  await shot("13-landing-tablet");
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.getByRole("button", { name: "Познакомьтесь с Ви" }).hover();
+  await shot("03-vi-hover");
+  await page.getByRole("button", { name: "Познакомьтесь с Ви" }).click();
+  await shot("04-welcome-desktop");
+  await page.getByRole("button", { name: "Начать с Ви" }).click();
   await expect(
     page.getByRole("heading", { name: "Какой бизнес вы хотите открыть?" }),
   ).toBeVisible();
@@ -57,6 +75,13 @@ test("DESIGN02 real coffee: idea → Qwen → profile → PostGIS → finance �
     else {
       await page.getByLabel("Сообщение помощнику").fill(text!);
       await page.getByLabel("Отправить сообщение").click();
+    }
+    if (first) {
+      await expect(page.locator(".vi-chat")).toHaveAttribute(
+        "data-emotion",
+        "working",
+      );
+      await shot("06-qwen-waiting");
     }
     const result = await response;
     expect(result.status()).toBe(200);
@@ -84,7 +109,7 @@ test("DESIGN02 real coffee: idea → Qwen → profile → PostGIS → finance �
   expect(view.assistant_message).toBe("Какой формат бизнеса рассматриваете?");
   view = await turn("Навынос");
   expect(view.profile.preferences.format).toBeTruthy();
-  await shot("02-chat-desktop");
+  await shot("05-chat-avatar");
   await page.setViewportSize({ width: 768, height: 1000 });
   await shot("08-chat-tablet");
   expect(
@@ -93,7 +118,7 @@ test("DESIGN02 real coffee: idea → Qwen → profile → PostGIS → finance �
     ),
   ).toBe(true);
   await page.setViewportSize({ width: 390, height: 844 });
-  await shot("09-chat-mobile");
+  await shot("12-chat-mobile");
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -116,9 +141,21 @@ test("DESIGN02 real coffee: idea → Qwen → profile → PostGIS → finance �
   const rankingResponse = page.waitForResponse((r) =>
     r.url().endsWith("/rankings"),
   );
+  const searchStarted = page.waitForRequest((r) =>
+    r.url().endsWith("/rankings"),
+  );
   await page
     .getByRole("button", { name: "Найти локации", exact: true })
     .click();
+  await searchStarted;
+  await expect(page.locator(".locations .vi-status")).toHaveAttribute(
+    "data-emotion",
+    "search",
+  );
+  await page.screenshot({
+    path: `${directory}/07-location-search.png`,
+    fullPage: true,
+  });
   const ranked = await rankingResponse;
   expect(ranked.status()).toBe(200);
   const geo = (await ranked.json()) as Ranking;
@@ -155,7 +192,7 @@ test("DESIGN02 real coffee: idea → Qwen → profile → PostGIS → finance �
   expect(finance.scenarios).toHaveLength(3);
   const base = finance.scenarios.find((s) => s.name === "base")!;
   expect(base.metrics.operating_result.value).toBe("285000.00");
-  await shot("05-finance-desktop");
+  await shot("08-finance-idea");
   await page.getByLabel("Аренда", { exact: true }).fill("90000");
   await expect(
     page.getByRole("button", { name: "Продолжить", exact: true }),
@@ -224,10 +261,15 @@ test("DESIGN02 real coffee: idea → Qwen → profile → PostGIS → finance �
       .replace(/\.(pdf|json)$/, "");
     if (reportId) expect(id).toBe(reportId);
     reportId = id;
-    await download.saveAs(`${downloads}/DESIGN02-report.${format}`);
+    await download.saveAs(`${downloads}/DESIGN03-report.${format}`);
   }
+  await expect(page.locator(".report-export .vi-status")).toHaveAttribute(
+    "data-emotion",
+    "success",
+  );
+  await shot("09-report-ready");
   await page.setViewportSize({ width: 390, height: 844 });
-  await shot("13-summary-mobile");
+  await shot("16-summary-mobile");
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -247,7 +289,7 @@ test("DESIGN02 real coffee: idea → Qwen → profile → PostGIS → finance �
     JSON.stringify(
       {
         mode: "real API/Ollama/PostGIS, no route mocks",
-        base_main: "357bbd5ec05a704af2cd82c1d09325647acefc87",
+        base_main: "45c6a0d2c35846ffc7271cfd6d8a06eb967a2539",
         model: "qwen3:4b-instruct-2507-q4_K_M",
         profile_version: confirmedView.version,
         qwen_turns: timings,
@@ -290,7 +332,7 @@ for (const scenario of [
   test(`BA016 real ${scenario.name}: extraction and honest city coverage`, async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/#business-ai");
     await page.getByLabel("Сообщение помощнику").fill(scenario.prompt);
     await page.getByLabel("Отправить сообщение").click();
     await page.getByLabel("Согласен на использование ассистента").check();

@@ -1,3 +1,4 @@
+import { ViStatus } from "./Vi";
 import { useEffect, useRef, useState } from "react";
 import { ApiError, date, errorText, request } from "./api";
 import type { Conversation, Credential, Schemas } from "./api";
@@ -304,6 +305,27 @@ export default function BankProducts({
         </h1>
         <p>Несколько вопросов — и подходящие банковские возможности.</p>
       </div>
+      {(busy || error || result) && (
+        <ViStatus
+          emotion={
+            error
+              ? "error"
+              : busy
+                ? "thinking"
+                : result?.missing_fields.length
+                  ? "uncertain"
+                  : "confident"
+          }
+        >
+          {error
+            ? "Не удалось получить варианты. Попробуйте обновить каталог."
+            : busy
+              ? "Сопоставляю ваши потребности…"
+              : result?.missing_fields.length
+                ? "Для точного подбора нужны уточнения."
+                : "Подбор завершён. Это не решение банка."}
+        </ViStatus>
+      )}
       <p className="model-note">
         Демо-каталог. Действующие условия ВТБ не подтверждены. Это не решение
         банка и не кредитное одобрение.

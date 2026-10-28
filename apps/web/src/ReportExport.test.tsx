@@ -59,11 +59,17 @@ describe("report export (mock API)", () => {
       .mockImplementation(() => {});
     const { rerender } = render(<ReportExport {...props} />);
     expect(screen.getByRole("button", { name: "Скачать PDF" })).toBeEnabled();
+    expect(
+      screen.queryByText("Готово! Ваш предварительный план подготовлен."),
+    ).toBeNull();
     fireEvent.click(screen.getByText("Состав и источники отчёта"));
     fireEvent.click(screen.getByRole("button", { name: "Подготовить отчёт" }));
     await waitFor(() =>
       expect(screen.getByRole("button", { name: "Скачать PDF" })).toBeEnabled(),
     );
+    expect(
+      screen.getByText("Готово! Ваш предварительный план подготовлен."),
+    ).toBeVisible();
     const body = JSON.parse(String(fetch.mock.calls[0][1]?.body));
     expect(body.finance.fingerprint).toBe(finance.request_fingerprint);
     expect(body.expected_version).toBe(2);

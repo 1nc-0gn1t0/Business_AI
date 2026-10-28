@@ -133,7 +133,7 @@ test("demo catalogue, explicit needs, protected matching and mobile layout (mock
       return route.fulfill({ json: draft, status: 201 });
     },
   );
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await goBank(page);
   await expect(page.getByText(/Демо-каталог/)).toBeVisible();
   await page

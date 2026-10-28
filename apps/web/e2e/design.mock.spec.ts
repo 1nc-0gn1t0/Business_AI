@@ -7,7 +7,7 @@ for (const width of [1440, 768, 390])
     await setupFlow(page, false);
     await page.setViewportSize({ width, height: 1000 });
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await page.goto("/#business-ai");
     await expect(
       page.getByRole("heading", { name: "Какой бизнес вы хотите открыть?" }),
     ).toBeVisible();
@@ -85,7 +85,7 @@ test("DESIGN-02 progressive bank questions send explicit needs and do not infer 
     body = r.request().postDataJSON();
     return r.fallback();
   });
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await goFinance(page);
   await page.getByRole("button", { name: "Продолжить", exact: true }).click();
   await expect(page.getByRole("combobox")).toHaveCount(0);
@@ -116,7 +116,7 @@ test("DESIGN-02 withdrawn consent at the server prevents inference and requires 
   page,
 }) => {
   await setupFlow(page);
-  await page.goto("/");
+  await page.goto("/#business-ai");
   await openChat(page);
   let modelCalls = 0;
   await page.route("**/messages", (r) => {
