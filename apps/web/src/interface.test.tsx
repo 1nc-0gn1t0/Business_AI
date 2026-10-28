@@ -8,6 +8,7 @@ import {
 import { describe, expect, it, vi } from "vitest";
 import type { Conversation, Profile, Ranking } from "./api";
 import Chat from "./Chat";
+import { ProjectReview } from "./FlowUI";
 import Finance from "./Finance";
 import Locations from "./Locations";
 vi.mock("./Walking", () => ({ default: () => null }));
@@ -51,18 +52,18 @@ describe("critical UI components with explicit API mocks", () => {
   it("edits and confirms a draft profile using existing patch contract", async () => {
     const cb = callbacks();
     render(
-      <Chat
+      <ProjectReview
+        onChat={vi.fn()}
         conversation={{
           ...view,
           state: "awaiting_confirmation",
           profile: { ...profile, confirmation_state: "draft" },
         }}
-        messages={[]}
         busy={false}
         {...cb}
       />,
     );
-    fireEvent.click(screen.getByText("Редактировать профиль ↗"));
+    fireEvent.click(screen.getByText("Изменить"));
     fireEvent.change(screen.getByLabelText("Формат"), {
       target: { value: "навынос" },
     });
@@ -75,7 +76,7 @@ describe("critical UI components with explicit API mocks", () => {
         }),
       ),
     );
-    fireEvent.click(screen.getByText("Подтвердить профиль →"));
+    fireEvent.click(screen.getByText("Продолжить"));
     expect(cb.onConfirm).toHaveBeenCalled();
   });
   it("keeps failed message drafts and labels stub mode honestly", async () => {
@@ -97,58 +98,52 @@ describe("critical UI components with explicit API mocks", () => {
     expect(screen.getByLabelText("Сообщение помощнику")).toHaveValue(
       "Кофейня в Казани",
     );
-    expect(screen.getByText("Режим stub · не LLM")).toBeVisible();
+    expect(screen.getByText("Тестовый режим stub · не Qwen")).toBeVisible();
   });
   it("does not allow confirmation with missing fields", () => {
     render(
-      <Chat
+      <ProjectReview
+        onChat={vi.fn()}
         conversation={{
           ...view,
           profile: { ...profile, confirmation_state: "draft" },
           missing_fields: ["format"],
         }}
-        messages={[]}
         busy={false}
         {...callbacks()}
       />,
     );
-    expect(screen.getByText("Подтвердить профиль →")).toBeDisabled();
+    expect(screen.getByText("Продолжить")).toBeDisabled();
   });
   it("sends edited synthetic assumptions to real finance endpoint and marks old results stale", async () => {
     const fetch = vi
       .spyOn(globalThis, "fetch")
       .mockResolvedValue(json(financeExample.response));
     render(<Finance profile={profile} zone={null} />);
-    fireEvent.click(screen.getByText("Загрузить демо-допущения"));
+    fireEvent.click(screen.getByText("Рассчитать сценарии"));
+    await screen.findByLabelText("Результат финансового расчёта");
     fireEvent.change(screen.getByLabelText("Аренда"), {
       target: { value: "90000" },
     });
     fireEvent.click(screen.getByText("Пересчитать модель →"));
-    await screen.findByLabelText("Результат финансового расчёта");
-    const body = JSON.parse(String(fetch.mock.calls[0][1]?.body));
-    expect(fetch.mock.calls[0][0]).toBe("/api/v1/finance/calculate");
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+    const body = JSON.parse(String(fetch.mock.calls[1][1]?.body));
+    expect(fetch.mock.calls[1][0]).toBe("/api/v1/finance/calculate");
     expect(body.monthly_fixed_costs.rent.value).toBe("90000");
     expect(body.monthly_fixed_costs.rent.source.origin).toBe("synthetic");
     expect(body.selected_zone).toBeNull();
     expect(
-      screen.getByText(
-        "Операционный результат — до неучтённых налогов, амортизации, процентов и кредитных платежей. Это не чистая прибыль и не денежный поток. Нет расчёта окупаемости и подтверждения доступности помещения.",
-      ),
+      screen.getByText(/Операционный результат — не чистая прибыль/),
     ).toBeVisible();
     fireEvent.change(screen.getByLabelText("Аренда"), {
       target: { value: "100000" },
     });
-    expect(
-      screen.getByText(
-        "Ниже предыдущий расчёт. Он не учитывает изменённые вводные.",
-      ),
-    ).toBeVisible();
+    expect(screen.getByText(/Предыдущий расчёт/)).toBeVisible();
   });
   it("shows finance API validation failure", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(json({}, 422));
     render(<Finance profile={profile} zone={null} />);
-    fireEvent.click(screen.getByText("Загрузить демо-допущения"));
-    fireEvent.click(screen.getByText("Пересчитать модель →"));
+    fireEvent.click(screen.getByText("Рассчитать сценарии"));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "сервер отклонил",
     );
@@ -208,7 +203,9 @@ describe("critical UI components with explicit API mocks", () => {
         onFinance={vi.fn()}
       />,
     );
-    await screen.findByText("Нет оценки");
+    await screen.findByText(/Недостаточно данных для оценки/);
+    fireEvent.click(screen.getByText("Подробнее о зоне и анализе"));
+    fireEvent.click(screen.getByText("Настройки анализа"));
     fireEvent.click(screen.getByText("Пересчитать зоны ↗"));
     await waitFor(() => expect(onRanking).toHaveBeenCalledWith(ranking));
     const call = fetch.mock.calls.find(([path]) =>
@@ -255,6 +252,9 @@ describe("critical UI components with explicit API mocks", () => {
         : json({ status: "ok", database: "ok" });
     });
     render(<App />);
+    await screen.findByRole("heading", { name: /Где лучше открыть/ });
+    fireEvent.click(screen.getByRole("button", { name: "← Назад" }));
+    fireEvent.click(screen.getByRole("button", { name: "Вернуться в диалог" }));
     await screen.findByText("Сохранённая история");
     fireEvent.change(screen.getByLabelText("Сообщение помощнику"), {
       target: { value: "Уточнение" },
@@ -268,5 +268,37 @@ describe("critical UI components with explicit API mocks", () => {
     expect(screen.getByLabelText("Сообщение помощнику")).toHaveValue(
       "Уточнение",
     );
+  });
+  it("does not create a replacement guest session when restoring a project fails", async () => {
+    saveCredential({ id: view.id, token: "test-key" });
+    let available = false;
+    const fetch = vi
+      .spyOn(globalThis, "fetch")
+      .mockImplementation(async (path) => {
+        if (String(path).endsWith("/consent-texts")) return json([]);
+        if (!available)
+          return json({ detail: { code: "database_unavailable" } }, 503);
+        if (String(path).includes("/messages?")) return json([]);
+        return json(view);
+      });
+    render(<App />);
+    await screen.findByRole("heading", { name: "Не удалось открыть проект" });
+    expect(screen.queryByLabelText("Сообщение помощнику")).toBeNull();
+    expect(
+      fetch.mock.calls.every(
+        ([, init]) => !init?.method || init.method === "GET",
+      ),
+    ).toBe(true);
+    available = true;
+    fireEvent.click(screen.getByRole("button", { name: "Повторить загрузку" }));
+    await screen.findByLabelText("Сообщение помощнику");
+    expect(
+      screen.queryByRole("heading", { name: "Не удалось открыть проект" }),
+    ).toBeNull();
+    expect(
+      fetch.mock.calls.every(
+        ([, init]) => !init?.method || init.method === "GET",
+      ),
+    ).toBe(true);
   });
 });

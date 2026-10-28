@@ -1,3 +1,4 @@
+import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import type { GeoJSONSource, Map as MapInstance } from "maplibre-gl";
@@ -187,9 +188,10 @@ export default function GeoMap(props: Props) {
         type: "circle",
         source: "pois",
         paint: {
-          "circle-radius": 4,
-          "circle-color": "#5272d9",
-          "circle-stroke-color": "#e6ecff",
+          "circle-radius": 2.5,
+          "circle-color": "#6c7c8d",
+          "circle-opacity": 0.45,
+          "circle-stroke-color": "#fff",
           "circle-stroke-width": 1,
         },
       });
@@ -379,7 +381,7 @@ export default function GeoMap(props: Props) {
         </span>
         <span>
           <i className="dot blue-dot" />
-          OSM POI
+          Объекты окружения
         </span>
         <span>┄ Граница покрытия</span>
         {props.walking && (

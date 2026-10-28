@@ -8,7 +8,7 @@ import FinanceChart from "./FinanceChart";
 type FinanceInput = Schemas["FinanceRequest-Input"];
 type Scenario = "conservative" | "base" | "optimistic";
 const scenarioNames = {
-  conservative: "Консервативный",
+  conservative: "Пессимистичный",
   base: "Базовый",
   optimistic: "Оптимистичный",
 };
@@ -78,10 +78,7 @@ export default function Finance({
   useEffect(() => () => active.current?.abort(), []);
   function edit(
     group:
-      | "startup"
-      | "monthly_fixed_costs"
-      | "working_days_per_month"
-      | Scenario,
+      "startup" | "monthly_fixed_costs" | "working_days_per_month" | Scenario,
     key: string,
     value: string,
   ) {
@@ -113,9 +110,12 @@ export default function Finance({
     setInput(next);
     setDirty(true);
   }
-  async function calculate(event: React.SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!input || !profile) return;
+  async function calculate(
+    event: React.SubmitEvent<HTMLFormElement> | null,
+    candidate = input,
+  ) {
+    event?.preventDefault();
+    if (!candidate || !profile) return;
     active.current?.abort();
     const c = new AbortController();
     active.current = c;
@@ -126,7 +126,7 @@ export default function Finance({
         "/api/v1/finance/calculate",
         {
           method: "POST",
-          body: { ...input, profile, selected_zone: zone },
+          body: { ...candidate, profile, selected_zone: zone },
           signal: c.signal,
         },
       );
@@ -138,91 +138,250 @@ export default function Finance({
       if (!c.signal.aborted) setBusy(false);
     }
   }
+  const base = result?.scenarios.find((s) => s.name === "base");
   return (
-    <div className="finance">
+    <section className="finance">
       <div className="section-heading">
-        <div>
-          <span className="eyebrow">ЭКОНОМИКА ВАШЕЙ ИДЕИ</span>
-          <h1>Финансовая модель</h1>
-          <p>Три сценария. Прозрачные вводные. Расчёты на сервере.</p>
-        </div>
-        <span className="tag amber">Сценарное моделирование</span>
+        <h1>
+          Сколько может приносить <br />
+          ваш бизнес?
+        </h1>
+        <p>Сравните три сценария и проверьте свои предположения.</p>
       </div>
-      <div className="finance-context">
-        <div>
-          <small>Бюджет пользователя</small>
-          <strong>{rub(profile?.budget)}</strong>
-        </div>
-        <div>
-          <small>Контекст</small>
-          <strong>
-            {profile?.category || "Бизнес не указан"} ·{" "}
-            {profile?.city || "Город не указан"}
-          </strong>
-        </div>
-        <div>
-          <small>Зона-кандидат</small>
-          <strong>
-            {zone ? zone.candidate_id.slice(0, 12) : "Не выбрана"}
-          </strong>
-        </div>
-      </div>
-      <p className="notice">
-        Все экономические вводные ниже —{" "}
-        <b>синтетические редактируемые допущения</b>, а не реальные цены или
-        спрос Казани. OSM-рейтинг не влияет на выручку. Выбранная зона — только
-        контекст.
+      <p className="model-note">
+        Синтетические редактируемые допущения кофейни — не реальные цены или
+        спрос. Расчёт не зависит от георейтинга.
       </p>
-      {result && (
-        <section
-          className={dirty ? "stale-result" : ""}
-          aria-label="Результат финансового расчёта"
-          ref={resultPanel}
-          tabIndex={-1}
-        >
-          {dirty && (
-            <div className="notice">
-              Ниже предыдущий расчёт. Он не учитывает изменённые вводные.
+      {!input ? (
+        <div className="finance-start">
+          <p>
+            Начните с демонстрационного сценария кофейни. Все вводные можно
+            изменить.
+          </p>
+          <button
+            className="button"
+            disabled={!profile || busy}
+            onClick={() => {
+              if (profile) {
+                const next = demoInput(profile, zone);
+                setInput(next);
+                setDirty(true);
+                void calculate(null, next);
+              }
+            }}
+          >
+            Рассчитать сценарии
+          </button>
+        </div>
+      ) : (
+        <form className="finance-form" onSubmit={calculate}>
+          <div className="quick-assumptions">
+            <label>
+              Аренда, ₽ / мес.
+              <input
+                aria-label="Аренда"
+                type="number"
+                min="0"
+                step="0.01"
+                required
+                value={input.monthly_fixed_costs.rent.value}
+                onChange={(e) =>
+                  edit("monthly_fixed_costs", "rent", e.target.value)
+                }
+              />
+            </label>
+            <label>
+              Продаж в день · базовый
+              <input
+                aria-label="Базовый: Продаж в день"
+                type="number"
+                min="0"
+                step="1"
+                required
+                value={input.scenarios.base.sales_per_day.value}
+                onChange={(e) => edit("base", "sales_per_day", e.target.value)}
+              />
+            </label>
+            <label>
+              Средний чек, ₽ · базовый
+              <input
+                aria-label="Базовый: Средний чек, ₽"
+                type="number"
+                min="0.01"
+                step="0.01"
+                required
+                value={input.scenarios.base.average_check.value}
+                onChange={(e) => edit("base", "average_check", e.target.value)}
+              />
+            </label>
+          </div>
+          <details className="assumptions">
+            <summary>Все допущения и структура затрат</summary>
+            <div className="input-columns">
+              <fieldset>
+                <legend>Стартовые вложения, ₽</legend>
+                {Object.entries(startupLabels).map(([key, title]) => (
+                  <label key={key}>
+                    {title}
+                    <input
+                      aria-label={title}
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      required
+                      value={
+                        input.startup[key as keyof typeof startupLabels].value
+                      }
+                      onChange={(e) => edit("startup", key, e.target.value)}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+              <fieldset>
+                <legend>Постоянные расходы, ₽ / мес.</legend>
+                {Object.entries(fixedLabels)
+                  .filter(([key]) => key !== "rent")
+                  .map(([key, title]) => (
+                    <label key={key}>
+                      {title}
+                      <input
+                        aria-label={title}
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        required
+                        value={
+                          input.monthly_fixed_costs[
+                            key as keyof typeof fixedLabels
+                          ].value
+                        }
+                        onChange={(e) =>
+                          edit("monthly_fixed_costs", key, e.target.value)
+                        }
+                      />
+                    </label>
+                  ))}
+                <label>
+                  Рабочих дней в месяц
+                  <input
+                    aria-label="Рабочих дней в месяц"
+                    type="number"
+                    min="1"
+                    max="31"
+                    step="1"
+                    required
+                    value={input.working_days_per_month.value}
+                    onChange={(e) =>
+                      edit("working_days_per_month", "", e.target.value)
+                    }
+                  />
+                </label>
+              </fieldset>
+            </div>
+            <div className="scenario-inputs">
+              {(Object.keys(scenarioNames) as Scenario[]).map((s) => (
+                <fieldset key={s}>
+                  <legend>{scenarioNames[s]}</legend>
+                  {Object.entries(scenarioLabels)
+                    .filter(
+                      ([key]) => s !== "base" || key === "variable_cost_ratio",
+                    )
+                    .map(([key, title]) => (
+                      <label key={key}>
+                        {title}
+                        <input
+                          aria-label={`${scenarioNames[s]}: ${title}`}
+                          type="number"
+                          required
+                          min={key === "average_check" ? "0.01" : "0"}
+                          max={
+                            key === "variable_cost_ratio"
+                              ? "0.999999"
+                              : undefined
+                          }
+                          step={
+                            key === "sales_per_day"
+                              ? "1"
+                              : key === "variable_cost_ratio"
+                                ? "0.01"
+                                : "0.01"
+                          }
+                          value={
+                            input.scenarios[s][
+                              key as keyof typeof scenarioLabels
+                            ].value
+                          }
+                          onChange={(e) => edit(s, key, e.target.value)}
+                        />
+                      </label>
+                    ))}
+                </fieldset>
+              ))}
+            </div>
+            <p className="subtle">
+              Каждое поле: synthetic · coffee-finance-demo-v1; после
+              редактирования — ui-assumptions-v1. Источник и значения передаются
+              серверу и входят в снимок расчёта.
+            </p>
+          </details>
+          {(dirty || busy || error) && (
+            <div className="calculation-controls">
+              <p className="fine-print" role="status">
+                {busy ? "Рассчитываем…" : "Изменённые вводные ещё не учтены."}
+              </p>
+              <button className="button" disabled={busy}>
+                {busy ? "Рассчитываем…" : "Пересчитать модель →"}
+              </button>
             </div>
           )}
+        </form>
+      )}
+      {error && (
+        <div className="alert" role="alert">
+          {error}
+        </div>
+      )}
+      {result && (
+        <section
+          ref={resultPanel}
+          tabIndex={-1}
+          className={dirty ? "stale-result" : ""}
+          aria-label="Результат финансового расчёта"
+        >
+          {dirty && (
+            <p className="notice">
+              Предыдущий расчёт. Измените вводные и пересчитайте модель перед
+              продолжением.
+            </p>
+          )}
           <div className="capital-grid">
-            <div className="stat-card">
-              <small>Старт без оборотного резерва</small>
-              <strong>
-                {rub(result.startup.launch_uses_excluding_reserve)}
-              </strong>
-            </div>
-            <div className="stat-card">
-              <small>Оборотный резерв</small>
-              <strong>{rub(result.startup.working_capital_reserve)}</strong>
-            </div>
-            <div className="stat-card accent">
-              <small>Общая потребность в капитале</small>
+            <div>
+              <small>Стартовые вложения</small>
               <strong>{rub(result.startup.total_initial_funding)}</strong>
             </div>
-            <div className="stat-card">
-              <small>
-                {result.budget.status === "model_budget_shortfall"
-                  ? "Дефицит бюджета модели"
-                  : "Остаток бюджета модели"}
-              </small>
-              <strong>
-                {rub(
-                  result.budget.status === "model_budget_shortfall"
-                    ? result.budget.funding_gap
-                    : result.budget.remaining,
-                )}
-              </strong>
+            <div>
+              <small>Постоянные расходы / мес.</small>
+              <strong>{rub(base?.metrics.monthly_fixed_cost.value)}</strong>
+            </div>
+            <div>
+              <small>Ваш бюджет</small>
+              <strong>{rub(profile?.budget)}</strong>
             </div>
           </div>
+          {result.budget.status === "model_budget_shortfall" && (
+            <p className="notice">
+              Для модели не хватает {rub(result.budget.funding_gap)}. Это оценка
+              по допущениям.
+            </p>
+          )}
+          <h2 className="result-title">Операционный результат в месяц</h2>
           <div className="scenario-results">
             {result.scenarios.map((s) => (
               <article
                 className={`scenario-card ${s.name === "base" ? "base" : ""}`}
                 key={s.name}
               >
-                <span className="eyebrow">{scenarioNames[s.name]}</span>
-                <small>Операционный результат / месяц</small>
+                <h3>{scenarioNames[s.name]}</h3>
                 <strong
                   className={
                     Number(s.metrics.operating_result.value) < 0
@@ -232,41 +391,48 @@ export default function Finance({
                 >
                   {rub(s.metrics.operating_result.value)}
                 </strong>
-                <dl>
-                  {[
-                    ["monthly_revenue", "Выручка"],
-                    ["monthly_variable_cost", "Переменные расходы"],
-                    ["monthly_fixed_cost", "Постоянные расходы"],
-                    ["monthly_contribution", "Маржинальный доход"],
-                  ].map(([key, label]) => (
-                    <div key={key}>
-                      <dt>{label}</dt>
-                      <dd>
-                        {rub(s.metrics[key as keyof typeof s.metrics].value)}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-                <div className="break-even">
-                  <span>Безубыточность</span>
-                  <b>
-                    {s.metrics.break_even_sales_per_day.value}{" "}
-                    <small>продаж / день</small>
-                  </b>
-                </div>
-                {s.warnings.length > 0 && (
-                  <p className="subtle">
-                    {s.warnings.map(readable).join(" · ")}
+                <p>
+                  {Number(s.metrics.operating_result.value) < 0
+                    ? "Отрицательный результат"
+                    : "По выбранным допущениям"}
+                </p>
+                <details>
+                  <summary>Показатели сценария</summary>
+                  <dl>
+                    {[
+                      ["monthly_revenue", "Выручка"],
+                      ["monthly_variable_cost", "Переменные расходы"],
+                      ["monthly_fixed_cost", "Постоянные расходы"],
+                    ].map(([key, label]) => (
+                      <div key={key}>
+                        <dt>{label}</dt>
+                        <dd>
+                          {rub(s.metrics[key as keyof typeof s.metrics].value)}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <p>
+                    Безубыточность: {s.metrics.break_even_sales_per_day.value}{" "}
+                    продаж / день
                   </p>
-                )}
+                  {s.warnings.map((t) => (
+                    <p key={t}>{readable(t)}</p>
+                  ))}
+                </details>
               </article>
             ))}
           </div>
           <FinanceChart scenarios={result.scenarios} />
-          <section className="detail-panel">
-            <span className="eyebrow">ЧТО ЕСЛИ ИЗМЕНИТЬ ВВОДНЫЕ?</span>
+          <p className="fine-print">
+            Операционный результат — не чистая прибыль и не денежный поток:
+            налоги, амортизация и кредитные платежи могут быть не учтены. Это не
+            прогноз спроса и не обещание окупаемости.
+          </p>
+          <details className="finance-details">
+            <summary>Чувствительность, источники и ограничения</summary>
             <h2>Чувствительность базового сценария</h2>
-            <p className="subtle">
+            <p>
               Один фактор за раз, ±10%. Математическое изменение, не рыночный
               прогноз.
             </p>
@@ -311,186 +477,34 @@ export default function Finance({
                 </tbody>
               </table>
             </div>
-          </section>
-          <details className="provenance">
-            <summary>Формулы, происхождение и воспроизводимость</summary>
+
             <p>
-              Алгоритм: {result.algorithm_version} · результат: modelled.
+              Алгоритм: {result.algorithm_version}. Результат: modelled.
               Округление: {result.rounding}.
             </p>
-            <pre>
-              {JSON.stringify(
-                {
-                  formulas: result.formulas,
-                  inputs: result.request_snapshot,
-                  fingerprint: result.request_fingerprint,
-                  comparison: result.comparison,
-                },
-                null,
-                2,
-              )}
-            </pre>
-          </details>
-          <div className="notice">
-            Операционный результат — до неучтённых налогов, амортизации,
-            процентов и кредитных платежей. Это не чистая прибыль и не денежный
-            поток. Нет расчёта окупаемости и подтверждения доступности
-            помещения.
-          </div>
-          <details className="provenance">
-            <summary>Полные ограничения финансовой модели</summary>
             <ul>
               {[...result.limitations, ...result.warnings].map((t, i) => (
                 <li key={i}>{t}</li>
               ))}
             </ul>
+            <details>
+              <summary>Формулы и происхождение вводных</summary>
+              <pre>
+                {JSON.stringify(
+                  {
+                    formulas: result.formulas,
+                    inputs: result.request_snapshot,
+                    fingerprint: result.request_fingerprint,
+                    comparison: result.comparison,
+                  },
+                  null,
+                  2,
+                )}
+              </pre>
+            </details>
           </details>
         </section>
       )}
-      {!input ? (
-        <div className="empty">
-          <span className="empty-symbol">↗</span>
-          <h2>Проверьте экономику идеи</h2>
-          <p>
-            Загрузите демонстрационный набор для кофейни из BA-009 и замените
-            его своими значениями. Это не отраслевая модель для других видов
-            бизнеса. Расчёт выполняется только после отправки на сервер.
-          </p>
-          <button
-            className="button"
-            disabled={!profile}
-            onClick={() => {
-              setDirty(true);
-              if (profile) setInput(demoInput(profile, zone));
-            }}
-          >
-            Загрузить демо-допущения
-          </button>
-        </div>
-      ) : (
-        <form onSubmit={calculate}>
-          <details className="assumptions" open>
-            <summary>
-              Вводные и допущения{" "}
-              <span className="tag amber">Синтетические</span>
-            </summary>
-            <div className="input-columns">
-              <fieldset>
-                <legend>Стартовые вложения, ₽</legend>
-                {Object.entries(startupLabels).map(([key, title]) => (
-                  <label key={key}>
-                    {title}
-                    <input
-                      aria-label={title}
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      required
-                      value={
-                        input.startup[key as keyof typeof startupLabels].value
-                      }
-                      onChange={(e) => edit("startup", key, e.target.value)}
-                    />
-                  </label>
-                ))}
-              </fieldset>
-              <fieldset>
-                <legend>Постоянные расходы, ₽ / мес.</legend>
-                {Object.entries(fixedLabels).map(([key, title]) => (
-                  <label key={key}>
-                    {title}
-                    <input
-                      aria-label={title}
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      required
-                      value={
-                        input.monthly_fixed_costs[
-                          key as keyof typeof fixedLabels
-                        ].value
-                      }
-                      onChange={(e) =>
-                        edit("monthly_fixed_costs", key, e.target.value)
-                      }
-                    />
-                  </label>
-                ))}
-                <label>
-                  Рабочих дней в месяц
-                  <input
-                    aria-label="Рабочих дней в месяц"
-                    type="number"
-                    min="1"
-                    max="31"
-                    step="1"
-                    required
-                    value={input.working_days_per_month.value}
-                    onChange={(e) =>
-                      edit("working_days_per_month", "", e.target.value)
-                    }
-                  />
-                </label>
-              </fieldset>
-            </div>
-            <div className="scenario-inputs">
-              {(Object.keys(scenarioNames) as Scenario[]).map((s) => (
-                <fieldset key={s}>
-                  <legend>{scenarioNames[s]}</legend>
-                  {Object.entries(scenarioLabels).map(([key, title]) => (
-                    <label key={key}>
-                      {title}
-                      <input
-                        aria-label={`${scenarioNames[s]}: ${title}`}
-                        type="number"
-                        required
-                        min={key === "average_check" ? "0.01" : "0"}
-                        max={
-                          key === "variable_cost_ratio" ? "0.999999" : undefined
-                        }
-                        step={
-                          key === "sales_per_day"
-                            ? "1"
-                            : key === "variable_cost_ratio"
-                              ? "0.01"
-                              : "0.01"
-                        }
-                        value={
-                          input.scenarios[s][key as keyof typeof scenarioLabels]
-                            .value
-                        }
-                        onChange={(e) => edit(s, key, e.target.value)}
-                      />
-                    </label>
-                  ))}
-                </fieldset>
-              ))}
-            </div>
-            <p className="subtle">
-              Каждое поле: synthetic · coffee-finance-demo-v1; после
-              редактирования — ui-assumptions-v1. Источник и значения передаются
-              серверу и входят в снимок расчёта.
-            </p>
-          </details>
-          <div className="row calculation-controls">
-            <p className="subtle">
-              {dirty
-                ? "Вводные изменены. Нужен пересчёт."
-                : result
-                  ? "Результат соответствует отправленным вводным."
-                  : "Проверьте вводные и запустите расчёт."}
-            </p>
-            <button className="button" disabled={busy}>
-              {busy ? "Рассчитываем…" : "Пересчитать модель →"}
-            </button>
-          </div>
-        </form>
-      )}
-      {error && (
-        <div className="alert" role="alert">
-          {error}
-        </div>
-      )}
-    </div>
+    </section>
   );
 }

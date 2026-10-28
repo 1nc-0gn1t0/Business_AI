@@ -1,5 +1,36 @@
 # Business AI — HANDOFF
 
+## DESIGN-02 · minimalist flow · 28.10.2026
+
+- PR27 merged; чистый main `357bbd5ec05a704af2cd82c1d09325647acefc87`, ветка
+  `codex/DESIGN-02-minimalist-flow`. Финальные commit/PR/CI — в сообщении сдачи.
+- Реализован IDEA→CHAT→REVIEW→LOCATION→FINANCE→BANKING→SUMMARY без sidebar/dashboard.
+  Белый фон/синий CTA, краткие вопросы, компактное подтверждение, большая карта/список,
+  три финансовых поля/сценария/один график, последовательный bank needs, итог PDF/JSON.
+- [Дизайн и проверяемые переходы](design/DESIGN-02_MINIMALIST_FLOW.md),
+  [checkpoint](design/DESIGN-02_CHECKPOINT.md), [13 реальных screenshots](qa/design-02/).
+- Backend меняет только QUESTIONS/reply_for: краткость серверного текста без изменения
+  extraction/prompt/оркестрации/API/DTO/ownership/CAS/consent/алгоритмов/provenance.
+  Прежний LeadFlow доступен по запросу с независимыми согласиями и mock receipt.
+- Guards используют реальные подтверждение/зону/расчёт. Ошибки сохраняют draft, CAS
+  обновляет профиль, зона/fingerprint/профиль инвалидируют финансы. Reload восстанавливает
+  историю/профиль и честно требует повторного анализа; silent guest replacement исключён.
+- Vitest58PASS, Chromium32mockPASS53.7s; TS/ESLint/build PASS. Начальный JS307.63kB
+  (gzip92.82), отложенная карта1111.37kB (gzip305.33); warning большого map chunk остаётся.
+  Backend unit383PASS/104SKIP (нет test DB)/102deselected extended. Mypy124files PASS;
+  focused conversation24PASS. Prek7/7 hooks PASS; финальные web hooks повторены.
+- Настоящий Chromium/Vite5175→отдельный API8001→PostGIS/Qwen4B:4turns, профильv5,
+  5зон, finance285000→275000 при rent80000→90000,2demo matches/credit not_assessed,
+  PDF54655bytes и JSON128381bytes одного снимка, browser errors0. Final run31.6s.
+  Safe timing evidence в qa/design-02/live-evidence.json, downloads вне Git.
+- API8001 — temporary container `business-ai-design02-api`, read-only current app mount,
+  старый runtime dependencies; работающие API/DB/Ollama/PGDATA не заменялись, миграций нет.
+  F-00/user volumes не изменялись. Не запускать новые DB images поверх старого volume.
+- Firefox/WebKit/полный a11y/usability audit не проводились. Аналитические черновики
+  остаются только в памяти вкладки. Покрытие Казани и synthetic coffee assumptions
+  не стали универсальными. Security release baseline OPEN; H-FINAL/BA-017/018 не начаты.
+  Следующая задача/merge только с разрешения владельца.
+
 ## DESIGN-01 · hackathon product UI · 27–28.10.2026
 
 - PR26/H-06-FU merged, main `d270675`, исходное дерево чистое; отдельная ветка
