@@ -1,0 +1,67 @@
+# ADR-0013: универсальный анализ с проверяемыми возможностями и совместимостью v1
+
+Дата:28.10.2026. Статус: **Proposed — на review владельца в PR U-00**.
+Владелец утвердил семиэтапную инициативу; принятие её технических контрактов — отдельное
+решение при review этого PR. Никакой runtime функционал этим ADR не включается.
+
+## Контекст
+
+MVP имеет проверенные диалог/OSM/Decimal/consent/report механизмы, но не durable planner.
+Есть DataProvider/provenance и ownerless неиспользуемая live сервисами AnalysisRun table.
+Фиксированный frontend guard требует карту; кофе-шаблон не универсален.
+Целевая машина16GB/RTX3050Ti4GB не подходит для whole-city graph в памяти и нескольких
+одновременных LLM/import операций без измерений. Старый roadmap содержит конфликтующие
+U-ID; [crosswalk](../architecture/BUSINESS_AI_2_IMPLEMENTATION_PLAN.md) сохраняет их историю.
+
+## Решение для будущего внедрения
+
+1. Оставить modular monolith/одну PostgreSQL/PostGIS/локальную Qwen. Qwen предлагает
+   compact PlanProposal, backend валидирует capabilities/permissions/units/DAG/budget.
+   Python/PostGIS исполняют только reviewed methods. Unknown остаётся unknown.
+2. Universal ProfileV2 и owner-scoped AnalysisPlan/Run APIs отдельно от strict v1.
+   Reuse DataOrigin, MetricWithProvenance, InputSource/FinancialMetric/Indicator;
+   epistemic/review/lineage — дополнительные измерения, не конкурентный enum origin.
+3. Расширять существующий DataProvider/dataset metadata. City identity, граница,
+   покрытие слоя и нанесённые объекты — разные понятия. Source license и network
+   permission проверяются отдельно; никакого автоматического synthetic fallback.
+4. Durable jobs/leases/checkpoints/events в PostgreSQL, bounded operator CLI worker
+   из того же image, без Redis/Celery. Fetch/LLM вне DB transaction; short claim и
+   fenced activation. Lease timeout не освобождает heavy slot без подтверждения
+   остановки старого worker. H-03 single-process queue остаётся единственной LLM queue.
+5. Tool gateway принимает approved source/tool IDs, не shell/SQL/file paths/user URLs.
+   Network egress fail-closed, redirects0, проверенный peer/DNS и budgets.
+6. Новые sector configs выбирают Python adapters; v1 finance formulas/rounding и
+   immutable report bytes/hash не меняются. No-map и partial — нормальные outcomes.
+7. Ви получает owner-scoped реальный stage/event cursor; никаких фиктивных процентов.
+   Profile changes/consent revocation повторно проверяются перед result publication.
+
+Контракты/границы/предварительные caps:
+[Architecture](../architecture/BUSINESS_AI_2_UNIVERSAL_ARCHITECTURE.md),
+[Data & Tools](../architecture/BUSINESS_AI_2_DATA_AND_TOOLS.md).
+
+## Рассмотренные альтернативы
+
+- Один giant prompt и произвольные HTTP/tools: не проверяет поддержку методов,
+  ресурсы и достоверность, SSRF/injection риски. Не выбран.
+- Расширить v1 DTO/переписать старые report snapshots: extra-forbid и hashes делают
+  это несовместимым. Не выбран; только versioned additive evolution.
+- Новая provenance/data база: дублирует готовые origins/providers/datasets. Не выбрана.
+- Только BackgroundTasks/React flags: нет restart recovery/atomic dedup/owner isolation.
+  Не выбрано для длительных импортов; существующий короткий UI flow пока не меняется.
+- Redis/Celery/microservices/whole-city in-memory routing: не оправданы доказанной
+  нагрузкой/оборудованием; отдельный broker рассмотреть только по измеренным требованиям.
+- Все неизвестные отрасли → nearest coffee: создаёт неподходящий анализ; сохраняем
+  raw label, clarification и limited generic capabilities.
+
+## Последствия и проверка
+
+Потребуются последующие additive migrations, profiles/config revisions, worker supervision,
+source-policy review, Qwen live evaluation и real small-AOI resource measurements.
+Предложенные512MiB worker/tiles/LLM budgets не измерены и не SLA. Нет обещания all cities/
+all industries, юридической пригодности, банковского одобрения или достоверности гипотез.
+Rollout expand/read-switch, old v1 readers/exports работают; app rollback отключает v2,
+не запускает destructive DB downgrade. При несовместимой схеме — backup/restore H-04/FU.
+
+U-00 проверяет согласованность со static code/links/4design walkthrough и mandatory
+docs-only QG-PR. Реальные новые интеграции тестируются в U-01…06, не объявлены PASS здесь.
+Owner approval/merge U-00 не означает разрешения начать следующий этап.
