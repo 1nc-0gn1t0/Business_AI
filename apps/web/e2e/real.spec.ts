@@ -4,13 +4,13 @@ import { env } from "node:process";
 import type { Conversation, Ranking, Schemas } from "../src/api";
 
 // Opt-in real services. No routes, model mocks, traces, credentials or prompts in artifacts.
-test("DESIGN03 real coffee: idea → Qwen → profile → PostGIS → finance → bank → PDF/JSON", async ({
+test("DESIGN03FU real coffee: idea → Qwen → profile → PostGIS → finance → bank → PDF/JSON", async ({
   page,
 }) => {
   page.setDefaultTimeout(20_000);
-  const directory = env.BA010_ARTIFACT_DIR || "../../docs/qa/design-03";
+  const directory = env.BA010_ARTIFACT_DIR || "../../docs/qa/design-03-fu";
   const downloads =
-    env.BA_DESIGN02_DOWNLOAD_DIR || "test-results/design03-downloads";
+    env.BA_DESIGN02_DOWNLOAD_DIR || "test-results/design03fu-downloads";
   await mkdir(directory, { recursive: true });
   await mkdir(downloads, { recursive: true });
   const errors: string[] = [];
@@ -24,7 +24,7 @@ test("DESIGN03 real coffee: idea → Qwen → profile → PostGIS → finance �
       await Promise.all(
         document
           .getAnimations()
-          .filter((a) => a.effect?.getComputedTiming().iterations !== Infinity)
+          .filter((a) => Number(a.effect?.getComputedTiming().endTime) <= 1200)
           .map((a) => a.finished.catch(() => {})),
       );
     });
@@ -261,7 +261,7 @@ test("DESIGN03 real coffee: idea → Qwen → profile → PostGIS → finance �
       .replace(/\.(pdf|json)$/, "");
     if (reportId) expect(id).toBe(reportId);
     reportId = id;
-    await download.saveAs(`${downloads}/DESIGN03-report.${format}`);
+    await download.saveAs(`${downloads}/DESIGN03FU-report.${format}`);
   }
   await expect(page.locator(".report-export .vi-status")).toHaveAttribute(
     "data-emotion",
@@ -289,7 +289,7 @@ test("DESIGN03 real coffee: idea → Qwen → profile → PostGIS → finance �
     JSON.stringify(
       {
         mode: "real API/Ollama/PostGIS, no route mocks",
-        base_main: "45c6a0d2c35846ffc7271cfd6d8a06eb967a2539",
+        base_main: "718bcf936966fe5465ea67ca4e0806bc0cf16372",
         model: "qwen3:4b-instruct-2507-q4_K_M",
         profile_version: confirmedView.version,
         qwen_turns: timings,

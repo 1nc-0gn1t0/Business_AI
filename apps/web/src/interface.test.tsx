@@ -98,7 +98,7 @@ describe("critical UI components with explicit API mocks", () => {
     expect(screen.getByLabelText("Сообщение помощнику")).toHaveValue(
       "Кофейня в Казани",
     );
-    expect(screen.getByText("Тестовый режим stub · не Qwen")).toBeVisible();
+    expect(screen.getByText("Ответ без AI-модели")).toBeVisible();
   });
   it("does not allow confirmation with missing fields", () => {
     render(
@@ -132,6 +132,7 @@ describe("critical UI components with explicit API mocks", () => {
     expect(body.monthly_fixed_costs.rent.value).toBe("90000");
     expect(body.monthly_fixed_costs.rent.source.origin).toBe("synthetic");
     expect(body.selected_zone).toBeNull();
+    fireEvent.click(screen.getByText("Как рассчитано?"));
     expect(
       screen.getByText(/Операционный результат — не чистая прибыль/),
     ).toBeVisible();

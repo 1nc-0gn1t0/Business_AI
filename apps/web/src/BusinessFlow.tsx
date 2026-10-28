@@ -609,7 +609,7 @@ export default function BusinessFlow({
         )}
       </main>
       <footer className="flow-footer">
-        Независимый хакатонный прототип. Не официальный сервис ВТБ.
+        Business AI — независимый проект. Не официальный сервис ВТБ.
       </footer>
       {active && consentDialog && (
         <ConsentDialog

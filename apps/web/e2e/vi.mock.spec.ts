@@ -19,10 +19,10 @@ for (const width of [1440, 768, 390])
     await expect(
       page.getByRole("heading", { name: /Ваш бизнес/ }),
     ).toBeVisible();
-    await expect(page.getByRole("button")).toHaveCount(1);
+    await expect(page.getByRole("button")).toHaveCount(2);
     await expect(page.locator(".vi-dock > *")).toHaveCount(3);
-    await page.locator(".vi-floating img").waitFor({ state: "visible" });
-    expect(assets.every((u) => u.includes("avatar"))).toBe(true);
+    await page.locator(".vi-floating .vi-avatar").waitFor({ state: "visible" });
+    expect(assets.every((u) => u.includes("/motion/"))).toBe(true);
     expect(api).toEqual([]);
     expect(
       await page.evaluate(
@@ -37,6 +37,10 @@ for (const width of [1440, 768, 390])
     await page.keyboard.press("Tab");
     await expect(
       page.getByRole("link", { name: "Перейти к содержимому" }),
+    ).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(
+      page.getByRole("button", { name: "Познакомиться с Ви", exact: true }),
     ).toBeFocused();
     await page.keyboard.press("Tab");
     await expect(

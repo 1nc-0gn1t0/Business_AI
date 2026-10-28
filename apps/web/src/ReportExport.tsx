@@ -232,10 +232,7 @@ export default function ReportExport(props: Props) {
           Скачать JSON
         </button>
       </div>
-      <p className="fine-print">
-        Оба формата — из одного проверенного снимка. Ничего не отправляется в
-        банк.
-      </p>
+      <p className="fine-print">Скачивание не отправляет данные в банк.</p>
       <details className="report-composition">
         <summary>Состав и источники отчёта</summary>
         <p>

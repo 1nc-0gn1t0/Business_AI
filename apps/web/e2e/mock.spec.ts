@@ -20,7 +20,7 @@ test("browser workflow with explicitly mocked APIs and server-checked transition
     .click();
   await expect(page.getByRole("heading", { name: "Всё верно?" })).toBeVisible();
   await page.getByRole("button", { name: "Вернуться в диалог" }).click();
-  await expect(page.getByText("Тестовый режим stub · не Qwen")).toBeVisible();
+  await expect(page.getByText("Ответ без AI-модели")).toBeVisible();
   await page
     .getByRole("button", { name: "Проверить параметры проекта" })
     .click();
@@ -109,7 +109,7 @@ test("Ollama error retains message and permits retry without pretending success"
   await openChat(page);
   await page.getByLabel("Сообщение помощнику").fill("Идея бизнеса");
   await page.getByLabel("Отправить сообщение").click();
-  await expect(page.getByRole("alert")).toContainText("Ollama");
+  await expect(page.getByRole("alert")).toContainText("Помощник временно недоступен");
   await expect(page.getByLabel("Сообщение помощнику")).toHaveValue(
     "Идея бизнеса",
   );

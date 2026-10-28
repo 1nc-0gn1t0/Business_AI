@@ -1,0 +1,86 @@
+{
+  "source_sha256": "9bcf1b1530de5e5278fbc032d426f9db44c15671823cd6a4524215aaab79a4c4",
+  "source_crop": [
+    90,
+    100,
+    830,
+    885
+  ],
+  "canvas": [
+    740,
+    785
+  ],
+  "method": "Manual silhouette/part mattes, original wrist overlap; face-surface interpolation only under extracted eyes. WebP94. No AI or hidden limb reconstruction.",
+  "layers": {
+    "body": {
+      "bounds": [
+        0,
+        0,
+        740,
+        785
+      ],
+      "bytes": 43120,
+      "sha256": "23b43204ca5c8cc25d0e9a117ffb5fcc354bb67dcb90f136467b7268c3d151ae"
+    },
+    "hand": {
+      "bounds": [
+        14,
+        401,
+        167,
+        597
+      ],
+      "bytes": 4124,
+      "sha256": "63f5f8e5fb4eafb0f24f5a991fc4ba6083d010bfdc0998ecc786eeb8ace3c2e2"
+    },
+    "plume1": {
+      "bounds": [
+        411,
+        11,
+        657,
+        143
+      ],
+      "bytes": 5856,
+      "sha256": "40f11dfe976de60fa580838b5fa005c20534191c23cf2f34d809be4e1e1aa089"
+    },
+    "plume2": {
+      "bounds": [
+        464,
+        81,
+        691,
+        169
+      ],
+      "bytes": 4870,
+      "sha256": "d23301c8d85360a0a6b93180ded8cc37213eee851f6d6226951902623bba9f5b"
+    },
+    "plume3": {
+      "bounds": [
+        552,
+        162,
+        711,
+        254
+      ],
+      "bytes": 3230,
+      "sha256": "883b478b944f1bfd788d5479dd19ba4360b5e6ae447022b699cd3194fc670f65"
+    },
+    "eye_left": {
+      "bounds": [
+        238,
+        338,
+        307,
+        436
+      ],
+      "bytes": 2408,
+      "sha256": "447a4c4ce74736b18e0dd235fbb066ccdffb88b3b3cda85a8946ed0cbf149518"
+    },
+    "eye_right": {
+      "bounds": [
+        468,
+        367,
+        539,
+        463
+      ],
+      "bytes": 2416,
+      "sha256": "75bb68ddf5aceb5dc2bc6572779ab54c08a43d551fac6d5116be3c76bde441af"
+    }
+  }
+}

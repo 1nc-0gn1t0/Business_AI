@@ -52,8 +52,8 @@ const fields: {
 const statusText: Record<Schemas["ProductDecision"]["status"], string> = {
   potential_match: "Соответствует заявленной потребности",
   information_only: "Только информация о финансировании",
-  demo_match: "Демо-совпадение потребности",
-  demo_information: "Демо: информация о финансировании",
+  demo_match: "Совпадение по потребностям",
+  demo_information: "Справочная информация о финансировании",
   needs_clarification: "Нужно уточнить",
   not_matched: "Нет совпадения потребности",
   unavailable: "Не используется в подборе",
@@ -206,17 +206,9 @@ export default function BankProducts({
               className={`bank-product-card ${decision?.status === "not_matched" || entry.availability === "blocked" ? "muted-card" : ""}`}
               key={p.id}
             >
-              <div className="row">
-                <span
-                  className={`tag ${entry.availability === "demonstration_only" ? "amber" : ""}`}
-                >
-                  {entry.availability === "demonstration_only"
-                    ? "Демонстрационная карточка"
-                    : entry.availability === "blocked"
-                      ? "Заблокирована для подбора"
-                      : "Публичная информация"}
-                </span>
-              </div>
+              {entry.availability === "blocked" && (
+                <p className="fine-print">Недоступно для подбора</p>
+              )}
               <h2>{p.name}</h2>
               <p>{p.description}</p>
               {decision && (
@@ -227,6 +219,13 @@ export default function BankProducts({
               )}
               <details className="product-more">
                 <summary>Почему подходит и что проверить</summary>
+                <p>
+                  {entry.availability === "demonstration_only"
+                    ? "Демонстрационная карточка. Действующие условия не подтверждены; это не кредитное одобрение."
+                    : entry.availability === "blocked"
+                      ? "Заблокирована для подбора"
+                      : "Публичная информация"}
+                </p>
                 {decision && (
                   <section className="bank-decision">
                     <h3>{statusText[decision.status]}</h3>
@@ -326,10 +325,7 @@ export default function BankProducts({
                 : "Подбор завершён. Это не решение банка."}
         </ViStatus>
       )}
-      <p className="model-note">
-        Демо-каталог. Действующие условия ВТБ не подтверждены. Это не решение
-        банка и не кредитное одобрение.
-      </p>
+      <p className="model-note">Демонстрационный подбор. Не решение банка.</p>
       {error && (
         <div className="alert" role="alert">
           {error}

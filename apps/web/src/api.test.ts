@@ -145,7 +145,7 @@ describe("same-origin API client (explicit fetch mocks)", () => {
       );
       await expect(
         request("/api/v1/conversations/id/messages"),
-      ).rejects.toThrow("Ollama");
+      ).rejects.toThrow("Помощник");
     },
   );
   it("preserves version conflict code and gives useful validation errors", async () => {

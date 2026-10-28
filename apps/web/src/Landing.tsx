@@ -1,68 +1,79 @@
-import { ViFloatingButton } from "./Vi";
+import { useState } from "react";
+import { ViAvatar, ViFloatingButton } from "./Vi";
+import "./landing.css";
 
 export default function Landing({ onStart }: { onStart: () => void }) {
+  const [welcome, setWelcome] = useState(false);
   return (
-    <div className="promo-page">
+    <div className="bank-landing">
       <a className="skip-link" href="#promo-content">
         Перейти к содержимому
       </a>
-      <section className="promo-hero">
-        <header className="promo-header">
-          <span className="promo-wordmark">
+      <section className="bank-hero">
+        <header className="bank-header">
+          <span className="bank-wordmark">
             Business <b>AI</b>
-            <small>ХАКАТОННЫЙ КОНЦЕПТ</small>
           </span>
-          <div className="promo-segments" aria-label="Декоративная навигация">
+          <div className="bank-segments" aria-hidden="true">
             <span>Частным лицам</span>
             <span>Бизнесу</span>
           </div>
-          <span className="promo-header-note">
-            Новые идеи. Новые возможности.
-          </span>
-        </header>
-        <main id="promo-content" tabIndex={-1} className="promo-content">
-          <div className="promo-copy">
-            <p className="promo-eyebrow">
-              Маленький помощник для больших бизнес-идей
-            </p>
-            <h1>
-              Ваш бизнес.
-              <br />С первой идеи.
-            </h1>
-            <p className="promo-subtitle">
-              Всё большое начинается с разговора.
-            </p>
-            <span className="promo-white-plate">Ви · ваш AI-помощник</span>
+          <div className="bank-header-icons" aria-hidden="true">
+            <span>⌕</span>
+            <span>Для ваших идей</span>
+            <span>☰</span>
           </div>
-          <div className="promo-sculpture" aria-hidden="true">
-            <div className="promo-orbit" />
-            <div className="promo-sphere" />
-            <div className="promo-idea-card">
-              <span>Ваша идея</span>
-              <i />
-              <i />
-              <i />
-              <strong>
-                Большое
-                <br />
-                начинается
-                <br />с малого.
-              </strong>
-              <span className="promo-card-dot">↗</span>
+        </header>
+        <main id="promo-content" tabIndex={-1} className="bank-content">
+          <div className="bank-copy">
+            <h1>
+              Ваш бизнес
+              <br />
+              начинается с идеи
+            </h1>
+            <button className="bank-cta" onClick={() => setWelcome(true)}>
+              Познакомиться с Ви
+            </button>
+          </div>
+          <div className="bank-character">
+            <ViAvatar emotion="greeting" motion="none" size={720} />
+          </div>
+          <div className="bank-promos" aria-hidden="true">
+            <div>
+              <span>
+                От первой идеи
+                <br />к своему делу
+              </span>
+              <i className="bank-thumb thumb-one" />
             </div>
-            <div className="promo-fold fold-one" />
-            <div className="promo-fold fold-two" />
+            <div className="current">
+              <span>
+                Маленький помощник
+                <br />
+                для больших идей
+              </span>
+              <i className="bank-thumb thumb-two" />
+            </div>
+            <div>
+              <span>
+                Ваш план
+                <br />в одном месте
+              </span>
+              <i className="bank-thumb thumb-three" />
+            </div>
+            <span className="bank-promo-dots">● ● ● ● ●</span>
           </div>
         </main>
-        <p className="promo-concept">
-          Хакатонный концепт · Неофициальный прототип
-        </p>
       </section>
-      <footer className="promo-footer">
-        Ви — ваш маленький помощник для больших бизнес-идей.
-        <span>Не официальный сервис ВТБ.</span>
+      <footer className="bank-footer">
+        Business AI — независимый проект. Не официальный сервис ВТБ.
       </footer>
-      <ViFloatingButton onStart={onStart} />
+      <ViFloatingButton
+        onStart={onStart}
+        open={welcome}
+        onOpen={() => setWelcome(true)}
+        onClose={() => setWelcome(false)}
+      />
     </div>
   );
 }
