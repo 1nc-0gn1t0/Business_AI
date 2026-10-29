@@ -1,5 +1,11 @@
 # Миграции и возврат совместимого приложения · H-04
 
+**U-02,29.10.2026:** текущий head/readiness теперь `0009_acquisition` — три additive
+таблицы jobs/requests/events. Проверены populated0008→0009, repeat head/check и hashes
+прежних записей. Ни geo objects, ни immutable reports не мигрируются. Ниже сохранён
+исторический протокол H-04; он не означает автоматический upgrade рабочей установки.
+[Изменения и безопасный запуск worker](architecture/BUSINESS_AI_2_DYNAMIC_ACQUISITION.md).
+
 26.10.2026. Только PostgreSQL17/PostGIS3.5, приложение в `public`. Не разрешает
 автоматическое обновление/переключение рабочей БД. [Backup runbook](BACKUP_RESTORE.md).
 

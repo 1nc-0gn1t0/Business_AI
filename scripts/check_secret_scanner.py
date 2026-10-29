@@ -7,6 +7,98 @@ import tempfile
 from pathlib import Path
 
 
+def check_history_scope(binary: str, policy: Path, root: Path) -> None:
+    """Prove historical false-positive scope never hides another value/file/commit."""
+    repo = root / "history"
+    target = "apps/api/tests/integration/test_acquisition.py"
+    value = "synthetic-" + "operator-fixture-32-characters"
+    path = repo / target
+    path.parent.mkdir(parents=True)
+    path.write_text(
+        'token = "' + value + '"\ntoken = "' + value[:-1] + 'Z"\n', encoding="utf8"
+    )
+    (repo / "other.py").write_text('token = "' + value + '"\n', encoding="utf8")
+    hooks = root / "empty-hooks"
+    hooks.mkdir()
+
+    def git(*arguments: str) -> str:
+        result = subprocess.run(
+            ["git", "-C", str(repo), *arguments],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        if result.returncode:
+            raise SystemExit("Secret scanner synthetic Git fixture failed")
+        return result.stdout.strip()
+
+    git("init", "--quiet")
+    git("add", ".")
+    git(
+        "-c",
+        "user.name=Scanner fixture",
+        "-c",
+        "user.email=fixture@example.invalid",
+        "-c",
+        "commit.gpgsign=false",
+        "-c",
+        f"core.hooksPath={hooks.as_posix()}",
+        "commit",
+        "--quiet",
+        "-m",
+        "Unusable synthetic scope-control fixtures",
+    )
+    sha = git("rev-parse", "HEAD")
+    historical = "c704abbd107e649f4e7c558deb982a3228ba19f0"
+    config = policy.read_text(encoding="utf8")
+    if config.count(historical) != 1:
+        raise SystemExit("Historical fixture scope requires explicit review")
+    for scoped in (False, True):
+        fixture_config = root / ("scoped.toml" if scoped else "outside-commit.toml")
+        fixture_config.write_text(
+            config.replace(historical, sha) if scoped else config, encoding="utf8"
+        )
+        report = root / "scope-report.json"
+        result = subprocess.run(
+            [
+                binary,
+                "git",
+                str(repo),
+                "--config",
+                str(fixture_config),
+                "--redact=100",
+                "--ignore-gitleaks-allow",
+                "--no-banner",
+                "--report-format",
+                "json",
+                "--report-path",
+                str(report),
+            ],
+            capture_output=True,
+            timeout=30,
+            check=False,
+        )
+        raw = report.read_text(encoding="utf8") if report.exists() else "[]"
+        locations = {
+            (e["File"], e["StartLine"])
+            for e in json.loads(raw)
+            if e["RuleID"] == "generic-api-key"
+        }
+        expected = {(target, 2), ("other.py", 1)}
+        if not scoped:
+            expected.add((target, 1))
+        if result.returncode != 1 or locations != expected:
+            raise SystemExit("Historical fixture scope hid another value/file/commit")
+        output = (
+            raw
+            + result.stdout.decode(errors="replace")
+            + result.stderr.decode(errors="replace")
+        )
+        if value in output or value[:-1] + "Z" in output:
+            raise SystemExit("Historical fixture redaction failed")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--binary", required=True)
@@ -64,7 +156,8 @@ def main() -> None:
             for value in fake
         ):
             raise SystemExit("Secret scanner redaction check failed")
-    print("PASS: clean fixture, three synthetic credential rules, redacted output")
+        check_history_scope(args.binary, policy, root)
+    print("PASS: clean/positive/redaction fixtures and exact historical scope controls")
 
 
 if __name__ == "__main__":

@@ -53,6 +53,23 @@ Self-test создаёт только временные синтетическ�
 Inline gitleaks:allow не разрешает пропуск: --ignore-gitleaks-allow проверяется fixture.
 Не добавлять .gitleaksignore без отдельной политики/approval; regression gate его запрещает.
 
+### U02-FP-001 · 29.10.2026
+
+Первый U-02 commit `c704abbd107e649f4e7c558deb982a3228ba19f0` вызвал
+`generic-api-key` на фиксированном синтетическом pytest-токене в
+`apps/api/tests/integration/test_acquisition.py`. Значение устанавливалось только
+временным monkeypatch в тестовом процессе; рабочим credential оно не являлось.
+Новые тесты используют случайный временный токен. История не переписывалась.
+
+В `.gitleaks.toml` зарегистрировано rule-scoped AND-исключение для точных commit,
+пути и значения; default detector сохранён. Это не исключение файла, всего commit
+или всех тестовых ключей. Владелец: repository maintainer; повторная проверка до
+28.11.2026. `.gitleaksignore` и глобальные исключения истории не добавлены.
+`scripts/check_secret_scanner.py` в изолированном Git fixture проверяет, что другое
+значение в том же файле, то же значение в другом файле и другом commit остаются
+находками, а вывод полностью редактируется. Pinned Gitleaks8.30.1: self-test,
+reachable history и directory scan PASS локально; exact-HEAD CI — в отчёте PR.
+
 Результаты с находками не публиковать: сначала вывести только rule/file/line, проверить
 секрет в контролируемой среде, сообщить владельцу о ротации при реальной утечке.
 Удаление строки не отзывает ключ; не переписывать Git history/force push автоматически.

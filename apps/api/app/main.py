@@ -13,6 +13,7 @@ from pydantic import BaseModel, ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.adapters.llm import LLMError
+from app.api.acquisition import router as acquisition_router
 from app.api.bank import router as bank_router
 from app.api.conversations import error_detail, router
 from app.api.data import router as data_router
@@ -51,6 +52,7 @@ app.include_router(finance_router)
 app.include_router(bank_router)
 app.include_router(data_router)
 app.include_router(registry_router)
+app.include_router(acquisition_router)
 app.include_router(leads_router)
 app.include_router(consent_text_router)
 app.include_router(reports_router)

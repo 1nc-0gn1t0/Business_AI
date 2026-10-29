@@ -27,6 +27,68 @@ class Base(DeclarativeBase):
     pass
 
 
+class AcquisitionJobRecord(Base):
+    __tablename__ = "acquisition_jobs"
+    __table_args__ = (
+        sa.CheckConstraint(
+            "attempt BETWEEN 0 AND 2 AND fencing_token >= 0 AND event_cursor >= 0",
+            name="ck_acquisition_counters",
+        ),
+        sa.CheckConstraint(
+            "artifact IS NULL OR octet_length(artifact) <= 8388608", name="ck_acquisition_artifact"
+        ),
+        sa.CheckConstraint(
+            "state IN ('queued','claimed','fetching','validating','importing','verifying',"
+            "'activating','retry_wait','cancel_requested','cancelled','failed',"
+            "'recovery_required','succeeded')",
+            name="ck_acquisition_state",
+        ),
+        sa.Index("ix_acquisition_pending", "state", "next_attempt_at"),
+        sa.Index(
+            "ix_acquisition_active_scope",
+            "scope_hash",
+            unique=True,
+            postgresql_where=sa.text("state NOT IN ('succeeded','failed','cancelled')"),
+        ),
+    )
+    id: Mapped[UUID] = mapped_column(primary_key=True)
+    state: Mapped[str] = mapped_column(sa.Text)
+    stage: Mapped[str] = mapped_column(sa.Text)
+    request: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    scope_hash: Mapped[str] = mapped_column(sa.String(64))
+    policy_hash: Mapped[str] = mapped_column(sa.String(64))
+    expected_version: Mapped[str | None] = mapped_column(sa.Text)
+    attempt: Mapped[int]
+    fencing_token: Mapped[int]
+    event_cursor: Mapped[int]
+    installation: Mapped[str | None] = mapped_column(sa.Text)
+    lease_until: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    updated_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    next_attempt_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    artifact: Mapped[bytes | None] = mapped_column(sa.LargeBinary)
+    checkpoint: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    result: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    error_code: Mapped[str | None] = mapped_column(sa.Text)
+
+
+class AcquisitionRequestRecord(Base):
+    __tablename__ = "acquisition_requests"
+    key: Mapped[str] = mapped_column(sa.String(64), primary_key=True)
+    payload_hash: Mapped[str] = mapped_column(sa.String(64))
+    job_id: Mapped[UUID] = mapped_column(sa.ForeignKey("acquisition_jobs.id"))
+
+
+class AcquisitionEventRecord(Base):
+    __tablename__ = "acquisition_events"
+    job_id: Mapped[UUID] = mapped_column(sa.ForeignKey("acquisition_jobs.id"), primary_key=True)
+    sequence: Mapped[int] = mapped_column(primary_key=True)
+    timestamp: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True), index=True)
+    state: Mapped[str] = mapped_column(sa.Text)
+    stage: Mapped[str] = mapped_column(sa.Text)
+    message_code: Mapped[str] = mapped_column(sa.Text)
+
+
 class ReportRecord(Base):
     __tablename__ = "analytical_reports"
     __table_args__ = (

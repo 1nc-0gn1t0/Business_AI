@@ -1,0 +1,294 @@
+{
+  "mode": "real one-off tiny AOI acquisition, isolated database, no user volumes",
+  "source_id": "osm",
+  "endpoint": "https://overpass-api.de/api/interpreter",
+  "scope": "operator_smoke",
+  "categories_downloaded": [
+    "geo.mapped_poi"
+  ],
+  "job": {
+    "id": "2935cdcc-4123-49fb-be64-b814e69a7476",
+    "state": "succeeded",
+    "stage": "completed",
+    "source_id": "osm",
+    "category": "geo.mapped_poi",
+    "territory": "ru-moscow",
+    "aoi": {
+      "west": 37.611,
+      "south": 55.76,
+      "east": 37.613,
+      "north": 55.762
+    },
+    "attempt": 1,
+    "fencing_token": 1,
+    "created_at": "2026-10-29T06:38:25.095635Z",
+    "updated_at": "2026-10-29T06:39:07.964436Z",
+    "next_attempt_at": "2026-10-29T06:38:25.095635Z",
+    "result": {
+      "poi_count": 23,
+      "raw_bytes": 11685,
+      "data_version": "dc47bbe6acda2061c8880ce289db87de77be28261f5a0cf24dae8f3dce2abe7e",
+      "dataset_slug": "acq-osm-4e7b32886dd7f90aaaa22d9583976359",
+      "reused_cache": 0,
+      "artifact_bytes": 5538,
+      "import_seconds": 0.06775648199254647,
+      "peak_rss_bytes": 91545600,
+      "download_seconds": 39.34601424401626,
+      "import_cpu_seconds": 0.02934429999999999,
+      "postgres_growth_bytes": 90112
+    },
+    "error_code": null,
+    "event_cursor": 9
+  },
+  "manifest": {
+    "bbox": {
+      "east": 37.613,
+      "west": 37.611,
+      "north": 55.762,
+      "south": 55.76
+    },
+    "city": "Москва",
+    "slug": "acq-osm-4e7b32886dd7f90aaaa22d9583976359",
+    "query": "[out:json][timeout:25][maxsize:33554432];(nwr[\"amenity\"](55.76,37.611,55.762,37.613);nwr[\"shop\"](55.76,37.611,55.762,37.613);nwr[\"highway\"=\"bus_stop\"](55.76,37.611,55.762,37.613););out meta center;",
+    "origin": "open_data",
+    "sha256": "dc47bbe6acda2061c8880ce289db87de77be28261f5a0cf24dae8f3dce2abe7e",
+    "license": "ODbL-1.0",
+    "osm_base": "2026-10-29T06:37:20Z",
+    "fetched_at": "2026-10-29T06:39:07.842652Z",
+    "source_url": "https://overpass-api.de/api/interpreter",
+    "attribution": "© OpenStreetMap contributors",
+    "source_name": "OpenStreetMap via Overpass API",
+    "normalization": "poi_minimal_v1",
+    "source_sha256": "67f03e37e31fa975e58e766a5955d2801b01d02de9e5932fd0824751cbda5375",
+    "schema_version": 1
+  },
+  "diagnostics": {
+    "pois": 23,
+    "unnamed_pois": 10
+  },
+  "geometry": {
+    "count": 23,
+    "valid": true,
+    "wgs84": true,
+    "object_extent": "BOX(37.6110213 55.7600594,37.6129999 55.7619955)"
+  },
+  "indexes": [
+    "geo_pois_pkey",
+    "ix_geo_poi_categories",
+    "ix_geo_poi_geography",
+    "ix_geo_poi_geom"
+  ],
+  "initial_failed_job": {
+    "id": "e86fe851-60b3-4986-be20-729dd472a7c3",
+    "state": "failed",
+    "attempts": 2,
+    "code": "network_unavailable"
+  },
+  "coverage_after": {
+    "schema_version": "coverage-v2",
+    "registry_revision": "u02-smoke-20261029",
+    "config_sha256": "23e244fd8b6dc8117f9570e62ef4f2d838fb72ccb850c53333040d7c15d9fdb7",
+    "evaluated_at": "2026-10-29T06:42:24.213751Z",
+    "query": {
+      "territory": "ru-moscow",
+      "aoi": {
+        "west": 37.611,
+        "south": 55.76,
+        "east": 37.613,
+        "north": 55.762
+      },
+      "categories": [
+        "geo.mapped_poi",
+        "geo.vehicle_network",
+        "geo.admin_polygons",
+        "geo.pedestrian_network"
+      ],
+      "period": null,
+      "mode": "real",
+      "purpose": "local_analysis"
+    },
+    "assessments": [
+      {
+        "category": "geo.mapped_poi",
+        "local_status": "available",
+        "summary": "usable",
+        "availability": "present",
+        "freshness": "current",
+        "completeness": "full_for_requested_scope",
+        "object_quality": "unknown",
+        "datasets": [
+          {
+            "metadata": {
+              "provider": "osm",
+              "slug": "acq-osm-4e7b32886dd7f90aaaa22d9583976359",
+              "revision": "dc47bbe6acda2061c8880ce289db87de77be28261f5a0cf24dae8f3dce2abe7e",
+              "data_version": "dc47bbe6acda2061c8880ce289db87de77be28261f5a0cf24dae8f3dce2abe7e",
+              "active": true,
+              "bbox": {
+                "west": 37.611,
+                "south": 55.76,
+                "east": 37.613,
+                "north": 55.762
+              },
+              "origin": "open_data",
+              "source_name": "OpenStreetMap via Overpass API",
+              "license": "ODbL-1.0",
+              "attribution": "© OpenStreetMap contributors",
+              "limitations": [
+                "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+                "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+                "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+                "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+                "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+                "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+                "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+              ]
+            },
+            "spatial_fit": "full_for_requested_scope",
+            "freshness": "current",
+            "freshness_policy": "osm-snapshot-30d",
+            "freshness_basis": "source_timestamp",
+            "observed_at": null,
+            "source_timestamp": "2026-10-29T06:37:20Z",
+            "published_at": null,
+            "fetched_at": "2026-10-29T06:39:07.842652Z",
+            "generated_at": null,
+            "imported_at": "2026-10-29T06:39:07.909210Z",
+            "temporal_coverage": null,
+            "next_update_at": null,
+            "temporal_fit": "unknown",
+            "usable": true,
+            "reasons": [
+              "mapping_quality_unknown"
+            ]
+          }
+        ],
+        "acquisition": [
+          {
+            "source_id": "osm",
+            "acquirability": "permitted",
+            "reason": "operator_acquisition_permitted",
+            "network_permission": "permitted",
+            "availability": "ready",
+            "potentially_available": true,
+            "adapter_status": "ready",
+            "license_status": "verified_local_use",
+            "local_use_permitted": true,
+            "automatic_acquisition_implemented": true
+          }
+        ],
+        "reasons": [
+          "territory_boundary_unknown"
+        ]
+      },
+      {
+        "category": "geo.vehicle_network",
+        "local_status": "missing",
+        "summary": "not_available_from_approved_sources",
+        "availability": "missing",
+        "freshness": "unknown",
+        "completeness": "unknown",
+        "object_quality": "unknown",
+        "datasets": [],
+        "acquisition": [],
+        "reasons": [
+          "territory_boundary_unknown"
+        ]
+      },
+      {
+        "category": "geo.admin_polygons",
+        "local_status": "missing",
+        "summary": "acquirable",
+        "availability": "missing",
+        "freshness": "unknown",
+        "completeness": "unknown",
+        "object_quality": "unknown",
+        "datasets": [],
+        "acquisition": [
+          {
+            "source_id": "osm",
+            "acquirability": "permitted",
+            "reason": "operator_acquisition_permitted",
+            "network_permission": "permitted",
+            "availability": "ready",
+            "potentially_available": true,
+            "adapter_status": "ready",
+            "license_status": "verified_local_use",
+            "local_use_permitted": true,
+            "automatic_acquisition_implemented": false
+          }
+        ],
+        "reasons": [
+          "territory_boundary_unknown"
+        ]
+      },
+      {
+        "category": "geo.pedestrian_network",
+        "local_status": "missing",
+        "summary": "acquirable",
+        "availability": "missing",
+        "freshness": "unknown",
+        "completeness": "unknown",
+        "object_quality": "unknown",
+        "datasets": [],
+        "acquisition": [
+          {
+            "source_id": "osm",
+            "acquirability": "permitted",
+            "reason": "operator_acquisition_permitted",
+            "network_permission": "permitted",
+            "availability": "ready",
+            "potentially_available": true,
+            "adapter_status": "ready",
+            "license_status": "verified_local_use",
+            "local_use_permitted": true,
+            "automatic_acquisition_implemented": false
+          }
+        ],
+        "reasons": [
+          "territory_boundary_unknown"
+        ]
+      }
+    ],
+    "metadata_complete": true,
+    "limitations": [
+      "Coverage describes imported snapshots, not completeness of the real market.",
+      "Source timestamp is not a real-world observation date. No external requests performed."
+    ]
+  },
+  "whole_city_local_status": "partial",
+  "repeat": {
+    "id": "ee51676d-dbc7-4f97-a561-2a7b49adb858",
+    "state": "succeeded",
+    "stage": "completed",
+    "source_id": "osm",
+    "category": "geo.mapped_poi",
+    "territory": "ru-moscow",
+    "aoi": {
+      "west": 37.611,
+      "south": 55.76,
+      "east": 37.613,
+      "north": 55.762
+    },
+    "attempt": 0,
+    "fencing_token": 0,
+    "created_at": "2026-10-29T06:42:24.314687Z",
+    "updated_at": "2026-10-29T06:42:24.325099Z",
+    "next_attempt_at": "2026-10-29T06:42:24.314687Z",
+    "result": {
+      "dataset_slug": "acq-osm-4e7b32886dd7f90aaaa22d9583976359",
+      "data_version": "dc47bbe6acda2061c8880ce289db87de77be28261f5a0cf24dae8f3dce2abe7e",
+      "reused_cache": 1
+    },
+    "error_code": null,
+    "event_cursor": 1
+  },
+  "network_reservations_total": 3,
+  "temporary_file_sizes": {
+    "raw_bytes": 11685,
+    "normalized_bytes": 5538,
+    "manifest_bytes_reconstructed": 922,
+    "sum_file_bytes_reconstructed": 18145,
+    "method": "Raw and normalized bytes measured during live operation; manifest serialized from retained immutable checkpoint with the same serializer. Derived sum, not filesystem peak or WAL measurement."
+  }
+}

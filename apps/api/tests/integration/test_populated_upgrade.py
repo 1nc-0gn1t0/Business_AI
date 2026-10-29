@@ -11,7 +11,7 @@ import sys
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager
-from datetime import date
+from datetime import UTC, date, datetime
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -209,6 +209,51 @@ def add_report(engine: Engine, state: dict[str, Any]) -> None:
             )
             assert raw.status_code == 200
             state[format_ + "_sha256"] = hashlib.sha256(raw.content).hexdigest()
+    # U-02 tables participate in populated backup/fingerprint checks too. This is
+    # an explicitly cancelled synthetic job; it never grants network permission.
+    from app.data.acquisition.service import emit
+    from app.db.models import AcquisitionJobRecord, AcquisitionRequestRecord
+
+    with Session(engine) as db, db.begin():
+        now = datetime.now(UTC)
+        job = AcquisitionJobRecord(
+            id=uuid4(),
+            state="cancelled",
+            stage="cancelled",
+            request={
+                "source_id": "osm",
+                "category": "geo.mapped_poi",
+                "territory": "ru-moscow",
+                "aoi": {"west": 37.61, "south": 55.75, "east": 37.612, "north": 55.752},
+                "freshness": "current",
+                "idempotency_key": "h04-u02-cancelled-fixture",
+            },
+            scope_hash="a" * 64,
+            policy_hash="b" * 64,
+            expected_version=None,
+            attempt=0,
+            fencing_token=0,
+            event_cursor=0,
+            installation=None,
+            lease_until=None,
+            created_at=now,
+            updated_at=now,
+            next_attempt_at=now,
+            artifact=None,
+            checkpoint={},
+            result=None,
+            error_code=None,
+        )
+        db.add(job)
+        db.flush()
+        emit(db, job, "cancelled", "cancelled", "synthetic_fixture_cancelled")
+        db.add(
+            AcquisitionRequestRecord(
+                key="h04-u02-cancelled-fixture",
+                payload_hash="c" * 64,
+                job_id=job.id,
+            )
+        )
 
 
 def verify_api(engine: Engine, state: dict[str, Any], *, reports: bool = True) -> None:

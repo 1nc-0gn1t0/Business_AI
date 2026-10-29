@@ -36,6 +36,10 @@ BA2/U-01 Data Registry & Coverage. [Реализация и границы](../a
 
 ## 1. Фактическая точка старта
 
+**29.10.2026 / BA2/U-02:** после merge PR32 владелец разрешил bounded acquisition.
+[Реализация/источники/измерения](../architecture/BUSINESS_AI_2_DYNAMIC_ACQUISITION.md).
+Это не выполнение старых одноимённых карточек, sustained public import или разрешение U-03.
+
 - PR #16 действительно merged 25.10.2026 в 15:47 UTC (18:47 МСК).
   Main: `09f2f7d8f8fd7260b72e57b42e51758eb6ada488`; локальный main обновлён ff-only,
   main…origin/main=0/0; исходное рабочее дерево чистое.

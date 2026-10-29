@@ -1,5 +1,42 @@
 # Business AI — HANDOFF
 
+## Business AI 2.0 / U-02 · Dynamic Acquisition · 29.10.2026
+
+- PR32 merged/main `7281121fc78c45fe7adda9115761a01137e1b907`, initial clean.
+  Branch `codex/U-02-dynamic-data-acquisition`; actual SHA/PR/CI in delivery report.
+- [Implementation, sources/API/runbook](architecture/BUSINESS_AI_2_DYNAMIC_ACQUISITION.md),
+  [checkpoint](architecture/U-02_CHECKPOINT.md), [real Moscow evidence](qa/u-02/live-moscow.json).
+- Four U-01 sources preserved; one acquired layer: OSM mapped POI. Synthetic local only;
+  GHSL/licensed not integrated; other categories not auto-acquired.
+- PostgreSQL jobs/requests/events migration0009, bounded independent worker from API image,
+  operator-only v2 create/status/events/cancel. DataProvider/provenance/OSM importer reused.
+  No Qwen agent/extra inference queue, frontend flow or finance/report contract changes.
+- Claim/process+DB mutex/lease/fencing, same-installation stopped-process recovery,
+  normalized DB checkpoint/hash, bounded retries/cancel, atomic old-version-preserving publication.
+  Staging cleanup requires installation ownership. Existing volumes/backups untouched.
+- Exact fixed HTTPS endpoint/public DNS/pinned TLS peer/SNI/CA verification, no redirects/
+  proxies/user URLs. <=10reservations/day,>=60s,<=2attempts/job. Public Overpass terms rule
+  out sustained app backend/bulk use; default network review_required, operator smoke expiry.
+- Real tiny Moscow AOI37.611/55.760/37.613/55.762:23validWGS84 POI, ODbL. Download39.346s,
+  import0.067756s, CPU0.029344s, RSS91545600bytes, PGgrowth90112bytes (no WAL).
+  U-01 HTTP: exact POI available/city partial/other layers missing; repeat request cache hit.
+  Earlier DNS/network failures retained. No city-size performance claim.
+- Live local Qwen v1 regression HTTP200/ollama/profile persisted,56s; synthetic input in
+  disposable DB. Initial harness compared Decimal strings incorrectly; corrected verification,
+  no repeat inference. [Evidence](qa/u-02/live-qwen.json).
+- Final worker/PostGIS18PASS/73.57s; focused86PASS. Existing DB run
+  125PASS/1fixture failure (new tables empty); fixture now includes a cancelled job,
+  migration/report-byte preservation rerun PASS. Ruff/format/mypy139files PASS; all7 prek hooks PASS.
+- PR33 open, not merged; first commit c704abbd107e649f4e7c558deb982a3228ba19f0.
+  Initial CI8/10PASS: both audit runs flagged a synthetic pytest-only token, no deployed secret.
+  New fixtures use random tokens; exact historical rule-scoped exception has positive controls
+  for other values/files/commits. Scanner history/directory/self-test PASS; focused34PASS.
+  [Triage/review policy](SUPPLY_CHAIN.md#u02-fp-001--29102026); new exact-HEAD CI pending.
+- Cross-container lock PASS; v1 OpenAPI unchanged/v2 types regenerated; web build/
+  Chromium coffee smoke PASS. U-03 not started; owner decision required after PR review.
+- Hardened Compose/tmpfs smoke PASS (UID999 mount), schema0009/ready/web200/catalog4/18;
+  operator API closed503 by default. QA containers removed after evidence, no user volumes touched.
+
 ## Business AI 2.0 / U-01 · Data Registry & Coverage · 29.10.2026
 
 - PR31 merged/main `ffc06f1d6b42c3c0fda3939edc19cdacda03115a`, initial clean.

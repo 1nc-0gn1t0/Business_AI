@@ -1,0 +1,21 @@
+{
+  "kind": "live local Qwen regression, disposable DB, synthetic input",
+  "status": 200,
+  "elapsed_seconds": 56.0,
+  "mode": "ollama",
+  "profile": {
+    "city": "Казань",
+    "category": "кофейня",
+    "budget": "2000000.00",
+    "funding": "own_funds",
+    "preferences": {
+      "format": "навынос",
+      "preferred_districts": [],
+      "constraints": []
+    },
+    "confirmation_state": "draft"
+  },
+  "version": 1,
+  "verified": true,
+  "verification": "Decimal comparison; HTTP 200 and persisted city/category/budget/funding/format; initial harness string assertion corrected, no repeated inference"
+}

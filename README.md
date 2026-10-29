@@ -22,6 +22,11 @@ bundle по умолчанию закрыт; модель presence не подм
 
 ## Главные документы
 
+- **Business AI 2.0 / U-02:** [durable acquisition, operator worker и реальные измерения](docs/architecture/BUSINESS_AI_2_DYNAMIC_ACQUISITION.md).
+  Подтверждён один маленький OSM POI-импорт Москвы; это не покрытие всего города.
+  Публичный Overpass не используется как постоянный backend: default network закрыт до review,
+  включение только operator smoke с expiry. Новые задания требуют additive migration0009.
+
 - **Business AI 2.0 / U-01:** [реестр, coverage, freshness, sufficiency и API](docs/architecture/BUSINESS_AI_2_DATA_REGISTRY_IMPLEMENTATION.md).
   Только локальные metadata; новый город/LLM/worker не запускаются. Казань ограничена
   extent текущего snapshot, наличие карты не означает поддержку всего города.

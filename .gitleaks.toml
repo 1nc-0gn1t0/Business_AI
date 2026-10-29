@@ -13,3 +13,16 @@ description = "Password-bearing PostgreSQL connection URL"
 regex = '''(?i)postgres(?:ql)?(?:\+[a-z]+)?://[^:\s/]+:([^@\s/]+)@'''
 secretGroup = 1
 
+# U02-FP-001: public, synthetic pytest-only value; never a deployed credential.
+# Owner: repository maintainer. Reviewed 2026-10-29; review_by 2026-11-28.
+# Inherit the default detector. AND scope must not suppress other values/files/commits.
+[[rules]]
+id = "generic-api-key"
+[[rules.allowlists]]
+description = "U02-FP-001 historical synthetic test credential, exact scope only"
+condition = "AND"
+commits = ["c704abbd107e649f4e7c558deb982a3228ba19f0"]
+paths = ['''^apps/api/tests/integration/test_acquisition\.py$''']
+regexTarget = "secret"
+regexes = ['''^synthetic-operator-fixture-32-characters$''']
+

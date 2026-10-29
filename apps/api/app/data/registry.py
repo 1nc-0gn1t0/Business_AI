@@ -62,7 +62,9 @@ def permitted(source: SourceDefinition, purpose: str) -> bool:
     return source.license_status == "verified_local_use" and purpose in source.allowed_uses
 
 
-def acquisition(source: SourceDefinition, purpose: str) -> AcquisitionOption:
+def acquisition(
+    source: SourceDefinition, purpose: str, category: str | None = None
+) -> AcquisitionOption:
     status = "unknown"
     reason = "permission_or_remote_availability_unknown"
     if source.license_status == "forbidden" or source.network_permission == "forbidden":
@@ -92,5 +94,7 @@ def acquisition(source: SourceDefinition, purpose: str) -> AcquisitionOption:
             "adapter_status": source.adapter_status,
             "license_status": source.license_status,
             "local_use_permitted": permitted(source, purpose),
+            "automatic_acquisition_implemented": source.id == "osm"
+            and category == "geo.mapped_poi",
         }
     )
