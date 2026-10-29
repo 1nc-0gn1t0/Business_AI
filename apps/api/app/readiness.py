@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from app.adapters.llm import LLMError, get_llm
 
-SCHEMA = "0010_agent_runs"
+SCHEMA = "0011_industry_profile"
 
 
 class Readiness(BaseModel):

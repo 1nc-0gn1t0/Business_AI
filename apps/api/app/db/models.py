@@ -322,6 +322,22 @@ class ProfileRevisionRecord(Base):
     created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
 
 
+class IndustryProfileRecord(Base):
+    """One-to-one document extension, not a second profile lifecycle/version counter."""
+
+    __tablename__ = "industry_profiles"
+    __table_args__ = (
+        sa.CheckConstraint(
+            "jsonb_typeof(document) = 'object' AND octet_length(document::text) <= 49152",
+            name="ck_industry_profile_size",
+        ),
+    )
+    profile_id: Mapped[UUID] = mapped_column(
+        sa.ForeignKey("business_profiles.id", ondelete="CASCADE"), primary_key=True
+    )
+    document: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
 class BusinessProfileRecord(Base):
     __tablename__ = "business_profiles"
     __table_args__ = (

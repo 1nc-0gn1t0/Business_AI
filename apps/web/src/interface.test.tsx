@@ -17,6 +17,7 @@ import BusinessFlow from "./BusinessFlow";
 import { saveCredential } from "./api";
 import geoExample from "../../../docs/examples/BA-008-kazan-coffee.json";
 import financeExample from "../../../docs/examples/BA-009-coffee-result.json";
+import { industryCatalog, industryFixture } from "../e2e/industry.fixture";
 
 // Explicit recorded fixtures only for tests. Production never imports result fixtures.
 vi.mock("./GeoMap", () => ({
@@ -49,6 +50,115 @@ const callbacks = () => ({
 });
 
 describe("critical UI components with explicit API mocks", () => {
+  it("retries a failed capability catalog without creating a conversation", async () => {
+    let available = false;
+    const fetch = vi
+      .spyOn(globalThis, "fetch")
+      .mockImplementation(async (path) => {
+        if (String(path).endsWith("/industry-capabilities"))
+          return available
+            ? json({ enabled: false, industries: [] })
+            : json({ detail: { code: "database_unavailable" } }, 503);
+        return json([]);
+      });
+    render(<BusinessFlow onHome={vi.fn()} />);
+    await screen.findByRole("button", {
+      name: "Повторить загрузку возможностей",
+    });
+    expect(screen.getByLabelText("Сообщение помощнику")).toBeDisabled();
+    available = true;
+    fireEvent.click(
+      screen.getByRole("button", { name: "Повторить загрузку возможностей" }),
+    );
+    await waitFor(() =>
+      expect(screen.getByLabelText("Сообщение помощнику")).toBeEnabled(),
+    );
+    expect(
+      fetch.mock.calls.some(([path]) =>
+        String(path).endsWith("/conversations"),
+      ),
+    ).toBe(false);
+  });
+  it("restores a consent-blocked v2 project after explicit regrant without sending an empty message", async () => {
+    saveCredential({ id: view.id, token: "explicit-test-credential" });
+    const universal = industryFixture("online_school", true, true);
+    universal.conversation.id = view.id;
+    let granted = false;
+    Object.defineProperties(HTMLDialogElement.prototype, {
+      showModal: {
+        configurable: true,
+        value: function (this: HTMLDialogElement) {
+          this.open = true;
+        },
+      },
+      close: {
+        configurable: true,
+        value: function (this: HTMLDialogElement) {
+          this.open = false;
+        },
+      },
+    });
+    const fetch = vi
+      .spyOn(globalThis, "fetch")
+      .mockImplementation(async (path, options) => {
+        const route = String(path);
+        if (route.endsWith("/industry-capabilities"))
+          return json({ enabled: true, industries: industryCatalog });
+        if (route.endsWith("/consent-texts"))
+          return json([
+            {
+              purpose: "assistant",
+              version: "assistant-demo-v1",
+              text: "Explicit test consent",
+            },
+          ]);
+        if (
+          route.endsWith("/consents/assistant") &&
+          options?.method === "PUT"
+        ) {
+          granted = true;
+          return json({});
+        }
+        if (route.endsWith("/consents"))
+          return json({
+            consents: [
+              {
+                purpose: "assistant",
+                status: granted ? "granted" : "withdrawn",
+                text_version: "assistant-demo-v1",
+                revision: 2,
+              },
+            ],
+          });
+        if (route.endsWith("/industry-profile"))
+          return granted
+            ? json(universal)
+            : json({ detail: { code: "consent_required_assistant" } }, 403);
+        if (route.includes("/messages?")) return json([]);
+        return json(universal.conversation);
+      });
+    render(<BusinessFlow onHome={vi.fn()} />);
+    await screen.findByRole("heading", { name: "Не удалось открыть проект" });
+    fireEvent.click(
+      screen.getByRole("button", { name: "Согласие на работу ассистента" }),
+    );
+    fireEvent.click(
+      screen.getByLabelText("Согласен на использование ассистента"),
+    );
+    fireEvent.click(
+      within(screen.getByRole("dialog")).getByRole("button", {
+        name: "Продолжить",
+      }),
+    );
+    await screen.findByLabelText("Сообщение помощнику");
+    expect(granted).toBe(true);
+    expect(
+      fetch.mock.calls.filter(
+        ([path, options]) =>
+          String(path).endsWith("/messages") && options?.method === "POST",
+      ),
+    ).toHaveLength(0);
+  });
   it("edits and confirms a draft profile using existing patch contract", async () => {
     const cb = callbacks();
     render(
@@ -220,6 +330,8 @@ describe("critical UI components with explicit API mocks", () => {
     saveCredential({ id: view.id, token: "test-key" });
     let conflicted = false;
     vi.spyOn(globalThis, "fetch").mockImplementation(async (path, options) => {
+      if (String(path).endsWith("/industry-capabilities"))
+        return json({ enabled: false, industries: [] });
       if (String(path).endsWith("/consent-texts"))
         return json([{ purpose: "assistant", version: "assistant-demo-v1" }]);
       if (String(path).endsWith("/consents"))
@@ -276,6 +388,8 @@ describe("critical UI components with explicit API mocks", () => {
     const fetch = vi
       .spyOn(globalThis, "fetch")
       .mockImplementation(async (path) => {
+        if (String(path).endsWith("/industry-capabilities"))
+          return json({ enabled: false, industries: [] });
         if (String(path).endsWith("/consent-texts")) return json([]);
         if (!available)
           return json({ detail: { code: "database_unavailable" } }, 503);

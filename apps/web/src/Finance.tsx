@@ -42,22 +42,30 @@ const driverLabels: Record<string, string> = {
 export function demoInput(
   profile: Profile,
   zone: Schemas["ZoneReference"] | null,
+  confirmedDrivers?: Schemas["CoffeeDriverInputs"] | null,
 ): FinanceInput {
   // Only editable inputs are bundled. Every result is calculated by the API.
-  return {
+  const input = {
     ...structuredClone(template),
     profile,
     selected_zone: zone,
   } as FinanceInput;
+  if (confirmedDrivers?.average_check)
+    input.scenarios.base.average_check = confirmedDrivers.average_check;
+  if (confirmedDrivers?.sales_per_day)
+    input.scenarios.base.sales_per_day = confirmedDrivers.sales_per_day;
+  return input;
 }
 export default function Finance({
   profile,
   zone,
   onReport,
+  confirmedDrivers,
 }: {
   profile: Profile | null;
   zone: Schemas["ZoneReference"] | null;
   onReport?: (value: Schemas["FinanceResult"] | null) => void;
+  confirmedDrivers?: Schemas["CoffeeDriverInputs"] | null;
 }) {
   const [input, setInput] = useState<FinanceInput | null>(null);
   const [result, setResult] = useState<Schemas["FinanceResult"] | null>(null);
@@ -79,7 +87,10 @@ export default function Finance({
   useEffect(() => () => active.current?.abort(), []);
   function edit(
     group:
-      "startup" | "monthly_fixed_costs" | "working_days_per_month" | Scenario,
+      | "startup"
+      | "monthly_fixed_costs"
+      | "working_days_per_month"
+      | Scenario,
     key: string,
     value: string,
   ) {
@@ -175,7 +186,7 @@ export default function Finance({
             disabled={!profile || busy}
             onClick={() => {
               if (profile) {
-                const next = demoInput(profile, zone);
+                const next = demoInput(profile, zone, confirmedDrivers);
                 setInput(next);
                 setDirty(true);
                 void calculate(null, next);

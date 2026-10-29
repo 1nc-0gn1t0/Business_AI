@@ -37,6 +37,9 @@ export async function mockGeography(page: Page) {
   );
 }
 export async function setupFlow(page: Page, restore = true) {
+  await page.route("**/api/v2/industry-capabilities", (r) =>
+    r.fulfill({ json: { enabled: false, industries: [] } }),
+  );
   let view: Conversation = {
     id: key.id,
     version: 2,

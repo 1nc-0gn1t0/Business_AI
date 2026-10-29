@@ -149,3 +149,11 @@ Destructive downgrade, `DROP DATABASE`, `pg_restore --clean/--create`, volumes r
 Не заменять backup директорию и не удалять baseline ради освобождения места. Для
 очистки QA сначала сверить **полное UUID-имя**, provenance создания и отсутствие
 нужных данных; сохранять рабочую/старые QA БД. Скрипт restore сам ничего не удаляет.
+
+## 0011_industry_profile · BA2/U-04
+
+Добавляет `industry_profiles(profile_id PK/FK → business_profiles.id ON DELETE CASCADE,
+document JSONB)` и object/48KiB constraint. Счётчик версии/owner/consent остаётся у
+существующего conversation. Старые строки business_profiles и immutable reports не
+переписываются. Перед opt-in BA_INDUSTRY_ENABLED=1 примените upgrade head по обычному
+runbook. Повторный upgrade безопасен; рабочий downgrade не выполняйте.

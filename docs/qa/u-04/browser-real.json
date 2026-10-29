@@ -1,0 +1,10 @@
+{
+  "scope": "real built web/API/PostGIS + local Qwen in isolated Compose; no mocks",
+  "classificationMs": 28483,
+  "industry": "online_school",
+  "extraction": "ollama",
+  "reload": true,
+  "jsonDownload": true,
+  "errors": [],
+  "geographicRequests": []
+}

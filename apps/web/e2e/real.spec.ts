@@ -3,6 +3,114 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { env } from "node:process";
 import type { Conversation, Ranking, Schemas } from "../src/api";
 
+test("U-04 real online school: Qwen, review, no-map, reload and JSON", async ({
+  page,
+}) => {
+  test.skip(
+    env.BA_U04_REAL !== "1",
+    "Requires isolated U-04 Compose with real local Qwen",
+  );
+  const directory = "../../docs/qa/u-04/screenshots";
+  await mkdir(directory, { recursive: true });
+  const errors: string[] = [];
+  const geographicRequests: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("request", (r) => {
+    if (
+      r.url().includes("/api/v1/geo/") ||
+      r.url().includes("/api/v1/finance/")
+    )
+      geographicRequests.push(new URL(r.url()).pathname);
+  });
+  await page.goto("/#business-ai");
+  await page
+    .getByLabel("Сообщение помощнику")
+    .fill(
+      "Хочу открыть онлайн-школу программирования. Бюджет 1,5 миллиона рублей.",
+    );
+  await page.getByLabel("Отправить сообщение").click();
+  await page.getByLabel("Согласен на использование ассистента").check();
+  const started = Date.now();
+  const responsePromise = page.waitForResponse(
+    (r) => r.url().includes("/industry-profile/messages"),
+    { timeout: 180000 },
+  );
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: "Продолжить", exact: true })
+    .click();
+  const response = await responsePromise;
+  expect(response.status()).toBe(200);
+  const first = (await response.json()) as Schemas["UniversalView"];
+  expect(first.profile.industry).toBe("online_school");
+  expect(first.extraction).toBe("ollama");
+  const classificationMs = Date.now() - started;
+  await page
+    .getByRole("button", { name: "Проверить параметры проекта" })
+    .click();
+  await page
+    .getByRole("button", { name: "Изменить параметры", exact: true })
+    .click();
+  await page
+    .getByLabel("Аудитория", { exact: true })
+    .fill("Взрослые начинающие");
+  await page.getByLabel("Формат", { exact: true }).fill("Онлайн-занятия");
+  await page.getByLabel("Модель оплаты", { exact: true }).fill("Оплата курса");
+  await page.getByLabel("Число учеников", { exact: true }).fill("20");
+  await page
+    .getByRole("button", { name: "Сохранить параметры", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Продолжить", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Вводные готовы" }),
+  ).toBeVisible();
+  await expect(page.getByText(/без карты/)).toBeVisible();
+  for (const width of [1440, 768, 390]) {
+    await page.setViewportSize({ width, height: 1000 });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page.screenshot({
+      path: `${directory}/real-school-${width}.png`,
+      fullPage: true,
+    });
+  }
+  await page.reload();
+  await expect(
+    page.getByRole("heading", { name: "Вводные готовы" }),
+  ).toBeVisible();
+  const downloading = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Скачать вводные JSON" }).click();
+  const download = await downloading;
+  expect(download.suggestedFilename()).toBe("business-inputs.json");
+  await page.getByRole("button", { name: "Изменить проект" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Ваш проект", exact: true }),
+  ).toBeVisible();
+  expect(errors).toEqual([]);
+  expect(geographicRequests).toEqual([]);
+  await writeFile(
+    "../../docs/qa/u-04/browser-real.json",
+    JSON.stringify(
+      {
+        scope:
+          "real built web/API/PostGIS + local Qwen in isolated Compose; no mocks",
+        classificationMs,
+        industry: first.profile.industry,
+        extraction: first.extraction,
+        reload: true,
+        jsonDownload: true,
+        errors,
+        geographicRequests,
+      },
+      null,
+      2,
+    ),
+  );
+});
+
 // Opt-in real services. No routes, model mocks, traces, credentials or prompts in artifacts.
 test("DESIGN03FU real coffee: idea → Qwen → profile → PostGIS → finance → bank → PDF/JSON", async ({
   page,

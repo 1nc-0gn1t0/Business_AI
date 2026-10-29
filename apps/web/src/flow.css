@@ -383,3 +383,23 @@
     opacity: 0.4;
   }
 }
+.industry-inputs {
+  display: grid;
+  gap: 14px;
+  margin: 28px 0;
+}
+.industry-inputs > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.industry-inputs dt {
+  font-size: 14px;
+  color: var(--muted, #586b83);
+}
+.industry-inputs dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}

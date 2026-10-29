@@ -1,0 +1,18 @@
+{
+  "industry_count": 4,
+  "persistent_volumes": 0,
+  "readiness": {
+    "status": "ok",
+    "database": "ok",
+    "postgis": "ok",
+    "schema_status": "ok"
+  },
+  "health": {
+    "status": "ok",
+    "database": "ok",
+    "postgis_version": "3.6 USE_GEOS=1 USE_PROJ=1 USE_STATS=1"
+  },
+  "web_status": 200,
+  "industry_enabled": false,
+  "scope": "isolated hardened Compose/tmpfs, default feature off"
+}

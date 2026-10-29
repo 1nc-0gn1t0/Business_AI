@@ -251,3 +251,10 @@ JSON roundtrip с идентичным результатом/base285000.00RUB, 
 на4GB, network egress/DNS enforcement, lease recovery/cancellation и event replay.
 Архитектура не требует держать весь город в RAM; конкретные бюджеты и fail-closed правила
 в [DATA_AND_TOOLS](BUSINESS_AI_2_DATA_AND_TOOLS.md). Merge U-00 не разрешает U-01 автоматически.
+
+## BA2/U-04 · реализованная граница
+
+[ProfileV2 / отраслевые конфигурации / no-map UI](BUSINESS_AI_2_UNIVERSAL_INDUSTRY_ENGINE.md)
+реализованы отдельной owner-scoped projection при сохранении strict v1. Это не весь
+проект будущего AnalysisRun/Scenario Engine: новые отраслевые финансовые executors,
+assumption ranges/генератор и v2 immutable отчёт остаются U-05 и последующим scope.

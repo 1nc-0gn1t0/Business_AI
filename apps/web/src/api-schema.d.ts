@@ -533,6 +533,75 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v2/industry-capabilities": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Catalog */
+    get: operations["catalog_api_v2_industry_capabilities_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/conversations/{conversation_id}/industry-profile": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get */
+    get: operations["get_api_v2_conversations__conversation_id__industry_profile_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Patch */
+    patch: operations["patch_api_v2_conversations__conversation_id__industry_profile_patch"];
+    trace?: never;
+  };
+  "/api/v2/conversations/{conversation_id}/industry-profile/confirm": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Confirm */
+    post: operations["confirm_api_v2_conversations__conversation_id__industry_profile_confirm_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/conversations/{conversation_id}/industry-profile/messages": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Message */
+    post: operations["message_api_v2_conversations__conversation_id__industry_profile_messages_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/conversations/{conversation_id}/consents": {
     parameters: {
       query?: never;
@@ -836,7 +905,20 @@ export interface components {
        * State
        * @enum {string}
        */
-      state: "queued" | "claimed" | "fetching" | "validating" | "importing" | "verifying" | "activating" | "retry_wait" | "cancel_requested" | "cancelled" | "failed" | "recovery_required" | "succeeded";
+      state:
+        | "queued"
+        | "claimed"
+        | "fetching"
+        | "validating"
+        | "importing"
+        | "verifying"
+        | "activating"
+        | "retry_wait"
+        | "cancel_requested"
+        | "cancelled"
+        | "failed"
+        | "recovery_required"
+        | "succeeded";
       /** Message Code */
       message_code: string;
       /** Completed */
@@ -854,7 +936,12 @@ export interface components {
        * Acquirability
        * @enum {string}
        */
-      acquirability: "permitted" | "forbidden" | "unavailable" | "not_integrated" | "unknown";
+      acquirability:
+        | "permitted"
+        | "forbidden"
+        | "unavailable"
+        | "not_integrated"
+        | "unknown";
       /** Reason */
       reason: string;
       /**
@@ -866,7 +953,12 @@ export interface components {
        * Availability
        * @enum {string}
        */
-      availability: "ready" | "degraded" | "unavailable" | "not_integrated" | "unknown";
+      availability:
+        | "ready"
+        | "degraded"
+        | "unavailable"
+        | "not_integrated"
+        | "unknown";
       /** Potentially Available */
       potentially_available: boolean;
       /**
@@ -917,6 +1009,36 @@ export interface components {
       territory: string;
       aoi: components["schemas"]["Bounds"];
     };
+    /** AdaptivePlan */
+    AdaptivePlan: {
+      /** Profile Revision */
+      profile_revision: number;
+      /** Industry Version */
+      industry_version: string;
+      /**
+       * Outcome
+       * @enum {string}
+       */
+      outcome: "collecting" | "ready" | "partial";
+      /** Missing Fields */
+      missing_fields: string[];
+      /** Next Question */
+      next_question: string | null;
+      /** Geo Required */
+      geo_required: boolean | null;
+      /** Capabilities */
+      capabilities: components["schemas"]["CapabilityDecision"][];
+      /** Stages */
+      stages: (
+        | "clarify"
+        | "confirm"
+        | "location"
+        | "finance"
+        | "partial_result"
+      )[];
+      coverage?: components["schemas"]["CoverageResult"] | null;
+      sufficiency?: components["schemas"]["SufficiencyAssessment"] | null;
+    };
     /** AgentRequest */
     AgentRequest: {
       /**
@@ -954,14 +1076,26 @@ export interface components {
        * State
        * @enum {string}
        */
-      state: "running" | "succeeded" | "partial" | "failed" | "cancelled" | "interrupted";
+      state:
+        | "running"
+        | "succeeded"
+        | "partial"
+        | "failed"
+        | "cancelled"
+        | "interrupted";
       /** Message */
       message: string;
       /**
        * Next Step
        * @enum {string}
        */
-      next_step: "done" | "clarify" | "operator_permission_required" | "provide_aoi" | "wait_for_job" | "data_unavailable";
+      next_step:
+        | "done"
+        | "clarify"
+        | "operator_permission_required"
+        | "provide_aoi"
+        | "wait_for_job"
+        | "data_unavailable";
       /** Code */
       code: string;
       /** Model */
@@ -1068,7 +1202,10 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status: "within_model_budget" | "model_budget_shortfall" | "budget_unknown";
+      status:
+        | "within_model_budget"
+        | "model_budget_shortfall"
+        | "budget_unknown";
       /** Budget */
       budget: string | null;
       /**
@@ -1170,7 +1307,12 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status: "ok" | "partial" | "no_candidates" | "insufficient_data" | "needs_constraints";
+      status:
+        | "ok"
+        | "partial"
+        | "no_candidates"
+        | "insufficient_data"
+        | "needs_constraints";
       /** Reasons */
       reasons: string[];
       dataset: components["schemas"]["DatasetView"];
@@ -1326,6 +1468,26 @@ export interface components {
        */
       requirements: components["schemas"]["ProximityRequirement"][];
     };
+    /** CapabilityDecision */
+    CapabilityDecision: {
+      /** Id */
+      id: string;
+      /**
+       * Status
+       * @enum {string}
+       */
+      status:
+        | "available"
+        | "partial"
+        | "unavailable"
+        | "unsupported"
+        | "not_required"
+        | "needs_confirmation";
+      /** Method */
+      method?: string | null;
+      /** Reason */
+      reason: string;
+    };
     /** CatalogueView */
     CatalogueView: {
       /** Version */
@@ -1371,7 +1533,13 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status: "ok" | "partial" | "graph_unavailable" | "outside_coverage" | "no_network_access" | "resource_limit";
+      status:
+        | "ok"
+        | "partial"
+        | "graph_unavailable"
+        | "outside_coverage"
+        | "no_network_access"
+        | "resource_limit";
       /** Reasons */
       reasons: string[];
       /** Algorithm Version */
@@ -1463,6 +1631,11 @@ export interface components {
       category: string;
       /** Mapped Features */
       mapped_features: number;
+    };
+    /** CoffeeDriverInputs */
+    CoffeeDriverInputs: {
+      average_check?: components["schemas"]["Amount-Output"] | null;
+      sales_per_day?: components["schemas"]["Sales"] | null;
     };
     /**
      * Confidence
@@ -1637,7 +1810,14 @@ export interface components {
        * Summary
        * @enum {string}
        */
-      summary: "usable" | "stale" | "partial" | "acquirable" | "source_unavailable" | "not_available_from_approved_sources" | "unknown";
+      summary:
+        | "usable"
+        | "stale"
+        | "partial"
+        | "acquirable"
+        | "source_unavailable"
+        | "not_available_from_approved_sources"
+        | "unknown";
       /**
        * Availability
        * @enum {string}
@@ -1732,7 +1912,13 @@ export interface components {
      * DataOrigin
      * @enum {string}
      */
-    DataOrigin: "open_data" | "licensed" | "modelled" | "synthetic" | "user_input" | "bank_internal";
+    DataOrigin:
+      | "open_data"
+      | "licensed"
+      | "modelled"
+      | "synthetic"
+      | "user_input"
+      | "bank_internal";
     /** DataPolicy */
     DataPolicy: {
       /**
@@ -1781,7 +1967,11 @@ export interface components {
        * Freshness Basis
        * @enum {string}
        */
-      freshness_basis: "source_timestamp" | "period_end" | "generated_at" | "unknown";
+      freshness_basis:
+        | "source_timestamp"
+        | "period_end"
+        | "generated_at"
+        | "unknown";
       /** Observed At */
       observed_at?: string | null;
       /** Source Timestamp */
@@ -1978,7 +2168,15 @@ export interface components {
        * Field
        * @enum {string}
        */
-      field: "launch_stage" | "registration_status" | "sales_channel" | "needs_settlement_account" | "needs_registration_help" | "accepts_card_payments" | "needs_expense_card" | "financing_interest";
+      field:
+        | "launch_stage"
+        | "registration_status"
+        | "sales_channel"
+        | "needs_settlement_account"
+        | "needs_registration_help"
+        | "accepts_card_payments"
+        | "needs_expense_card"
+        | "financing_interest";
       /** One Of */
       one_of: (string | boolean)[];
       /** Explanation */
@@ -2024,6 +2222,54 @@ export interface components {
       summary: string;
       /** Limitations */
       limitations: string[];
+    };
+    /** FieldDefinition */
+    FieldDefinition: {
+      /** Id */
+      id: string;
+      /** Label */
+      label: string;
+      /** Question */
+      question: string;
+      /**
+       * Kind
+       * @default text
+       * @enum {string}
+       */
+      kind: "text" | "money" | "integer" | "ratio" | "boolean" | "choice";
+      /**
+       * Unit
+       * @default text
+       */
+      unit: string;
+      /**
+       * Choices
+       * @default []
+       */
+      choices: string[];
+      /**
+       * Maximum
+       * @default 1000000
+       */
+      maximum: number;
+      /**
+       * Driver
+       * @default context
+       * @enum {string}
+       */
+      driver:
+        | "revenue"
+        | "fixed_cost"
+        | "variable_cost"
+        | "capacity"
+        | "context";
+    };
+    /** FieldUpdate */
+    FieldUpdate: {
+      /** Field */
+      field: string;
+      /** Value */
+      value: string | number | boolean | null;
     };
     /** FinanceReportInput */
     FinanceReportInput: {
@@ -2125,7 +2371,16 @@ export interface components {
        * Formula Id
        * @enum {string}
        */
-      formula_id: "monthly_sales" | "monthly_revenue" | "monthly_variable_cost" | "monthly_fixed_cost" | "contribution_per_sale_exact" | "contribution_per_sale" | "monthly_contribution" | "operating_result" | "break_even_sales_per_day";
+      formula_id:
+        | "monthly_sales"
+        | "monthly_revenue"
+        | "monthly_variable_cost"
+        | "monthly_fixed_cost"
+        | "contribution_per_sale_exact"
+        | "contribution_per_sale"
+        | "monthly_contribution"
+        | "operating_result"
+        | "break_even_sales_per_day";
       /** Input Paths */
       input_paths: string[];
     };
@@ -2250,6 +2505,56 @@ export interface components {
       /** Limitations */
       limitations: string[];
     };
+    /** IndustryCatalog */
+    IndustryCatalog: {
+      /** Enabled */
+      enabled: boolean;
+      /**
+       * Revision
+       * @default u04-v1
+       */
+      revision: string;
+      /** Industries */
+      industries: components["schemas"]["IndustryDefinition"][];
+    };
+    /** IndustryDefinition */
+    IndustryDefinition: {
+      /** Id */
+      id: string;
+      /** Label */
+      label: string;
+      /**
+       * Version
+       * @default u04-v1
+       */
+      version: string;
+      /** Aliases */
+      aliases: string[];
+      /** Business Models */
+      business_models: string[];
+      /** Required */
+      required: string[];
+      /** Fields */
+      fields: components["schemas"]["FieldDefinition"][];
+      /** Data Categories */
+      data_categories: string[];
+      /**
+       * Optional Categories
+       * @default []
+       */
+      optional_categories: string[];
+      /**
+       * Geo Policy
+       * @enum {string}
+       */
+      geo_policy: "required" | "optional" | "none";
+      /** Geo Adapter */
+      geo_adapter?: "coffee_poi_v1" | null;
+      /** Finance Adapter */
+      finance_adapter?: "coffee_finance_v1" | null;
+      /** Limitations */
+      limitations: string[];
+    };
     /** InputSource */
     InputSource: {
       origin: components["schemas"]["DataOrigin"];
@@ -2281,7 +2586,20 @@ export interface components {
        * State
        * @enum {string}
        */
-      state: "queued" | "claimed" | "fetching" | "validating" | "importing" | "verifying" | "activating" | "retry_wait" | "cancel_requested" | "cancelled" | "failed" | "recovery_required" | "succeeded";
+      state:
+        | "queued"
+        | "claimed"
+        | "fetching"
+        | "validating"
+        | "importing"
+        | "verifying"
+        | "activating"
+        | "retry_wait"
+        | "cancel_requested"
+        | "cancelled"
+        | "failed"
+        | "recovery_required"
+        | "succeeded";
       /** Stage */
       stage: string;
       /** Source Id */
@@ -2492,7 +2810,16 @@ export interface components {
       /** Demonstration Ids */
       demonstration_ids: string[];
       /** Missing Fields */
-      missing_fields: ("launch_stage" | "registration_status" | "sales_channel" | "needs_settlement_account" | "needs_registration_help" | "accepts_card_payments" | "needs_expense_card" | "financing_interest")[];
+      missing_fields: (
+        | "launch_stage"
+        | "registration_status"
+        | "sales_channel"
+        | "needs_settlement_account"
+        | "needs_registration_help"
+        | "accepts_card_payments"
+        | "needs_expense_card"
+        | "financing_interest"
+      )[];
       /**
        * Credit Decision
        * @default not_assessed
@@ -2589,10 +2916,7 @@ export interface components {
        */
       type: "MultiPolygon";
       /** Coordinates */
-      coordinates: [
-        number,
-        number
-      ][][][];
+      coordinates: [number, number][][][];
     };
     /** ObservationProvenance */
     ObservationProvenance: {
@@ -2730,10 +3054,7 @@ export interface components {
        */
       type: "Point";
       /** Coordinates */
-      coordinates: [
-        number,
-        number
-      ];
+      coordinates: [number, number];
     };
     /** PreferencesPatch */
     PreferencesPatch: {
@@ -2762,7 +3083,13 @@ export interface components {
        * Category
        * @enum {string}
        */
-      category: "settlement" | "registration" | "merchant_acquiring" | "internet_acquiring" | "business_card" | "financing_information";
+      category:
+        | "settlement"
+        | "registration"
+        | "merchant_acquiring"
+        | "internet_acquiring"
+        | "business_card"
+        | "financing_information";
       /** Description */
       description: string;
       /**
@@ -2798,13 +3125,29 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status: "potential_match" | "information_only" | "demo_match" | "demo_information" | "needs_clarification" | "not_matched" | "unavailable";
+      status:
+        | "potential_match"
+        | "information_only"
+        | "demo_match"
+        | "demo_information"
+        | "needs_clarification"
+        | "not_matched"
+        | "unavailable";
       /** Reasons */
       reasons: string[];
       /** Evaluations */
       evaluations: components["schemas"]["RuleEvaluation"][];
       /** Missing Fields */
-      missing_fields: ("launch_stage" | "registration_status" | "sales_channel" | "needs_settlement_account" | "needs_registration_help" | "accepts_card_payments" | "needs_expense_card" | "financing_interest")[];
+      missing_fields: (
+        | "launch_stage"
+        | "registration_status"
+        | "sales_channel"
+        | "needs_settlement_account"
+        | "needs_registration_help"
+        | "accepts_card_payments"
+        | "needs_expense_card"
+        | "financing_interest"
+      )[];
     };
     /** ProductView */
     ProductView: {
@@ -2829,6 +3172,34 @@ export interface components {
       budget?: number | string | null;
       funding?: components["schemas"]["Funding"] | null;
       preferences?: components["schemas"]["PreferencesPatch"] | null;
+    };
+    /** ProfileValue */
+    ProfileValue: {
+      /** Value */
+      value: string | number | boolean;
+      /** Unit */
+      unit: string;
+      /** @default user_input */
+      origin: components["schemas"]["DataOrigin"];
+      /**
+       * Epistemic
+       * @default user_provided
+       * @enum {string}
+       */
+      epistemic: "user_provided" | "derived" | "assumed";
+      /**
+       * Review
+       * @default proposed
+       * @enum {string}
+       */
+      review: "proposed" | "confirmed";
+      /** Evidence */
+      evidence: string;
+      /**
+       * Lineage
+       * @enum {string}
+       */
+      lineage: "user_message" | "user_edit" | "legacy_v1" | "classification";
     };
     /** ProviderDataset */
     ProviderDataset: {
@@ -2918,7 +3289,12 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status: "ok" | "partial" | "no_candidates" | "needs_confirmation" | "insufficient_data";
+      status:
+        | "ok"
+        | "partial"
+        | "no_candidates"
+        | "needs_confirmation"
+        | "insufficient_data";
       /** Reasons */
       reasons: string[];
       candidates: components["schemas"]["CandidateCollection"];
@@ -2978,7 +3354,9 @@ export interface components {
        * @default geodesic_straight_line
        * @enum {string}
        */
-      distance_method: "geodesic_straight_line" | "walking_network_with_connectors";
+      distance_method:
+        | "geodesic_straight_line"
+        | "walking_network_with_connectors";
       /** Coverage Margin M */
       coverage_margin_m: number;
       /** Fully Covered */
@@ -3401,7 +3779,11 @@ export interface components {
        * Driver
        * @enum {string}
        */
-      driver: "average_check" | "sales_per_day" | "rent" | "variable_cost_ratio";
+      driver:
+        | "average_check"
+        | "sales_per_day"
+        | "rent"
+        | "variable_cost_ratio";
       /** Relative Change */
       relative_change: string;
       /** Actual Value */
@@ -3442,7 +3824,13 @@ export interface components {
        * Source Type
        * @enum {string}
        */
-      source_type: "open" | "licensed" | "official" | "user" | "scenario" | "placeholder";
+      source_type:
+        | "open"
+        | "licensed"
+        | "official"
+        | "user"
+        | "scenario"
+        | "placeholder";
       origin: components["schemas"]["DataOrigin"];
       /**
        * Adapter Status
@@ -3452,7 +3840,11 @@ export interface components {
       /** Categories */
       categories: string[];
       /** Acquisition Methods */
-      acquisition_methods: ("local_read" | "offline_import" | "operator_fetch")[];
+      acquisition_methods: (
+        | "local_read"
+        | "offline_import"
+        | "operator_fetch"
+      )[];
       /**
        * Geographic Scope
        * @enum {string}
@@ -3478,7 +3870,12 @@ export interface components {
        * Availability
        * @enum {string}
        */
-      availability: "ready" | "degraded" | "unavailable" | "not_integrated" | "unknown";
+      availability:
+        | "ready"
+        | "degraded"
+        | "unavailable"
+        | "not_integrated"
+        | "unknown";
       /** Freshness Policies */
       freshness_policies: {
         [key: string]: string;
@@ -3557,6 +3954,62 @@ export interface components {
        */
       idempotency_key: string;
     };
+    /**
+     * SufficiencyAssessment
+     * @description Technical data eligibility only, never tool authorization or business confidence.
+     */
+    SufficiencyAssessment: {
+      /** Requirements Revision */
+      requirements_revision: string;
+      /**
+       * Evaluated At
+       * Format: date-time
+       */
+      evaluated_at: string;
+      /** Decisions */
+      decisions: components["schemas"]["SufficiencyDecision"][];
+      /** Allowed Tasks */
+      allowed_tasks: string[];
+      /** Blocked Tasks */
+      blocked_tasks: string[];
+      /**
+       * Warnings
+       * @default [
+       *       "technical_eligibility_is_not_business_validity"
+       *     ]
+       */
+      warnings: string[];
+    };
+    /** SufficiencyDecision */
+    SufficiencyDecision: {
+      /** Requirement Id */
+      requirement_id: string;
+      /**
+       * State
+       * @enum {string}
+       */
+      state: "sufficient" | "partial" | "missing" | "stale" | "unknown";
+      /**
+       * Action
+       * @enum {string}
+       */
+      action:
+        | "use_pinned"
+        | "cache_revalidate"
+        | "request_acquisition"
+        | "ask_user"
+        | "omit_optional"
+        | "block";
+      /** Technically Eligible */
+      technically_eligible: boolean;
+      /**
+       * Quality
+       * @enum {string}
+       */
+      quality: "unknown" | "not_applicable";
+      /** Reasons */
+      reasons: string[];
+    };
     /** Territory */
     Territory: {
       /** Id */
@@ -3627,6 +4080,117 @@ export interface components {
         [key: string]: unknown;
       };
     };
+    /** UniversalMessage */
+    UniversalMessage: {
+      /** Expected Version */
+      expected_version: number;
+      /** Content */
+      content: string;
+    };
+    /** UniversalPatch */
+    UniversalPatch: {
+      /** Expected Version */
+      expected_version: number;
+      /** Industry */
+      industry?: string | null;
+      /** Raw Industry */
+      raw_industry?: string | null;
+      /**
+       * Updates
+       * @default []
+       */
+      updates: components["schemas"]["FieldUpdate"][];
+      /**
+       * Defer Fields
+       * @default []
+       */
+      defer_fields: string[];
+    };
+    /** UniversalProfile */
+    UniversalProfile: {
+      /**
+       * Schema Version
+       * @default business-profile-v2
+       * @constant
+       */
+      schema_version: "business-profile-v2";
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Conversation Id
+       * Format: uuid
+       */
+      conversation_id: string;
+      /** Revision */
+      revision: number;
+      /**
+       * Idea
+       * @default
+       */
+      idea: string;
+      /**
+       * Industry
+       * @default generic
+       */
+      industry: string;
+      /** Raw Industry */
+      raw_industry?: string | null;
+      /**
+       * Resolution
+       * @default unknown
+       * @enum {string}
+       */
+      resolution: "known" | "unknown" | "ambiguous";
+      /** Industry Evidence */
+      industry_evidence?: string | null;
+      /**
+       * Config Version
+       * @default u04-v1
+       */
+      config_version: string;
+      /** Config Sha256 */
+      config_sha256?: string | null;
+      configuration_snapshot?:
+        | components["schemas"]["IndustryDefinition"]
+        | null;
+      /** Values */
+      values?: {
+        [key: string]: components["schemas"]["ProfileValue"];
+      };
+      /** Extensions */
+      extensions?: {
+        [key: string]: {
+          [key: string]: components["schemas"]["ProfileValue"];
+        };
+      };
+      /** Confirmed Revision */
+      confirmed_revision?: number | null;
+      /**
+       * Deferred Fields
+       * @default []
+       */
+      deferred_fields: string[];
+      legacy_snapshot: components["schemas"]["BusinessProfile-Output"];
+    };
+    /** UniversalView */
+    UniversalView: {
+      conversation: components["schemas"]["ConversationView"];
+      profile: components["schemas"]["UniversalProfile"];
+      configuration: components["schemas"]["IndustryDefinition"];
+      /** Field Definitions */
+      field_definitions: components["schemas"]["FieldDefinition"][];
+      plan: components["schemas"]["AdaptivePlan"];
+      coffee_inputs?: components["schemas"]["CoffeeDriverInputs"] | null;
+      /**
+       * Extraction
+       * @default none
+       * @enum {string}
+       */
+      extraction: "none" | "ollama" | "clarification_fallback";
+    };
     /** ValidationError */
     ValidationError: {
       /** Location */
@@ -3681,10 +4245,7 @@ export interface components {
        */
       type: "LineString";
       /** Coordinates */
-      coordinates: [
-        number,
-        number
-      ][];
+      coordinates: [number, number][];
     };
     /** WalkManifest */
     WalkManifest: {
@@ -4889,6 +5450,162 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["AgentResponse"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  catalog_api_v2_industry_capabilities_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["IndustryCatalog"];
+        };
+      };
+    };
+  };
+  get_api_v2_conversations__conversation_id__industry_profile_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UniversalView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  patch_api_v2_conversations__conversation_id__industry_profile_patch: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UniversalPatch"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UniversalView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  confirm_api_v2_conversations__conversation_id__industry_profile_confirm_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ConfirmRequest"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UniversalView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  message_api_v2_conversations__conversation_id__industry_profile_messages_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UniversalMessage"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UniversalView"];
         };
       };
       /** @description Validation Error */

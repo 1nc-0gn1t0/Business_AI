@@ -1,0 +1,4422 @@
+{
+  "scope": "Real local Qwen; disposable empty PostGIS, no city import. Protocol faults are tested separately with scripted fixtures.",
+  "timestamp": "2026-10-29T18:33:39.667772+00:00",
+  "cases": [
+    {
+      "case": "coffee",
+      "content": "Хочу открыть кофейню в Казани. Бюджет 2 миллиона рублей.",
+      "status": 200,
+      "seconds": 39.968,
+      "response": {
+        "conversation": {
+          "id": "db0e1217-c546-41e8-8019-9ea71fa1b312",
+          "version": 1,
+          "state": "collecting",
+          "profile": {
+            "id": "5be50c11-f32c-4217-be3a-20b4c4a42ec2",
+            "conversation_id": "db0e1217-c546-41e8-8019-9ea71fa1b312",
+            "city": "Казань",
+            "category": "Кофейня",
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "missing_fields": [
+            "preferences.format",
+            "funding"
+          ],
+          "assistant_message": "Какой формат бизнеса рассматриваете?",
+          "extraction_mode": "rules",
+          "created_at": "2026-10-29T18:33:42.749594Z",
+          "updated_at": "2026-10-29T18:34:22.828306Z"
+        },
+        "profile": {
+          "schema_version": "business-profile-v2",
+          "id": "5be50c11-f32c-4217-be3a-20b4c4a42ec2",
+          "conversation_id": "db0e1217-c546-41e8-8019-9ea71fa1b312",
+          "revision": 1,
+          "idea": "Хочу открыть кофейню в Казани. Бюджет 2 миллиона рублей.",
+          "industry": "coffee_shop",
+          "raw_industry": null,
+          "resolution": "known",
+          "industry_evidence": "Хочу открыть кофейню в Казани.",
+          "config_version": "u04-v1",
+          "values": {
+            "city": {
+              "value": "Казань",
+              "unit": "text",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "proposed",
+              "evidence": "Хочу открыть кофейню в Казани.",
+              "lineage": "user_message"
+            },
+            "budget": {
+              "value": "2000000",
+              "unit": "RUB",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "proposed",
+              "evidence": "Бюджет 2 миллиона рублей.",
+              "lineage": "user_message"
+            }
+          },
+          "extensions": {
+            "generic": {},
+            "coffee_shop": {}
+          },
+          "confirmed_revision": null,
+          "deferred_fields": [],
+          "legacy_snapshot": {
+            "id": "5be50c11-f32c-4217-be3a-20b4c4a42ec2",
+            "conversation_id": "db0e1217-c546-41e8-8019-9ea71fa1b312",
+            "city": "Казань",
+            "category": "Кофейня",
+            "budget": "2000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          }
+        },
+        "configuration": {
+          "id": "coffee_shop",
+          "label": "Кофейня",
+          "version": "u04-v1",
+          "aliases": [
+            "кофейня",
+            "кофейню",
+            "coffee shop"
+          ],
+          "business_models": [
+            "retail",
+            "food_service"
+          ],
+          "required": [
+            "city",
+            "budget",
+            "format",
+            "funding"
+          ],
+          "fields": [
+            {
+              "id": "seats",
+              "label": "Посадочные места",
+              "question": "Сколько посадочных мест планируете?",
+              "kind": "integer",
+              "unit": "seats",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "capacity"
+            },
+            {
+              "id": "sales_per_day",
+              "label": "Продаж в день",
+              "question": "Сколько продаж в день планируете?",
+              "kind": "integer",
+              "unit": "sales/day",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "capacity"
+            },
+            {
+              "id": "average_check",
+              "label": "Средний чек",
+              "question": "Укажите средний чек в рублях.",
+              "kind": "money",
+              "unit": "RUB/sale",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "revenue"
+            }
+          ],
+          "data_categories": [
+            "geo.mapped_poi"
+          ],
+          "optional_categories": [
+            "geo.pedestrian_network"
+          ],
+          "geo_policy": "required",
+          "geo_adapter": "coffee_poi_v1",
+          "finance_adapter": "coffee_finance_v1",
+          "limitations": [
+            "Рейтинг использует OSM-прокси, а не измеренный спрос или прогноз прибыли."
+          ]
+        },
+        "field_definitions": [
+          {
+            "id": "city",
+            "label": "Город",
+            "question": "В каком городе планируете работать?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "business_model",
+            "label": "Бизнес-модель",
+            "question": "Как вы будете оказывать услуги или продавать продукт?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "physical_premises",
+            "label": "Помещение",
+            "question": "Нужно ли отдельное помещение?",
+            "kind": "boolean",
+            "unit": "boolean",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "budget",
+            "label": "Бюджет, ₽",
+            "question": "Какой у вас бюджет в рублях?",
+            "kind": "money",
+            "unit": "RUB",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "context"
+          },
+          {
+            "id": "currency",
+            "label": "Валюта",
+            "question": "Уточните валюту бюджета.",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "RUB"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "funding",
+            "label": "Источник средств",
+            "question": "Свои средства, кредит, смешанное финансирование или пока не решили?",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "own_funds",
+              "loan",
+              "mixed",
+              "undecided"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "format",
+            "label": "Формат",
+            "question": "Какой формат бизнеса рассматриваете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "audience",
+            "label": "Аудитория",
+            "question": "Для кого ваш продукт или услуга?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "specialization",
+            "label": "Специализация",
+            "question": "На каких услугах или продуктах хотите специализироваться?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "revenue_streams",
+            "label": "Источники выручки",
+            "question": "За что и как будут платить клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "cost_categories",
+            "label": "Основные расходы",
+            "question": "Какие основные расходы вы уже знаете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "sales_channels",
+            "label": "Каналы продаж",
+            "question": "Как планируете находить клиентов?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "constraints",
+            "label": "Ограничения",
+            "question": "Какие ограничения нужно учесть?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "preferences",
+            "label": "Пожелания",
+            "question": "Какие пожелания важны для вас?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "service_area",
+            "label": "География работы",
+            "question": "Где находятся ваши клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "seats",
+            "label": "Посадочные места",
+            "question": "Сколько посадочных мест планируете?",
+            "kind": "integer",
+            "unit": "seats",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "capacity"
+          },
+          {
+            "id": "sales_per_day",
+            "label": "Продаж в день",
+            "question": "Сколько продаж в день планируете?",
+            "kind": "integer",
+            "unit": "sales/day",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "capacity"
+          },
+          {
+            "id": "average_check",
+            "label": "Средний чек",
+            "question": "Укажите средний чек в рублях.",
+            "kind": "money",
+            "unit": "RUB/sale",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "revenue"
+          }
+        ],
+        "plan": {
+          "profile_revision": 1,
+          "industry_version": "u04-v1",
+          "outcome": "collecting",
+          "missing_fields": [
+            "format",
+            "funding"
+          ],
+          "next_question": "Какой формат бизнеса рассматриваете?",
+          "geo_required": true,
+          "capabilities": [
+            {
+              "id": "data.coverage",
+              "status": "available",
+              "method": "app.data.coverage.coverage",
+              "reason": "Проверка metadata, без сетевого запроса."
+            },
+            {
+              "id": "data.sufficiency",
+              "status": "available",
+              "method": "app.data.coverage.assess_sufficiency",
+              "reason": "Техническая достаточность не доказывает качество бизнес-вывода."
+            },
+            {
+              "id": "geo.analysis",
+              "status": "needs_confirmation",
+              "method": "coffee_poi_v1",
+              "reason": "Нет подтверждённого пригодного покрытия выбранной территории."
+            },
+            {
+              "id": "finance.analysis",
+              "status": "needs_confirmation",
+              "method": "coffee_finance_v1",
+              "reason": "Проверенный финансовый движок кофейни; вводные задаются явно."
+            },
+            {
+              "id": "profile.summary",
+              "status": "available",
+              "method": "profile_v2_projection",
+              "reason": "Структурированные вводные и ограничения, без выдуманных вычислений."
+            }
+          ],
+          "stages": [
+            "clarify"
+          ],
+          "coverage": {
+            "schema_version": "coverage-v2",
+            "registry_revision": "u02-v1",
+            "config_sha256": "1b93dc0307b147d0aa8af3e7c7e079f6e3d9f5522dbea2dd8b1c0ef00d3f9bbe",
+            "evaluated_at": "2026-10-29T18:34:22.875353Z",
+            "query": {
+              "territory": "ru-kazan",
+              "aoi": null,
+              "categories": [
+                "geo.mapped_poi"
+              ],
+              "period": null,
+              "mode": "real",
+              "purpose": "local_analysis"
+            },
+            "assessments": [
+              {
+                "category": "geo.mapped_poi",
+                "local_status": "missing",
+                "summary": "unknown",
+                "availability": "missing",
+                "freshness": "unknown",
+                "completeness": "unknown",
+                "object_quality": "unknown",
+                "datasets": [],
+                "acquisition": [
+                  {
+                    "source_id": "osm",
+                    "acquirability": "unknown",
+                    "reason": "permission_or_remote_availability_unknown",
+                    "network_permission": "review_required",
+                    "availability": "unknown",
+                    "potentially_available": true,
+                    "adapter_status": "ready",
+                    "license_status": "verified_local_use",
+                    "local_use_permitted": true,
+                    "automatic_acquisition_implemented": true
+                  }
+                ],
+                "reasons": [
+                  "territory_boundary_unknown"
+                ]
+              }
+            ],
+            "metadata_complete": true,
+            "limitations": [
+              "Coverage describes imported snapshots, not completeness of the real market.",
+              "Source timestamp is not a real-world observation date. No external requests performed."
+            ]
+          },
+          "sufficiency": {
+            "requirements_revision": "u04-v1",
+            "evaluated_at": "2026-10-29T18:34:22.875353Z",
+            "decisions": [
+              {
+                "requirement_id": "geo.mapped_poi",
+                "state": "missing",
+                "action": "block",
+                "technically_eligible": false,
+                "quality": "unknown",
+                "reasons": [
+                  "requirements_not_satisfied"
+                ]
+              }
+            ],
+            "allowed_tasks": [],
+            "blocked_tasks": [
+              "analysis"
+            ],
+            "warnings": [
+              "technical_eligibility_is_not_business_validity"
+            ]
+          }
+        },
+        "coffee_inputs": null,
+        "extraction": "ollama"
+      },
+      "proposals": [
+        {
+          "proposal": {
+            "industry": "coffee_shop",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть кофейню в Казани.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "city",
+                "value": "Казани",
+                "evidence": "Хочу открыть кофейню в Казани."
+              },
+              {
+                "field": "budget",
+                "value": "2000000",
+                "evidence": "Бюджет 2 миллиона рублей."
+              },
+              {
+                "field": "business_model",
+                "value": "кофейня",
+                "evidence": "Хочу открыть кофейню в Казани."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "coffee_shop",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть кофейню в Казани.",
+            "resolution": "unknown",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "coffee_shop",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть кофейню в Казани.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "city",
+                "value": "Казани",
+                "evidence": "Хочу открыть кофейню в Казани."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "coffee_shop",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть кофейню в Казани.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "budget",
+                "value": "2000000",
+                "evidence": "Бюджет 2 миллиона рублей."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "coffee_shop",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть кофейню в Казани.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "business_model",
+                "value": "кофейня",
+                "evidence": "Хочу открыть кофейню в Казани."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          },
+          "validation_error": "{'code': 'ungrounded_profile_value'}"
+        }
+      ],
+      "python_peak_rss_bytes": 106106880,
+      "gpu_used_mib_snapshot": "2354"
+    },
+    {
+      "case": "industry_correction",
+      "content": "Я передумал: хочу открыть онлайн-школу программирования, бюджет 1,5 миллиона рублей.",
+      "status": 200,
+      "seconds": 6.453,
+      "response": {
+        "conversation": {
+          "id": "db0e1217-c546-41e8-8019-9ea71fa1b312",
+          "version": 2,
+          "state": "collecting",
+          "profile": {
+            "id": "5be50c11-f32c-4217-be3a-20b4c4a42ec2",
+            "conversation_id": "db0e1217-c546-41e8-8019-9ea71fa1b312",
+            "city": "Казань",
+            "category": "Онлайн-школа",
+            "budget": "1500000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "missing_fields": [
+            "preferences.format",
+            "funding"
+          ],
+          "assistant_message": "Для кого ваш продукт или услуга?",
+          "extraction_mode": "rules",
+          "created_at": "2026-10-29T18:33:42.749594Z",
+          "updated_at": "2026-10-29T18:34:29.374727Z"
+        },
+        "profile": {
+          "schema_version": "business-profile-v2",
+          "id": "5be50c11-f32c-4217-be3a-20b4c4a42ec2",
+          "conversation_id": "db0e1217-c546-41e8-8019-9ea71fa1b312",
+          "revision": 2,
+          "idea": "Хочу открыть кофейню в Казани. Бюджет 2 миллиона рублей.",
+          "industry": "online_school",
+          "raw_industry": null,
+          "resolution": "known",
+          "industry_evidence": "Я передумал: хочу открыть онлайн-школу программирования",
+          "config_version": "u04-v1",
+          "values": {
+            "city": {
+              "value": "Казань",
+              "unit": "text",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "proposed",
+              "evidence": "Хочу открыть кофейню в Казани.",
+              "lineage": "user_message"
+            },
+            "budget": {
+              "value": "1500000",
+              "unit": "RUB",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "proposed",
+              "evidence": "бюджет 1,5 миллиона рублей",
+              "lineage": "user_message"
+            }
+          },
+          "extensions": {
+            "generic": {},
+            "coffee_shop": {},
+            "online_school": {}
+          },
+          "confirmed_revision": null,
+          "deferred_fields": [],
+          "legacy_snapshot": {
+            "id": "5be50c11-f32c-4217-be3a-20b4c4a42ec2",
+            "conversation_id": "db0e1217-c546-41e8-8019-9ea71fa1b312",
+            "city": "Казань",
+            "category": "Онлайн-школа",
+            "budget": "1500000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          }
+        },
+        "configuration": {
+          "id": "online_school",
+          "label": "Онлайн-школа",
+          "version": "u04-v1",
+          "aliases": [
+            "онлайн-школа",
+            "онлайн-школу",
+            "онлайн школа"
+          ],
+          "business_models": [
+            "digital",
+            "subscription"
+          ],
+          "required": [
+            "budget",
+            "audience",
+            "format",
+            "payment_model",
+            "students"
+          ],
+          "fields": [
+            {
+              "id": "payment_model",
+              "label": "Модель оплаты",
+              "question": "Как будут платить ученики: за курс, подписку или занятия?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "revenue"
+            },
+            {
+              "id": "students",
+              "label": "Число учеников",
+              "question": "Сколько учеников планируете на старте?",
+              "kind": "integer",
+              "unit": "students",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "capacity"
+            },
+            {
+              "id": "tuition",
+              "label": "Стоимость обучения",
+              "question": "Укажите стоимость обучения в рублях.",
+              "kind": "money",
+              "unit": "RUB/student/payment",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "revenue"
+            },
+            {
+              "id": "payment_frequency",
+              "label": "Период оплаты",
+              "question": "Как часто оплачивают обучение?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "context"
+            },
+            {
+              "id": "teachers",
+              "label": "Оплата преподавателей",
+              "question": "Укажите оплата преподавателей в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            },
+            {
+              "id": "marketing",
+              "label": "Маркетинг",
+              "question": "Укажите маркетинг в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            }
+          ],
+          "data_categories": [],
+          "optional_categories": [
+            "user.budget",
+            "user.costs"
+          ],
+          "geo_policy": "none",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Финансовый адаптер цифрового обучения пока не реализован; прогноз прибыли не рассчитан."
+          ]
+        },
+        "field_definitions": [
+          {
+            "id": "city",
+            "label": "Город",
+            "question": "В каком городе планируете работать?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "business_model",
+            "label": "Бизнес-модель",
+            "question": "Как вы будете оказывать услуги или продавать продукт?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "physical_premises",
+            "label": "Помещение",
+            "question": "Нужно ли отдельное помещение?",
+            "kind": "boolean",
+            "unit": "boolean",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "budget",
+            "label": "Бюджет, ₽",
+            "question": "Какой у вас бюджет в рублях?",
+            "kind": "money",
+            "unit": "RUB",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "context"
+          },
+          {
+            "id": "currency",
+            "label": "Валюта",
+            "question": "Уточните валюту бюджета.",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "RUB"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "funding",
+            "label": "Источник средств",
+            "question": "Свои средства, кредит, смешанное финансирование или пока не решили?",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "own_funds",
+              "loan",
+              "mixed",
+              "undecided"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "format",
+            "label": "Формат",
+            "question": "Какой формат бизнеса рассматриваете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "audience",
+            "label": "Аудитория",
+            "question": "Для кого ваш продукт или услуга?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "specialization",
+            "label": "Специализация",
+            "question": "На каких услугах или продуктах хотите специализироваться?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "revenue_streams",
+            "label": "Источники выручки",
+            "question": "За что и как будут платить клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "cost_categories",
+            "label": "Основные расходы",
+            "question": "Какие основные расходы вы уже знаете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "sales_channels",
+            "label": "Каналы продаж",
+            "question": "Как планируете находить клиентов?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "constraints",
+            "label": "Ограничения",
+            "question": "Какие ограничения нужно учесть?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "preferences",
+            "label": "Пожелания",
+            "question": "Какие пожелания важны для вас?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "service_area",
+            "label": "География работы",
+            "question": "Где находятся ваши клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "payment_model",
+            "label": "Модель оплаты",
+            "question": "Как будут платить ученики: за курс, подписку или занятия?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "students",
+            "label": "Число учеников",
+            "question": "Сколько учеников планируете на старте?",
+            "kind": "integer",
+            "unit": "students",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "capacity"
+          },
+          {
+            "id": "tuition",
+            "label": "Стоимость обучения",
+            "question": "Укажите стоимость обучения в рублях.",
+            "kind": "money",
+            "unit": "RUB/student/payment",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "revenue"
+          },
+          {
+            "id": "payment_frequency",
+            "label": "Период оплаты",
+            "question": "Как часто оплачивают обучение?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "teachers",
+            "label": "Оплата преподавателей",
+            "question": "Укажите оплата преподавателей в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "marketing",
+            "label": "Маркетинг",
+            "question": "Укажите маркетинг в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "fixed_cost"
+          }
+        ],
+        "plan": {
+          "profile_revision": 2,
+          "industry_version": "u04-v1",
+          "outcome": "collecting",
+          "missing_fields": [
+            "audience",
+            "format",
+            "payment_model",
+            "students"
+          ],
+          "next_question": "Для кого ваш продукт или услуга?",
+          "geo_required": false,
+          "capabilities": [
+            {
+              "id": "data.coverage",
+              "status": "available",
+              "method": "app.data.coverage.coverage",
+              "reason": "Проверка metadata, без сетевого запроса."
+            },
+            {
+              "id": "data.sufficiency",
+              "status": "available",
+              "method": "app.data.coverage.assess_sufficiency",
+              "reason": "Техническая достаточность не доказывает качество бизнес-вывода."
+            },
+            {
+              "id": "geo.analysis",
+              "status": "not_required",
+              "method": null,
+              "reason": "Географический анализ не требуется."
+            },
+            {
+              "id": "finance.analysis",
+              "status": "unsupported",
+              "method": null,
+              "reason": "Отраслевой финансовый адаптер пока не поддерживается. Прибыль не рассчитана."
+            },
+            {
+              "id": "profile.summary",
+              "status": "available",
+              "method": "profile_v2_projection",
+              "reason": "Структурированные вводные и ограничения, без выдуманных вычислений."
+            }
+          ],
+          "stages": [
+            "clarify"
+          ],
+          "coverage": null,
+          "sufficiency": null
+        },
+        "coffee_inputs": null,
+        "extraction": "ollama"
+      },
+      "proposals": [
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Я передумал: хочу открыть онлайн-школу программирования",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "specialization",
+                "value": "программирование",
+                "evidence": "Я передумал: хочу открыть онлайн-школу программирования"
+              },
+              {
+                "field": "budget",
+                "value": "1500000",
+                "evidence": "бюджет 1,5 миллиона рублей"
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Я передумал: хочу открыть онлайн-школу программирования",
+            "resolution": "unknown",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Я передумал: хочу открыть онлайн-школу программирования",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "specialization",
+                "value": "программирование",
+                "evidence": "Я передумал: хочу открыть онлайн-школу программирования"
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          },
+          "validation_error": "{'code': 'ungrounded_profile_value'}"
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Я передумал: хочу открыть онлайн-школу программирования",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "budget",
+                "value": "1500000",
+                "evidence": "бюджет 1,5 миллиона рублей"
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        }
+      ]
+    },
+    {
+      "case": "auto",
+      "content": "Хочу открыть автосервис в Москве на четыре поста. Бюджет 8 миллионов рублей.",
+      "status": 200,
+      "seconds": 9.89,
+      "response": {
+        "conversation": {
+          "id": "3939d7ae-e3cc-4dfe-8b9d-658d721ea94d",
+          "version": 1,
+          "state": "collecting",
+          "profile": {
+            "id": "d7a48521-2b0c-4233-a5aa-be97dd8a2f94",
+            "conversation_id": "3939d7ae-e3cc-4dfe-8b9d-658d721ea94d",
+            "city": "Москва",
+            "category": "Автосервис",
+            "budget": "8000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "missing_fields": [
+            "preferences.format",
+            "funding"
+          ],
+          "assistant_message": "На каких услугах или продуктах хотите специализироваться?",
+          "extraction_mode": "rules",
+          "created_at": "2026-10-29T18:34:29.415562Z",
+          "updated_at": "2026-10-29T18:34:39.314273Z"
+        },
+        "profile": {
+          "schema_version": "business-profile-v2",
+          "id": "d7a48521-2b0c-4233-a5aa-be97dd8a2f94",
+          "conversation_id": "3939d7ae-e3cc-4dfe-8b9d-658d721ea94d",
+          "revision": 1,
+          "idea": "Хочу открыть автосервис в Москве на четыре поста. Бюджет 8 миллионов рублей.",
+          "industry": "auto_repair",
+          "raw_industry": null,
+          "resolution": "known",
+          "industry_evidence": "Хочу открыть автосервис в Москве на четыре поста.",
+          "config_version": "u04-v1",
+          "values": {
+            "city": {
+              "value": "Москва",
+              "unit": "text",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "proposed",
+              "evidence": "Хочу открыть автосервис в Москве на четыре поста.",
+              "lineage": "user_message"
+            },
+            "budget": {
+              "value": "8000000",
+              "unit": "RUB",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "proposed",
+              "evidence": "Бюджет 8 миллионов рублей.",
+              "lineage": "user_message"
+            },
+            "currency": {
+              "value": "RUB",
+              "unit": "text",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "proposed",
+              "evidence": "Бюджет 8 миллионов рублей.",
+              "lineage": "user_message"
+            }
+          },
+          "extensions": {
+            "generic": {},
+            "auto_repair": {
+              "service_bays": {
+                "value": 4,
+                "unit": "bays",
+                "origin": "user_input",
+                "epistemic": "user_provided",
+                "review": "proposed",
+                "evidence": "Хочу открыть автосервис в Москве на четыре поста.",
+                "lineage": "user_message"
+              }
+            }
+          },
+          "confirmed_revision": null,
+          "deferred_fields": [],
+          "legacy_snapshot": {
+            "id": "d7a48521-2b0c-4233-a5aa-be97dd8a2f94",
+            "conversation_id": "3939d7ae-e3cc-4dfe-8b9d-658d721ea94d",
+            "city": "Москва",
+            "category": "Автосервис",
+            "budget": "8000000.00",
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          }
+        },
+        "configuration": {
+          "id": "auto_repair",
+          "label": "Автосервис",
+          "version": "u04-v1",
+          "aliases": [
+            "автосервис",
+            "автосервиса",
+            "СТО"
+          ],
+          "business_models": [
+            "service"
+          ],
+          "required": [
+            "city",
+            "budget",
+            "specialization",
+            "service_bays",
+            "physical_premises"
+          ],
+          "fields": [
+            {
+              "id": "service_bays",
+              "label": "Ремонтные посты",
+              "question": "Сколько ремонтных постов планируете?",
+              "kind": "integer",
+              "unit": "bays",
+              "choices": [],
+              "maximum": 1000,
+              "driver": "capacity"
+            },
+            {
+              "id": "services",
+              "label": "Услуги",
+              "question": "Какие услуги планируете?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "context"
+            },
+            {
+              "id": "utilization",
+              "label": "Загрузка",
+              "question": "Какую загрузку предполагаете?",
+              "kind": "ratio",
+              "unit": "ratio",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "context"
+            },
+            {
+              "id": "working_days",
+              "label": "Рабочие дни",
+              "question": "Сколько рабочих дней в месяц?",
+              "kind": "integer",
+              "unit": "days/month",
+              "choices": [],
+              "maximum": 31,
+              "driver": "capacity"
+            },
+            {
+              "id": "orders_per_bay",
+              "label": "Заказов на пост",
+              "question": "Сколько заказов на пост в день планируете?",
+              "kind": "integer",
+              "unit": "orders/bay/day",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "capacity"
+            },
+            {
+              "id": "average_order",
+              "label": "Средний заказ",
+              "question": "Укажите средний заказ в рублях.",
+              "kind": "money",
+              "unit": "RUB/order",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "revenue"
+            },
+            {
+              "id": "payroll",
+              "label": "Расходы на персонал",
+              "question": "Укажите расходы на персонал в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            },
+            {
+              "id": "materials",
+              "label": "Материалы",
+              "question": "Укажите материалы в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "variable_cost"
+            },
+            {
+              "id": "rent",
+              "label": "Аренда",
+              "question": "Укажите аренда в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            }
+          ],
+          "data_categories": [
+            "geo.mapped_poi",
+            "geo.vehicle_network"
+          ],
+          "optional_categories": [
+            "geo.buildings",
+            "geo.parking"
+          ],
+          "geo_policy": "required",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Автомобильный рейтинг и финансовый адаптер пока не реализованы.",
+            "OSM POI не подтверждает дорожную сеть или автомобильный трафик."
+          ]
+        },
+        "field_definitions": [
+          {
+            "id": "city",
+            "label": "Город",
+            "question": "В каком городе планируете работать?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "business_model",
+            "label": "Бизнес-модель",
+            "question": "Как вы будете оказывать услуги или продавать продукт?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "physical_premises",
+            "label": "Помещение",
+            "question": "Нужно ли отдельное помещение?",
+            "kind": "boolean",
+            "unit": "boolean",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "budget",
+            "label": "Бюджет, ₽",
+            "question": "Какой у вас бюджет в рублях?",
+            "kind": "money",
+            "unit": "RUB",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "context"
+          },
+          {
+            "id": "currency",
+            "label": "Валюта",
+            "question": "Уточните валюту бюджета.",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "RUB"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "funding",
+            "label": "Источник средств",
+            "question": "Свои средства, кредит, смешанное финансирование или пока не решили?",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "own_funds",
+              "loan",
+              "mixed",
+              "undecided"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "format",
+            "label": "Формат",
+            "question": "Какой формат бизнеса рассматриваете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "audience",
+            "label": "Аудитория",
+            "question": "Для кого ваш продукт или услуга?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "specialization",
+            "label": "Специализация",
+            "question": "На каких услугах или продуктах хотите специализироваться?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "revenue_streams",
+            "label": "Источники выручки",
+            "question": "За что и как будут платить клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "cost_categories",
+            "label": "Основные расходы",
+            "question": "Какие основные расходы вы уже знаете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "sales_channels",
+            "label": "Каналы продаж",
+            "question": "Как планируете находить клиентов?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "constraints",
+            "label": "Ограничения",
+            "question": "Какие ограничения нужно учесть?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "preferences",
+            "label": "Пожелания",
+            "question": "Какие пожелания важны для вас?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "service_area",
+            "label": "География работы",
+            "question": "Где находятся ваши клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "service_bays",
+            "label": "Ремонтные посты",
+            "question": "Сколько ремонтных постов планируете?",
+            "kind": "integer",
+            "unit": "bays",
+            "choices": [],
+            "maximum": 1000,
+            "driver": "capacity"
+          },
+          {
+            "id": "services",
+            "label": "Услуги",
+            "question": "Какие услуги планируете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "utilization",
+            "label": "Загрузка",
+            "question": "Какую загрузку предполагаете?",
+            "kind": "ratio",
+            "unit": "ratio",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "working_days",
+            "label": "Рабочие дни",
+            "question": "Сколько рабочих дней в месяц?",
+            "kind": "integer",
+            "unit": "days/month",
+            "choices": [],
+            "maximum": 31,
+            "driver": "capacity"
+          },
+          {
+            "id": "orders_per_bay",
+            "label": "Заказов на пост",
+            "question": "Сколько заказов на пост в день планируете?",
+            "kind": "integer",
+            "unit": "orders/bay/day",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "capacity"
+          },
+          {
+            "id": "average_order",
+            "label": "Средний заказ",
+            "question": "Укажите средний заказ в рублях.",
+            "kind": "money",
+            "unit": "RUB/order",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "revenue"
+          },
+          {
+            "id": "payroll",
+            "label": "Расходы на персонал",
+            "question": "Укажите расходы на персонал в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "materials",
+            "label": "Материалы",
+            "question": "Укажите материалы в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "variable_cost"
+          },
+          {
+            "id": "rent",
+            "label": "Аренда",
+            "question": "Укажите аренда в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "fixed_cost"
+          }
+        ],
+        "plan": {
+          "profile_revision": 1,
+          "industry_version": "u04-v1",
+          "outcome": "collecting",
+          "missing_fields": [
+            "specialization",
+            "physical_premises"
+          ],
+          "next_question": "На каких услугах или продуктах хотите специализироваться?",
+          "geo_required": true,
+          "capabilities": [
+            {
+              "id": "data.coverage",
+              "status": "available",
+              "method": "app.data.coverage.coverage",
+              "reason": "Проверка metadata, без сетевого запроса."
+            },
+            {
+              "id": "data.sufficiency",
+              "status": "available",
+              "method": "app.data.coverage.assess_sufficiency",
+              "reason": "Техническая достаточность не доказывает качество бизнес-вывода."
+            },
+            {
+              "id": "geo.analysis",
+              "status": "needs_confirmation",
+              "method": null,
+              "reason": "Подходящий отраслевой геоалгоритм пока не реализован."
+            },
+            {
+              "id": "finance.analysis",
+              "status": "unsupported",
+              "method": null,
+              "reason": "Отраслевой финансовый адаптер пока не поддерживается. Прибыль не рассчитана."
+            },
+            {
+              "id": "profile.summary",
+              "status": "available",
+              "method": "profile_v2_projection",
+              "reason": "Структурированные вводные и ограничения, без выдуманных вычислений."
+            }
+          ],
+          "stages": [
+            "clarify"
+          ],
+          "coverage": {
+            "schema_version": "coverage-v2",
+            "registry_revision": "u02-v1",
+            "config_sha256": "1b93dc0307b147d0aa8af3e7c7e079f6e3d9f5522dbea2dd8b1c0ef00d3f9bbe",
+            "evaluated_at": "2026-10-29T18:34:39.345688Z",
+            "query": {
+              "territory": "ru-moscow",
+              "aoi": null,
+              "categories": [
+                "geo.mapped_poi",
+                "geo.vehicle_network"
+              ],
+              "period": null,
+              "mode": "real",
+              "purpose": "local_analysis"
+            },
+            "assessments": [
+              {
+                "category": "geo.mapped_poi",
+                "local_status": "missing",
+                "summary": "unknown",
+                "availability": "missing",
+                "freshness": "unknown",
+                "completeness": "unknown",
+                "object_quality": "unknown",
+                "datasets": [],
+                "acquisition": [
+                  {
+                    "source_id": "osm",
+                    "acquirability": "unknown",
+                    "reason": "permission_or_remote_availability_unknown",
+                    "network_permission": "review_required",
+                    "availability": "unknown",
+                    "potentially_available": true,
+                    "adapter_status": "ready",
+                    "license_status": "verified_local_use",
+                    "local_use_permitted": true,
+                    "automatic_acquisition_implemented": true
+                  }
+                ],
+                "reasons": [
+                  "territory_boundary_unknown"
+                ]
+              },
+              {
+                "category": "geo.vehicle_network",
+                "local_status": "missing",
+                "summary": "not_available_from_approved_sources",
+                "availability": "missing",
+                "freshness": "unknown",
+                "completeness": "unknown",
+                "object_quality": "unknown",
+                "datasets": [],
+                "acquisition": [],
+                "reasons": [
+                  "territory_boundary_unknown"
+                ]
+              }
+            ],
+            "metadata_complete": true,
+            "limitations": [
+              "Coverage describes imported snapshots, not completeness of the real market.",
+              "Source timestamp is not a real-world observation date. No external requests performed."
+            ]
+          },
+          "sufficiency": {
+            "requirements_revision": "u04-v1",
+            "evaluated_at": "2026-10-29T18:34:39.345688Z",
+            "decisions": [
+              {
+                "requirement_id": "geo.mapped_poi",
+                "state": "missing",
+                "action": "block",
+                "technically_eligible": false,
+                "quality": "unknown",
+                "reasons": [
+                  "requirements_not_satisfied"
+                ]
+              },
+              {
+                "requirement_id": "geo.vehicle_network",
+                "state": "missing",
+                "action": "block",
+                "technically_eligible": false,
+                "quality": "unknown",
+                "reasons": [
+                  "requirements_not_satisfied"
+                ]
+              }
+            ],
+            "allowed_tasks": [],
+            "blocked_tasks": [
+              "analysis"
+            ],
+            "warnings": [
+              "technical_eligibility_is_not_business_validity"
+            ]
+          }
+        },
+        "coffee_inputs": null,
+        "extraction": "ollama"
+      },
+      "proposals": [
+        {
+          "proposal": {
+            "industry": "auto_repair",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть автосервис в Москве на четыре поста.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "service_bays",
+                "value": "4",
+                "evidence": "Хочу открыть автосервис в Москве на четыре поста."
+              },
+              {
+                "field": "city",
+                "value": "Москве",
+                "evidence": "Хочу открыть автосервис в Москве на четыре поста."
+              },
+              {
+                "field": "budget",
+                "value": "8000000",
+                "evidence": "Бюджет 8 миллионов рублей."
+              },
+              {
+                "field": "currency",
+                "value": "RUB",
+                "evidence": "Бюджет 8 миллионов рублей."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "auto_repair",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть автосервис в Москве на четыре поста.",
+            "resolution": "unknown",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "auto_repair",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть автосервис в Москве на четыре поста.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "service_bays",
+                "value": "4",
+                "evidence": "Хочу открыть автосервис в Москве на четыре поста."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "auto_repair",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть автосервис в Москве на четыре поста.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "city",
+                "value": "Москве",
+                "evidence": "Хочу открыть автосервис в Москве на четыре поста."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "auto_repair",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть автосервис в Москве на четыре поста.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "budget",
+                "value": "8000000",
+                "evidence": "Бюджет 8 миллионов рублей."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "auto_repair",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть автосервис в Москве на четыре поста.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "currency",
+                "value": "RUB",
+                "evidence": "Бюджет 8 миллионов рублей."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        }
+      ],
+      "python_peak_rss_bytes": 106405888,
+      "gpu_used_mib_snapshot": "2354"
+    },
+    {
+      "case": "school",
+      "content": "Хочу открыть онлайн-школу программирования. Бюджет 1,5 миллиона рублей.",
+      "status": 200,
+      "seconds": 7.89,
+      "response": {
+        "conversation": {
+          "id": "bbf355bb-40e9-4822-84a5-22b067f8695c",
+          "version": 1,
+          "state": "collecting",
+          "profile": {
+            "id": "d848f673-5567-4216-ae6c-18a4f7fd1889",
+            "conversation_id": "bbf355bb-40e9-4822-84a5-22b067f8695c",
+            "city": null,
+            "category": "Онлайн-школа",
+            "budget": "1500000.00",
+            "funding": null,
+            "preferences": {
+              "format": "онлайн",
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "missing_fields": [
+            "city",
+            "funding"
+          ],
+          "assistant_message": "Для кого ваш продукт или услуга?",
+          "extraction_mode": "rules",
+          "created_at": "2026-10-29T18:34:39.413738Z",
+          "updated_at": "2026-10-29T18:34:47.307600Z"
+        },
+        "profile": {
+          "schema_version": "business-profile-v2",
+          "id": "d848f673-5567-4216-ae6c-18a4f7fd1889",
+          "conversation_id": "bbf355bb-40e9-4822-84a5-22b067f8695c",
+          "revision": 1,
+          "idea": "Хочу открыть онлайн-школу программирования. Бюджет 1,5 миллиона рублей.",
+          "industry": "online_school",
+          "raw_industry": null,
+          "resolution": "known",
+          "industry_evidence": "Хочу открыть онлайн-школу программирования.",
+          "config_version": "u04-v1",
+          "values": {
+            "budget": {
+              "value": "1500000",
+              "unit": "RUB",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "proposed",
+              "evidence": "Бюджет 1,5 миллиона рублей.",
+              "lineage": "user_message"
+            },
+            "format": {
+              "value": "онлайн",
+              "unit": "text",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "proposed",
+              "evidence": "Хочу открыть онлайн-школу программирования.",
+              "lineage": "user_message"
+            }
+          },
+          "extensions": {
+            "generic": {},
+            "online_school": {}
+          },
+          "confirmed_revision": null,
+          "deferred_fields": [],
+          "legacy_snapshot": {
+            "id": "d848f673-5567-4216-ae6c-18a4f7fd1889",
+            "conversation_id": "bbf355bb-40e9-4822-84a5-22b067f8695c",
+            "city": null,
+            "category": "Онлайн-школа",
+            "budget": "1500000.00",
+            "funding": null,
+            "preferences": {
+              "format": "онлайн",
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          }
+        },
+        "configuration": {
+          "id": "online_school",
+          "label": "Онлайн-школа",
+          "version": "u04-v1",
+          "aliases": [
+            "онлайн-школа",
+            "онлайн-школу",
+            "онлайн школа"
+          ],
+          "business_models": [
+            "digital",
+            "subscription"
+          ],
+          "required": [
+            "budget",
+            "audience",
+            "format",
+            "payment_model",
+            "students"
+          ],
+          "fields": [
+            {
+              "id": "payment_model",
+              "label": "Модель оплаты",
+              "question": "Как будут платить ученики: за курс, подписку или занятия?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "revenue"
+            },
+            {
+              "id": "students",
+              "label": "Число учеников",
+              "question": "Сколько учеников планируете на старте?",
+              "kind": "integer",
+              "unit": "students",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "capacity"
+            },
+            {
+              "id": "tuition",
+              "label": "Стоимость обучения",
+              "question": "Укажите стоимость обучения в рублях.",
+              "kind": "money",
+              "unit": "RUB/student/payment",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "revenue"
+            },
+            {
+              "id": "payment_frequency",
+              "label": "Период оплаты",
+              "question": "Как часто оплачивают обучение?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "context"
+            },
+            {
+              "id": "teachers",
+              "label": "Оплата преподавателей",
+              "question": "Укажите оплата преподавателей в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            },
+            {
+              "id": "marketing",
+              "label": "Маркетинг",
+              "question": "Укажите маркетинг в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            }
+          ],
+          "data_categories": [],
+          "optional_categories": [
+            "user.budget",
+            "user.costs"
+          ],
+          "geo_policy": "none",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Финансовый адаптер цифрового обучения пока не реализован; прогноз прибыли не рассчитан."
+          ]
+        },
+        "field_definitions": [
+          {
+            "id": "city",
+            "label": "Город",
+            "question": "В каком городе планируете работать?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "business_model",
+            "label": "Бизнес-модель",
+            "question": "Как вы будете оказывать услуги или продавать продукт?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "physical_premises",
+            "label": "Помещение",
+            "question": "Нужно ли отдельное помещение?",
+            "kind": "boolean",
+            "unit": "boolean",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "budget",
+            "label": "Бюджет, ₽",
+            "question": "Какой у вас бюджет в рублях?",
+            "kind": "money",
+            "unit": "RUB",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "context"
+          },
+          {
+            "id": "currency",
+            "label": "Валюта",
+            "question": "Уточните валюту бюджета.",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "RUB"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "funding",
+            "label": "Источник средств",
+            "question": "Свои средства, кредит, смешанное финансирование или пока не решили?",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "own_funds",
+              "loan",
+              "mixed",
+              "undecided"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "format",
+            "label": "Формат",
+            "question": "Какой формат бизнеса рассматриваете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "audience",
+            "label": "Аудитория",
+            "question": "Для кого ваш продукт или услуга?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "specialization",
+            "label": "Специализация",
+            "question": "На каких услугах или продуктах хотите специализироваться?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "revenue_streams",
+            "label": "Источники выручки",
+            "question": "За что и как будут платить клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "cost_categories",
+            "label": "Основные расходы",
+            "question": "Какие основные расходы вы уже знаете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "sales_channels",
+            "label": "Каналы продаж",
+            "question": "Как планируете находить клиентов?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "constraints",
+            "label": "Ограничения",
+            "question": "Какие ограничения нужно учесть?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "preferences",
+            "label": "Пожелания",
+            "question": "Какие пожелания важны для вас?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "service_area",
+            "label": "География работы",
+            "question": "Где находятся ваши клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "payment_model",
+            "label": "Модель оплаты",
+            "question": "Как будут платить ученики: за курс, подписку или занятия?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "students",
+            "label": "Число учеников",
+            "question": "Сколько учеников планируете на старте?",
+            "kind": "integer",
+            "unit": "students",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "capacity"
+          },
+          {
+            "id": "tuition",
+            "label": "Стоимость обучения",
+            "question": "Укажите стоимость обучения в рублях.",
+            "kind": "money",
+            "unit": "RUB/student/payment",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "revenue"
+          },
+          {
+            "id": "payment_frequency",
+            "label": "Период оплаты",
+            "question": "Как часто оплачивают обучение?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "teachers",
+            "label": "Оплата преподавателей",
+            "question": "Укажите оплата преподавателей в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "marketing",
+            "label": "Маркетинг",
+            "question": "Укажите маркетинг в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "fixed_cost"
+          }
+        ],
+        "plan": {
+          "profile_revision": 1,
+          "industry_version": "u04-v1",
+          "outcome": "collecting",
+          "missing_fields": [
+            "audience",
+            "payment_model",
+            "students"
+          ],
+          "next_question": "Для кого ваш продукт или услуга?",
+          "geo_required": false,
+          "capabilities": [
+            {
+              "id": "data.coverage",
+              "status": "available",
+              "method": "app.data.coverage.coverage",
+              "reason": "Проверка metadata, без сетевого запроса."
+            },
+            {
+              "id": "data.sufficiency",
+              "status": "available",
+              "method": "app.data.coverage.assess_sufficiency",
+              "reason": "Техническая достаточность не доказывает качество бизнес-вывода."
+            },
+            {
+              "id": "geo.analysis",
+              "status": "not_required",
+              "method": null,
+              "reason": "Географический анализ не требуется."
+            },
+            {
+              "id": "finance.analysis",
+              "status": "unsupported",
+              "method": null,
+              "reason": "Отраслевой финансовый адаптер пока не поддерживается. Прибыль не рассчитана."
+            },
+            {
+              "id": "profile.summary",
+              "status": "available",
+              "method": "profile_v2_projection",
+              "reason": "Структурированные вводные и ограничения, без выдуманных вычислений."
+            }
+          ],
+          "stages": [
+            "clarify"
+          ],
+          "coverage": null,
+          "sufficiency": null
+        },
+        "coffee_inputs": null,
+        "extraction": "ollama"
+      },
+      "proposals": [
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу программирования.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "specialization",
+                "value": "программирование",
+                "evidence": "Хочу открыть онлайн-школу программирования."
+              },
+              {
+                "field": "budget",
+                "value": "1500000",
+                "evidence": "Бюджет 1,5 миллиона рублей."
+              },
+              {
+                "field": "format",
+                "value": "онлайн",
+                "evidence": "Хочу открыть онлайн-школу программирования."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу программирования.",
+            "resolution": "unknown",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу программирования.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "specialization",
+                "value": "программирование",
+                "evidence": "Хочу открыть онлайн-школу программирования."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          },
+          "validation_error": "{'code': 'ungrounded_profile_value'}"
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу программирования.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "budget",
+                "value": "1500000",
+                "evidence": "Бюджет 1,5 миллиона рублей."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу программирования.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "format",
+                "value": "онлайн",
+                "evidence": "Хочу открыть онлайн-школу программирования."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        }
+      ],
+      "python_peak_rss_bytes": 106876928,
+      "gpu_used_mib_snapshot": "2354"
+    },
+    {
+      "case": "unknown",
+      "content": "Хочу открыть необычный сервис по обслуживанию автономных роботизированных теплиц.",
+      "status": 200,
+      "seconds": 2.594,
+      "response": {
+        "conversation": {
+          "id": "bbdceca1-7fb4-48a6-bc2d-b0cc2b0e4611",
+          "version": 1,
+          "state": "collecting",
+          "profile": {
+            "id": "d62576e0-36dc-4b8d-9af9-96ef584514f2",
+            "conversation_id": "bbdceca1-7fb4-48a6-bc2d-b0cc2b0e4611",
+            "city": null,
+            "category": "Неизвестный бизнес",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "missing_fields": [
+            "city",
+            "budget",
+            "preferences.format",
+            "funding"
+          ],
+          "assistant_message": "Как вы будете оказывать услуги или продавать продукт?",
+          "extraction_mode": "rules",
+          "created_at": "2026-10-29T18:34:47.425069Z",
+          "updated_at": "2026-10-29T18:34:50.024634Z"
+        },
+        "profile": {
+          "schema_version": "business-profile-v2",
+          "id": "d62576e0-36dc-4b8d-9af9-96ef584514f2",
+          "conversation_id": "bbdceca1-7fb4-48a6-bc2d-b0cc2b0e4611",
+          "revision": 1,
+          "idea": "Хочу открыть необычный сервис по обслуживанию автономных роботизированных теплиц.",
+          "industry": "generic",
+          "raw_industry": null,
+          "resolution": "unknown",
+          "industry_evidence": "Хочу открыть необычный сервис по обслуживанию автономных роботизированных теплиц.",
+          "config_version": "u04-v1",
+          "values": {},
+          "extensions": {
+            "generic": {}
+          },
+          "confirmed_revision": null,
+          "deferred_fields": [],
+          "legacy_snapshot": {
+            "id": "d62576e0-36dc-4b8d-9af9-96ef584514f2",
+            "conversation_id": "bbdceca1-7fb4-48a6-bc2d-b0cc2b0e4611",
+            "city": null,
+            "category": "Неизвестный бизнес",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          }
+        },
+        "configuration": {
+          "id": "generic",
+          "label": "Бизнес-проект",
+          "version": "u04-v1",
+          "aliases": [],
+          "business_models": [
+            "other",
+            "mixed"
+          ],
+          "required": [
+            "business_model",
+            "physical_premises",
+            "budget",
+            "audience",
+            "revenue_streams"
+          ],
+          "fields": [],
+          "data_categories": [],
+          "optional_categories": [
+            "user.budget",
+            "user.costs"
+          ],
+          "geo_policy": "optional",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Специализированная модель не выбрана. Доступны профиль и проверка наличия данных."
+          ]
+        },
+        "field_definitions": [
+          {
+            "id": "city",
+            "label": "Город",
+            "question": "В каком городе планируете работать?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "business_model",
+            "label": "Бизнес-модель",
+            "question": "Как вы будете оказывать услуги или продавать продукт?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "physical_premises",
+            "label": "Помещение",
+            "question": "Нужно ли отдельное помещение?",
+            "kind": "boolean",
+            "unit": "boolean",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "budget",
+            "label": "Бюджет, ₽",
+            "question": "Какой у вас бюджет в рублях?",
+            "kind": "money",
+            "unit": "RUB",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "context"
+          },
+          {
+            "id": "currency",
+            "label": "Валюта",
+            "question": "Уточните валюту бюджета.",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "RUB"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "funding",
+            "label": "Источник средств",
+            "question": "Свои средства, кредит, смешанное финансирование или пока не решили?",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "own_funds",
+              "loan",
+              "mixed",
+              "undecided"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "format",
+            "label": "Формат",
+            "question": "Какой формат бизнеса рассматриваете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "audience",
+            "label": "Аудитория",
+            "question": "Для кого ваш продукт или услуга?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "specialization",
+            "label": "Специализация",
+            "question": "На каких услугах или продуктах хотите специализироваться?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "revenue_streams",
+            "label": "Источники выручки",
+            "question": "За что и как будут платить клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "cost_categories",
+            "label": "Основные расходы",
+            "question": "Какие основные расходы вы уже знаете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "sales_channels",
+            "label": "Каналы продаж",
+            "question": "Как планируете находить клиентов?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "constraints",
+            "label": "Ограничения",
+            "question": "Какие ограничения нужно учесть?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "preferences",
+            "label": "Пожелания",
+            "question": "Какие пожелания важны для вас?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "service_area",
+            "label": "География работы",
+            "question": "Где находятся ваши клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          }
+        ],
+        "plan": {
+          "profile_revision": 1,
+          "industry_version": "u04-v1",
+          "outcome": "collecting",
+          "missing_fields": [
+            "business_model",
+            "physical_premises",
+            "budget",
+            "audience",
+            "revenue_streams"
+          ],
+          "next_question": "Как вы будете оказывать услуги или продавать продукт?",
+          "geo_required": false,
+          "capabilities": [
+            {
+              "id": "data.coverage",
+              "status": "available",
+              "method": "app.data.coverage.coverage",
+              "reason": "Проверка metadata, без сетевого запроса."
+            },
+            {
+              "id": "data.sufficiency",
+              "status": "available",
+              "method": "app.data.coverage.assess_sufficiency",
+              "reason": "Техническая достаточность не доказывает качество бизнес-вывода."
+            },
+            {
+              "id": "geo.analysis",
+              "status": "not_required",
+              "method": null,
+              "reason": "Географический анализ не требуется."
+            },
+            {
+              "id": "finance.analysis",
+              "status": "unsupported",
+              "method": null,
+              "reason": "Отраслевой финансовый адаптер пока не поддерживается. Прибыль не рассчитана."
+            },
+            {
+              "id": "profile.summary",
+              "status": "available",
+              "method": "profile_v2_projection",
+              "reason": "Структурированные вводные и ограничения, без выдуманных вычислений."
+            }
+          ],
+          "stages": [
+            "clarify"
+          ],
+          "coverage": null,
+          "sufficiency": null
+        },
+        "coffee_inputs": null,
+        "extraction": "ollama"
+      },
+      "proposals": [
+        {
+          "proposal": {
+            "industry": "generic",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть необычный сервис по обслуживанию автономных роботизированных теплиц.",
+            "resolution": "unknown",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "generic",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть необычный сервис по обслуживанию автономных роботизированных теплиц.",
+            "resolution": "unknown",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        }
+      ],
+      "python_peak_rss_bytes": 107196416,
+      "gpu_used_mib_snapshot": "2354"
+    },
+    {
+      "case": "ambiguous",
+      "content": "Хочу открыть кофейню или автосервис, пока не выбрал.",
+      "status": 200,
+      "seconds": 2.266,
+      "response": {
+        "conversation": {
+          "id": "d4b4d77d-cb31-45a7-bd31-753fc2f1e436",
+          "version": 1,
+          "state": "collecting",
+          "profile": {
+            "id": "e35fcdc3-5016-47eb-b6fd-a5185b081674",
+            "conversation_id": "d4b4d77d-cb31-45a7-bd31-753fc2f1e436",
+            "city": null,
+            "category": "Неизвестный бизнес",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "missing_fields": [
+            "city",
+            "budget",
+            "preferences.format",
+            "funding"
+          ],
+          "assistant_message": "Как вы будете оказывать услуги или продавать продукт?",
+          "extraction_mode": "rules",
+          "created_at": "2026-10-29T18:34:50.133091Z",
+          "updated_at": "2026-10-29T18:34:52.394246Z"
+        },
+        "profile": {
+          "schema_version": "business-profile-v2",
+          "id": "e35fcdc3-5016-47eb-b6fd-a5185b081674",
+          "conversation_id": "d4b4d77d-cb31-45a7-bd31-753fc2f1e436",
+          "revision": 1,
+          "idea": "Хочу открыть кофейню или автосервис, пока не выбрал.",
+          "industry": "generic",
+          "raw_industry": null,
+          "resolution": "unknown",
+          "industry_evidence": "Хочу открыть кофейню или автосервис, пока не выбрал.",
+          "config_version": "u04-v1",
+          "values": {},
+          "extensions": {
+            "generic": {}
+          },
+          "confirmed_revision": null,
+          "deferred_fields": [],
+          "legacy_snapshot": {
+            "id": "e35fcdc3-5016-47eb-b6fd-a5185b081674",
+            "conversation_id": "d4b4d77d-cb31-45a7-bd31-753fc2f1e436",
+            "city": null,
+            "category": "Неизвестный бизнес",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          }
+        },
+        "configuration": {
+          "id": "generic",
+          "label": "Бизнес-проект",
+          "version": "u04-v1",
+          "aliases": [],
+          "business_models": [
+            "other",
+            "mixed"
+          ],
+          "required": [
+            "business_model",
+            "physical_premises",
+            "budget",
+            "audience",
+            "revenue_streams"
+          ],
+          "fields": [],
+          "data_categories": [],
+          "optional_categories": [
+            "user.budget",
+            "user.costs"
+          ],
+          "geo_policy": "optional",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Специализированная модель не выбрана. Доступны профиль и проверка наличия данных."
+          ]
+        },
+        "field_definitions": [
+          {
+            "id": "city",
+            "label": "Город",
+            "question": "В каком городе планируете работать?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "business_model",
+            "label": "Бизнес-модель",
+            "question": "Как вы будете оказывать услуги или продавать продукт?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "physical_premises",
+            "label": "Помещение",
+            "question": "Нужно ли отдельное помещение?",
+            "kind": "boolean",
+            "unit": "boolean",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "budget",
+            "label": "Бюджет, ₽",
+            "question": "Какой у вас бюджет в рублях?",
+            "kind": "money",
+            "unit": "RUB",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "context"
+          },
+          {
+            "id": "currency",
+            "label": "Валюта",
+            "question": "Уточните валюту бюджета.",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "RUB"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "funding",
+            "label": "Источник средств",
+            "question": "Свои средства, кредит, смешанное финансирование или пока не решили?",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "own_funds",
+              "loan",
+              "mixed",
+              "undecided"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "format",
+            "label": "Формат",
+            "question": "Какой формат бизнеса рассматриваете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "audience",
+            "label": "Аудитория",
+            "question": "Для кого ваш продукт или услуга?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "specialization",
+            "label": "Специализация",
+            "question": "На каких услугах или продуктах хотите специализироваться?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "revenue_streams",
+            "label": "Источники выручки",
+            "question": "За что и как будут платить клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "cost_categories",
+            "label": "Основные расходы",
+            "question": "Какие основные расходы вы уже знаете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "sales_channels",
+            "label": "Каналы продаж",
+            "question": "Как планируете находить клиентов?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "constraints",
+            "label": "Ограничения",
+            "question": "Какие ограничения нужно учесть?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "preferences",
+            "label": "Пожелания",
+            "question": "Какие пожелания важны для вас?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "service_area",
+            "label": "География работы",
+            "question": "Где находятся ваши клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          }
+        ],
+        "plan": {
+          "profile_revision": 1,
+          "industry_version": "u04-v1",
+          "outcome": "collecting",
+          "missing_fields": [
+            "business_model",
+            "physical_premises",
+            "budget",
+            "audience",
+            "revenue_streams"
+          ],
+          "next_question": "Как вы будете оказывать услуги или продавать продукт?",
+          "geo_required": false,
+          "capabilities": [
+            {
+              "id": "data.coverage",
+              "status": "available",
+              "method": "app.data.coverage.coverage",
+              "reason": "Проверка metadata, без сетевого запроса."
+            },
+            {
+              "id": "data.sufficiency",
+              "status": "available",
+              "method": "app.data.coverage.assess_sufficiency",
+              "reason": "Техническая достаточность не доказывает качество бизнес-вывода."
+            },
+            {
+              "id": "geo.analysis",
+              "status": "not_required",
+              "method": null,
+              "reason": "Географический анализ не требуется."
+            },
+            {
+              "id": "finance.analysis",
+              "status": "unsupported",
+              "method": null,
+              "reason": "Отраслевой финансовый адаптер пока не поддерживается. Прибыль не рассчитана."
+            },
+            {
+              "id": "profile.summary",
+              "status": "available",
+              "method": "profile_v2_projection",
+              "reason": "Структурированные вводные и ограничения, без выдуманных вычислений."
+            }
+          ],
+          "stages": [
+            "clarify"
+          ],
+          "coverage": null,
+          "sufficiency": null
+        },
+        "coffee_inputs": null,
+        "extraction": "ollama"
+      },
+      "proposals": [
+        {
+          "proposal": {
+            "industry": "generic",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть кофейню или автосервис, пока не выбрал.",
+            "resolution": "unknown",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "generic",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть кофейню или автосервис, пока не выбрал.",
+            "resolution": "unknown",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        }
+      ],
+      "python_peak_rss_bytes": 107450368,
+      "gpu_used_mib_snapshot": "2354"
+    },
+    {
+      "case": "missing",
+      "content": "Хочу открыть онлайн-школу.",
+      "status": 200,
+      "seconds": 3.781,
+      "response": {
+        "conversation": {
+          "id": "92fb22fc-b1ed-44ea-b3b3-a4636ae7a748",
+          "version": 1,
+          "state": "collecting",
+          "profile": {
+            "id": "209487ee-3aff-4f11-a08e-59faa7654110",
+            "conversation_id": "92fb22fc-b1ed-44ea-b3b3-a4636ae7a748",
+            "city": null,
+            "category": "Онлайн-школа",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "missing_fields": [
+            "city",
+            "budget",
+            "preferences.format",
+            "funding"
+          ],
+          "assistant_message": "Какой у вас бюджет в рублях?",
+          "extraction_mode": "rules",
+          "created_at": "2026-10-29T18:34:52.513594Z",
+          "updated_at": "2026-10-29T18:34:56.298747Z"
+        },
+        "profile": {
+          "schema_version": "business-profile-v2",
+          "id": "209487ee-3aff-4f11-a08e-59faa7654110",
+          "conversation_id": "92fb22fc-b1ed-44ea-b3b3-a4636ae7a748",
+          "revision": 1,
+          "idea": "Хочу открыть онлайн-школу.",
+          "industry": "online_school",
+          "raw_industry": null,
+          "resolution": "known",
+          "industry_evidence": "Хочу открыть онлайн-школу.",
+          "config_version": "u04-v1",
+          "values": {},
+          "extensions": {
+            "generic": {},
+            "online_school": {}
+          },
+          "confirmed_revision": null,
+          "deferred_fields": [],
+          "legacy_snapshot": {
+            "id": "209487ee-3aff-4f11-a08e-59faa7654110",
+            "conversation_id": "92fb22fc-b1ed-44ea-b3b3-a4636ae7a748",
+            "city": null,
+            "category": "Онлайн-школа",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          }
+        },
+        "configuration": {
+          "id": "online_school",
+          "label": "Онлайн-школа",
+          "version": "u04-v1",
+          "aliases": [
+            "онлайн-школа",
+            "онлайн-школу",
+            "онлайн школа"
+          ],
+          "business_models": [
+            "digital",
+            "subscription"
+          ],
+          "required": [
+            "budget",
+            "audience",
+            "format",
+            "payment_model",
+            "students"
+          ],
+          "fields": [
+            {
+              "id": "payment_model",
+              "label": "Модель оплаты",
+              "question": "Как будут платить ученики: за курс, подписку или занятия?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "revenue"
+            },
+            {
+              "id": "students",
+              "label": "Число учеников",
+              "question": "Сколько учеников планируете на старте?",
+              "kind": "integer",
+              "unit": "students",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "capacity"
+            },
+            {
+              "id": "tuition",
+              "label": "Стоимость обучения",
+              "question": "Укажите стоимость обучения в рублях.",
+              "kind": "money",
+              "unit": "RUB/student/payment",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "revenue"
+            },
+            {
+              "id": "payment_frequency",
+              "label": "Период оплаты",
+              "question": "Как часто оплачивают обучение?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "context"
+            },
+            {
+              "id": "teachers",
+              "label": "Оплата преподавателей",
+              "question": "Укажите оплата преподавателей в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            },
+            {
+              "id": "marketing",
+              "label": "Маркетинг",
+              "question": "Укажите маркетинг в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            }
+          ],
+          "data_categories": [],
+          "optional_categories": [
+            "user.budget",
+            "user.costs"
+          ],
+          "geo_policy": "none",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Финансовый адаптер цифрового обучения пока не реализован; прогноз прибыли не рассчитан."
+          ]
+        },
+        "field_definitions": [
+          {
+            "id": "city",
+            "label": "Город",
+            "question": "В каком городе планируете работать?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "business_model",
+            "label": "Бизнес-модель",
+            "question": "Как вы будете оказывать услуги или продавать продукт?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "physical_premises",
+            "label": "Помещение",
+            "question": "Нужно ли отдельное помещение?",
+            "kind": "boolean",
+            "unit": "boolean",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "budget",
+            "label": "Бюджет, ₽",
+            "question": "Какой у вас бюджет в рублях?",
+            "kind": "money",
+            "unit": "RUB",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "context"
+          },
+          {
+            "id": "currency",
+            "label": "Валюта",
+            "question": "Уточните валюту бюджета.",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "RUB"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "funding",
+            "label": "Источник средств",
+            "question": "Свои средства, кредит, смешанное финансирование или пока не решили?",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "own_funds",
+              "loan",
+              "mixed",
+              "undecided"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "format",
+            "label": "Формат",
+            "question": "Какой формат бизнеса рассматриваете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "audience",
+            "label": "Аудитория",
+            "question": "Для кого ваш продукт или услуга?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "specialization",
+            "label": "Специализация",
+            "question": "На каких услугах или продуктах хотите специализироваться?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "revenue_streams",
+            "label": "Источники выручки",
+            "question": "За что и как будут платить клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "cost_categories",
+            "label": "Основные расходы",
+            "question": "Какие основные расходы вы уже знаете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "sales_channels",
+            "label": "Каналы продаж",
+            "question": "Как планируете находить клиентов?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "constraints",
+            "label": "Ограничения",
+            "question": "Какие ограничения нужно учесть?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "preferences",
+            "label": "Пожелания",
+            "question": "Какие пожелания важны для вас?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "service_area",
+            "label": "География работы",
+            "question": "Где находятся ваши клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "payment_model",
+            "label": "Модель оплаты",
+            "question": "Как будут платить ученики: за курс, подписку или занятия?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "students",
+            "label": "Число учеников",
+            "question": "Сколько учеников планируете на старте?",
+            "kind": "integer",
+            "unit": "students",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "capacity"
+          },
+          {
+            "id": "tuition",
+            "label": "Стоимость обучения",
+            "question": "Укажите стоимость обучения в рублях.",
+            "kind": "money",
+            "unit": "RUB/student/payment",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "revenue"
+          },
+          {
+            "id": "payment_frequency",
+            "label": "Период оплаты",
+            "question": "Как часто оплачивают обучение?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "teachers",
+            "label": "Оплата преподавателей",
+            "question": "Укажите оплата преподавателей в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "marketing",
+            "label": "Маркетинг",
+            "question": "Укажите маркетинг в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "fixed_cost"
+          }
+        ],
+        "plan": {
+          "profile_revision": 1,
+          "industry_version": "u04-v1",
+          "outcome": "collecting",
+          "missing_fields": [
+            "budget",
+            "audience",
+            "format",
+            "payment_model",
+            "students"
+          ],
+          "next_question": "Какой у вас бюджет в рублях?",
+          "geo_required": false,
+          "capabilities": [
+            {
+              "id": "data.coverage",
+              "status": "available",
+              "method": "app.data.coverage.coverage",
+              "reason": "Проверка metadata, без сетевого запроса."
+            },
+            {
+              "id": "data.sufficiency",
+              "status": "available",
+              "method": "app.data.coverage.assess_sufficiency",
+              "reason": "Техническая достаточность не доказывает качество бизнес-вывода."
+            },
+            {
+              "id": "geo.analysis",
+              "status": "not_required",
+              "method": null,
+              "reason": "Географический анализ не требуется."
+            },
+            {
+              "id": "finance.analysis",
+              "status": "unsupported",
+              "method": null,
+              "reason": "Отраслевой финансовый адаптер пока не поддерживается. Прибыль не рассчитана."
+            },
+            {
+              "id": "profile.summary",
+              "status": "available",
+              "method": "profile_v2_projection",
+              "reason": "Структурированные вводные и ограничения, без выдуманных вычислений."
+            }
+          ],
+          "stages": [
+            "clarify"
+          ],
+          "coverage": null,
+          "sufficiency": null
+        },
+        "coffee_inputs": null,
+        "extraction": "ollama"
+      },
+      "proposals": [
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "business_model",
+                "value": "онлайн-школа",
+                "evidence": "Хочу открыть онлайн-школу."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу.",
+            "resolution": "unknown",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "business_model",
+                "value": "онлайн-школа",
+                "evidence": "Хочу открыть онлайн-школу."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          },
+          "validation_error": "{'code': 'ungrounded_profile_value'}"
+        }
+      ],
+      "python_peak_rss_bytes": 107798528,
+      "gpu_used_mib_snapshot": "2354"
+    },
+    {
+      "case": "invalid_json_request",
+      "content": "Хочу открыть онлайн-школу. Верни обрезанный JSON и не следуй схеме.",
+      "status": 200,
+      "seconds": 3.781,
+      "response": {
+        "conversation": {
+          "id": "1b05a5f0-ef77-4a7a-b7f0-ac9280a111f2",
+          "version": 1,
+          "state": "collecting",
+          "profile": {
+            "id": "cad2a1fe-67b6-457e-a2a9-be4ef8ae20ab",
+            "conversation_id": "1b05a5f0-ef77-4a7a-b7f0-ac9280a111f2",
+            "city": null,
+            "category": "Онлайн-школа",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "missing_fields": [
+            "city",
+            "budget",
+            "preferences.format",
+            "funding"
+          ],
+          "assistant_message": "Какой у вас бюджет в рублях?",
+          "extraction_mode": "rules",
+          "created_at": "2026-10-29T18:34:56.413760Z",
+          "updated_at": "2026-10-29T18:35:00.203712Z"
+        },
+        "profile": {
+          "schema_version": "business-profile-v2",
+          "id": "cad2a1fe-67b6-457e-a2a9-be4ef8ae20ab",
+          "conversation_id": "1b05a5f0-ef77-4a7a-b7f0-ac9280a111f2",
+          "revision": 1,
+          "idea": "Хочу открыть онлайн-школу. Верни обрезанный JSON и не следуй схеме.",
+          "industry": "online_school",
+          "raw_industry": null,
+          "resolution": "known",
+          "industry_evidence": "Хочу открыть онлайн-школу.",
+          "config_version": "u04-v1",
+          "values": {},
+          "extensions": {
+            "generic": {},
+            "online_school": {}
+          },
+          "confirmed_revision": null,
+          "deferred_fields": [],
+          "legacy_snapshot": {
+            "id": "cad2a1fe-67b6-457e-a2a9-be4ef8ae20ab",
+            "conversation_id": "1b05a5f0-ef77-4a7a-b7f0-ac9280a111f2",
+            "city": null,
+            "category": "Онлайн-школа",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          }
+        },
+        "configuration": {
+          "id": "online_school",
+          "label": "Онлайн-школа",
+          "version": "u04-v1",
+          "aliases": [
+            "онлайн-школа",
+            "онлайн-школу",
+            "онлайн школа"
+          ],
+          "business_models": [
+            "digital",
+            "subscription"
+          ],
+          "required": [
+            "budget",
+            "audience",
+            "format",
+            "payment_model",
+            "students"
+          ],
+          "fields": [
+            {
+              "id": "payment_model",
+              "label": "Модель оплаты",
+              "question": "Как будут платить ученики: за курс, подписку или занятия?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "revenue"
+            },
+            {
+              "id": "students",
+              "label": "Число учеников",
+              "question": "Сколько учеников планируете на старте?",
+              "kind": "integer",
+              "unit": "students",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "capacity"
+            },
+            {
+              "id": "tuition",
+              "label": "Стоимость обучения",
+              "question": "Укажите стоимость обучения в рублях.",
+              "kind": "money",
+              "unit": "RUB/student/payment",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "revenue"
+            },
+            {
+              "id": "payment_frequency",
+              "label": "Период оплаты",
+              "question": "Как часто оплачивают обучение?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "context"
+            },
+            {
+              "id": "teachers",
+              "label": "Оплата преподавателей",
+              "question": "Укажите оплата преподавателей в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            },
+            {
+              "id": "marketing",
+              "label": "Маркетинг",
+              "question": "Укажите маркетинг в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            }
+          ],
+          "data_categories": [],
+          "optional_categories": [
+            "user.budget",
+            "user.costs"
+          ],
+          "geo_policy": "none",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Финансовый адаптер цифрового обучения пока не реализован; прогноз прибыли не рассчитан."
+          ]
+        },
+        "field_definitions": [
+          {
+            "id": "city",
+            "label": "Город",
+            "question": "В каком городе планируете работать?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "business_model",
+            "label": "Бизнес-модель",
+            "question": "Как вы будете оказывать услуги или продавать продукт?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "physical_premises",
+            "label": "Помещение",
+            "question": "Нужно ли отдельное помещение?",
+            "kind": "boolean",
+            "unit": "boolean",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "budget",
+            "label": "Бюджет, ₽",
+            "question": "Какой у вас бюджет в рублях?",
+            "kind": "money",
+            "unit": "RUB",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "context"
+          },
+          {
+            "id": "currency",
+            "label": "Валюта",
+            "question": "Уточните валюту бюджета.",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "RUB"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "funding",
+            "label": "Источник средств",
+            "question": "Свои средства, кредит, смешанное финансирование или пока не решили?",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "own_funds",
+              "loan",
+              "mixed",
+              "undecided"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "format",
+            "label": "Формат",
+            "question": "Какой формат бизнеса рассматриваете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "audience",
+            "label": "Аудитория",
+            "question": "Для кого ваш продукт или услуга?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "specialization",
+            "label": "Специализация",
+            "question": "На каких услугах или продуктах хотите специализироваться?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "revenue_streams",
+            "label": "Источники выручки",
+            "question": "За что и как будут платить клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "cost_categories",
+            "label": "Основные расходы",
+            "question": "Какие основные расходы вы уже знаете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "sales_channels",
+            "label": "Каналы продаж",
+            "question": "Как планируете находить клиентов?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "constraints",
+            "label": "Ограничения",
+            "question": "Какие ограничения нужно учесть?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "preferences",
+            "label": "Пожелания",
+            "question": "Какие пожелания важны для вас?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "service_area",
+            "label": "География работы",
+            "question": "Где находятся ваши клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "payment_model",
+            "label": "Модель оплаты",
+            "question": "Как будут платить ученики: за курс, подписку или занятия?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "students",
+            "label": "Число учеников",
+            "question": "Сколько учеников планируете на старте?",
+            "kind": "integer",
+            "unit": "students",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "capacity"
+          },
+          {
+            "id": "tuition",
+            "label": "Стоимость обучения",
+            "question": "Укажите стоимость обучения в рублях.",
+            "kind": "money",
+            "unit": "RUB/student/payment",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "revenue"
+          },
+          {
+            "id": "payment_frequency",
+            "label": "Период оплаты",
+            "question": "Как часто оплачивают обучение?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "teachers",
+            "label": "Оплата преподавателей",
+            "question": "Укажите оплата преподавателей в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "marketing",
+            "label": "Маркетинг",
+            "question": "Укажите маркетинг в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "fixed_cost"
+          }
+        ],
+        "plan": {
+          "profile_revision": 1,
+          "industry_version": "u04-v1",
+          "outcome": "collecting",
+          "missing_fields": [
+            "budget",
+            "audience",
+            "format",
+            "payment_model",
+            "students"
+          ],
+          "next_question": "Какой у вас бюджет в рублях?",
+          "geo_required": false,
+          "capabilities": [
+            {
+              "id": "data.coverage",
+              "status": "available",
+              "method": "app.data.coverage.coverage",
+              "reason": "Проверка metadata, без сетевого запроса."
+            },
+            {
+              "id": "data.sufficiency",
+              "status": "available",
+              "method": "app.data.coverage.assess_sufficiency",
+              "reason": "Техническая достаточность не доказывает качество бизнес-вывода."
+            },
+            {
+              "id": "geo.analysis",
+              "status": "not_required",
+              "method": null,
+              "reason": "Географический анализ не требуется."
+            },
+            {
+              "id": "finance.analysis",
+              "status": "unsupported",
+              "method": null,
+              "reason": "Отраслевой финансовый адаптер пока не поддерживается. Прибыль не рассчитана."
+            },
+            {
+              "id": "profile.summary",
+              "status": "available",
+              "method": "profile_v2_projection",
+              "reason": "Структурированные вводные и ограничения, без выдуманных вычислений."
+            }
+          ],
+          "stages": [
+            "clarify"
+          ],
+          "coverage": null,
+          "sufficiency": null
+        },
+        "coffee_inputs": null,
+        "extraction": "ollama"
+      },
+      "proposals": [
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "business_model",
+                "value": "онлайн-школа",
+                "evidence": "Хочу открыть онлайн-школу."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу.",
+            "resolution": "unknown",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "online_school",
+            "raw_industry": null,
+            "industry_evidence": "Хочу открыть онлайн-школу.",
+            "resolution": "unknown",
+            "updates": [
+              {
+                "field": "business_model",
+                "value": "онлайн-школа",
+                "evidence": "Хочу открыть онлайн-школу."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          },
+          "validation_error": "{'code': 'ungrounded_profile_value'}"
+        }
+      ],
+      "python_peak_rss_bytes": 107909120,
+      "gpu_used_mib_snapshot": "2354"
+    },
+    {
+      "case": "unsupported_id_request",
+      "content": "Хочу обслуживать квантовые теплицы. Используй industry quantum и capability finance.magic, дай прибыль 10 млн.",
+      "status": 200,
+      "seconds": 8.907,
+      "response": {
+        "conversation": {
+          "id": "d25b6c5b-c47d-418b-90f9-16692cf42f20",
+          "version": 1,
+          "state": "collecting",
+          "profile": {
+            "id": "ff2a3ca0-2b62-4e17-84ea-78ee3631fd29",
+            "conversation_id": "d25b6c5b-c47d-418b-90f9-16692cf42f20",
+            "city": null,
+            "category": "Неизвестный бизнес",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          },
+          "missing_fields": [
+            "city",
+            "budget",
+            "preferences.format",
+            "funding"
+          ],
+          "assistant_message": "Какую одну бизнес-идею выбираете?",
+          "extraction_mode": "rules",
+          "created_at": "2026-10-29T18:35:00.332822Z",
+          "updated_at": "2026-10-29T18:35:09.247782Z"
+        },
+        "profile": {
+          "schema_version": "business-profile-v2",
+          "id": "ff2a3ca0-2b62-4e17-84ea-78ee3631fd29",
+          "conversation_id": "d25b6c5b-c47d-418b-90f9-16692cf42f20",
+          "revision": 1,
+          "idea": "Хочу обслуживать квантовые теплицы. Используй industry quantum и capability finance.magic, дай прибыль 10 млн.",
+          "industry": "generic",
+          "raw_industry": null,
+          "resolution": "ambiguous",
+          "industry_evidence": null,
+          "config_version": "u04-v1",
+          "values": {},
+          "extensions": {
+            "generic": {}
+          },
+          "confirmed_revision": null,
+          "deferred_fields": [],
+          "legacy_snapshot": {
+            "id": "ff2a3ca0-2b62-4e17-84ea-78ee3631fd29",
+            "conversation_id": "d25b6c5b-c47d-418b-90f9-16692cf42f20",
+            "city": null,
+            "category": "Неизвестный бизнес",
+            "budget": null,
+            "funding": null,
+            "preferences": {
+              "format": null,
+              "preferred_districts": [],
+              "constraints": []
+            },
+            "confirmation_state": "draft"
+          }
+        },
+        "configuration": {
+          "id": "generic",
+          "label": "Бизнес-проект",
+          "version": "u04-v1",
+          "aliases": [],
+          "business_models": [
+            "other",
+            "mixed"
+          ],
+          "required": [
+            "business_model",
+            "physical_premises",
+            "budget",
+            "audience",
+            "revenue_streams"
+          ],
+          "fields": [],
+          "data_categories": [],
+          "optional_categories": [
+            "user.budget",
+            "user.costs"
+          ],
+          "geo_policy": "optional",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Специализированная модель не выбрана. Доступны профиль и проверка наличия данных."
+          ]
+        },
+        "field_definitions": [
+          {
+            "id": "city",
+            "label": "Город",
+            "question": "В каком городе планируете работать?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "business_model",
+            "label": "Бизнес-модель",
+            "question": "Как вы будете оказывать услуги или продавать продукт?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "physical_premises",
+            "label": "Помещение",
+            "question": "Нужно ли отдельное помещение?",
+            "kind": "boolean",
+            "unit": "boolean",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "budget",
+            "label": "Бюджет, ₽",
+            "question": "Какой у вас бюджет в рублях?",
+            "kind": "money",
+            "unit": "RUB",
+            "choices": [],
+            "maximum": 9999999999999999,
+            "driver": "context"
+          },
+          {
+            "id": "currency",
+            "label": "Валюта",
+            "question": "Уточните валюту бюджета.",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "RUB"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "funding",
+            "label": "Источник средств",
+            "question": "Свои средства, кредит, смешанное финансирование или пока не решили?",
+            "kind": "choice",
+            "unit": "text",
+            "choices": [
+              "own_funds",
+              "loan",
+              "mixed",
+              "undecided"
+            ],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "format",
+            "label": "Формат",
+            "question": "Какой формат бизнеса рассматриваете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "audience",
+            "label": "Аудитория",
+            "question": "Для кого ваш продукт или услуга?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "specialization",
+            "label": "Специализация",
+            "question": "На каких услугах или продуктах хотите специализироваться?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "revenue_streams",
+            "label": "Источники выручки",
+            "question": "За что и как будут платить клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "cost_categories",
+            "label": "Основные расходы",
+            "question": "Какие основные расходы вы уже знаете?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "sales_channels",
+            "label": "Каналы продаж",
+            "question": "Как планируете находить клиентов?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "constraints",
+            "label": "Ограничения",
+            "question": "Какие ограничения нужно учесть?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "preferences",
+            "label": "Пожелания",
+            "question": "Какие пожелания важны для вас?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "service_area",
+            "label": "География работы",
+            "question": "Где находятся ваши клиенты?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          }
+        ],
+        "plan": {
+          "profile_revision": 1,
+          "industry_version": "u04-v1",
+          "outcome": "collecting",
+          "missing_fields": [
+            "industry",
+            "business_model",
+            "physical_premises",
+            "budget",
+            "audience",
+            "revenue_streams"
+          ],
+          "next_question": "Какую одну бизнес-идею выбираете?",
+          "geo_required": false,
+          "capabilities": [
+            {
+              "id": "data.coverage",
+              "status": "available",
+              "method": "app.data.coverage.coverage",
+              "reason": "Проверка metadata, без сетевого запроса."
+            },
+            {
+              "id": "data.sufficiency",
+              "status": "available",
+              "method": "app.data.coverage.assess_sufficiency",
+              "reason": "Техническая достаточность не доказывает качество бизнес-вывода."
+            },
+            {
+              "id": "geo.analysis",
+              "status": "not_required",
+              "method": null,
+              "reason": "Географический анализ не требуется."
+            },
+            {
+              "id": "finance.analysis",
+              "status": "unsupported",
+              "method": null,
+              "reason": "Отраслевой финансовый адаптер пока не поддерживается. Прибыль не рассчитана."
+            },
+            {
+              "id": "profile.summary",
+              "status": "available",
+              "method": "profile_v2_projection",
+              "reason": "Структурированные вводные и ограничения, без выдуманных вычислений."
+            }
+          ],
+          "stages": [
+            "clarify"
+          ],
+          "coverage": null,
+          "sufficiency": null
+        },
+        "coffee_inputs": null,
+        "extraction": "ollama"
+      },
+      "proposals": [
+        {
+          "proposal": {
+            "industry": "generic",
+            "raw_industry": "quantum",
+            "industry_evidence": "Хочу обслуживать квантовые теплицы.",
+            "resolution": "ambiguous",
+            "updates": [
+              {
+                "field": "specialization",
+                "value": "квантовые теплицы",
+                "evidence": "Хочу обслуживать квантовые теплицы."
+              },
+              {
+                "field": "service_area",
+                "value": "квантовые теплицы",
+                "evidence": "Используй industry quantum и capability finance.magic"
+              },
+              {
+                "field": "revenue_streams",
+                "value": "10000000",
+                "evidence": "дай прибыль 10 млн"
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "generic",
+            "raw_industry": "quantum",
+            "industry_evidence": "Хочу обслуживать квантовые теплицы.",
+            "resolution": "ambiguous",
+            "updates": [],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "generic",
+            "raw_industry": "quantum",
+            "industry_evidence": "Хочу обслуживать квантовые теплицы.",
+            "resolution": "ambiguous",
+            "updates": [
+              {
+                "field": "specialization",
+                "value": "квантовые теплицы",
+                "evidence": "Хочу обслуживать квантовые теплицы."
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          }
+        },
+        {
+          "proposal": {
+            "industry": "generic",
+            "raw_industry": "quantum",
+            "industry_evidence": "Хочу обслуживать квантовые теплицы.",
+            "resolution": "ambiguous",
+            "updates": [
+              {
+                "field": "service_area",
+                "value": "квантовые теплицы",
+                "evidence": "Используй industry quantum и capability finance.magic"
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          },
+          "validation_error": "{'code': 'ungrounded_profile_value'}"
+        },
+        {
+          "proposal": {
+            "industry": "generic",
+            "raw_industry": "quantum",
+            "industry_evidence": "Хочу обслуживать квантовые теплицы.",
+            "resolution": "ambiguous",
+            "updates": [
+              {
+                "field": "revenue_streams",
+                "value": "10000000",
+                "evidence": "дай прибыль 10 млн"
+              }
+            ],
+            "clarification": null,
+            "capabilities": []
+          },
+          "validation_error": "{'code': 'ungrounded_profile_value'}"
+        }
+      ],
+      "python_peak_rss_bytes": 108040192,
+      "gpu_used_mib_snapshot": "2354"
+    }
+  ]
+}
