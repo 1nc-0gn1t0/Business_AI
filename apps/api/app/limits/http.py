@@ -97,6 +97,7 @@ def heavy_request(path: str, method: str) -> bool:
         method == "POST"
         and (
             path.startswith(("/api/v1/geo/", "/api/v1/finance/"))
+            or path == "/api/v2/data-registry/coverage"
             or path.endswith(("/messages", "/reports"))
         )
     ) or (method == "GET" and "/reports/" in path)

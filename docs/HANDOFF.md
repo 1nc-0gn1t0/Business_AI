@@ -1,5 +1,35 @@
 # Business AI — HANDOFF
 
+## Business AI 2.0 / U-01 · Data Registry & Coverage · 29.10.2026
+
+- PR31 merged/main `ffc06f1d6b42c3c0fda3939edc19cdacda03115a`, initial clean.
+  Ветка `codex/U-01-data-registry-coverage`; actual commit/PR/CI — в сдаче.
+- [Реализация/API/ограничения](architecture/BUSINESS_AI_2_DATA_REGISTRY_IMPLEMENTATION.md),
+  [checkpoint](architecture/U-01_CHECKPOINT.md), [real read-only evidence](qa/u-01/read-only-kazan.json).
+- Один operator JSON registry:4base sources/18extensible categories/3policies/3city identities.
+  v1 sources projection того же registry; существующие datasets/provenance/ORM — source of truth.
+  Новых таблиц/миграций нет; geo objects/финансы/immutable reports не переписывались.
+- GET `/api/v2/data-registry`, POST `/api/v2/data-registry/coverage`; bounded metadata +
+  PostGIS envelope covers/intersects, no POI/edge scans. H-02 heavy admission reused.
+  Public metadata only: private user categories unknown, no profile/lead/consent reads.
+- Local status/summary/freshness/completeness/acquirability/quality отдельно; source timestamp
+  не observed date, snapshot window не observation interval. City-only Kazan partial;
+  Moscow missing; точный dataset AOI available, без притворства whole-city coverage.
+- Sufficiency внутренний deterministic service по supplied requirements/critical_for;
+  technical eligibility не market validity/auth/executor support. Unreviewed synthetic
+  inputs не допускаются как факты/автоподстановка; будущий review остаётся U-05.
+- ADR0013 принят владельцем; датированный addendum сохраняет историю и3уточнения.
+  Неиспользуемый profile bridge/capability catalog отложены U-04/U-03 согласно текущему scope.
+- Проверены39старых OpenAPI paths/128schemas unchanged; TS regenerated; Ruff/mypy130files/
+  typecheck/build PASS. Focused unit/provider/finance79tests входят в final checks/hooks.
+  Isolated DB:112PASS/1Windows Proactor failure, Selector readiness+registry12PASS;
+  exact final CI в сдаче. SKIP не засчитывается в PASS.
+- Real Kazan metadata23852POI/8polygons/version44157bdc…, no import/LLM.20read-only requests:
+  median3.040ms/max36.962ms; маленькая artificial fixture~5.882/9.505ms, не Moscow SLA.
+- U-02 не начат, PR не объединять самостоятельно. Нужны source/terms/egress approval,
+  per-operation measurements, persistent jobs/cancel/fencing/dataset-group activation.
+  F-00/user volumes/старые runtime containers не менялись. Security baseline OPEN.
+
 ## Business AI 2.0 / U-00 · архитектура · 28.10.2026
 
 - PR30 merged; main `0c7749b05f17aad9ad16e4350d267a28ef45e119`, исходное дерево чистое.

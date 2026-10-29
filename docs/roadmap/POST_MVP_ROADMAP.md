@@ -29,6 +29,11 @@ release baseline остаётся OPEN. BA-017/018 сохраняются отд
 и не объявлены выполненными. Это не разрешение U-01, не закрытие исследований или
 release security baseline. Технические решения U-00 — на review в ADR-0013.
 
+**29.10.2026:** владелец подтвердил принятие ADR0013/merge PR31 и разрешил только
+BA2/U-01 Data Registry & Coverage. [Реализация и границы](../architecture/BUSINESS_AI_2_DATA_REGISTRY_IMPLEMENTATION.md).
+Старый roadmap-v1/U-01 IndustryDefinition не объявляется выполненным. U-02 требует
+отдельного разрешения; research/release gates сохраняются.
+
 ## 1. Фактическая точка старта
 
 - PR #16 действительно merged 25.10.2026 в 15:47 UTC (18:47 МСК).

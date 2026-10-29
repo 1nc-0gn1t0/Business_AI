@@ -61,6 +61,12 @@ flowchart LR
 
 **Зависимость:** review/принятие U-00 и отдельное разрешение начать.
 
+**Уточнение scope29.10.2026:** владелец разрешил registry/coverage/freshness и базовую
+детерминированную sufficiency. Реализация [описана отдельно](BUSINESS_AI_2_DATA_REGISTRY_IMPLEMENTATION.md).
+Неиспользуемый сейчас LegacyProfileAdapter отложен до profile U-04, runtime capability
+catalog — до U-03; это не новые этапы. Реестр не ограничивает отрасли, но профиль/агент
+не меняются ради metadata API. Следующие исходные подзадачи ниже сохраняют историю U-00.
+
 - U-01.a: валидируемый SourceDefinition/capability metadata/territory refs, effective
   config hashes; реестр только действительно реализованных OSM/Synthetic adapters.
   GHSL/официальная статистика/licensed остаются not_integrated до evidence.

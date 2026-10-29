@@ -397,6 +397,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v2/data-registry": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Catalog */
+    get: operations["catalog_api_v2_data_registry_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/data-registry/coverage": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Check Coverage */
+    post: operations["check_coverage_api_v2_data_registry_coverage_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/conversations/{conversation_id}/consents": {
     parameters: {
       query?: never;
@@ -674,6 +708,54 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** AcquisitionOption */
+    AcquisitionOption: {
+      /** Source Id */
+      source_id: string;
+      /**
+       * Acquirability
+       * @enum {string}
+       */
+      acquirability:
+        | "permitted"
+        | "forbidden"
+        | "unavailable"
+        | "not_integrated"
+        | "unknown";
+      /** Reason */
+      reason: string;
+      /**
+       * Network Permission
+       * @enum {string}
+       */
+      network_permission: "permitted" | "review_required" | "forbidden";
+      /**
+       * Availability
+       * @enum {string}
+       */
+      availability:
+        "ready" | "degraded" | "unavailable" | "not_integrated" | "unknown";
+      /** Potentially Available */
+      potentially_available: boolean;
+      /**
+       * Adapter Status
+       * @enum {string}
+       */
+      adapter_status: "ready" | "not_integrated";
+      /**
+       * License Status
+       * @enum {string}
+       */
+      license_status: "verified_local_use" | "review_required" | "forbidden";
+      /** Local Use Permitted */
+      local_use_permitted: boolean;
+      /**
+       * Automatic Acquisition Implemented
+       * @default false
+       * @constant
+       */
+      automatic_acquisition_implemented: false;
+    };
     /** Amount */
     "Amount-Input": {
       /** Value */
@@ -761,9 +843,7 @@ export interface components {
        * @enum {string}
        */
       status:
-        | "within_model_budget"
-        | "model_budget_shortfall"
-        | "budget_unknown";
+        "within_model_budget" | "model_budget_shortfall" | "budget_unknown";
       /** Budget */
       budget: string | null;
       /**
@@ -1330,6 +1410,117 @@ export interface components {
        */
       updated_at: string;
     };
+    /** CoverageAssessment */
+    CoverageAssessment: {
+      /** Category */
+      category: string;
+      /**
+       * Local Status
+       * @enum {string}
+       */
+      local_status: "available" | "partial" | "stale" | "missing" | "unknown";
+      /**
+       * Summary
+       * @enum {string}
+       */
+      summary:
+        | "usable"
+        | "stale"
+        | "partial"
+        | "acquirable"
+        | "source_unavailable"
+        | "not_available_from_approved_sources"
+        | "unknown";
+      /**
+       * Availability
+       * @enum {string}
+       */
+      availability: "present" | "missing" | "unknown";
+      /**
+       * Freshness
+       * @enum {string}
+       */
+      freshness: "current" | "stale" | "unknown";
+      /**
+       * Completeness
+       * @enum {string}
+       */
+      completeness: "full_for_requested_scope" | "partial" | "unknown";
+      /**
+       * Object Quality
+       * @default unknown
+       * @enum {string}
+       */
+      object_quality: "unknown" | "not_applicable";
+      /** Datasets */
+      datasets: components["schemas"]["DatasetCoverage"][];
+      /** Acquisition */
+      acquisition: components["schemas"]["AcquisitionOption"][];
+      /** Reasons */
+      reasons: string[];
+    };
+    /** CoverageQuery */
+    CoverageQuery: {
+      /** Territory */
+      territory?: string | null;
+      aoi?: components["schemas"]["Bounds"] | null;
+      /** Categories */
+      categories: string[];
+      period?: components["schemas"]["Period"] | null;
+      /**
+       * Mode
+       * @default real
+       * @enum {string}
+       */
+      mode: "real" | "demo";
+      /**
+       * Purpose
+       * @default local_analysis
+       * @enum {string}
+       */
+      purpose: "local_analysis" | "redistribution";
+    };
+    /** CoverageResult */
+    CoverageResult: {
+      /**
+       * Schema Version
+       * @default coverage-v2
+       * @constant
+       */
+      schema_version: "coverage-v2";
+      /** Registry Revision */
+      registry_revision: string;
+      /** Config Sha256 */
+      config_sha256: string;
+      /**
+       * Evaluated At
+       * Format: date-time
+       */
+      evaluated_at: string;
+      query: components["schemas"]["CoverageQuery"];
+      /** Assessments */
+      assessments: components["schemas"]["CoverageAssessment"][];
+      /** Metadata Complete */
+      metadata_complete: boolean;
+      /** Limitations */
+      limitations: string[];
+    };
+    /** DataCategory */
+    DataCategory: {
+      /** Id */
+      id: string;
+      /** Name */
+      name: string;
+      /** Spatial */
+      spatial: boolean;
+      /**
+       * Private
+       * @default false
+       */
+      private: boolean;
+      /** Unit */
+      unit: string;
+    };
     /**
      * DataOrigin
      * @enum {string}
@@ -1369,6 +1560,81 @@ export interface components {
        * @enum {string}
        */
       mode: "real" | "demo";
+    };
+    /** DatasetCoverage */
+    DatasetCoverage: {
+      metadata: components["schemas"]["DatasetReference"];
+      /**
+       * Spatial Fit
+       * @enum {string}
+       */
+      spatial_fit: "full_for_requested_scope" | "partial" | "unknown";
+      /**
+       * Freshness
+       * @enum {string}
+       */
+      freshness: "current" | "stale" | "unknown";
+      /** Freshness Policy */
+      freshness_policy: string;
+      /**
+       * Freshness Basis
+       * @enum {string}
+       */
+      freshness_basis:
+        "source_timestamp" | "period_end" | "generated_at" | "unknown";
+      /** Observed At */
+      observed_at?: string | null;
+      /** Source Timestamp */
+      source_timestamp?: string | null;
+      /** Published At */
+      published_at?: string | null;
+      /** Fetched At */
+      fetched_at?: string | null;
+      /** Generated At */
+      generated_at?: string | null;
+      /** Imported At */
+      imported_at?: string | null;
+      temporal_coverage?: components["schemas"]["Period"] | null;
+      /** Next Update At */
+      next_update_at?: string | null;
+      /**
+       * Temporal Fit
+       * @enum {string}
+       */
+      temporal_fit: "snapshot_in_period" | "outside_period" | "unknown";
+      /** Usable */
+      usable: boolean;
+      /** Reasons */
+      reasons: string[];
+    };
+    /**
+     * DatasetReference
+     * @description Projection of existing metadata, without ambiguous legacy date/stale aliases.
+     */
+    DatasetReference: {
+      /**
+       * Provider
+       * @enum {string}
+       */
+      provider: "osm" | "synthetic" | "ghsl" | "licensed";
+      /** Slug */
+      slug: string;
+      /** Revision */
+      revision: string;
+      /** Data Version */
+      data_version: string;
+      /** Active */
+      active: boolean;
+      bbox: components["schemas"]["Bounds"];
+      origin: components["schemas"]["DataOrigin"];
+      /** Source Name */
+      source_name: string;
+      /** License */
+      license: string;
+      /** Attribution */
+      attribution: string;
+      /** Limitations */
+      limitations: string[];
     };
     /** DatasetView */
     DatasetView: {
@@ -1693,6 +1959,20 @@ export interface components {
       payroll: components["schemas"]["Amount-Output"];
       utilities: components["schemas"]["Amount-Output"];
       other: components["schemas"]["Amount-Output"];
+    };
+    /** FreshnessPolicy */
+    FreshnessPolicy: {
+      /** Id */
+      id: string;
+      /**
+       * Basis
+       * @enum {string}
+       */
+      basis: "source_timestamp" | "period_end" | "generated_at" | "unknown";
+      /** Max Age Days */
+      max_age_days?: number | null;
+      /** Rationale */
+      rationale: string;
     };
     /**
      * Funding
@@ -2172,6 +2452,25 @@ export interface components {
       /** Expected Version */
       expected_version: number;
     };
+    /** Period */
+    Period: {
+      /**
+       * Start
+       * Format: date-time
+       */
+      start: string;
+      /**
+       * End
+       * Format: date-time
+       */
+      end: string;
+      /**
+       * Kind
+       * @default observation_interval
+       * @enum {string}
+       */
+      kind: "observation_interval" | "snapshot_window";
+    };
     /** PointGeometry */
     PointGeometry: {
       /**
@@ -2453,8 +2752,7 @@ export interface components {
        * @enum {string}
        */
       distance_method:
-        | "geodesic_straight_line"
-        | "walking_network_with_connectors";
+        "geodesic_straight_line" | "walking_network_with_connectors";
       /** Coverage Margin M */
       coverage_margin_m: number;
       /** Fully Covered */
@@ -2520,6 +2818,27 @@ export interface components {
       postgis: string;
       /** Schema Status */
       schema_status: string;
+    };
+    /** RegistryCatalog */
+    RegistryCatalog: {
+      /**
+       * Schema Version
+       * @default data-registry-v2
+       * @constant
+       */
+      schema_version: "data-registry-v2";
+      /** Revision */
+      revision: string;
+      /** Config Sha256 */
+      config_sha256: string;
+      /** Sources */
+      sources: components["schemas"]["SourceDefinition"][];
+      /** Categories */
+      categories: components["schemas"]["DataCategory"][];
+      /** Freshness Policies */
+      freshness_policies: components["schemas"]["FreshnessPolicy"][];
+      /** Territories */
+      territories: components["schemas"]["Territory"][];
     };
     /** ReportRequest */
     ReportRequest: {
@@ -2857,10 +3176,7 @@ export interface components {
        * @enum {string}
        */
       driver:
-        | "average_check"
-        | "sales_per_day"
-        | "rent"
-        | "variable_cost_ratio";
+        "average_check" | "sales_per_day" | "rent" | "variable_cost_ratio";
       /** Relative Change */
       relative_change: string;
       /** Actual Value */
@@ -2884,6 +3200,78 @@ export interface components {
       origin: "modelled";
       /** Explanation */
       explanation: string;
+    };
+    /** SourceDefinition */
+    SourceDefinition: {
+      /** Id */
+      id: string;
+      /** Adapter Id */
+      adapter_id: string;
+      /** Revision */
+      revision: string;
+      /** Name */
+      name: string;
+      /** Legacy Name */
+      legacy_name: string;
+      /**
+       * Source Type
+       * @enum {string}
+       */
+      source_type:
+        "open" | "licensed" | "official" | "user" | "scenario" | "placeholder";
+      origin: components["schemas"]["DataOrigin"];
+      /**
+       * Adapter Status
+       * @enum {string}
+       */
+      adapter_status: "ready" | "not_integrated";
+      /** Categories */
+      categories: string[];
+      /** Acquisition Methods */
+      acquisition_methods: (
+        "local_read" | "offline_import" | "operator_fetch"
+      )[];
+      /**
+       * Geographic Scope
+       * @enum {string}
+       */
+      geographic_scope: "global_source" | "authored_extent" | "unknown";
+      /** License Id */
+      license_id: string | null;
+      /**
+       * License Status
+       * @enum {string}
+       */
+      license_status: "verified_local_use" | "review_required" | "forbidden";
+      /** Attribution */
+      attribution: string;
+      /** Allowed Uses */
+      allowed_uses: ("local_analysis" | "redistribution")[];
+      /**
+       * Network Permission
+       * @enum {string}
+       */
+      network_permission: "permitted" | "review_required" | "forbidden";
+      /**
+       * Availability
+       * @enum {string}
+       */
+      availability:
+        "ready" | "degraded" | "unavailable" | "not_integrated" | "unknown";
+      /** Freshness Policies */
+      freshness_policies: {
+        [key: string]: string;
+      };
+      /** Policy Revision */
+      policy_revision: string;
+      /** Policy Note */
+      policy_note: string;
+      /** Resource Policy Ref */
+      resource_policy_ref: string;
+      /** License Reviewed At */
+      license_reviewed_at?: string | null;
+      /** Availability Checked At */
+      availability_checked_at?: string | null;
     };
     /** StartupCosts */
     "StartupCosts-Input": {
@@ -2939,6 +3327,28 @@ export interface components {
        * Format: uuid
        */
       idempotency_key: string;
+    };
+    /** Territory */
+    Territory: {
+      /** Id */
+      id: string;
+      /** Name */
+      name: string;
+      /** Aliases */
+      aliases: string[];
+      /**
+       * Country Code
+       * @default RU
+       */
+      country_code: string;
+      /** Region */
+      region?: string | null;
+      /**
+       * Boundary Status
+       * @default unknown
+       * @constant
+       */
+      boundary_status: "unknown";
     };
     /** ValidationError */
     ValidationError: {
@@ -3938,6 +4348,59 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["IndicatorResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  catalog_api_v2_data_registry_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["RegistryCatalog"];
+        };
+      };
+    };
+  };
+  check_coverage_api_v2_data_registry_coverage_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CoverageQuery"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CoverageResult"];
         };
       };
       /** @description Validation Error */

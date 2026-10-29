@@ -260,3 +260,16 @@ XFAIL в PASS после зафиксированного XPASS; assertions со
 
 Технические основания: [Starlette pure ASGI middleware](https://www.starlette.io/middleware/),
 [PostgreSQL transaction advisory locks](https://www.postgresql.org/docs/17/explicit-locking.html#ADVISORY-LOCKS).
+
+
+## Business AI 2.0 / U-01 — metadata endpoints
+
+`GET /api/v2/data-registry`: public static catalog/revision/policies, no database/network.
+`POST /api/v2/data-registry/coverage`: public imported metadata only, no writes/LLM/fetch;
+included in H-02 heavy admission (default2active) and the existing frequency/body/JSON caps.
+1–10distinct categories, existing bounded WGS84 Bounds, optional typed period/territory.
+Metadata cap100 configurable via operator registry (1…1000); overflow is unknown, not missing.
+No user profiles/consent/lead/report data or administrative source-policy writes exposed.
+Source URLs/internal paths excluded.403demo_data_disabled,422invalid/unknown category,
+503data_registry_invalid/DB failures,413/429as existing H-02. Correlation ID preserved.
+Details: [registry implementation](architecture/BUSINESS_AI_2_DATA_REGISTRY_IMPLEMENTATION.md).

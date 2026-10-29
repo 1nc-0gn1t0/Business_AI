@@ -289,35 +289,25 @@ def providers() -> dict[ProviderId, DataProvider]:
 
 
 def sources() -> list[ProviderInfo]:
+    # v1 projection of the same registry; remote availability is a separate v2 axis.
+    from app.data.registry import load_registry
+
+    entries = {source.id: source for source in load_registry().sources}
+    limitations = {
+        "osm": ("Только ранее импортированные данные; полнота картирования неизвестна.",),
+        "synthetic": DEMO_LIMITATIONS,
+        "ghsl": ("Набор не загружен; модельное население не является потоком покупателей.",),
+        "licensed": ("Нет договора и интеграции; коммерческие API не вызываются.",),
+    }
     return [
         ProviderInfo(
-            id="osm",
-            name="OpenStreetMap",
-            origin=DataOrigin.OPEN_DATA,
-            status="ready",
-            limitations=("Только ранее импортированные данные; полнота картирования неизвестна.",),
-        ),
-        ProviderInfo(
-            id="synthetic",
-            name="Синтетический сценарий кофейни",
-            origin=DataOrigin.SYNTHETIC,
-            status="ready" if demo_enabled() else "disabled",
-            limitations=DEMO_LIMITATIONS,
-        ),
-        ProviderInfo(
-            id="ghsl",
-            name="GHSL — будущий адаптер",
-            origin=DataOrigin.MODELLED,
-            status="not_integrated",
-            limitations=(
-                "Набор не загружен; модельное население не является потоком покупателей.",
-            ),
-        ),
-        ProviderInfo(
-            id="licensed",
-            name="Лицензированные источники — будущий контракт",
-            origin=DataOrigin.LICENSED,
-            status="not_integrated",
-            limitations=("Нет договора и интеграции; коммерческие API не вызываются.",),
-        ),
+            id=key,
+            name=entries[key].legacy_name,
+            origin=entries[key].origin,
+            status="disabled"
+            if key == "synthetic" and not demo_enabled()
+            else entries[key].adapter_status,
+            limitations=limitations[key],
+        )
+        for key in providers()
     ]
