@@ -499,6 +499,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v2/conversations/{conversation_id}/agent": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Send */
+    post: operations["send_api_v2_conversations__conversation_id__agent_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/conversations/{conversation_id}/agent/{request_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Read */
+    get: operations["read_api_v2_conversations__conversation_id__agent__request_id__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/conversations/{conversation_id}/consents": {
     parameters: {
       query?: never;
@@ -802,20 +836,7 @@ export interface components {
        * State
        * @enum {string}
        */
-      state:
-        | "queued"
-        | "claimed"
-        | "fetching"
-        | "validating"
-        | "importing"
-        | "verifying"
-        | "activating"
-        | "retry_wait"
-        | "cancel_requested"
-        | "cancelled"
-        | "failed"
-        | "recovery_required"
-        | "succeeded";
+      state: "queued" | "claimed" | "fetching" | "validating" | "importing" | "verifying" | "activating" | "retry_wait" | "cancel_requested" | "cancelled" | "failed" | "recovery_required" | "succeeded";
       /** Message Code */
       message_code: string;
       /** Completed */
@@ -833,12 +854,7 @@ export interface components {
        * Acquirability
        * @enum {string}
        */
-      acquirability:
-        | "permitted"
-        | "forbidden"
-        | "unavailable"
-        | "not_integrated"
-        | "unknown";
+      acquirability: "permitted" | "forbidden" | "unavailable" | "not_integrated" | "unknown";
       /** Reason */
       reason: string;
       /**
@@ -850,8 +866,7 @@ export interface components {
        * Availability
        * @enum {string}
        */
-      availability:
-        "ready" | "degraded" | "unavailable" | "not_integrated" | "unknown";
+      availability: "ready" | "degraded" | "unavailable" | "not_integrated" | "unknown";
       /** Potentially Available */
       potentially_available: boolean;
       /**
@@ -895,6 +910,77 @@ export interface components {
       freshness: "current";
       /** Idempotency Key */
       idempotency_key: string;
+    };
+    /** AcquisitionScope */
+    AcquisitionScope: {
+      /** Territory */
+      territory: string;
+      aoi: components["schemas"]["Bounds"];
+    };
+    /** AgentRequest */
+    AgentRequest: {
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /** Expected Version */
+      expected_version: number;
+      /** Content */
+      content: string;
+      acquisition_scope?: components["schemas"]["AcquisitionScope"] | null;
+    };
+    /** AgentResponse */
+    AgentResponse: {
+      /**
+       * Schema Version
+       * @default agent-v2
+       * @constant
+       */
+      schema_version: "agent-v2";
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /**
+       * Conversation Id
+       * Format: uuid
+       */
+      conversation_id: string;
+      /** Profile Version */
+      profile_version: number;
+      /**
+       * State
+       * @enum {string}
+       */
+      state: "running" | "succeeded" | "partial" | "failed" | "cancelled" | "interrupted";
+      /** Message */
+      message: string;
+      /**
+       * Next Step
+       * @enum {string}
+       */
+      next_step: "done" | "clarify" | "operator_permission_required" | "provide_aoi" | "wait_for_job" | "data_unavailable";
+      /** Code */
+      code: string;
+      /** Model */
+      model: string;
+      /**
+       * Traces
+       * @default []
+       */
+      traces: components["schemas"]["ToolTrace"][];
+      /**
+       * Model Timings
+       * @default []
+       */
+      model_timings: components["schemas"]["ModelTiming"][];
+      /**
+       * Total Ms
+       * @default 0
+       */
+      total_ms: number;
     };
     /** Amount */
     "Amount-Input": {
@@ -982,8 +1068,7 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status:
-        "within_model_budget" | "model_budget_shortfall" | "budget_unknown";
+      status: "within_model_budget" | "model_budget_shortfall" | "budget_unknown";
       /** Budget */
       budget: string | null;
       /**
@@ -1085,12 +1170,7 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status:
-        | "ok"
-        | "partial"
-        | "no_candidates"
-        | "insufficient_data"
-        | "needs_constraints";
+      status: "ok" | "partial" | "no_candidates" | "insufficient_data" | "needs_constraints";
       /** Reasons */
       reasons: string[];
       dataset: components["schemas"]["DatasetView"];
@@ -1291,13 +1371,7 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status:
-        | "ok"
-        | "partial"
-        | "graph_unavailable"
-        | "outside_coverage"
-        | "no_network_access"
-        | "resource_limit";
+      status: "ok" | "partial" | "graph_unavailable" | "outside_coverage" | "no_network_access" | "resource_limit";
       /** Reasons */
       reasons: string[];
       /** Algorithm Version */
@@ -1563,14 +1637,7 @@ export interface components {
        * Summary
        * @enum {string}
        */
-      summary:
-        | "usable"
-        | "stale"
-        | "partial"
-        | "acquirable"
-        | "source_unavailable"
-        | "not_available_from_approved_sources"
-        | "unknown";
+      summary: "usable" | "stale" | "partial" | "acquirable" | "source_unavailable" | "not_available_from_approved_sources" | "unknown";
       /**
        * Availability
        * @enum {string}
@@ -1665,13 +1732,7 @@ export interface components {
      * DataOrigin
      * @enum {string}
      */
-    DataOrigin:
-      | "open_data"
-      | "licensed"
-      | "modelled"
-      | "synthetic"
-      | "user_input"
-      | "bank_internal";
+    DataOrigin: "open_data" | "licensed" | "modelled" | "synthetic" | "user_input" | "bank_internal";
     /** DataPolicy */
     DataPolicy: {
       /**
@@ -1720,8 +1781,7 @@ export interface components {
        * Freshness Basis
        * @enum {string}
        */
-      freshness_basis:
-        "source_timestamp" | "period_end" | "generated_at" | "unknown";
+      freshness_basis: "source_timestamp" | "period_end" | "generated_at" | "unknown";
       /** Observed At */
       observed_at?: string | null;
       /** Source Timestamp */
@@ -1918,15 +1978,7 @@ export interface components {
        * Field
        * @enum {string}
        */
-      field:
-        | "launch_stage"
-        | "registration_status"
-        | "sales_channel"
-        | "needs_settlement_account"
-        | "needs_registration_help"
-        | "accepts_card_payments"
-        | "needs_expense_card"
-        | "financing_interest";
+      field: "launch_stage" | "registration_status" | "sales_channel" | "needs_settlement_account" | "needs_registration_help" | "accepts_card_payments" | "needs_expense_card" | "financing_interest";
       /** One Of */
       one_of: (string | boolean)[];
       /** Explanation */
@@ -2073,16 +2125,7 @@ export interface components {
        * Formula Id
        * @enum {string}
        */
-      formula_id:
-        | "monthly_sales"
-        | "monthly_revenue"
-        | "monthly_variable_cost"
-        | "monthly_fixed_cost"
-        | "contribution_per_sale_exact"
-        | "contribution_per_sale"
-        | "monthly_contribution"
-        | "operating_result"
-        | "break_even_sales_per_day";
+      formula_id: "monthly_sales" | "monthly_revenue" | "monthly_variable_cost" | "monthly_fixed_cost" | "contribution_per_sale_exact" | "contribution_per_sale" | "monthly_contribution" | "operating_result" | "break_even_sales_per_day";
       /** Input Paths */
       input_paths: string[];
     };
@@ -2238,20 +2281,7 @@ export interface components {
        * State
        * @enum {string}
        */
-      state:
-        | "queued"
-        | "claimed"
-        | "fetching"
-        | "validating"
-        | "importing"
-        | "verifying"
-        | "activating"
-        | "retry_wait"
-        | "cancel_requested"
-        | "cancelled"
-        | "failed"
-        | "recovery_required"
-        | "succeeded";
+      state: "queued" | "claimed" | "fetching" | "validating" | "importing" | "verifying" | "activating" | "retry_wait" | "cancel_requested" | "cancelled" | "failed" | "recovery_required" | "succeeded";
       /** Stage */
       stage: string;
       /** Source Id */
@@ -2462,16 +2492,7 @@ export interface components {
       /** Demonstration Ids */
       demonstration_ids: string[];
       /** Missing Fields */
-      missing_fields: (
-        | "launch_stage"
-        | "registration_status"
-        | "sales_channel"
-        | "needs_settlement_account"
-        | "needs_registration_help"
-        | "accepts_card_payments"
-        | "needs_expense_card"
-        | "financing_interest"
-      )[];
+      missing_fields: ("launch_stage" | "registration_status" | "sales_channel" | "needs_settlement_account" | "needs_registration_help" | "accepts_card_payments" | "needs_expense_card" | "financing_interest")[];
       /**
        * Credit Decision
        * @default not_assessed
@@ -2535,6 +2556,31 @@ export interface components {
       /** Limitations */
       limitations: string[];
     };
+    /** ModelTiming */
+    ModelTiming: {
+      /**
+       * Purpose
+       * @enum {string}
+       */
+      purpose: "proposal" | "synthesis";
+      /**
+       * Code
+       * @default ok
+       */
+      code: string;
+      /** Queue Ms */
+      queue_ms: number | null;
+      /** Inference Ms */
+      inference_ms: number | null;
+      /** Elapsed Ms */
+      elapsed_ms?: number | null;
+      /** Load Ms */
+      load_ms?: number | null;
+      /** Prompt Tokens */
+      prompt_tokens?: number | null;
+      /** Output Tokens */
+      output_tokens?: number | null;
+    };
     /** MultiPolygonGeometry */
     MultiPolygonGeometry: {
       /**
@@ -2543,7 +2589,10 @@ export interface components {
        */
       type: "MultiPolygon";
       /** Coordinates */
-      coordinates: [number, number][][][];
+      coordinates: [
+        number,
+        number
+      ][][][];
     };
     /** ObservationProvenance */
     ObservationProvenance: {
@@ -2681,7 +2730,10 @@ export interface components {
        */
       type: "Point";
       /** Coordinates */
-      coordinates: [number, number];
+      coordinates: [
+        number,
+        number
+      ];
     };
     /** PreferencesPatch */
     PreferencesPatch: {
@@ -2710,13 +2762,7 @@ export interface components {
        * Category
        * @enum {string}
        */
-      category:
-        | "settlement"
-        | "registration"
-        | "merchant_acquiring"
-        | "internet_acquiring"
-        | "business_card"
-        | "financing_information";
+      category: "settlement" | "registration" | "merchant_acquiring" | "internet_acquiring" | "business_card" | "financing_information";
       /** Description */
       description: string;
       /**
@@ -2752,29 +2798,13 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status:
-        | "potential_match"
-        | "information_only"
-        | "demo_match"
-        | "demo_information"
-        | "needs_clarification"
-        | "not_matched"
-        | "unavailable";
+      status: "potential_match" | "information_only" | "demo_match" | "demo_information" | "needs_clarification" | "not_matched" | "unavailable";
       /** Reasons */
       reasons: string[];
       /** Evaluations */
       evaluations: components["schemas"]["RuleEvaluation"][];
       /** Missing Fields */
-      missing_fields: (
-        | "launch_stage"
-        | "registration_status"
-        | "sales_channel"
-        | "needs_settlement_account"
-        | "needs_registration_help"
-        | "accepts_card_payments"
-        | "needs_expense_card"
-        | "financing_interest"
-      )[];
+      missing_fields: ("launch_stage" | "registration_status" | "sales_channel" | "needs_settlement_account" | "needs_registration_help" | "accepts_card_payments" | "needs_expense_card" | "financing_interest")[];
     };
     /** ProductView */
     ProductView: {
@@ -2888,12 +2918,7 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status:
-        | "ok"
-        | "partial"
-        | "no_candidates"
-        | "needs_confirmation"
-        | "insufficient_data";
+      status: "ok" | "partial" | "no_candidates" | "needs_confirmation" | "insufficient_data";
       /** Reasons */
       reasons: string[];
       candidates: components["schemas"]["CandidateCollection"];
@@ -2953,8 +2978,7 @@ export interface components {
        * @default geodesic_straight_line
        * @enum {string}
        */
-      distance_method:
-        "geodesic_straight_line" | "walking_network_with_connectors";
+      distance_method: "geodesic_straight_line" | "walking_network_with_connectors";
       /** Coverage Margin M */
       coverage_margin_m: number;
       /** Fully Covered */
@@ -3377,8 +3401,7 @@ export interface components {
        * Driver
        * @enum {string}
        */
-      driver:
-        "average_check" | "sales_per_day" | "rent" | "variable_cost_ratio";
+      driver: "average_check" | "sales_per_day" | "rent" | "variable_cost_ratio";
       /** Relative Change */
       relative_change: string;
       /** Actual Value */
@@ -3419,8 +3442,7 @@ export interface components {
        * Source Type
        * @enum {string}
        */
-      source_type:
-        "open" | "licensed" | "official" | "user" | "scenario" | "placeholder";
+      source_type: "open" | "licensed" | "official" | "user" | "scenario" | "placeholder";
       origin: components["schemas"]["DataOrigin"];
       /**
        * Adapter Status
@@ -3430,9 +3452,7 @@ export interface components {
       /** Categories */
       categories: string[];
       /** Acquisition Methods */
-      acquisition_methods: (
-        "local_read" | "offline_import" | "operator_fetch"
-      )[];
+      acquisition_methods: ("local_read" | "offline_import" | "operator_fetch")[];
       /**
        * Geographic Scope
        * @enum {string}
@@ -3458,8 +3478,7 @@ export interface components {
        * Availability
        * @enum {string}
        */
-      availability:
-        "ready" | "degraded" | "unavailable" | "not_integrated" | "unknown";
+      availability: "ready" | "degraded" | "unavailable" | "not_integrated" | "unknown";
       /** Freshness Policies */
       freshness_policies: {
         [key: string]: string;
@@ -3560,6 +3579,54 @@ export interface components {
        */
       boundary_status: "unknown";
     };
+    /** ToolTrace */
+    ToolTrace: {
+      /** Sequence */
+      sequence: number;
+      /** Tool */
+      tool: string;
+      /** Capability */
+      capability: string;
+      /** Mutating */
+      mutating: boolean;
+      /**
+       * Timestamp
+       * Format: date-time
+       */
+      timestamp: string;
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: "succeeded" | "rejected" | "failed";
+      /** Code */
+      code: string;
+      /**
+       * Validation Ms
+       * @default 0
+       */
+      validation_ms: number;
+      /**
+       * Execution Ms
+       * @default 0
+       */
+      execution_ms: number;
+      /** Argument Sha256 */
+      argument_sha256: string;
+      /** Arguments */
+      arguments?: {
+        [key: string]: unknown;
+      };
+      /**
+       * Reason
+       * @default
+       */
+      reason: string;
+      /** Result */
+      result: {
+        [key: string]: unknown;
+      };
+    };
     /** ValidationError */
     ValidationError: {
       /** Location */
@@ -3614,7 +3681,10 @@ export interface components {
        */
       type: "LineString";
       /** Coordinates */
-      coordinates: [number, number][];
+      coordinates: [
+        number,
+        number
+      ][];
     };
     /** WalkManifest */
     WalkManifest: {
@@ -4748,6 +4818,77 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["AcquisitionEvent"][];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  send_api_v2_conversations__conversation_id__agent_post: {
+    parameters: {
+      query?: never;
+      header?: {
+        "X-Acquisition-Token"?: string | null;
+      };
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AgentRequest"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentResponse"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  read_api_v2_conversations__conversation_id__agent__request_id__get: {
+    parameters: {
+      query?: never;
+      header?: {
+        "X-Acquisition-Token"?: string | null;
+      };
+      path: {
+        conversation_id: string;
+        request_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AgentResponse"];
         };
       };
       /** @description Validation Error */

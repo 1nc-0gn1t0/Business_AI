@@ -13,7 +13,9 @@ from pydantic import BaseModel, ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.adapters.llm import LLMError
+from app.agent.tools import AgentError
 from app.api.acquisition import router as acquisition_router
+from app.api.agent import router as agent_router
 from app.api.bank import router as bank_router
 from app.api.conversations import error_detail, router
 from app.api.data import router as data_router
@@ -53,6 +55,7 @@ app.include_router(bank_router)
 app.include_router(data_router)
 app.include_router(registry_router)
 app.include_router(acquisition_router)
+app.include_router(agent_router)
 app.include_router(leads_router)
 app.include_router(consent_text_router)
 app.include_router(reports_router)
@@ -94,6 +97,14 @@ async def database_error(request: Request, error: SQLAlchemyError) -> JSONRespon
 @app.exception_handler(LeadError)
 async def lead_error(request: Request, error: LeadError) -> JSONResponse:
     return JSONResponse(status_code=error.status, content={"detail": {"code": error.code}})
+
+
+@app.exception_handler(AgentError)
+async def agent_error(request: Request, error: AgentError) -> JSONResponse:
+    return JSONResponse(
+        status_code=504 if error.code == "agent_deadline_exceeded" else 422,
+        content={"detail": {"code": error.code}},
+    )
 
 
 async def conversation_error(request: Request, error: Exception) -> JSONResponse:

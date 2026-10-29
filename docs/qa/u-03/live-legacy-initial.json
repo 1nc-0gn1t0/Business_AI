@@ -1,0 +1,27 @@
+{
+  "mode": "real Qwen, artificial geo fixture in disposable PostGIS; no Internet fetch",
+  "timestamp": "2026-10-29T17:17:50.334675+00:00",
+  "cases": [
+    {
+      "case": "legacy_chat",
+      "http_status": 502,
+      "response": {
+        "detail": {
+          "code": "llm_invalid_response",
+          "trace_id": "041603e1-aed5-4510-b541-821f49cdb328"
+        },
+        "code": "llm_invalid_response",
+        "message": "Проверьте вводные или дождитесь восстановления сервиса.",
+        "request_id": "0c48ea9a9b8b4c84951ff3e58fa26b9c"
+      },
+      "wall_seconds": 10.045999999972992
+    }
+  ],
+  "geo_fixture": {
+    "slug": "kazan-fixture",
+    "data_version": "57a045c95fce2bc452d5053deb063bbfde29a7b276293ebf3d8441edcafff237",
+    "synthetic_test_material": true
+  },
+  "acquisition_jobs": [],
+  "status": "recorded; inspect each scenario, do not equate HTTP200 with success"
+}

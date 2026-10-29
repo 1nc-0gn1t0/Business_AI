@@ -261,3 +261,18 @@ version → owner/task → regression test → evidence → closed/accepted-unti
 
 На старте каждого PR проверить связанные записи; при контрольной версии — весь реестр.
 Порог закрытия определяется [QUALITY_GATES](QUALITY_GATES.md), а не количеством тестов.
+
+## BA2/U-03 · 29.10.2026
+
+- Qwen4B can choose incomplete/repeated tools or copy IDs incorrectly. Live failures
+  retained; generated per-tool schemas + independent Gateway + grounded rendering
+  fail closed. This is not evidence of universal industry planning reliability.
+- Shared U-02 deployment operator credential is not an account/delegation system.
+  Agent job grants add conversation isolation; no guest auto-import. Sustained source
+  permission and public user quotas remain unresolved, not approved by this feature.
+- One API process/H-03 queue remains required. GPU-used snapshots reached3921MiB on4GB;
+  no multi-worker/concurrent-model capacity or city-import SLA is claimed. Agent traces
+  have explicit size/count/visibility retention limits; old v1 reports stay immutable.
+- Live legacy extraction rejected one wording; standard demo passed with unchanged
+  prompt/schema. Keep retry/error UX and do not convert model JSON validity into truth.
+  [Contracts, evidence and limits](../architecture/BUSINESS_AI_2_QWEN_TOOL_AGENT.md).

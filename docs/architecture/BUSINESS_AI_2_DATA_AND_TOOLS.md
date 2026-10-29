@@ -21,6 +21,10 @@ Larger tiled imports/group activation/shared high-memory admission остают�
 
 ## 1. Provenance и достаточность
 
+**U-03,29.10.2026:** [executable Tool Gateway](BUSINESS_AI_2_QWEN_TOOL_AGENT.md)
+реализует5инструментов/structured proposals/owner traces и ограниченный цикл через H-03.
+Эскизы полного DAG/ProfileV2 ниже остаются будущими; actual DTO/API/budgets — по ссылке.
+
 Единственный enum происхождения остаётся [DataOrigin](../../apps/api/app/domain/enums.py).
 Epistemic — классификация пригодности, а не замена origin:
 

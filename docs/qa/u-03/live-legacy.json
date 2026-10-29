@@ -1,0 +1,45 @@
+{
+  "mode": "real Qwen, artificial geo fixture in disposable PostGIS; no Internet fetch",
+  "timestamp": "2026-10-29T17:21:48.402683+00:00",
+  "cases": [
+    {
+      "case": "legacy_chat",
+      "http_status": 200,
+      "response": {
+        "id": "5246fe23-7143-4fe6-8d8e-7f6fcd359ba5",
+        "version": 1,
+        "state": "collecting",
+        "profile": {
+          "id": "bd9dcae1-df40-454f-8cc1-3286966d7cca",
+          "conversation_id": "5246fe23-7143-4fe6-8d8e-7f6fcd359ba5",
+          "city": "Казань",
+          "category": "кофейня",
+          "budget": "2000000.00",
+          "funding": null,
+          "preferences": {
+            "format": null,
+            "preferred_districts": [],
+            "constraints": []
+          },
+          "confirmation_state": "draft"
+        },
+        "missing_fields": [
+          "preferences.format",
+          "funding"
+        ],
+        "assistant_message": "Какой формат бизнеса рассматриваете?",
+        "extraction_mode": "ollama",
+        "created_at": "2026-10-29T17:21:52.514646Z",
+        "updated_at": "2026-10-29T17:22:00.924304Z"
+      },
+      "wall_seconds": 8.26600000000326
+    }
+  ],
+  "geo_fixture": {
+    "slug": "kazan-fixture",
+    "data_version": "57a045c95fce2bc452d5053deb063bbfde29a7b276293ebf3d8441edcafff237",
+    "synthetic_test_material": true
+  },
+  "acquisition_jobs": [],
+  "status": "recorded; inspect each scenario, do not equate HTTP200 with success"
+}

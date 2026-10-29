@@ -27,6 +27,31 @@ class Base(DeclarativeBase):
     pass
 
 
+class AgentRunRecord(Base):
+    __tablename__ = "agent_runs"
+    __table_args__ = (
+        sa.CheckConstraint("octet_length(response::text) <= 98304", name="ck_agent_response_size"),
+        sa.Index("ix_agent_owner_created", "conversation_id", "created_at"),
+        sa.Index(
+            "ix_agent_owner_active",
+            "conversation_id",
+            unique=True,
+            postgresql_where=sa.text("state = 'running'"),
+        ),
+    )
+    id: Mapped[UUID] = mapped_column(primary_key=True)
+    conversation_id: Mapped[UUID] = mapped_column(sa.ForeignKey("conversations.id"))
+    request_hash: Mapped[str] = mapped_column(sa.String(64))
+    expected_version: Mapped[int]
+    consent_revision: Mapped[int]
+    operator: Mapped[bool]
+    state: Mapped[str] = mapped_column(sa.Text)
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    deadline_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    job_ids: Mapped[list[UUID]] = mapped_column(ARRAY(sa.Uuid))
+    response: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
 class AcquisitionJobRecord(Base):
     __tablename__ = "acquisition_jobs"
     __table_args__ = (

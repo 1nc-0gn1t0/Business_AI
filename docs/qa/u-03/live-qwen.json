@@ -1,0 +1,1411 @@
+{
+  "mode": "real Qwen, artificial geo fixture in disposable PostGIS; no Internet fetch",
+  "timestamp": "2026-10-29T16:57:36.556842+00:00",
+  "cases": [
+    {
+      "case": "kazan",
+      "request": {
+        "request_id": "4703f912-aa14-4cea-8401-617b3118636b",
+        "expected_version": 0,
+        "content": "Какие данные есть для кофейни в Казани? Проверь POI и административные границы."
+      },
+      "http_status": 200,
+      "response": {
+        "schema_version": "agent-v2",
+        "request_id": "4703f912-aa14-4cea-8401-617b3118636b",
+        "conversation_id": "a3182dfa-78a4-436a-a174-0e9891003f22",
+        "profile_version": 1,
+        "state": "succeeded",
+        "message": "Проверена территория: ru-kazan.\nОбъекты OSM: частичное покрытие.\nАдминистративные границы: частичное покрытие.\nПокрытие относится к импортированным данным; полнота сведений о реальном рынке не подтверждена.\nВ реестре 18 категорий. Загрузка реализована только для OSM POI; нужны разрешения оператора и источника.",
+        "next_step": "data_unavailable",
+        "code": "ok",
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "traces": [
+          {
+            "sequence": 1,
+            "tool": "check_data_coverage",
+            "capability": "data.coverage",
+            "mutating": false,
+            "timestamp": "2026-10-29T16:58:17.841304Z",
+            "status": "succeeded",
+            "code": "ok",
+            "validation_ms": 16.00000000325963,
+            "execution_ms": 31.000000017229468,
+            "argument_sha256": "71b4b51ef400ee2012b3173470a7b628fecda087d0eb84fb7caba73168c3c620",
+            "arguments": {
+              "territory": "ru-kazan",
+              "categories": [
+                "geo.mapped_poi",
+                "geo.admin_polygons"
+              ]
+            },
+            "reason": "Нужна проверка покрытия данных POI и административных границ в Казани",
+            "result": {
+              "schema_version": "coverage-v2",
+              "registry_revision": "u02-v1",
+              "config_sha256": "1b93dc0307b147d0aa8af3e7c7e079f6e3d9f5522dbea2dd8b1c0ef00d3f9bbe",
+              "evaluated_at": "2026-10-29T16:58:17.820904Z",
+              "query": {
+                "territory": "ru-kazan",
+                "aoi": null,
+                "categories": [
+                  "geo.mapped_poi",
+                  "geo.admin_polygons"
+                ],
+                "period": null,
+                "mode": "real",
+                "purpose": "local_analysis"
+              },
+              "assessments": [
+                {
+                  "category": "geo.mapped_poi",
+                  "local_status": "partial",
+                  "summary": "partial",
+                  "availability": "present",
+                  "freshness": "current",
+                  "completeness": "partial",
+                  "object_quality": "unknown",
+                  "datasets": [
+                    {
+                      "metadata": {
+                        "provider": "osm",
+                        "slug": "kazan-fixture",
+                        "revision": "57a045c95fce2bc452d5053deb063bbfde29a7b276293ebf3d8441edcafff237",
+                        "data_version": "57a045c95fce2bc452d5053deb063bbfde29a7b276293ebf3d8441edcafff237",
+                        "active": true,
+                        "bbox": {
+                          "west": 49.115,
+                          "south": 55.785,
+                          "east": 49.12,
+                          "north": 55.79
+                        },
+                        "origin": "open_data",
+                        "license": "ODbL-1.0",
+                        "attribution": "© OpenStreetMap contributors",
+                        "limitations": [
+                          "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+                          "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+                          "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+                          "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+                          "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+                          "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+                          "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+                        ]
+                      },
+                      "spatial_fit": "partial",
+                      "freshness": "current",
+                      "freshness_policy": "osm-snapshot-30d",
+                      "freshness_basis": "source_timestamp",
+                      "observed_at": null,
+                      "source_timestamp": "2026-10-22T20:28:36Z",
+                      "published_at": null,
+                      "fetched_at": "2026-10-22T20:30:25.861767Z",
+                      "generated_at": null,
+                      "imported_at": "2026-10-29T16:57:41.555905Z",
+                      "temporal_coverage": null,
+                      "next_update_at": null,
+                      "temporal_fit": "unknown",
+                      "usable": true,
+                      "reasons": [
+                        "mapping_quality_unknown"
+                      ]
+                    }
+                  ],
+                  "acquisition": [
+                    {
+                      "source_id": "osm",
+                      "acquirability": "unknown",
+                      "reason": "permission_or_remote_availability_unknown",
+                      "network_permission": "review_required",
+                      "availability": "unknown",
+                      "potentially_available": true,
+                      "adapter_status": "ready",
+                      "license_status": "verified_local_use",
+                      "local_use_permitted": true,
+                      "automatic_acquisition_implemented": true
+                    }
+                  ],
+                  "reasons": [
+                    "territory_boundary_unknown"
+                  ],
+                  "dataset_count": 1,
+                  "evidence_truncated": false
+                },
+                {
+                  "category": "geo.admin_polygons",
+                  "local_status": "partial",
+                  "summary": "partial",
+                  "availability": "present",
+                  "freshness": "unknown",
+                  "completeness": "partial",
+                  "object_quality": "unknown",
+                  "datasets": [
+                    {
+                      "metadata": {
+                        "provider": "osm",
+                        "slug": "kazan-fixture",
+                        "revision": "57a045c95fce2bc452d5053deb063bbfde29a7b276293ebf3d8441edcafff237",
+                        "data_version": "57a045c95fce2bc452d5053deb063bbfde29a7b276293ebf3d8441edcafff237",
+                        "active": true,
+                        "bbox": {
+                          "west": 49.115,
+                          "south": 55.785,
+                          "east": 49.12,
+                          "north": 55.79
+                        },
+                        "origin": "open_data",
+                        "license": "ODbL-1.0",
+                        "attribution": "© OpenStreetMap contributors",
+                        "limitations": [
+                          "OSM coverage and tags may be incomplete or outdated; an empty result is not proof of absence.",
+                          "Only amenity, shop and highway=bus_stop objects inside the saved bbox are included.",
+                          "Way/relation POI use OSM bounding-box centers, not entrances or building footprints.",
+                          "OSM identities are not deduplicated businesses; distances are straight-line, not routes.",
+                          "No measured traffic, demand, rent, revenue or bank-product conditions are provided.",
+                          "Administrative polygons may extend outside POI coverage; missing boundaries are not inferred.",
+                          "Overpass boundary bbox selection uses member nodes, so containing districts may be absent."
+                        ]
+                      },
+                      "spatial_fit": "partial",
+                      "freshness": "unknown",
+                      "freshness_policy": "unreviewed",
+                      "freshness_basis": "unknown",
+                      "observed_at": null,
+                      "source_timestamp": "2026-10-22T20:28:36Z",
+                      "published_at": null,
+                      "fetched_at": "2026-10-22T20:30:25.861767Z",
+                      "generated_at": null,
+                      "imported_at": "2026-10-29T16:57:41.555905Z",
+                      "temporal_coverage": null,
+                      "next_update_at": null,
+                      "temporal_fit": "unknown",
+                      "usable": true,
+                      "reasons": [
+                        "mapping_quality_unknown",
+                        "freshness_not_established"
+                      ]
+                    }
+                  ],
+                  "acquisition": [
+                    {
+                      "source_id": "osm",
+                      "acquirability": "unknown",
+                      "reason": "permission_or_remote_availability_unknown",
+                      "network_permission": "review_required",
+                      "availability": "unknown",
+                      "potentially_available": true,
+                      "adapter_status": "ready",
+                      "license_status": "verified_local_use",
+                      "local_use_permitted": true,
+                      "automatic_acquisition_implemented": false
+                    }
+                  ],
+                  "reasons": [
+                    "territory_boundary_unknown"
+                  ],
+                  "dataset_count": 1,
+                  "evidence_truncated": false
+                }
+              ],
+              "metadata_complete": true,
+              "limitations": [
+                "Coverage describes imported snapshots, not completeness of the real market.",
+                "Source timestamp is not a real-world observation date. No external requests performed."
+              ]
+            }
+          },
+          {
+            "sequence": 2,
+            "tool": "list_data_capabilities",
+            "capability": "data.describe",
+            "mutating": false,
+            "timestamp": "2026-10-29T16:58:41.622949Z",
+            "status": "succeeded",
+            "code": "ok",
+            "validation_ms": 16.00000000325963,
+            "execution_ms": 14.999999955762178,
+            "argument_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "arguments": {},
+            "reason": "Пользователь запросил данные о POI и административных границах в Казани. Проверка покрытия уже выполнена и показала частичную доступность данных. Требуется описание текущих возможностей данных, чтобы釐",
+            "result": {
+              "categories": [
+                {
+                  "id": "geo.mapped_poi",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": "osm_poi_v1"
+                },
+                {
+                  "id": "geo.admin_polygons",
+                  "local_status": "partial",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.pedestrian_network",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.vehicle_network",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.buildings",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.parking",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.transit",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.organizations",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.zones",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "demography.population",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "demography.density",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "demography.age",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "economy.rent",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "economy.industry",
+                  "local_status": "missing",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "economy.macro",
+                  "local_status": "missing",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "user.budget",
+                  "local_status": "unknown",
+                  "private": true,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "user.costs",
+                  "local_status": "unknown",
+                  "private": true,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "scenario.finance",
+                  "local_status": "missing",
+                  "private": false,
+                  "acquisition_adapter": null
+                }
+              ],
+              "sources": [
+                {
+                  "id": "osm",
+                  "categories": [
+                    "geo.mapped_poi",
+                    "geo.admin_polygons",
+                    "geo.pedestrian_network"
+                  ],
+                  "acquisition": {
+                    "source_id": "osm",
+                    "acquirability": "unknown",
+                    "reason": "permission_or_remote_availability_unknown",
+                    "network_permission": "review_required",
+                    "availability": "unknown",
+                    "potentially_available": true,
+                    "adapter_status": "ready",
+                    "license_status": "verified_local_use",
+                    "local_use_permitted": true,
+                    "automatic_acquisition_implemented": true
+                  },
+                  "acquisition_scope": "disabled",
+                  "approval_expires_at": null
+                },
+                {
+                  "id": "synthetic",
+                  "categories": [
+                    "scenario.finance"
+                  ],
+                  "acquisition": {
+                    "source_id": "synthetic",
+                    "acquirability": "forbidden",
+                    "reason": "source_use_not_permitted",
+                    "network_permission": "forbidden",
+                    "availability": "ready",
+                    "potentially_available": false,
+                    "adapter_status": "ready",
+                    "license_status": "verified_local_use",
+                    "local_use_permitted": true,
+                    "automatic_acquisition_implemented": false
+                  },
+                  "acquisition_scope": "disabled",
+                  "approval_expires_at": null
+                },
+                {
+                  "id": "ghsl",
+                  "categories": [
+                    "demography.population",
+                    "demography.density"
+                  ],
+                  "acquisition": {
+                    "source_id": "ghsl",
+                    "acquirability": "forbidden",
+                    "reason": "source_use_not_permitted",
+                    "network_permission": "forbidden",
+                    "availability": "not_integrated",
+                    "potentially_available": false,
+                    "adapter_status": "not_integrated",
+                    "license_status": "review_required",
+                    "local_use_permitted": false,
+                    "automatic_acquisition_implemented": false
+                  },
+                  "acquisition_scope": "disabled",
+                  "approval_expires_at": null
+                },
+                {
+                  "id": "licensed",
+                  "categories": [
+                    "economy.rent",
+                    "economy.industry",
+                    "economy.macro"
+                  ],
+                  "acquisition": {
+                    "source_id": "licensed",
+                    "acquirability": "forbidden",
+                    "reason": "source_use_not_permitted",
+                    "network_permission": "forbidden",
+                    "availability": "not_integrated",
+                    "potentially_available": false,
+                    "adapter_status": "not_integrated",
+                    "license_status": "review_required",
+                    "local_use_permitted": false,
+                    "automatic_acquisition_implemented": false
+                  },
+                  "acquisition_scope": "disabled",
+                  "approval_expires_at": null
+                }
+              ],
+              "tools": [
+                {
+                  "id": "list_data_capabilities",
+                  "capability": "data.describe",
+                  "result_type": "capabilities",
+                  "mutating": false,
+                  "permission": "conversation_owner",
+                  "revision": "v1"
+                },
+                {
+                  "id": "check_data_coverage",
+                  "capability": "data.coverage",
+                  "result_type": "coverage",
+                  "mutating": false,
+                  "permission": "conversation_owner",
+                  "revision": "v1"
+                },
+                {
+                  "id": "check_data_sufficiency",
+                  "capability": "data.sufficiency",
+                  "result_type": "sufficiency",
+                  "mutating": false,
+                  "permission": "conversation_owner",
+                  "revision": "v1"
+                },
+                {
+                  "id": "request_data_acquisition",
+                  "capability": "data.acquire",
+                  "result_type": "acquisition_job",
+                  "mutating": true,
+                  "permission": "operator",
+                  "revision": "v1"
+                },
+                {
+                  "id": "get_acquisition_status",
+                  "capability": "data.job_status",
+                  "result_type": "acquisition_job",
+                  "mutating": false,
+                  "permission": "operator_and_job_grant",
+                  "revision": "v1"
+                }
+              ],
+              "unsupported_operations": [
+                "web_search",
+                "download_road_network",
+                "industry_ranking",
+                "shell",
+                "sql"
+              ],
+              "limitations": [
+                "Local presence is not full city coverage; only OSM POI has an acquisition adapter."
+              ]
+            }
+          }
+        ],
+        "model_timings": [
+          {
+            "purpose": "proposal",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 35795.99999997299,
+            "elapsed_ms": null,
+            "load_ms": 25696.494715,
+            "prompt_tokens": 841,
+            "output_tokens": 117
+          },
+          {
+            "purpose": "synthesis",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 5391.00000000326,
+            "elapsed_ms": null,
+            "load_ms": 4.018463,
+            "prompt_tokens": 1955,
+            "output_tokens": 20
+          },
+          {
+            "purpose": "proposal",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 18250.0,
+            "elapsed_ms": null,
+            "load_ms": 2.794989,
+            "prompt_tokens": 2488,
+            "output_tokens": 117
+          },
+          {
+            "purpose": "synthesis",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 9875.0,
+            "elapsed_ms": null,
+            "load_ms": 2.817516,
+            "prompt_tokens": 3272,
+            "output_tokens": 25
+          }
+        ],
+        "total_ms": 69641.00000000326
+      },
+      "wall_seconds": 69.76600000000326,
+      "python_peak_rss_bytes": 0,
+      "gpu_used_mib_snapshot": "3681",
+      "profile_unchanged": true
+    },
+    {
+      "case": "moscow",
+      "request": {
+        "request_id": "0b77cf6f-9c1d-4d51-8cbe-8c50dd40f33a",
+        "expected_version": 0,
+        "content": "Проверь POI и дорожную сеть автосервиса в Москве. Не запускай загрузку."
+      },
+      "http_status": 200,
+      "response": {
+        "schema_version": "agent-v2",
+        "request_id": "0b77cf6f-9c1d-4d51-8cbe-8c50dd40f33a",
+        "conversation_id": "7a3a4cf0-ebb4-4015-a943-3415b94412b6",
+        "profile_version": 1,
+        "state": "succeeded",
+        "message": "Проверена территория: ru-moscow.\nОбъекты OSM: нет подтверждённого локального набора.\nДорожная сеть: нет подтверждённого локального набора.\nПокрытие относится к импортированным данным; полнота сведений о реальном рынке не подтверждена.",
+        "next_step": "data_unavailable",
+        "code": "ok",
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "traces": [
+          {
+            "sequence": 1,
+            "tool": "check_data_coverage",
+            "capability": "data.coverage",
+            "mutating": false,
+            "timestamp": "2026-10-29T16:59:07.666095Z",
+            "status": "succeeded",
+            "code": "ok",
+            "validation_ms": 16.00000000325963,
+            "execution_ms": 15.000000013969839,
+            "argument_sha256": "a51df0127598376166e7b1ad7ea21d0d75754741fa3a7a7fc87f3d81b5bdd90c",
+            "arguments": {
+              "territory": "ru-moscow",
+              "categories": [
+                "geo.mapped_poi",
+                "geo.vehicle_network"
+              ]
+            },
+            "reason": "Пользователь запросил проверку покрытия POI и дорожной сети для автосервиса в Москве, без запуска загрузки. Требуется проверка покрытия по указанным категориям в заданной территории.",
+            "result": {
+              "schema_version": "coverage-v2",
+              "registry_revision": "u02-v1",
+              "config_sha256": "1b93dc0307b147d0aa8af3e7c7e079f6e3d9f5522dbea2dd8b1c0ef00d3f9bbe",
+              "evaluated_at": "2026-10-29T16:59:07.656065Z",
+              "query": {
+                "territory": "ru-moscow",
+                "aoi": null,
+                "categories": [
+                  "geo.mapped_poi",
+                  "geo.vehicle_network"
+                ],
+                "period": null,
+                "mode": "real",
+                "purpose": "local_analysis"
+              },
+              "assessments": [
+                {
+                  "category": "geo.mapped_poi",
+                  "local_status": "missing",
+                  "summary": "unknown",
+                  "availability": "missing",
+                  "freshness": "unknown",
+                  "completeness": "unknown",
+                  "object_quality": "unknown",
+                  "datasets": [],
+                  "acquisition": [
+                    {
+                      "source_id": "osm",
+                      "acquirability": "unknown",
+                      "reason": "permission_or_remote_availability_unknown",
+                      "network_permission": "review_required",
+                      "availability": "unknown",
+                      "potentially_available": true,
+                      "adapter_status": "ready",
+                      "license_status": "verified_local_use",
+                      "local_use_permitted": true,
+                      "automatic_acquisition_implemented": true
+                    }
+                  ],
+                  "reasons": [
+                    "territory_boundary_unknown"
+                  ],
+                  "dataset_count": 0,
+                  "evidence_truncated": false
+                },
+                {
+                  "category": "geo.vehicle_network",
+                  "local_status": "missing",
+                  "summary": "not_available_from_approved_sources",
+                  "availability": "missing",
+                  "freshness": "unknown",
+                  "completeness": "unknown",
+                  "object_quality": "unknown",
+                  "datasets": [],
+                  "acquisition": [],
+                  "reasons": [
+                    "territory_boundary_unknown"
+                  ],
+                  "dataset_count": 0,
+                  "evidence_truncated": false
+                }
+              ],
+              "metadata_complete": true,
+              "limitations": [
+                "Coverage describes imported snapshots, not completeness of the real market.",
+                "Source timestamp is not a real-world observation date. No external requests performed."
+              ]
+            }
+          }
+        ],
+        "model_timings": [
+          {
+            "purpose": "proposal",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 15733.99999999674,
+            "elapsed_ms": null,
+            "load_ms": 1.958258,
+            "prompt_tokens": 843,
+            "output_tokens": 154
+          },
+          {
+            "purpose": "synthesis",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 3233.9999999967404,
+            "elapsed_ms": null,
+            "load_ms": 1.485217,
+            "prompt_tokens": 805,
+            "output_tokens": 22
+          }
+        ],
+        "total_ms": 19063.00000002375
+      },
+      "wall_seconds": 19.15600000001723,
+      "python_peak_rss_bytes": 0,
+      "gpu_used_mib_snapshot": "3682",
+      "profile_unchanged": true
+    },
+    {
+      "case": "unsupported",
+      "request": {
+        "request_id": "22ed5b7a-66da-4eaa-b18a-4de9b48654b4",
+        "expected_version": 0,
+        "content": "Можно загрузить точный автомобильный трафик всей Москвы? Сначала проверь возможности системы."
+      },
+      "http_status": 200,
+      "response": {
+        "schema_version": "agent-v2",
+        "request_id": "22ed5b7a-66da-4eaa-b18a-4de9b48654b4",
+        "conversation_id": "2c7e664e-6998-4e41-8471-598ea46a4b6b",
+        "profile_version": 1,
+        "state": "succeeded",
+        "message": "Проверена территория: ru-moscow.\nДорожная сеть: нет подтверждённого локального набора.\nПокрытие относится к импортированным данным; полнота сведений о реальном рынке не подтверждена.",
+        "next_step": "data_unavailable",
+        "code": "ok",
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "traces": [
+          {
+            "sequence": 1,
+            "tool": "check_data_coverage",
+            "capability": "data.coverage",
+            "mutating": false,
+            "timestamp": "2026-10-29T16:59:20.577718Z",
+            "status": "succeeded",
+            "code": "ok",
+            "validation_ms": 16.00000000325963,
+            "execution_ms": 16.00000000325963,
+            "argument_sha256": "c60f4a5b317fbd7fa403d6015cf8eec737cf2217d271161fa3cd6d72f25f652f",
+            "arguments": {
+              "territory": "ru-moscow",
+              "categories": [
+                "geo.vehicle_network"
+              ]
+            },
+            "reason": "Пользователь просит загрузку точного автомобильного трафика всей Москвы, сначала нужно проверить, есть ли покрытие данных по этой категории в Москве.",
+            "result": {
+              "schema_version": "coverage-v2",
+              "registry_revision": "u02-v1",
+              "config_sha256": "1b93dc0307b147d0aa8af3e7c7e079f6e3d9f5522dbea2dd8b1c0ef00d3f9bbe",
+              "evaluated_at": "2026-10-29T16:59:20.565849Z",
+              "query": {
+                "territory": "ru-moscow",
+                "aoi": null,
+                "categories": [
+                  "geo.vehicle_network"
+                ],
+                "period": null,
+                "mode": "real",
+                "purpose": "local_analysis"
+              },
+              "assessments": [
+                {
+                  "category": "geo.vehicle_network",
+                  "local_status": "missing",
+                  "summary": "not_available_from_approved_sources",
+                  "availability": "missing",
+                  "freshness": "unknown",
+                  "completeness": "unknown",
+                  "object_quality": "unknown",
+                  "datasets": [],
+                  "acquisition": [],
+                  "reasons": [
+                    "territory_boundary_unknown"
+                  ],
+                  "dataset_count": 0,
+                  "evidence_truncated": false
+                }
+              ],
+              "metadata_complete": true,
+              "limitations": [
+                "Coverage describes imported snapshots, not completeness of the real market.",
+                "Source timestamp is not a real-world observation date. No external requests performed."
+              ]
+            }
+          }
+        ],
+        "model_timings": [
+          {
+            "purpose": "proposal",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 9266.00000000326,
+            "elapsed_ms": null,
+            "load_ms": 1.405437,
+            "prompt_tokens": 837,
+            "output_tokens": 126
+          },
+          {
+            "purpose": "synthesis",
+            "code": "ok",
+            "queue_ms": 16.00000000325963,
+            "inference_ms": 2343.9999999827705,
+            "elapsed_ms": null,
+            "load_ms": 1.50399,
+            "prompt_tokens": 627,
+            "output_tokens": 22
+          }
+        ],
+        "total_ms": 11733.99999999674
+      },
+      "wall_seconds": 11.827999999979511,
+      "python_peak_rss_bytes": 0,
+      "gpu_used_mib_snapshot": "3683",
+      "profile_unchanged": true
+    },
+    {
+      "case": "unknown_industry",
+      "request": {
+        "request_id": "95cab76a-35cb-46d0-b003-0f52e1ab2334",
+        "expected_version": 0,
+        "content": "Открываю сервис ремонта музыкальных автоматов в Москве. Проверь покрытие POI, без отраслевых расчётов."
+      },
+      "http_status": 200,
+      "response": {
+        "schema_version": "agent-v2",
+        "request_id": "95cab76a-35cb-46d0-b003-0f52e1ab2334",
+        "conversation_id": "792a938e-eed8-4e15-bfc9-68905936843c",
+        "profile_version": 1,
+        "state": "succeeded",
+        "message": "Проверена территория: ru-moscow.\nОбъекты OSM: нет подтверждённого локального набора.\nПокрытие относится к импортированным данным; полнота сведений о реальном рынке не подтверждена.",
+        "next_step": "data_unavailable",
+        "code": "ok",
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "traces": [
+          {
+            "sequence": 1,
+            "tool": "check_data_coverage",
+            "capability": "data.coverage",
+            "mutating": false,
+            "timestamp": "2026-10-29T16:59:31.627423Z",
+            "status": "succeeded",
+            "code": "ok",
+            "validation_ms": 0.0,
+            "execution_ms": 14.999999955762178,
+            "argument_sha256": "f8a1fd845178b1351b976eba33f034e31573e3f48ac492e6c9605233310471de",
+            "arguments": {
+              "territory": "ru-moscow",
+              "categories": [
+                "geo.mapped_poi"
+              ]
+            },
+            "reason": "Пользователь просит проверку покрытия POI без отраслевых расчётов, требуется проверка покрытия в Москве по категории geo.mapped_poi",
+            "result": {
+              "schema_version": "coverage-v2",
+              "registry_revision": "u02-v1",
+              "config_sha256": "1b93dc0307b147d0aa8af3e7c7e079f6e3d9f5522dbea2dd8b1c0ef00d3f9bbe",
+              "evaluated_at": "2026-10-29T16:59:31.620867Z",
+              "query": {
+                "territory": "ru-moscow",
+                "aoi": null,
+                "categories": [
+                  "geo.mapped_poi"
+                ],
+                "period": null,
+                "mode": "real",
+                "purpose": "local_analysis"
+              },
+              "assessments": [
+                {
+                  "category": "geo.mapped_poi",
+                  "local_status": "missing",
+                  "summary": "unknown",
+                  "availability": "missing",
+                  "freshness": "unknown",
+                  "completeness": "unknown",
+                  "object_quality": "unknown",
+                  "datasets": [],
+                  "acquisition": [
+                    {
+                      "source_id": "osm",
+                      "acquirability": "unknown",
+                      "reason": "permission_or_remote_availability_unknown",
+                      "network_permission": "review_required",
+                      "availability": "unknown",
+                      "potentially_available": true,
+                      "adapter_status": "ready",
+                      "license_status": "verified_local_use",
+                      "local_use_permitted": true,
+                      "automatic_acquisition_implemented": true
+                    }
+                  ],
+                  "reasons": [
+                    "territory_boundary_unknown"
+                  ],
+                  "dataset_count": 0,
+                  "evidence_truncated": false
+                }
+              ],
+              "metadata_complete": true,
+              "limitations": [
+                "Coverage describes imported snapshots, not completeness of the real market.",
+                "Source timestamp is not a real-world observation date. No external requests performed."
+              ]
+            }
+          }
+        ],
+        "model_timings": [
+          {
+            "purpose": "proposal",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 8358.99999999674,
+            "elapsed_ms": null,
+            "load_ms": 10.258265,
+            "prompt_tokens": 852,
+            "output_tokens": 125
+          },
+          {
+            "purpose": "synthesis",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 2031.0000000172295,
+            "elapsed_ms": null,
+            "load_ms": 1.943052,
+            "prompt_tokens": 722,
+            "output_tokens": 22
+          }
+        ],
+        "total_ms": 10468.99999998277
+      },
+      "wall_seconds": 10.547000000020489,
+      "python_peak_rss_bytes": 0,
+      "gpu_used_mib_snapshot": "3694",
+      "profile_unchanged": true
+    },
+    {
+      "case": "multi_step",
+      "request": {
+        "request_id": "ae16a196-3187-4aed-8e27-d7e62c58ba6c",
+        "expected_version": 0,
+        "content": "Сначала перечисли возможности получения данных, затем проверь дорожную сеть и POI Москвы."
+      },
+      "http_status": 200,
+      "response": {
+        "schema_version": "agent-v2",
+        "request_id": "ae16a196-3187-4aed-8e27-d7e62c58ba6c",
+        "conversation_id": "c187b9a5-0cba-4a84-a108-22e91e2c0e43",
+        "profile_version": 1,
+        "state": "succeeded",
+        "message": "В реестре 18 категорий. Загрузка реализована только для OSM POI; нужны разрешения оператора и источника.",
+        "next_step": "done",
+        "code": "ok",
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "traces": [
+          {
+            "sequence": 1,
+            "tool": "list_data_capabilities",
+            "capability": "data.describe",
+            "mutating": false,
+            "timestamp": "2026-10-29T16:59:38.196214Z",
+            "status": "succeeded",
+            "code": "ok",
+            "validation_ms": 0.0,
+            "execution_ms": 32.00000000651926,
+            "argument_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "arguments": {},
+            "reason": "Пользователь запросил сначала перечислить возможности получения данных",
+            "result": {
+              "categories": [
+                {
+                  "id": "geo.mapped_poi",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": "osm_poi_v1"
+                },
+                {
+                  "id": "geo.admin_polygons",
+                  "local_status": "partial",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.pedestrian_network",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.vehicle_network",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.buildings",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.parking",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.transit",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.organizations",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "geo.zones",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "demography.population",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "demography.density",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "demography.age",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "economy.rent",
+                  "local_status": "unknown",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "economy.industry",
+                  "local_status": "missing",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "economy.macro",
+                  "local_status": "missing",
+                  "private": false,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "user.budget",
+                  "local_status": "unknown",
+                  "private": true,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "user.costs",
+                  "local_status": "unknown",
+                  "private": true,
+                  "acquisition_adapter": null
+                },
+                {
+                  "id": "scenario.finance",
+                  "local_status": "missing",
+                  "private": false,
+                  "acquisition_adapter": null
+                }
+              ],
+              "sources": [
+                {
+                  "id": "osm",
+                  "categories": [
+                    "geo.mapped_poi",
+                    "geo.admin_polygons",
+                    "geo.pedestrian_network"
+                  ],
+                  "acquisition": {
+                    "source_id": "osm",
+                    "acquirability": "unknown",
+                    "reason": "permission_or_remote_availability_unknown",
+                    "network_permission": "review_required",
+                    "availability": "unknown",
+                    "potentially_available": true,
+                    "adapter_status": "ready",
+                    "license_status": "verified_local_use",
+                    "local_use_permitted": true,
+                    "automatic_acquisition_implemented": true
+                  },
+                  "acquisition_scope": "disabled",
+                  "approval_expires_at": null
+                },
+                {
+                  "id": "synthetic",
+                  "categories": [
+                    "scenario.finance"
+                  ],
+                  "acquisition": {
+                    "source_id": "synthetic",
+                    "acquirability": "forbidden",
+                    "reason": "source_use_not_permitted",
+                    "network_permission": "forbidden",
+                    "availability": "ready",
+                    "potentially_available": false,
+                    "adapter_status": "ready",
+                    "license_status": "verified_local_use",
+                    "local_use_permitted": true,
+                    "automatic_acquisition_implemented": false
+                  },
+                  "acquisition_scope": "disabled",
+                  "approval_expires_at": null
+                },
+                {
+                  "id": "ghsl",
+                  "categories": [
+                    "demography.population",
+                    "demography.density"
+                  ],
+                  "acquisition": {
+                    "source_id": "ghsl",
+                    "acquirability": "forbidden",
+                    "reason": "source_use_not_permitted",
+                    "network_permission": "forbidden",
+                    "availability": "not_integrated",
+                    "potentially_available": false,
+                    "adapter_status": "not_integrated",
+                    "license_status": "review_required",
+                    "local_use_permitted": false,
+                    "automatic_acquisition_implemented": false
+                  },
+                  "acquisition_scope": "disabled",
+                  "approval_expires_at": null
+                },
+                {
+                  "id": "licensed",
+                  "categories": [
+                    "economy.rent",
+                    "economy.industry",
+                    "economy.macro"
+                  ],
+                  "acquisition": {
+                    "source_id": "licensed",
+                    "acquirability": "forbidden",
+                    "reason": "source_use_not_permitted",
+                    "network_permission": "forbidden",
+                    "availability": "not_integrated",
+                    "potentially_available": false,
+                    "adapter_status": "not_integrated",
+                    "license_status": "review_required",
+                    "local_use_permitted": false,
+                    "automatic_acquisition_implemented": false
+                  },
+                  "acquisition_scope": "disabled",
+                  "approval_expires_at": null
+                }
+              ],
+              "tools": [
+                {
+                  "id": "list_data_capabilities",
+                  "capability": "data.describe",
+                  "result_type": "capabilities",
+                  "mutating": false,
+                  "permission": "conversation_owner",
+                  "revision": "v1"
+                },
+                {
+                  "id": "check_data_coverage",
+                  "capability": "data.coverage",
+                  "result_type": "coverage",
+                  "mutating": false,
+                  "permission": "conversation_owner",
+                  "revision": "v1"
+                },
+                {
+                  "id": "check_data_sufficiency",
+                  "capability": "data.sufficiency",
+                  "result_type": "sufficiency",
+                  "mutating": false,
+                  "permission": "conversation_owner",
+                  "revision": "v1"
+                },
+                {
+                  "id": "request_data_acquisition",
+                  "capability": "data.acquire",
+                  "result_type": "acquisition_job",
+                  "mutating": true,
+                  "permission": "operator",
+                  "revision": "v1"
+                },
+                {
+                  "id": "get_acquisition_status",
+                  "capability": "data.job_status",
+                  "result_type": "acquisition_job",
+                  "mutating": false,
+                  "permission": "operator_and_job_grant",
+                  "revision": "v1"
+                }
+              ],
+              "unsupported_operations": [
+                "web_search",
+                "download_road_network",
+                "industry_ranking",
+                "shell",
+                "sql"
+              ],
+              "limitations": [
+                "Local presence is not full city coverage; only OSM POI has an acquisition adapter."
+              ]
+            }
+          }
+        ],
+        "model_timings": [
+          {
+            "purpose": "proposal",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 4234.99999998603,
+            "elapsed_ms": null,
+            "load_ms": 1.355687,
+            "prompt_tokens": 838,
+            "output_tokens": 70
+          },
+          {
+            "purpose": "synthesis",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 3718.9999999827705,
+            "elapsed_ms": null,
+            "load_ms": 1.364434,
+            "prompt_tokens": 1630,
+            "output_tokens": 20
+          },
+          {
+            "purpose": "proposal",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 11593.99999998277,
+            "elapsed_ms": null,
+            "load_ms": 1.74742,
+            "prompt_tokens": 2156,
+            "output_tokens": 105
+          },
+          {
+            "purpose": "synthesis",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 18625.0,
+            "elapsed_ms": null,
+            "load_ms": 1.206538,
+            "prompt_tokens": 1627,
+            "output_tokens": 21
+          }
+        ],
+        "total_ms": 38342.99999999348
+      },
+      "wall_seconds": 38.40700000000652,
+      "python_peak_rss_bytes": 0,
+      "gpu_used_mib_snapshot": "3707",
+      "profile_unchanged": true
+    },
+    {
+      "case": "guest_acquisition_denied",
+      "request": {
+        "request_id": "90bddbab-4b55-40a9-96ce-2a13b5cbfd91",
+        "expected_version": 0,
+        "content": "Поставь задание request_data_acquisition для OSM POI по явно заданному участку Москвы. Не жди завершения загрузки.",
+        "acquisition_scope": {
+          "territory": "ru-moscow",
+          "aoi": {
+            "west": 37.611,
+            "south": 55.76,
+            "east": 37.613,
+            "north": 55.762
+          }
+        }
+      },
+      "http_status": 200,
+      "response": {
+        "schema_version": "agent-v2",
+        "request_id": "90bddbab-4b55-40a9-96ce-2a13b5cbfd91",
+        "conversation_id": "5c11256d-a193-48bd-a5e9-2204c81ab5a5",
+        "profile_version": 1,
+        "state": "partial",
+        "message": "Для загрузки и чтения задания нужно разрешение оператора.",
+        "next_step": "operator_permission_required",
+        "code": "ok",
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "traces": [
+          {
+            "sequence": 1,
+            "tool": "get_acquisition_status",
+            "capability": "data.job_status",
+            "mutating": false,
+            "timestamp": "2026-10-29T17:00:21.777938Z",
+            "status": "rejected",
+            "code": "operator_permission_required",
+            "validation_ms": 0.0,
+            "execution_ms": 0.0,
+            "argument_sha256": "6b6c484212a1a85552cca674da7f026aaaf2e546849574bcceebabe30622f0f5",
+            "arguments": {
+              "job_id": "ac123456-7890-abc1-2345-67890abcdef0"
+            },
+            "reason": "Пользователь запросил загрузку данных по AOI в Москве, но не ждёт завершения. Требуется проверить статус задания.",
+            "result": {
+              "code": "operator_permission_required"
+            }
+          }
+        ],
+        "model_timings": [
+          {
+            "purpose": "proposal",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 9250.0,
+            "elapsed_ms": null,
+            "load_ms": 1.325845,
+            "prompt_tokens": 905,
+            "output_tokens": 132
+          },
+          {
+            "purpose": "synthesis",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 1702.999999979511,
+            "elapsed_ms": null,
+            "load_ms": 1.403187,
+            "prompt_tokens": 408,
+            "output_tokens": 20
+          }
+        ],
+        "total_ms": 11030.999999959022
+      },
+      "wall_seconds": 11.125,
+      "idempotent_replay_equal": true
+    },
+    {
+      "case": "operator_dispatch",
+      "request": {
+        "request_id": "87cd98ac-44c8-40ad-ab99-87c1a908e979",
+        "expected_version": 0,
+        "content": "Поставь задание request_data_acquisition для OSM POI по явно заданному участку Москвы. Не жди завершения загрузки.",
+        "acquisition_scope": {
+          "territory": "ru-moscow",
+          "aoi": {
+            "west": 37.611,
+            "south": 55.76,
+            "east": 37.613,
+            "north": 55.762
+          }
+        }
+      },
+      "http_status": 200,
+      "response": {
+        "schema_version": "agent-v2",
+        "request_id": "87cd98ac-44c8-40ad-ab99-87c1a908e979",
+        "conversation_id": "9e17546d-f7fb-444d-8585-97608d16d726",
+        "profile_version": 1,
+        "state": "succeeded",
+        "message": "Задание f1346bc0-1f48-47ea-96fd-de3cae7a6602: queued, этап checking_local_data.\nПодготовка продолжается отдельно. Доступность worker пока не подтверждена.",
+        "next_step": "wait_for_job",
+        "code": "ok",
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "traces": [
+          {
+            "sequence": 1,
+            "tool": "request_data_acquisition",
+            "capability": "data.acquire",
+            "mutating": true,
+            "timestamp": "2026-10-29T17:00:35.977849Z",
+            "status": "succeeded",
+            "code": "ok",
+            "validation_ms": 0.0,
+            "execution_ms": 94.0000000409782,
+            "argument_sha256": "3cd99eceeb56f2f59c51e16f8c8721f5119348346638c99381fa79c4efc12883",
+            "arguments": {
+              "territory": "ru-moscow",
+              "aoi": {
+                "west": 37.611,
+                "south": 55.76,
+                "east": 37.613,
+                "north": 55.762
+              },
+              "source_id": "osm",
+              "category": "geo.mapped_poi"
+            },
+            "reason": "Пользователь явно указал участок Москвы и запросил загрузку OSM POI с заданным AOI",
+            "result": {
+              "job_id": "f1346bc0-1f48-47ea-96fd-de3cae7a6602",
+              "state": "queued",
+              "stage": "checking_local_data",
+              "event_cursor": 1,
+              "result": null,
+              "worker_availability": "unknown",
+              "error_code": null
+            }
+          }
+        ],
+        "model_timings": [
+          {
+            "purpose": "proposal",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 12170.999999972992,
+            "elapsed_ms": null,
+            "load_ms": 8.402491,
+            "prompt_tokens": 905,
+            "output_tokens": 181
+          },
+          {
+            "purpose": "synthesis",
+            "code": "ok",
+            "queue_ms": 0.0,
+            "inference_ms": 1829.0000000270084,
+            "elapsed_ms": null,
+            "load_ms": 1.244477,
+            "prompt_tokens": 474,
+            "output_tokens": 22
+          }
+        ],
+        "total_ms": 14188.000000023749
+      },
+      "wall_seconds": 14.28200000000652,
+      "idempotent_replay_equal": true
+    }
+  ],
+  "model_unloaded_before_first_case": true,
+  "geo_fixture": {
+    "slug": "kazan-fixture",
+    "data_version": "57a045c95fce2bc452d5053deb063bbfde29a7b276293ebf3d8441edcafff237",
+    "synthetic_test_material": true
+  },
+  "acquisition_jobs": [
+    {
+      "state": "queued",
+      "attempt": 0,
+      "id": "f1346bc0-1f48-47ea-96fd-de3cae7a6602",
+      "network_reservations": 0
+    }
+  ],
+  "status": "recorded; inspect each scenario, do not equate HTTP200 with success"
+}
