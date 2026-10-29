@@ -20,6 +20,7 @@ from app.api.finance import router as finance_router
 from app.api.geo import router as geo_router
 from app.api.leads import public_router as consent_text_router
 from app.api.leads import router as leads_router
+from app.api.registry import router as registry_router
 from app.api.reports import router as reports_router
 from app.api.schemas import Contract
 from app.db.health import check_postgis
@@ -49,6 +50,7 @@ app.include_router(geo_router)
 app.include_router(finance_router)
 app.include_router(bank_router)
 app.include_router(data_router)
+app.include_router(registry_router)
 app.include_router(leads_router)
 app.include_router(consent_text_router)
 app.include_router(reports_router)

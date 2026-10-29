@@ -1,0 +1,307 @@
+{
+  "schema_version": "data-registry-v2",
+  "revision": "u01-v1",
+  "categories": [
+    {
+      "id": "geo.mapped_poi",
+      "name": "Нанесённые объекты OSM",
+      "spatial": true,
+      "private": false,
+      "unit": "features"
+    },
+    {
+      "id": "geo.admin_polygons",
+      "name": "Административные полигоны в выгрузке",
+      "spatial": true,
+      "private": false,
+      "unit": "features"
+    },
+    {
+      "id": "geo.pedestrian_network",
+      "name": "Пешеходная сеть",
+      "spatial": true,
+      "private": false,
+      "unit": "edges"
+    },
+    {
+      "id": "geo.vehicle_network",
+      "name": "Автомобильная сеть",
+      "spatial": true,
+      "private": false,
+      "unit": "edges"
+    },
+    {
+      "id": "geo.buildings",
+      "name": "Здания",
+      "spatial": true,
+      "private": false,
+      "unit": "features"
+    },
+    {
+      "id": "geo.parking",
+      "name": "Парковки",
+      "spatial": true,
+      "private": false,
+      "unit": "features"
+    },
+    {
+      "id": "geo.transit",
+      "name": "Общественный транспорт",
+      "spatial": true,
+      "private": false,
+      "unit": "features"
+    },
+    {
+      "id": "geo.organizations",
+      "name": "Организации выбранного типа",
+      "spatial": true,
+      "private": false,
+      "unit": "features"
+    },
+    {
+      "id": "geo.zones",
+      "name": "Модельные зоны",
+      "spatial": true,
+      "private": false,
+      "unit": "zones"
+    },
+    {
+      "id": "demography.population",
+      "name": "Население",
+      "spatial": true,
+      "private": false,
+      "unit": "people"
+    },
+    {
+      "id": "demography.density",
+      "name": "Плотность населения",
+      "spatial": true,
+      "private": false,
+      "unit": "people/km2"
+    },
+    {
+      "id": "demography.age",
+      "name": "Возрастная структура",
+      "spatial": true,
+      "private": false,
+      "unit": "fraction"
+    },
+    {
+      "id": "economy.rent",
+      "name": "Аренда",
+      "spatial": true,
+      "private": false,
+      "unit": "RUB/month"
+    },
+    {
+      "id": "economy.industry",
+      "name": "Отраслевые показатели",
+      "spatial": false,
+      "private": false,
+      "unit": "indicator"
+    },
+    {
+      "id": "economy.macro",
+      "name": "Макроэкономические показатели",
+      "spatial": false,
+      "private": false,
+      "unit": "indicator"
+    },
+    {
+      "id": "user.budget",
+      "name": "Бюджет",
+      "spatial": false,
+      "private": true,
+      "unit": "RUB"
+    },
+    {
+      "id": "user.costs",
+      "name": "Сметы и планируемые расходы",
+      "spatial": false,
+      "private": true,
+      "unit": "RUB/month"
+    },
+    {
+      "id": "scenario.finance",
+      "name": "Сценарные финансовые допущения",
+      "spatial": false,
+      "private": false,
+      "unit": "scenario"
+    }
+  ],
+  "sources": [
+    {
+      "id": "osm",
+      "adapter_id": "osm",
+      "revision": "v1",
+      "name": "OpenStreetMap",
+      "legacy_name": "OpenStreetMap",
+      "source_type": "open",
+      "origin": "open_data",
+      "adapter_status": "ready",
+      "categories": [
+        "geo.mapped_poi",
+        "geo.admin_polygons",
+        "geo.pedestrian_network"
+      ],
+      "acquisition_methods": [
+        "local_read",
+        "offline_import",
+        "operator_fetch"
+      ],
+      "geographic_scope": "global_source",
+      "license_id": "ODbL-1.0",
+      "license_status": "verified_local_use",
+      "attribution": "© OpenStreetMap contributors",
+      "allowed_uses": [
+        "local_analysis"
+      ],
+      "network_permission": "review_required",
+      "availability": "unknown",
+      "freshness_policies": {
+        "geo.mapped_poi": "osm-snapshot-30d",
+        "geo.admin_polygons": "unreviewed",
+        "geo.pedestrian_network": "unreviewed"
+      },
+      "policy_revision": "local-v1",
+      "policy_note": "Local licensed metadata only. Remote permission/terms require operator review; no network operation in U-01.",
+      "resource_policy_ref": "u02-measurements-pending"
+    },
+    {
+      "id": "synthetic",
+      "adapter_id": "synthetic",
+      "revision": "v1",
+      "name": "Синтетические сценарии",
+      "legacy_name": "Синтетический сценарий кофейни",
+      "source_type": "scenario",
+      "origin": "synthetic",
+      "adapter_status": "ready",
+      "categories": [
+        "scenario.finance"
+      ],
+      "acquisition_methods": [
+        "local_read",
+        "offline_import"
+      ],
+      "geographic_scope": "authored_extent",
+      "license_id": "CC0-1.0",
+      "license_status": "verified_local_use",
+      "attribution": "Sab0tage — synthetic demonstration",
+      "allowed_uses": [
+        "local_analysis"
+      ],
+      "network_permission": "forbidden",
+      "availability": "ready",
+      "freshness_policies": {
+        "scenario.finance": "authored-365d"
+      },
+      "policy_revision": "local-v1",
+      "policy_note": "Local licensed metadata only. Remote permission/terms require operator review; no network operation in U-01.",
+      "resource_policy_ref": "u02-measurements-pending"
+    },
+    {
+      "id": "ghsl",
+      "adapter_id": "ghsl",
+      "revision": "v1",
+      "name": "GHSL",
+      "legacy_name": "GHSL — будущий адаптер",
+      "source_type": "placeholder",
+      "origin": "modelled",
+      "adapter_status": "not_integrated",
+      "categories": [
+        "demography.population",
+        "demography.density"
+      ],
+      "acquisition_methods": [],
+      "geographic_scope": "unknown",
+      "license_id": null,
+      "license_status": "review_required",
+      "attribution": "Dataset-specific attribution requires review",
+      "allowed_uses": [],
+      "network_permission": "forbidden",
+      "availability": "not_integrated",
+      "freshness_policies": {
+        "demography.population": "unreviewed",
+        "demography.density": "unreviewed"
+      },
+      "policy_revision": "local-v1",
+      "policy_note": "Local licensed metadata only. Remote permission/terms require operator review; no network operation in U-01.",
+      "resource_policy_ref": "u02-measurements-pending"
+    },
+    {
+      "id": "licensed",
+      "adapter_id": "licensed",
+      "revision": "v1",
+      "name": "Лицензированные источники",
+      "legacy_name": "Лицензированные источники — будущий контракт",
+      "source_type": "placeholder",
+      "origin": "licensed",
+      "adapter_status": "not_integrated",
+      "categories": [
+        "economy.rent",
+        "economy.industry",
+        "economy.macro"
+      ],
+      "acquisition_methods": [],
+      "geographic_scope": "unknown",
+      "license_id": null,
+      "license_status": "review_required",
+      "attribution": "Contract required",
+      "allowed_uses": [],
+      "network_permission": "forbidden",
+      "availability": "not_integrated",
+      "freshness_policies": {
+        "economy.rent": "unreviewed",
+        "economy.industry": "unreviewed",
+        "economy.macro": "unreviewed"
+      },
+      "policy_revision": "local-v1",
+      "policy_note": "Local licensed metadata only. Remote permission/terms require operator review; no network operation in U-01.",
+      "resource_policy_ref": "u02-measurements-pending"
+    }
+  ],
+  "policies": [
+    {
+      "id": "osm-snapshot-30d",
+      "basis": "source_timestamp",
+      "max_age_days": 30,
+      "rationale": "Existing OSM snapshot review cadence; not date/accuracy of real-world observations."
+    },
+    {
+      "id": "authored-365d",
+      "basis": "generated_at",
+      "max_age_days": 365,
+      "rationale": "Existing authored template review cadence; not market freshness."
+    },
+    {
+      "id": "unreviewed",
+      "basis": "unknown",
+      "max_age_days": null,
+      "rationale": "No justified category-specific update policy yet; freshness unknown."
+    }
+  ],
+  "territories": [
+    {
+      "id": "ru-kazan",
+      "name": "Казань",
+      "aliases": [
+        "Kazan"
+      ]
+    },
+    {
+      "id": "ru-moscow",
+      "name": "Москва",
+      "aliases": [
+        "Moscow"
+      ]
+    },
+    {
+      "id": "ru-novosibirsk",
+      "name": "Новосибирск",
+      "aliases": [
+        "Novosibirsk"
+      ]
+    }
+  ],
+  "max_datasets": 100
+}

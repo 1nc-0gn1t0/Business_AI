@@ -7,6 +7,12 @@ U-00, 28.10.2026. Все новые типы/API/таблицы ниже — **�
 Поля описаны в wire snake_case; TypeScript sketches в соседнем документе концептуальны,
 будущие TS-типы генерируются из OpenAPI, не поддерживаются вручную параллельно.
 
+**29.10.2026 / U-01:** registry/coverage/freshness и базовая sufficiency реализованы
+[в ограниченном metadata service](BUSINESS_AI_2_DATA_REGISTRY_IMPLEMENTATION.md).
+`local_status=available/partial/stale/missing/unknown` дополняет, а не заменяет U-00
+summary/availability/freshness/completeness/acquirability. Остальные planner/jobs/tools/
+assumption workflows ниже остаются проектом. Уточнения владельца — addendum ADR0013.
+
 ## 1. Provenance и достаточность
 
 Единственный enum происхождения остаётся [DataOrigin](../../apps/api/app/domain/enums.py).

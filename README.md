@@ -22,6 +22,9 @@ bundle по умолчанию закрыт; модель presence не подм
 
 ## Главные документы
 
+- **Business AI 2.0 / U-01:** [реестр, coverage, freshness, sufficiency и API](docs/architecture/BUSINESS_AI_2_DATA_REGISTRY_IMPLEMENTATION.md).
+  Только локальные metadata; новый город/LLM/worker не запускаются. Казань ограничена
+  extent текущего snapshot, наличие карты не означает поддержку всего города.
 - **Business AI 2.0 / U-00:** [аудит и универсальная архитектура](docs/architecture/BUSINESS_AI_2_UNIVERSAL_ARCHITECTURE.md),
   [контракты данных/планирования/инструментов](docs/architecture/BUSINESS_AI_2_DATA_AND_TOOLS.md),
   [план U-01…U-06 и сопоставление со старым roadmap](docs/architecture/BUSINESS_AI_2_IMPLEMENTATION_PLAN.md).
