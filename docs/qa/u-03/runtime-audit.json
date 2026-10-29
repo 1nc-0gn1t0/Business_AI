@@ -1,0 +1,19 @@
+{
+  "observed_date": "2026-10-29",
+  "ollama_runtime": "0.40.8",
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "model_digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+  "model_artifact_bytes": 2497293803,
+  "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "gpu_total_mib": 4096,
+  "native_probe": {
+    "seconds": 40.70299999997951,
+    "done": true,
+    "tool": "check_data_coverage",
+    "arguments": {"territory": "ru-kazan", "categories": []},
+    "executed": false,
+    "finding": "Native API accepts tools but generated empty categories; invalid under actual coverage DTO. No backend action was executed."
+  },
+  "selected_protocol": "JSON schema generated from actual tool DTOs; independent backend validation",
+  "network_acquisition_in_U03_probes": false
+}

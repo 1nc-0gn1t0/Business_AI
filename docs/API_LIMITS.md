@@ -286,3 +286,20 @@ Default per-operation AOI<=250000m²/4MiB/10000elements/180s; source caps>=60s/1
 2attempts. No global512MiB assumption. Operator config cannot exceed structural AOI/byte/
 element caps. Expiring operator_smoke permission still required; network closed by default.
 Full [policy, errors, recovery and measured limits](architecture/BUSINESS_AI_2_DYNAMIC_ACQUISITION.md).
+
+## Business AI 2.0 / U-03 — bounded conversation agent
+
+POST `/api/v2/conversations/{id}/agent`, GET `/{id}/agent/{request_id}`;
+`BA_AGENT_ENABLED=1` explicitly, disabled503 otherwise. Existing owner token/assistant
+consent required; optional operator header reuses U-02 authority and never reaches Qwen.
+Operator job traces/status additionally require the conversation's job grant.
+Request UUID + expected_version + content<=1600chars + optional explicit acquisition_scope;
+no model-controlled permissions, URLs, paths, SQL or budgets. H-02 request/header/body/
+JSON/rate controls cover both v1 and v2; agent POST uses H-03, not analytical heavy slots.
+
+Trusted `BA_AGENT_LIMITS_JSON`: defaults4LLM calls/3tools/2pertool/1acquisition/300s,
+12000bytes/result/22000bytes/context. Persisted bounds1000runs/20owner, response<=96KiB,
+visibility7days/410expiry, lazy terminal-row pruning at admission. Conflicts409,
+capacity429, invalid config503; tools expose typed per-call errors and partial results.
+No automatic continuation of expired runs or polling while a durable import runs.
+[Contracts, error handling and measurements](architecture/BUSINESS_AI_2_QWEN_TOOL_AGENT.md).

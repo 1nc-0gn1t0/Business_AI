@@ -362,6 +362,14 @@ class OllamaLLM:
     async def aextract(
         self, content: str, profile: BusinessProfile, history: tuple[Turn, ...]
     ) -> ProfileToolCall:
+        try:
+            return self.parse(
+                await self.achat(self.payload(content, profile, history)), content, profile
+            )
+        except (ValueError, KeyError, TypeError, AttributeError):
+            raise LLMError("llm_invalid_response", 502) from None
+
+    async def achat(self, body: dict[str, object], *, attempts: int = 2) -> bytes:
         # API transport is cancellable, unlike a blocking urllib call in a thread.
         # Both transports use the same payload, schema and grounding rules.
         try:
@@ -374,12 +382,12 @@ class OllamaLLM:
                     headers={"Accept-Encoding": "identity"},
                 ) as client,
             ):
-                for attempt in range(2):
+                for attempt in range(attempts):
                     try:
                         async with client.stream(
                             "POST",
                             self.settings.base_url.rstrip("/") + "/api/chat",
-                            json=self.payload(content, profile, history),
+                            json=body,
                         ) as response:
                             response.raise_for_status()
                             raw = bytearray()
@@ -387,18 +395,21 @@ class OllamaLLM:
                                 if len(raw) + len(chunk) > 65536:
                                     raise LLMError("llm_invalid_response", 502)
                                 raw.extend(chunk)
-                        return self.parse(bytes(raw), content, profile)
+                        return bytes(raw)
                     except httpx2.TimeoutException:
                         raise LLMError("llm_timeout", 504) from None
                     except httpx2.HTTPStatusError as error:
                         if error.response.status_code == 404:
                             raise LLMError("llm_model_missing", 503) from None
-                        if error.response.status_code == 500 and attempt:
+                        if error.response.status_code == 500 and attempt + 1 == attempts:
                             raise LLMError("llm_server_error", 502) from None
-                        if error.response.status_code not in {429, 500, 502, 503} or attempt:
+                        if (
+                            error.response.status_code not in {429, 500, 502, 503}
+                            or attempt + 1 == attempts
+                        ):
                             raise LLMError("llm_unavailable", 503) from None
                     except httpx2.RequestError:
-                        if attempt:
+                        if attempt + 1 == attempts:
                             raise LLMError("llm_unavailable", 503) from None
                     await asyncio.sleep(0.25)
         except TimeoutError:

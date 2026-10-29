@@ -1,5 +1,36 @@
 # Business AI — HANDOFF
 
+## Business AI 2.0 / U-03 · Qwen Tool Agent · 29.10.2026
+
+- PR33 merged/main aadf57e4c8a8a15e02950196063a98fd5151b923, synced clean;
+  branch codex/U-03-qwen-tool-agent. Actual final SHA/PR/CI in delivery report.
+- [Implementation/API/runbook](architecture/BUSINESS_AI_2_QWEN_TOOL_AGENT.md),
+  [checkpoint](architecture/U-03_CHECKPOINT.md), evidence `docs/qa/u-03/`.
+- Separate opt-in v2 conversation agent:5actual tools, per-tool structured proposal,
+  bounded proposal→tool→synthesis/continue. H-03 remains the only queue/one API worker.
+  Existing extraction prompt/payload/schema/options verified identical to merged main.
+- Operator credential never enters Qwen/traces. Every effect checks owner/consent/CAS,
+  operator/source policy and explicit AOI; status requires an owner-bound job grant.
+  U-02 standalone operator API is unchanged. No guest import/unrestricted network.
+- Additive0010_agent_runs, bounded owner traces/idempotency/TTL; profile facts and
+  immutable reports unchanged. Grounded backend rendering prevents model success claims.
+- Native Ollama0.40.8 accepted tools but emitted empty categories. Structured proposal
+  now uses actual DTO schemas and explicit AOI/UUID/evidence constraints. Failed trials
+  retained in live-trials.json; validation is not proof of model planning quality.
+- Live: read-only Kazan/Moscow/unknown-business probes; constrained multi-step,
+  guest denial, real queued operator job and authorized status all recorded.
+  Artificial geo fixture/temporary QA policy; no worker/fetch or Moscow support claim.
+- Unit/new PostGIS43PASS; targeted DB regression58PASS; existing extraction/H-0346PASS.
+  Final interrupted-replay/clarification persistence rerun2PASS; no model re-entry on replay.
+  Ruff/mypy150files PASS; v1 OpenAPI36paths/126schemas unchanged. TS regenerated/build PASS;
+  Chromium mock coffee1PASS/12.1s. Hardened isolated Compose/tmpfs healthy; default agent503.
+- Live legacy chat: one wording rejected llm_invalid_response; standard demo HTTP200/
+  ollama/Kazan/coffee/budget2000000.00,8.266s. No prompt change or silent fallback.
+- Cold agent69.77s/4LLM calls (first35.796s includes25.696s load); warm read10.55…19.16s.
+  Corrected Win64 peak Python RSS105988096bytes; GPU snapshots3681…3921MiB include desktop,
+  not a model-only peak. Initial zero RAM counter invalid, documented in measurements.
+- Pending: mandatory prek, commit/push/PR/exact-HEAD CI. No U-04 work or merge permission.
+
 ## Business AI 2.0 / U-02 · Dynamic Acquisition · 29.10.2026
 
 - PR32 merged/main `7281121fc78c45fe7adda9115761a01137e1b907`, initial clean.

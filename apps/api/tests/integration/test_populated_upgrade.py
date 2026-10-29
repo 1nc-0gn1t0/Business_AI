@@ -254,6 +254,39 @@ def add_report(engine: Engine, state: dict[str, Any]) -> None:
                 job_id=job.id,
             )
         )
+        # U-03 metadata is synthetic/terminal; preserve every-table population checks.
+        from uuid import UUID
+
+        from app.agent.schemas import AgentResponse
+        from app.db.models import AgentRunRecord
+
+        owner = UUID(state["url"].split("/")[-1])
+        run_id = uuid4()
+        agent_response = AgentResponse(
+            request_id=run_id,
+            conversation_id=owner,
+            profile_version=state["profile"]["version"],
+            state="cancelled",
+            message="H04 fixture",
+            next_step="done",
+            code="cancelled_fixture",
+            model="synthetic_fixture",
+        )
+        db.add(
+            AgentRunRecord(
+                id=run_id,
+                conversation_id=owner,
+                request_hash="d" * 64,
+                expected_version=agent_response.profile_version,
+                consent_revision=1,
+                operator=False,
+                state="cancelled",
+                created_at=now,
+                deadline_at=now,
+                job_ids=[],
+                response=agent_response.model_dump(mode="json"),
+            )
+        )
 
 
 def verify_api(engine: Engine, state: dict[str, Any], *, reports: bool = True) -> None:

@@ -281,6 +281,39 @@ class Conversations:
         self.session.flush()
         return self._view(record)
 
+    def agent_reply(
+        self,
+        owner: UUID,
+        token: str,
+        version: int,
+        consent_revision: int,
+        content: str,
+        answer: str,
+    ) -> ConversationView:
+        """Append verified v2 tool dialogue; never extract or change profile facts."""
+        record = self._authorise(owner, token, lock=True)
+        consent = require_consent(self.session, owner, "assistant")
+        if record.version != version:
+            raise VersionConflict(record.version)
+        if consent.revision != consent_revision:
+            raise LeadError("consent_revision_conflict")
+        check_growth(self.session, owner, {"messages": 2, "revisions": 1})
+        record.version += 1
+        record.updated_at = datetime.now(UTC)
+        self.session.add(
+            MessageRecord(
+                conversation_id=owner,
+                version=record.version,
+                role=MessageRole.USER,
+                content=content,
+                created_at=record.updated_at,
+            )
+        )
+        # Existing revision vocabulary stays compatible; agent_runs carries tool provenance.
+        self._save_event(record, self._profile(owner), "message", answer)
+        self.session.flush()
+        return self._view(record)
+
     def messages(
         self, conversation_id: UUID, token: str, offset: int, limit: int
     ) -> list[MessageView]:

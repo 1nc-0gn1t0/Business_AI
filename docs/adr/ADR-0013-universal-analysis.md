@@ -102,3 +102,19 @@ H-03 не изменён: worker не использует LLM/API pool. Сов�
 Lease expiry восстанавливается только при доказанно освобождённом process lock той же
 installation; другая installation получает recovery_required. Обычный API restart
 не является доказательством смерти worker. Нового broker/Redis/Celery нет.
+
+## Уточнение реализации U-03 — 29.10.2026
+
+[U-03](../architecture/BUSINESS_AI_2_QWEN_TOOL_AGENT.md) реализует небольшой flat
+proposal→validated tool→structured synthesis/continue, а не полный отраслевой DAG.
+Генерация JSON schema из реальных DTO выбрана после native/JSON live probes на4B.
+Явные AOI/UUID и backend evidence refs ограничивают синтаксис генерации; они никогда
+не заменяют Gateway authorization/CAS/consent/source checks. Tool results — untrusted data.
+
+Фактический текст результатов рендерится backend из проверенных данных; Qwen выбирает
+инструмент и разрешённый следующий шаг. Свободный текст модели не подтверждает импорт.
+U-02 остаётся operator-only, внутри агента добавлен owner-bound job grant. Shared
+operator token не превращается в полноценную учётную запись/делегирование для гостей.
+Каждый LLM step использует существующую H-03 queue, вне DB transaction; job polling
+не удерживает LLM-slot. Defaults4LLM/3tools/300s — измеряемые ограничители, не SLA.
+ProfileV2/industry planner/U-04 и свободный интернет-поиск остаются вне этого этапа.

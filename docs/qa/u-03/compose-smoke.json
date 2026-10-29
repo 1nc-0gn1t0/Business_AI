@@ -1,0 +1,20 @@
+{
+  "mode": "isolated hardened Compose/tmpfs; no model inference or persistent volumes",
+  "source_count": 4,
+  "health": {
+    "status": "ok",
+    "database": "ok",
+    "postgis_version": "3.6 USE_GEOS=1 USE_PROJ=1 USE_STATS=1"
+  },
+  "owned_persistent_volumes": 0,
+  "agent_default_status": 503,
+  "readiness": {
+    "status": "ok",
+    "database": "ok",
+    "postgis": "ok",
+    "schema_status": "ok"
+  },
+  "category_count": 18,
+  "web_status": 200,
+  "agent_default_code": "agent_disabled"
+}

@@ -1,5 +1,12 @@
 # Миграции и возврат совместимого приложения · H-04
 
+**U-03,29.10.2026:** актуальный head/readiness `0010_agent_runs`, одна additive owner-FK
+таблица ограниченных traces/idempotency/grants. Profile/geo/finance/report данные не
+меняются. Populated upgrade/repeated head/report-byte preservation прошли целевую
+регрессию; H-04 fixture включает terminal synthetic agent run без model/network calls.
+Rollback приложения отключает feature flag, а не запускает destructive downgrade.
+[Контракты](architecture/BUSINESS_AI_2_QWEN_TOOL_AGENT.md).
+
 **U-02,29.10.2026:** текущий head/readiness теперь `0009_acquisition` — три additive
 таблицы jobs/requests/events. Проверены populated0008→0009, repeat head/check и hashes
 прежних записей. Ни geo objects, ни immutable reports не мигрируются. Ниже сохранён

@@ -1,0 +1,861 @@
+{
+  "note": "Historical tuning failures and successes; not the final acceptance matrix. Raw copies kept in private TEMP, no credentials recorded.",
+  "trials": [
+    {
+      "probe": "live-qwen-initial.json",
+      "timestamp": "2026-10-29T16:48:23.849647+00:00",
+      "mode": "real Qwen, artificial geo fixture in disposable PostGIS; no Internet fetch",
+      "cases": [
+        {
+          "case": "kazan",
+          "http_status": 200,
+          "state": "partial",
+          "code": "llm_unavailable",
+          "question": "Какие данные есть для кофейни в Казани? Проверь POI и административные границы.",
+          "wall_seconds": 50.18800000002375,
+          "tools": [
+            {
+              "tool": "check_data_coverage",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "71b4b51ef400ee2012b3173470a7b628fecda087d0eb84fb7caba73168c3c620"
+            },
+            {
+              "tool": "check_data_sufficiency",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "9fa8ba35b2020efd525b2b7dc38dbac01a5acb428b571694a3bad40542ed8587"
+            },
+            {
+              "tool": "check_data_sufficiency",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "d473b41ad53fa386b8f56cdea875d381847ec60b5289ab4c41968578082beb24"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 18030.99999995902,
+              "elapsed_ms": null,
+              "load_ms": 12206.978016,
+              "prompt_tokens": 782,
+              "output_tokens": 116
+            },
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 11172.00000002049,
+              "elapsed_ms": null,
+              "load_ms": 13.291475,
+              "prompt_tokens": 2586,
+              "output_tokens": 151
+            },
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 11827.99999997951,
+              "elapsed_ms": null,
+              "load_ms": 3.383754,
+              "prompt_tokens": 3851,
+              "output_tokens": 139
+            },
+            {
+              "purpose": "synthesis",
+              "code": "llm_unavailable",
+              "queue_ms": null,
+              "inference_ms": null,
+              "elapsed_ms": 8827.99999997951,
+              "load_ms": null,
+              "prompt_tokens": null,
+              "output_tokens": null
+            }
+          ]
+        },
+        {
+          "case": "moscow",
+          "http_status": 200,
+          "state": "partial",
+          "code": "repeated_tool_call",
+          "question": "Проверь POI и дорожную сеть автосервиса в Москве. Не запускай загрузку.",
+          "wall_seconds": 14.53100000001723,
+          "tools": [
+            {
+              "tool": "check_data_coverage",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "a51df0127598376166e7b1ad7ea21d0d75754741fa3a7a7fc87f3d81b5bdd90c"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 6688.000000023749,
+              "elapsed_ms": null,
+              "load_ms": 2.400288,
+              "prompt_tokens": 784,
+              "output_tokens": 126
+            },
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 7639.999999955762,
+              "elapsed_ms": null,
+              "load_ms": 0.961894,
+              "prompt_tokens": 1424,
+              "output_tokens": 137
+            }
+          ]
+        },
+        {
+          "case": "unsupported",
+          "http_status": 200,
+          "state": "partial",
+          "code": "repeated_tool_call",
+          "question": "Можно загрузить точный автомобильный трафик всей Москвы? Сначала проверь возможности системы.",
+          "wall_seconds": 18.79700000002049,
+          "tools": [
+            {
+              "tool": "check_data_coverage",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "c60f4a5b317fbd7fa403d6015cf8eec737cf2217d271161fa3cd6d72f25f652f"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 10921.999999962281,
+              "elapsed_ms": null,
+              "load_ms": 2.093589,
+              "prompt_tokens": 778,
+              "output_tokens": 118
+            },
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 7733.99999999674,
+              "elapsed_ms": null,
+              "load_ms": 13.952303,
+              "prompt_tokens": 1245,
+              "output_tokens": 143
+            }
+          ]
+        },
+        {
+          "case": "unknown_industry",
+          "http_status": 200,
+          "state": "partial",
+          "code": "repeated_tool_call",
+          "question": "Открываю сервис ремонта музыкальных автоматов в Москве. Проверь покрытие POI, без отраслевых расчётов.",
+          "wall_seconds": 25.64100000000326,
+          "tools": [
+            {
+              "tool": "check_data_coverage",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "f8a1fd845178b1351b976eba33f034e31573e3f48ac492e6c9605233310471de"
+            },
+            {
+              "tool": "check_data_sufficiency",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "d473b41ad53fa386b8f56cdea875d381847ec60b5289ab4c41968578082beb24"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 7375.0,
+              "elapsed_ms": null,
+              "load_ms": 1.614408,
+              "prompt_tokens": 793,
+              "output_tokens": 133
+            },
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 8188.000000023749,
+              "elapsed_ms": null,
+              "load_ms": 1.034634,
+              "prompt_tokens": 1342,
+              "output_tokens": 150
+            },
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 9938.000000023749,
+              "elapsed_ms": null,
+              "load_ms": 1.227753,
+              "prompt_tokens": 2588,
+              "output_tokens": 136
+            }
+          ]
+        },
+        {
+          "case": "multi_step",
+          "http_status": 200,
+          "state": "partial",
+          "code": "repeated_tool_call",
+          "question": "Сначала перечисли возможности получения данных, затем проверь дорожную сеть и POI Москвы.",
+          "wall_seconds": 18.68800000002375,
+          "tools": [
+            {
+              "tool": "check_data_coverage",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "2e09aa6475caee8f24718044301fcfb7b69fda09e7382987faa9243b0703e0e4"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 10313.000000023749,
+              "elapsed_ms": null,
+              "load_ms": 1.300204,
+              "prompt_tokens": 779,
+              "output_tokens": 136
+            },
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 8250.0,
+              "elapsed_ms": null,
+              "load_ms": 2.009809,
+              "prompt_tokens": 1418,
+              "output_tokens": 149
+            }
+          ]
+        },
+        {
+          "case": "guest_acquisition_denied",
+          "http_status": 200,
+          "state": "partial",
+          "code": "ok",
+          "question": "Поставь задание request_data_acquisition для OSM POI по явно заданному участку Москвы. Не жди завершения загрузки.",
+          "wall_seconds": 13.422000000020489,
+          "tools": [
+            {
+              "tool": "request_data_acquisition",
+              "status": "rejected",
+              "code": "operator_permission_required",
+              "arguments": {},
+              "argument_sha256": "3cd99eceeb56f2f59c51e16f8c8721f5119348346638c99381fa79c4efc12883"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 11811.999999976251,
+              "elapsed_ms": null,
+              "load_ms": 1.240593,
+              "prompt_tokens": 846,
+              "output_tokens": 195
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 1452.999999979511,
+              "elapsed_ms": null,
+              "load_ms": 1.077067,
+              "prompt_tokens": 436,
+              "output_tokens": 20
+            }
+          ]
+        },
+        {
+          "case": "operator_dispatch",
+          "http_status": 200,
+          "state": "succeeded",
+          "code": "ok",
+          "question": "Поставь задание request_data_acquisition для OSM POI по явно заданному участку Москвы. Не жди завершения загрузки.",
+          "wall_seconds": 10.078000000037719,
+          "tools": [
+            {
+              "tool": "request_data_acquisition",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "3cd99eceeb56f2f59c51e16f8c8721f5119348346638c99381fa79c4efc12883"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 8531.00000001723,
+              "elapsed_ms": null,
+              "load_ms": 12.381408,
+              "prompt_tokens": 846,
+              "output_tokens": 185
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 1358.9999999967404,
+              "elapsed_ms": null,
+              "load_ms": 1.219029,
+              "prompt_tokens": 519,
+              "output_tokens": 22
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "probe": "live-qwen-second.json",
+      "timestamp": "2026-10-29T16:52:32.276884+00:00",
+      "mode": "real Qwen, artificial geo fixture in disposable PostGIS; no Internet fetch",
+      "cases": [
+        {
+          "case": "kazan",
+          "http_status": 200,
+          "state": "succeeded",
+          "code": "ok",
+          "question": "Какие данные есть для кофейни в Казани? Проверь POI и административные границы.",
+          "wall_seconds": 29.96899999998277,
+          "tools": [
+            {
+              "tool": "check_data_coverage",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "71b4b51ef400ee2012b3173470a7b628fecda087d0eb84fb7caba73168c3c620"
+            },
+            {
+              "tool": "list_data_capabilities",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 13561.999999976251,
+              "elapsed_ms": null,
+              "load_ms": 6839.29075,
+              "prompt_tokens": 825,
+              "output_tokens": 116
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 3014.999999955762,
+              "elapsed_ms": null,
+              "load_ms": 1.51533,
+              "prompt_tokens": 1955,
+              "output_tokens": 20
+            },
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 9733.99999999674,
+              "elapsed_ms": null,
+              "load_ms": 1.606293,
+              "prompt_tokens": 2472,
+              "output_tokens": 117
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 3327.999999979511,
+              "elapsed_ms": null,
+              "load_ms": 2.240718,
+              "prompt_tokens": 3272,
+              "output_tokens": 25
+            }
+          ]
+        },
+        {
+          "case": "moscow",
+          "http_status": 200,
+          "state": "succeeded",
+          "code": "ok",
+          "question": "Проверь POI и дорожную сеть автосервиса в Москве. Не запускай загрузку.",
+          "wall_seconds": 8.51600000000326,
+          "tools": [
+            {
+              "tool": "check_data_coverage",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "a51df0127598376166e7b1ad7ea21d0d75754741fa3a7a7fc87f3d81b5bdd90c"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 6532.000000006519,
+              "elapsed_ms": null,
+              "load_ms": 1.161513,
+              "prompt_tokens": 827,
+              "output_tokens": 126
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 1858.9999999967404,
+              "elapsed_ms": null,
+              "load_ms": 1.023597,
+              "prompt_tokens": 805,
+              "output_tokens": 22
+            }
+          ]
+        },
+        {
+          "case": "unsupported",
+          "http_status": 200,
+          "state": "succeeded",
+          "code": "ok",
+          "question": "Можно загрузить точный автомобильный трафик всей Москвы? Сначала проверь возможности системы.",
+          "wall_seconds": 8.09399999998277,
+          "tools": [
+            {
+              "tool": "check_data_coverage",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "a51df0127598376166e7b1ad7ea21d0d75754741fa3a7a7fc87f3d81b5bdd90c"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 6203.000000037719,
+              "elapsed_ms": null,
+              "load_ms": 1.371279,
+              "prompt_tokens": 821,
+              "output_tokens": 132
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 1766.0000000032596,
+              "elapsed_ms": null,
+              "load_ms": 1.028393,
+              "prompt_tokens": 799,
+              "output_tokens": 22
+            }
+          ]
+        },
+        {
+          "case": "unknown_industry",
+          "http_status": 200,
+          "state": "succeeded",
+          "code": "ok",
+          "question": "Открываю сервис ремонта музыкальных автоматов в Москве. Проверь покрытие POI, без отраслевых расчётов.",
+          "wall_seconds": 7.4689999999827705,
+          "tools": [
+            {
+              "tool": "check_data_coverage",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "f8a1fd845178b1351b976eba33f034e31573e3f48ac492e6c9605233310471de"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 5875.0,
+              "elapsed_ms": null,
+              "load_ms": 13.964841,
+              "prompt_tokens": 836,
+              "output_tokens": 125
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 1467.9999999934807,
+              "elapsed_ms": null,
+              "load_ms": 0.991282,
+              "prompt_tokens": 722,
+              "output_tokens": 22
+            }
+          ]
+        },
+        {
+          "case": "multi_step",
+          "http_status": 200,
+          "state": "partial",
+          "code": "repeated_tool_call",
+          "question": "Сначала перечисли возможности получения данных, затем проверь дорожную сеть и POI Москвы.",
+          "wall_seconds": 11.01600000000326,
+          "tools": [
+            {
+              "tool": "list_data_capabilities",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 3405.999999959022,
+              "elapsed_ms": null,
+              "load_ms": 1.983097,
+              "prompt_tokens": 822,
+              "output_tokens": 70
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 2343.9999999827705,
+              "elapsed_ms": null,
+              "load_ms": 0.980867,
+              "prompt_tokens": 1630,
+              "output_tokens": 20
+            },
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 5125.0,
+              "elapsed_ms": null,
+              "load_ms": 1.285853,
+              "prompt_tokens": 2140,
+              "output_tokens": 67
+            }
+          ]
+        },
+        {
+          "case": "guest_acquisition_denied",
+          "http_status": 200,
+          "state": "partial",
+          "code": "ok",
+          "question": "Поставь задание request_data_acquisition для OSM POI по явно заданному участку Москвы. Не жди завершения загрузки.",
+          "wall_seconds": 11.937999999965541,
+          "tools": [
+            {
+              "tool": "request_data_acquisition",
+              "status": "rejected",
+              "code": "operator_permission_required",
+              "arguments": {},
+              "argument_sha256": "3cd99eceeb56f2f59c51e16f8c8721f5119348346638c99381fa79c4efc12883"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 9156.00000001723,
+              "elapsed_ms": null,
+              "load_ms": 1.039135,
+              "prompt_tokens": 889,
+              "output_tokens": 176
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 2625.0,
+              "elapsed_ms": null,
+              "load_ms": 1.4558,
+              "prompt_tokens": 408,
+              "output_tokens": 20
+            }
+          ]
+        },
+        {
+          "case": "operator_dispatch",
+          "http_status": 200,
+          "state": "partial",
+          "code": "ok",
+          "question": "Поставь задание request_data_acquisition для OSM POI по явно заданному участку Москвы. Не жди завершения загрузки.",
+          "wall_seconds": 12.76500000001397,
+          "tools": [
+            {
+              "tool": "request_data_acquisition",
+              "status": "rejected",
+              "code": "invalid_tool_arguments",
+              "arguments": {},
+              "argument_sha256": "bd062b0ad186946445ed3500df2060a456fa0a76c6d69c50bba04b9bd22a3cf3"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 10829.000000027008,
+              "elapsed_ms": null,
+              "load_ms": 13.320705,
+              "prompt_tokens": 889,
+              "output_tokens": 186
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 1796.9999999622814,
+              "elapsed_ms": null,
+              "load_ms": 0.915247,
+              "prompt_tokens": 408,
+              "output_tokens": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "probe": "live-qwen-followup.json",
+      "timestamp": "2026-10-29T17:02:02.041381+00:00",
+      "mode": "real Qwen, artificial geo fixture in disposable PostGIS; no Internet fetch",
+      "cases": [
+        {
+          "case": "multi_step",
+          "http_status": 200,
+          "state": "partial",
+          "code": "invalid_synthesis",
+          "question": "Сначала перечисли возможности получения данных, затем проверь дорожную сеть и POI Москвы.",
+          "wall_seconds": 34.31199999997625,
+          "tools": [
+            {
+              "tool": "list_data_capabilities",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {},
+              "argument_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+            },
+            {
+              "tool": "check_data_coverage",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {
+                "territory": "ru-moscow",
+                "categories": [
+                  "geo.vehicle_network",
+                  "geo.mapped_poi"
+                ]
+              },
+              "argument_sha256": "2e09aa6475caee8f24718044301fcfb7b69fda09e7382987faa9243b0703e0e4"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 5750.0,
+              "elapsed_ms": null,
+              "load_ms": 2.120021,
+              "prompt_tokens": 882,
+              "output_tokens": 69
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 1608.9999999967404,
+              "elapsed_ms": null,
+              "load_ms": 1.392071,
+              "prompt_tokens": 1630,
+              "output_tokens": 20
+            },
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 11829.000000027008,
+              "elapsed_ms": null,
+              "load_ms": 12.595811,
+              "prompt_tokens": 2200,
+              "output_tokens": 117
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 14797.00000002049,
+              "elapsed_ms": null,
+              "load_ms": 1.457146,
+              "prompt_tokens": 2117,
+              "output_tokens": 22
+            }
+          ]
+        },
+        {
+          "case": "guest_acquisition_denied",
+          "http_status": 200,
+          "state": "partial",
+          "code": "ok",
+          "question": "Поставь задание request_data_acquisition для OSM POI по явно заданному участку Москвы. Не жди завершения загрузки.",
+          "wall_seconds": 14.65700000000652,
+          "tools": [
+            {
+              "tool": "request_data_acquisition",
+              "status": "rejected",
+              "code": "invalid_tool_arguments",
+              "arguments": {},
+              "argument_sha256": "bd062b0ad186946445ed3500df2060a456fa0a76c6d69c50bba04b9bd22a3cf3"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 12671.999999962281,
+              "elapsed_ms": null,
+              "load_ms": 1.497927,
+              "prompt_tokens": 949,
+              "output_tokens": 168
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 1843.9999999827705,
+              "elapsed_ms": null,
+              "load_ms": 18.084943,
+              "prompt_tokens": 408,
+              "output_tokens": 20
+            }
+          ]
+        },
+        {
+          "case": "operator_dispatch",
+          "http_status": 200,
+          "state": "succeeded",
+          "code": "ok",
+          "question": "Поставь задание request_data_acquisition для OSM POI по явно заданному участку Москвы. Не жди завершения загрузки.",
+          "wall_seconds": 16.110000000044238,
+          "tools": [
+            {
+              "tool": "request_data_acquisition",
+              "status": "succeeded",
+              "code": "ok",
+              "arguments": {
+                "territory": "ru-moscow",
+                "aoi": {
+                  "west": 37.611,
+                  "south": 55.76,
+                  "east": 37.613,
+                  "north": 55.762
+                },
+                "source_id": "osm",
+                "category": "geo.mapped_poi"
+              },
+              "argument_sha256": "3cd99eceeb56f2f59c51e16f8c8721f5119348346638c99381fa79c4efc12883"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 13436.999999976251,
+              "elapsed_ms": null,
+              "load_ms": 1.457728,
+              "prompt_tokens": 949,
+              "output_tokens": 167
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 2313.0000000237487,
+              "elapsed_ms": null,
+              "load_ms": 1.22999,
+              "prompt_tokens": 479,
+              "output_tokens": 22
+            }
+          ]
+        },
+        {
+          "case": "operator_status",
+          "http_status": 200,
+          "state": "partial",
+          "code": "ok",
+          "question": "Проверь статус задания e0f506cc-c0a6-406f-8687-97d6589723b0. Не запускай новую загрузку.",
+          "wall_seconds": null,
+          "tools": [
+            {
+              "tool": "get_acquisition_status",
+              "status": "rejected",
+              "code": "acquisition_job_not_found",
+              "arguments": {
+                "job_id": "e0f506cc-c0a6-406f-8087-97d6589723b0"
+              },
+              "argument_sha256": "fcdd9e61662ac4da8599f325d64d368b4567509f660e3c47b20a5d14f3589069"
+            }
+          ],
+          "model_timings": [
+            {
+              "purpose": "proposal",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 9031.00000001723,
+              "elapsed_ms": null,
+              "load_ms": 4.645415,
+              "prompt_tokens": 912,
+              "output_tokens": 112
+            },
+            {
+              "purpose": "synthesis",
+              "code": "ok",
+              "queue_ms": 0.0,
+              "inference_ms": 1827.999999979511,
+              "elapsed_ms": null,
+              "load_ms": 4.380501,
+              "prompt_tokens": 375,
+              "output_tokens": 20
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
