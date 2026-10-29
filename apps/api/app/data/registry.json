@@ -1,6 +1,6 @@
 {
   "schema_version": "data-registry-v2",
-  "revision": "u01-v1",
+  "revision": "u02-v1",
   "categories": [
     {
       "id": "geo.mapped_poi",
@@ -133,7 +133,7 @@
     {
       "id": "osm",
       "adapter_id": "osm",
-      "revision": "v1",
+      "revision": "v2",
       "name": "OpenStreetMap",
       "legacy_name": "OpenStreetMap",
       "source_type": "open",
@@ -164,8 +164,10 @@
         "geo.pedestrian_network": "unreviewed"
       },
       "policy_revision": "local-v1",
-      "policy_note": "Local licensed metadata only. Remote permission/terms require operator review; no network operation in U-01.",
-      "resource_policy_ref": "u02-measurements-pending"
+      "policy_note": "Local ODbL analysis only. U-02 POI acquisition needs expiring operator_smoke approval; no sustained public Overpass backend or bulk extraction.",
+      "resource_policy_ref": "u02-small-poi-v1",
+      "acquisition_scope": "disabled",
+      "acquisition_approved_until": null
     },
     {
       "id": "synthetic",

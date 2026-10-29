@@ -51,6 +51,16 @@ def parse_document(raw: bytes) -> dict[str, Any]:
         raise GeoImportError("Invalid Overpass JSON or missing source timestamp") from None
 
 
+def build_poi_query(bbox: Bounds) -> str:
+    """Bounded U-02 layer; no city-wide boundary geometries or road-network claims."""
+    extent = f"{bbox.south},{bbox.west},{bbox.north},{bbox.east}"
+    return (
+        "[out:json][timeout:25][maxsize:33554432];"
+        f'(nwr["amenity"]({extent});nwr["shop"]({extent});'
+        f'nwr["highway"="bus_stop"]({extent}););out meta center;'
+    )
+
+
 class OSMProvider(Protocol):
     def fetch(self, bbox: Bounds) -> bytes: ...
 
@@ -103,8 +113,17 @@ def normalize_document(document: dict[str, Any]) -> bytes:
 
 
 def save_snapshot(
-    raw: bytes, path: Path, *, slug: str, city: str, bbox: Bounds, endpoint: str
+    raw: bytes,
+    path: Path,
+    *,
+    slug: str,
+    city: str,
+    bbox: Bounds,
+    endpoint: str,
+    query: str | None = None,
 ) -> SnapshotManifest:
+    if query is not None and query not in {build_query(bbox), build_poi_query(bbox)}:
+        raise GeoImportError("Unsupported snapshot query/filter version")
     document = parse_document(raw)
     source_sha256 = hashlib.sha256(raw).hexdigest()
     raw = normalize_document(document)
@@ -113,7 +132,7 @@ def save_snapshot(
         city=city,
         bbox=bbox,
         source_url=endpoint,
-        query=build_query(bbox),
+        query=query or build_query(bbox),
         sha256=hashlib.sha256(raw).hexdigest(),
         source_sha256=source_sha256,
         normalization="poi_minimal_v1",
@@ -143,7 +162,7 @@ def load_snapshot(path: Path) -> tuple[SnapshotManifest, dict[str, Any]]:
             raise GeoImportError("Invalid snapshot normalization")
     if hashlib.sha256(raw).hexdigest() != manifest.sha256:
         raise GeoImportError("Snapshot checksum mismatch")
-    if manifest.query != build_query(manifest.bbox):
+    if manifest.query not in {build_query(manifest.bbox), build_poi_query(manifest.bbox)}:
         raise GeoImportError("Unsupported snapshot query/filter version")
     base = datetime.fromisoformat(document["osm3s"]["timestamp_osm_base"].replace("Z", "+00:00"))
     if base != manifest.osm_base or base > manifest.fetched_at:

@@ -5,7 +5,9 @@ WORKDIR /app
 COPY requirements.txt .
 COPY THIRD_PARTY_NOTICES.txt /licenses/THIRD_PARTY_NOTICES.txt
 RUN pip install --no-cache-dir --require-hashes -r requirements.txt \
-    && useradd --create-home app
+    && useradd --create-home app \
+    && mkdir /var/lib/business-ai-acquisition \
+    && chown app:app /var/lib/business-ai-acquisition
 COPY app ./app
 COPY alembic.ini .
 COPY migrations ./migrations

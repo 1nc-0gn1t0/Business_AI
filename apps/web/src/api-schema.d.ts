@@ -431,6 +431,74 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v2/acquisitions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create Job */
+    post: operations["create_job_api_v2_acquisitions_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/acquisitions/{job_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Read Job */
+    get: operations["read_job_api_v2_acquisitions__job_id__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/acquisitions/{job_id}/cancel": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Cancel Job */
+    post: operations["cancel_job_api_v2_acquisitions__job_id__cancel_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/acquisitions/{job_id}/events": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Events */
+    get: operations["events_api_v2_acquisitions__job_id__events_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/conversations/{conversation_id}/consents": {
     parameters: {
       query?: never;
@@ -708,6 +776,55 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** AcquisitionEvent */
+    AcquisitionEvent: {
+      /**
+       * Schema Version
+       * @default acquisition-event-v2
+       * @constant
+       */
+      schema_version: "acquisition-event-v2";
+      /**
+       * Job Id
+       * Format: uuid
+       */
+      job_id: string;
+      /** Sequence */
+      sequence: number;
+      /**
+       * Timestamp
+       * Format: date-time
+       */
+      timestamp: string;
+      /** Stage */
+      stage: string;
+      /**
+       * State
+       * @enum {string}
+       */
+      state:
+        | "queued"
+        | "claimed"
+        | "fetching"
+        | "validating"
+        | "importing"
+        | "verifying"
+        | "activating"
+        | "retry_wait"
+        | "cancel_requested"
+        | "cancelled"
+        | "failed"
+        | "recovery_required"
+        | "succeeded";
+      /** Message Code */
+      message_code: string;
+      /** Completed */
+      completed: number | null;
+      /** Total */
+      total: number | null;
+      /** Unit */
+      unit: "bytes" | null;
+    };
     /** AcquisitionOption */
     AcquisitionOption: {
       /** Source Id */
@@ -752,9 +869,32 @@ export interface components {
       /**
        * Automatic Acquisition Implemented
        * @default false
+       */
+      automatic_acquisition_implemented: boolean;
+    };
+    /** AcquisitionRequest */
+    AcquisitionRequest: {
+      /**
+       * Source Id
+       * @default osm
+       */
+      source_id: string;
+      /**
+       * Category
+       * @default geo.mapped_poi
+       */
+      category: string;
+      /** Territory */
+      territory: string;
+      aoi: components["schemas"]["Bounds"];
+      /**
+       * Freshness
+       * @default current
        * @constant
        */
-      automatic_acquisition_implemented: false;
+      freshness: "current";
+      /** Idempotency Key */
+      idempotency_key: string;
     };
     /** Amount */
     "Amount-Input": {
@@ -2087,6 +2227,68 @@ export interface components {
        */
       source_attested: boolean;
     };
+    /** JobView */
+    JobView: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * State
+       * @enum {string}
+       */
+      state:
+        | "queued"
+        | "claimed"
+        | "fetching"
+        | "validating"
+        | "importing"
+        | "verifying"
+        | "activating"
+        | "retry_wait"
+        | "cancel_requested"
+        | "cancelled"
+        | "failed"
+        | "recovery_required"
+        | "succeeded";
+      /** Stage */
+      stage: string;
+      /** Source Id */
+      source_id: string;
+      /** Category */
+      category: string;
+      /** Territory */
+      territory: string;
+      aoi: components["schemas"]["Bounds"];
+      /** Attempt */
+      attempt: number;
+      /** Fencing Token */
+      fencing_token: number;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /**
+       * Updated At
+       * Format: date-time
+       */
+      updated_at: string;
+      /**
+       * Next Attempt At
+       * Format: date-time
+       */
+      next_attempt_at: string;
+      /** Result */
+      result: {
+        [key: string]: string | number;
+      } | null;
+      /** Error Code */
+      error_code: string | null;
+      /** Event Cursor */
+      event_cursor: number;
+    };
     /** LeadDraft */
     LeadDraft: {
       /**
@@ -3272,6 +3474,14 @@ export interface components {
       license_reviewed_at?: string | null;
       /** Availability Checked At */
       availability_checked_at?: string | null;
+      /**
+       * Acquisition Scope
+       * @default disabled
+       * @enum {string}
+       */
+      acquisition_scope: "disabled" | "operator_smoke";
+      /** Acquisition Approved Until */
+      acquisition_approved_until?: string | null;
     };
     /** StartupCosts */
     "StartupCosts-Input": {
@@ -4401,6 +4611,143 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["CoverageResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  create_job_api_v2_acquisitions_post: {
+    parameters: {
+      query?: never;
+      header?: {
+        "X-Acquisition-Token"?: string | null;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AcquisitionRequest"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      202: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JobView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  read_job_api_v2_acquisitions__job_id__get: {
+    parameters: {
+      query?: never;
+      header?: {
+        "X-Acquisition-Token"?: string | null;
+      };
+      path: {
+        job_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JobView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  cancel_job_api_v2_acquisitions__job_id__cancel_post: {
+    parameters: {
+      query?: never;
+      header?: {
+        "X-Acquisition-Token"?: string | null;
+      };
+      path: {
+        job_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      202: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JobView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  events_api_v2_acquisitions__job_id__events_get: {
+    parameters: {
+      query?: {
+        after?: number;
+        limit?: number;
+      };
+      header?: {
+        "X-Acquisition-Token"?: string | null;
+      };
+      path: {
+        job_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AcquisitionEvent"][];
         };
       };
       /** @description Validation Error */

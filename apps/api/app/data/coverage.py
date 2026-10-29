@@ -25,7 +25,7 @@ from app.data.registry_schemas import (
 from app.data.schemas import ProviderDataset
 from app.db.models import GeoDatasetRecord, ProviderDatasetRecord, WalkGraphRecord
 from app.domain.enums import DataOrigin
-from app.geo.provider import build_query
+from app.geo.provider import build_poi_query, build_query
 from app.geo.walk_schemas import WalkGraphView
 
 
@@ -49,13 +49,17 @@ def read_metadata(session: Session, cap: int, demo: bool) -> tuple[list[LocalDat
     for row in geo[:cap]:
         try:
             meta = OSMProvider.metadata(row)
-            attested = row.query == build_query(meta.bbox)
+            attested = row.query in {build_query(meta.bbox), build_poi_query(meta.bbox)}
             complete &= attested
             values.append(
                 LocalDataset(
                     meta,
                     row.city,
-                    ("geo.mapped_poi", "geo.admin_polygons") if attested else (),
+                    ("geo.mapped_poi", "geo.admin_polygons")
+                    if row.query == build_query(meta.bbox)
+                    else ("geo.mapped_poi",)
+                    if attested
+                    else (),
                     row.imported_at,
                 )
             )
@@ -162,7 +166,7 @@ def assess(
     for key in query.categories:
         category = categories[key]
         options = tuple(
-            acquisition(s, query.purpose) for s in registry.sources if key in s.categories
+            acquisition(s, query.purpose, key) for s in registry.sources if key in s.categories
         )
         evidence = []
         for n, data in enumerate(datasets):

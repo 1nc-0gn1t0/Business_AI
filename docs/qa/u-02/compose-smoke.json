@@ -1,0 +1,17 @@
+{
+  "mode": "isolated hardened Compose with tmpfs UID999; no persistent volumes",
+  "ready": {
+    "status": "ok",
+    "database": "ok",
+    "postgis": "ok",
+    "schema_status": "ok"
+  },
+  "schema": "0009_acquisition",
+  "registry_revision": "u02-v1",
+  "sources": 4,
+  "categories": 18,
+  "moscow_local_status": "missing",
+  "web_status": 200,
+  "operator_api_disabled_status": 503,
+  "optional_worker_overlay": "config --quiet PASS; real worker tested separately with stable bind state"
+}

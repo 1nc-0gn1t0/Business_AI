@@ -55,6 +55,8 @@ class SourceDefinition(Contract):
     resource_policy_ref: Key
     license_reviewed_at: AwareDatetime | None = None
     availability_checked_at: AwareDatetime | None = None
+    acquisition_scope: Literal["disabled", "operator_smoke"] = "disabled"
+    acquisition_approved_until: AwareDatetime | None = None
 
     @model_validator(mode="after")
     def license_required(self) -> Self:
@@ -161,7 +163,7 @@ class AcquisitionOption(Contract):
     adapter_status: Literal["ready", "not_integrated"]
     license_status: Literal["verified_local_use", "review_required", "forbidden"]
     local_use_permitted: bool
-    automatic_acquisition_implemented: Literal[False] = False
+    automatic_acquisition_implemented: bool = False
 
 
 class DatasetReference(Contract):

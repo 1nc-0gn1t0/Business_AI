@@ -1,5 +1,19 @@
 # Post-MVP · реестр дефектов, рисков и внешних зависимостей
 
+## BA2/U-02 · 29.10.2026
+
+- **U02-SOURCE-01, ограничение источника:** публичный Overpass не предназначен для
+  постоянного backend приложения/массовой выгрузки. Только expiring operator smoke;
+  default network review_required. Для sustained/bulk нужен другой reviewed adapter/export.
+- **U02-OPS-01, эксплуатационный риск:** worker требует одного стабильного state directory,
+  installation identity и одного supervisor. Потеря/копирование identity блокирует безопасное
+  recovery; lease expiry не доказательство остановки. Нельзя обходить это сменой каталога.
+- **U02-RESOURCE-01, требует дальнейших измерений:** доказана маленькая POI AOI, не вся
+  Москва/дорожный граф. Combined live Qwen latency/PG WAL/большие данные не benchmarked;
+  budgets не расширять без измерений. Retention cap останавливает новые jobs, не удаляет историю.
+- [Контракты/границы](../architecture/BUSINESS_AI_2_DYNAMIC_ACQUISITION.md),
+  [реальный AOI smoke](../qa/u-02/live-moscow.json). H-06 release baseline остаётся OPEN.
+
 ## H-06-FU · 27.10.2026 · baseline OPEN
 
 - **Подтверждено:** [изолированный перенос](../qa/H-06-FU_CONTAINER_REPORT.md)

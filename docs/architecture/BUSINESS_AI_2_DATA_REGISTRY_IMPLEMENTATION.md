@@ -1,5 +1,10 @@
 # Business AI 2.0 — U-01: Data Registry & Coverage
 
+**29.10.2026 / U-02:** [реализован ограниченный operator POI acquisition](BUSINESS_AI_2_DYNAMIC_ACQUISITION.md).
+Ниже сохранён результат U-01. Теперь SourceDefinition содержит scope/expiry разрешения,
+AcquisitionOption.automatic_acquisition_implemented — bool по категории; наличие адаптера
+не равно разрешению fetch. Новый POI query attested только как geo.mapped_poi.
+
 29.10.2026. База: PR31 merged, main `ffc06f1d6b42c3c0fda3939edc19cdacda03115a`.
 Ветка `codex/U-01-data-registry-coverage`. Фактические commit/PR/CI — в сообщении сдачи.
 Это функциональная часть registry/coverage U-00; U-02/agent/industry engine не начаты.

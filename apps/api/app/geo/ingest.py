@@ -1,5 +1,6 @@
 import json
 from collections import Counter
+from collections.abc import Callable
 from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
@@ -92,6 +93,7 @@ def import_snapshot(
     document: dict[str, Any],
     *,
     allow_empty: bool = False,
+    checkpoint: Callable[[], None] | None = None,
 ) -> GeoDatasetRecord:
     """Caller owns transaction. Publish complete snapshot atomically; preserve old versions."""
     session.execute(
@@ -139,7 +141,9 @@ def import_snapshot(
     session.flush()
     counts: Counter[str] = Counter()
     elements: dict[tuple[str, int], dict[str, Any]] = {}
-    for item in document["elements"]:
+    for index, item in enumerate(document["elements"]):
+        if checkpoint and index % 250 == 0:
+            checkpoint()
         if not isinstance(item, dict):
             counts["invalid_element"] += 1
             continue
@@ -153,7 +157,9 @@ def import_snapshot(
             raise GeoImportError("Conflicting OSM versions in one snapshot")
         elements[key] = elements.get(key, {}) | item
     batch: list[dict[str, Any]] = []
-    for item in elements.values():
+    for index, item in enumerate(elements.values()):
+        if checkpoint and index % 250 == 0:
+            checkpoint()
         identity = _identity(item, manifest)
         tags = item.get("tags", {})
         if not isinstance(tags, dict) or not all(isinstance(v, str) for v in tags.values()):
@@ -218,6 +224,8 @@ def import_snapshot(
         session.execute(POI_INSERT, batch)
     if counts["pois"] == 0 and not allow_empty:
         raise GeoImportError("Empty POI snapshot rejected; use --allow-empty only after inspection")
+    if checkpoint:
+        checkpoint()
     if current:
         current.active = False
         session.flush()

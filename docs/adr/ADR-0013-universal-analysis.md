@@ -82,3 +82,23 @@ Owner approval/merge U-00 не означает разрешения начат�
    U-01 ограничивает только объём metadata/HTTP и не доказывает импорт всей Москвы.
 
 Фактическая реализация и границы: [U-01](../architecture/BUSINESS_AI_2_DATA_REGISTRY_IMPLEMENTATION.md).
+
+## Уточнение реализации U-02 — 29.10.2026
+
+[U-02](../architecture/BUSINESS_AI_2_DYNAMIC_ACQUISITION.md) реализует один small-POI
+profile, а не универсальный city importer. PostgreSQL jobs/events, отдельный процесс,
+process+session DB mutex, lease/fence/expected version и atomic existing importer сохранены.
+Checkpoint — проверенный normalized artifact в БД; внутри маленького atomic import
+повторяется целая AOI. Streaming больших выгрузок/tiling/group activation не заявлены.
+
+Публичный Overpass допускается только как operator one-off smoke после terms review,
+с expiry; default network закрыт. Он не становится постоянным backend приложения.
+Измерено ~87,3MiB RSS на одной реальной маленькой AOI. Для этого класса выбраны4MiB/
+10000elements/256MiB RSS check и768MiB cgroup cap/0.5CPU, не универсальные512MiB.
+H-03 не изменён: worker не использует LLM/API pool. Совместный live inference stress
+не измерен; shared admission для будущих high-memory jobs остаётся незавершённым,
+а не объявляется работающим. Увеличение budget требует новых измерений.
+
+Lease expiry восстанавливается только при доказанно освобождённом process lock той же
+installation; другая installation получает recovery_required. Обычный API restart
+не является доказательством смерти worker. Нового broker/Redis/Celery нет.

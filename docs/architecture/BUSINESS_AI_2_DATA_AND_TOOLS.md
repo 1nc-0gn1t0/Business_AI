@@ -13,6 +13,12 @@ U-00, 28.10.2026. Все новые типы/API/таблицы ниже — **�
 summary/availability/freshness/completeness/acquirability. Остальные planner/jobs/tools/
 assumption workflows ниже остаются проектом. Уточнения владельца — addendum ADR0013.
 
+**29.10.2026 / U-02:** bounded POI acquisition/jobs/events/operator API реализованы
+[отдельным worker](BUSINESS_AI_2_DYNAMIC_ACQUISITION.md). Точный executable contract
+описан там; public Overpass только expiring operator smoke, не sustained backend.
+Larger tiled imports/group activation/shared high-memory admission остаются будущей работой,
+не объявлены реализованными схемами ниже. H-03 не заменён и не дублируется.
+
 ## 1. Provenance и достаточность
 
 Единственный enum происхождения остаётся [DataOrigin](../../apps/api/app/domain/enums.py).

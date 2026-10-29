@@ -273,3 +273,16 @@ No user profiles/consent/lead/report data or administrative source-policy writes
 Source URLs/internal paths excluded.403demo_data_disabled,422invalid/unknown category,
 503data_registry_invalid/DB failures,413/429as existing H-02. Correlation ID preserved.
 Details: [registry implementation](architecture/BUSINESS_AI_2_DATA_REGISTRY_IMPLEMENTATION.md).
+
+## Business AI 2.0 / U-02 — operator acquisition
+
+`POST /api/v2/acquisitions`, `GET /api/v2/acquisitions/{id}`, GET `/{id}/events`,
+POST `/{id}/cancel`: operator-only, enabled explicitly; guest token grants no access.
+`BA_ACQUISITION_OPERATOR_TOKEN` >=32characters in `X-Acquisition-Token`, never query/frontend.
+Disabled503; unauthorized401; policy403; conflict409; AOI/input422; capacity429.
+Events after>=0/limit<=100; unknown progress remains null. POST reuses heavy admission.
+Pending<=2, retained<=100jobs/200idempotency mappings; no automatic history purge.
+Default per-operation AOI<=250000m²/4MiB/10000elements/180s; source caps>=60s/10perday/
+2attempts. No global512MiB assumption. Operator config cannot exceed structural AOI/byte/
+element caps. Expiring operator_smoke permission still required; network closed by default.
+Full [policy, errors, recovery and measured limits](architecture/BUSINESS_AI_2_DYNAMIC_ACQUISITION.md).

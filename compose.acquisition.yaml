@@ -1,0 +1,46 @@
+# Opt-in overlay; not required by the existing MVP. Reviewed operator registry only.
+services:
+  api:
+    environment:
+      BA_ACQUISITION_ENABLED: "1"
+      BA_ACQUISITION_OPERATOR_TOKEN: ${BA_ACQUISITION_OPERATOR_TOKEN:?Set an operator-only token}
+      BA_DATA_REGISTRY_PATH: /config/registry.json
+      BA_ACQUISITION_LIMITS_JSON: ${BA_ACQUISITION_LIMITS_JSON:-}
+    volumes:
+      - ${BA_ACQUISITION_REGISTRY_FILE:?Set reviewed absolute registry path}:/config/registry.json:ro
+
+  acquisition-worker:
+    profiles: [acquisition]
+    build:
+      context: ./apps/api
+    command: ["python", "-m", "app.data.acquisition.worker", "--state-dir", "/var/lib/business-ai-acquisition"]
+    cpus: 0.5
+    mem_limit: 768m
+    pids_limit: 32
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    read_only: true
+    tmpfs: ["/tmp:size=16m,noexec,nosuid"]
+    environment:
+      PGHOST: db
+      PGPORT: "5432"
+      PGDATABASE: ${POSTGRES_DB:-business_ai}
+      PGUSER: ${POSTGRES_USER:-business_ai}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-local-development-only}
+      BA_ACQUISITION_ENABLED: "1"
+      BA_DATA_REGISTRY_PATH: /config/registry.json
+      BA_ACQUISITION_LIMITS_JSON: ${BA_ACQUISITION_LIMITS_JSON:-}
+    volumes:
+      - ${BA_ACQUISITION_REGISTRY_FILE:?Set reviewed absolute registry path}:/config/registry.json:ro
+      - acquisition_state:/var/lib/business-ai-acquisition
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+volumes:
+  acquisition_state:
