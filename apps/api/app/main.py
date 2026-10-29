@@ -21,6 +21,7 @@ from app.api.conversations import error_detail, router
 from app.api.data import router as data_router
 from app.api.finance import router as finance_router
 from app.api.geo import router as geo_router
+from app.api.industry import router as industry_router
 from app.api.leads import public_router as consent_text_router
 from app.api.leads import router as leads_router
 from app.api.registry import router as registry_router
@@ -56,6 +57,7 @@ app.include_router(data_router)
 app.include_router(registry_router)
 app.include_router(acquisition_router)
 app.include_router(agent_router)
+app.include_router(industry_router)
 app.include_router(leads_router)
 app.include_router(consent_text_router)
 app.include_router(reports_router)

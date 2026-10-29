@@ -1,0 +1,75 @@
+{
+  "scope": "Real local Qwen; disposable empty PostGIS, no city import. Protocol faults are tested separately with scripted fixtures.",
+  "cases": [
+    {
+      "case": "coffee",
+      "wall_seconds": 39.968,
+      "industry": "coffee_shop",
+      "extraction": "ollama"
+    },
+    {
+      "case": "industry_correction",
+      "wall_seconds": 6.453,
+      "industry": "online_school",
+      "extraction": "ollama"
+    },
+    {
+      "case": "auto",
+      "wall_seconds": 9.89,
+      "industry": "auto_repair",
+      "extraction": "ollama"
+    },
+    {
+      "case": "school",
+      "wall_seconds": 7.89,
+      "industry": "online_school",
+      "extraction": "ollama"
+    },
+    {
+      "case": "unknown",
+      "wall_seconds": 2.594,
+      "industry": "generic",
+      "extraction": "ollama"
+    },
+    {
+      "case": "ambiguous",
+      "wall_seconds": 2.266,
+      "industry": "generic",
+      "extraction": "ollama"
+    },
+    {
+      "case": "missing",
+      "wall_seconds": 3.781,
+      "industry": "online_school",
+      "extraction": "ollama"
+    },
+    {
+      "case": "invalid_json_request",
+      "wall_seconds": 3.781,
+      "industry": "online_school",
+      "extraction": "ollama"
+    },
+    {
+      "case": "unsupported_id_request",
+      "wall_seconds": 8.907,
+      "industry": "generic",
+      "extraction": "ollama"
+    }
+  ],
+  "first_request_seconds": 39.968,
+  "subsequent_min_seconds": 2.266,
+  "subsequent_max_seconds": 9.89,
+  "python_peak_rss_bytes": 108040192,
+  "gpu_note": "2354 MiB used snapshot, includes desktop/other GPU use; not model-only peak",
+  "browser": {
+    "scope": "real built web/API/PostGIS + local Qwen in isolated Compose; no mocks",
+    "classificationMs": 28483,
+    "industry": "online_school",
+    "extraction": "ollama",
+    "reload": true,
+    "jsonDownload": true,
+    "errors": [],
+    "geographicRequests": []
+  },
+  "limits": "Serial samples, no CPU/full Ollama RAM/system peak measured; no SLA or full-city claim"
+}

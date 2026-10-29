@@ -287,6 +287,17 @@ def add_report(engine: Engine, state: dict[str, Any]) -> None:
                 response=agent_response.model_dump(mode="json"),
             )
         )
+        # U-04 is an extension of the same profile/CAS; seeding it must not mutate
+        # the old profile, consent, lead or immutable report bytes.
+        from app.db.models import IndustryProfileRecord
+        from app.industry.service import IndustryProfiles
+
+        universal = IndustryProfiles(db).load(owner, state["headers"]["X-Conversation-Token"])
+        db.add(
+            IndustryProfileRecord(
+                profile_id=universal.id, document=universal.model_dump(mode="json")
+            )
+        )
 
 
 def verify_api(engine: Engine, state: dict[str, Any], *, reports: bool = True) -> None:

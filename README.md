@@ -1,5 +1,10 @@
 # Business AI — Sab0tage
 
+**BA2/U-04:** [Universal Industry Engine](docs/architecture/BUSINESS_AI_2_UNIVERSAL_INDUSTRY_ENGINE.md)
+добавляет ProfileV2, отраслевые вопросы и маршрут без карты. Opt-in
+`BA_INDUSTRY_ENABLED=1` после migration0011; по умолчанию0. Автосервис/онлайн-школа
+получают честный частичный результат без подмены финансовой моделью кофейни.
+
 **BA2/U-03:** [ограниченный Qwen Tool Agent](docs/architecture/BUSINESS_AI_2_QWEN_TOOL_AGENT.md)
 добавлен отдельным opt-in v2 API (`BA_AGENT_ENABLED=1`, по умолчанию0).
 Проверка данных использует U-01, загрузка — только операторские полномочия U-02.

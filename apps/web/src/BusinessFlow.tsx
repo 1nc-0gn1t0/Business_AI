@@ -7,6 +7,12 @@ import {
   useCallback,
 } from "react";
 import Chat from "./Chat";
+import {
+  IndustryReview,
+  IndustryResult,
+  type IndustryView,
+  type IndustryEdit,
+} from "./Industry";
 import { ViAvatar } from "./Vi";
 import {
   ConsentDialog,
@@ -27,7 +33,13 @@ import {
   saveCredential,
 } from "./api";
 import type { Conversation, Credential, Ranking, Schemas } from "./api";
-import { canEnter, restoredStage, stepFor, type Stage } from "./flow";
+import {
+  canEnter,
+  industryStage,
+  restoredStage,
+  stepFor,
+  type Stage,
+} from "./flow";
 
 const Locations = lazy(() => import("./Locations"));
 class ConsentRequired extends Error {}
@@ -43,6 +55,11 @@ export default function BusinessFlow({
     readCredential,
   );
   const [conversation, setConversation] = useState<Conversation | null>(null);
+  const [industryEnabled, setIndustryEnabled] = useState<boolean | null>(null);
+  const [universal, setUniversal] = useState<IndustryView | null>(null);
+  const [industries, setIndustries] = useState<Schemas["IndustryDefinition"][]>(
+    [],
+  );
   const [messages, setMessages] = useState<Schemas["MessageView"][]>([]);
   const [waitingForReply, setWaitingForReply] = useState(false);
   const [busy, setBusy] = useState(() => Boolean(readCredential()));
@@ -79,7 +96,48 @@ export default function BusinessFlow({
     null,
   );
   const lock = useRef(false);
-  const flow = { conversation, ranking, selected, finance: reportFinance };
+  const flow = {
+    conversation,
+    ranking,
+    selected,
+    finance: reportFinance,
+    universal,
+  };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    request<{ enabled: boolean; industries: Schemas["IndustryDefinition"][] }>(
+      "/api/v2/industry-capabilities",
+      { signal: controller.signal },
+    )
+      .then((c) => {
+        setIndustryEnabled(c.enabled);
+        setIndustries(c.industries || []);
+      })
+      .catch((e) => {
+        if (!controller.signal.aborted) {
+          if (e instanceof ApiError && e.status === 404)
+            setIndustryEnabled(false);
+          else {
+            setError(errorText(e));
+            setRestoreFailed(!!readCredential());
+            setBusy(false);
+          }
+        }
+      });
+    return () => controller.abort();
+  }, []);
+
+  function acceptIndustry(view: IndustryView) {
+    setUniversal(view);
+    setConversation(view.conversation);
+  }
+  function enterIndustry(view: IndustryView) {
+    const next = industryStage(view);
+    if (next === "location") setLocationsVisited(true);
+    if (next === "finance") setFinanceVisited(true);
+    setStage(next);
+  }
 
   function navigate(next: Stage) {
     if (!canEnter(next, flow)) return;
@@ -90,6 +148,11 @@ export default function BusinessFlow({
     setStage(next);
   }
   function invalidate() {
+    if (industryEnabled) {
+      setLocationsVisited(false);
+      setFinanceVisited(false);
+      setBankVisited(false);
+    }
     setRanking(null);
     setSelected(null);
     setReportFinance(null);
@@ -120,6 +183,7 @@ export default function BusinessFlow({
     return () => c.abort();
   }, []);
   useEffect(() => {
+    if (industryEnabled === null) return;
     const key = readCredential();
     if (!key) return;
     const c = new AbortController();
@@ -134,7 +198,13 @@ export default function BusinessFlow({
         { credential: key, signal: c.signal },
       ),
     ])
-      .then(([view, items, consents]) => {
+      .then(async ([view, items, consents]) => {
+        const industry = industryEnabled
+          ? await request<IndustryView>(
+              `/api/v2/conversations/${key.id}/industry-profile`,
+              { credential: key, signal: c.signal },
+            )
+          : null;
         if (c.signal.aborted) return;
         setConversation(view);
         setMessages(items);
@@ -143,8 +213,11 @@ export default function BusinessFlow({
             (s) => s.purpose === "assistant" && s.status === "granted",
           ),
         );
-        const next = restoredStage(view);
-        setStage(next);
+        const next = industry ? industryStage(industry) : restoredStage(view);
+        if (industry) {
+          acceptIndustry(industry);
+          enterIndustry(industry);
+        } else setStage(next);
         if (next === "location") {
           setLocationsVisited(true);
           setNotice(
@@ -164,7 +237,7 @@ export default function BusinessFlow({
         if (!c.signal.aborted) setBusy(false);
       });
     return () => c.abort();
-  }, []);
+  }, [industryEnabled]);
   const receiveFinance = useCallback(
     (value: Schemas["FinanceResult"] | null) => {
       setReportFinance(value);
@@ -177,6 +250,15 @@ export default function BusinessFlow({
   );
   async function refresh(key = credential) {
     if (!key) return;
+    let enabled = industryEnabled;
+    if (enabled === null) {
+      const catalog = await request<Schemas["IndustryCatalog"]>(
+        "/api/v2/industry-capabilities",
+      );
+      enabled = catalog.enabled;
+      setIndustryEnabled(enabled);
+      setIndustries(catalog.industries);
+    }
     const [view, items] = await Promise.all([
       request<Conversation>(`/api/v1/conversations/${key.id}`, {
         credential: key,
@@ -184,6 +266,13 @@ export default function BusinessFlow({
       history(key),
     ]);
     setConversation(view);
+    if (enabled)
+      acceptIndustry(
+        await request<IndustryView>(
+          `/api/v2/conversations/${key.id}/industry-profile`,
+          { credential: key },
+        ),
+      );
     setMessages(items);
     setRestoreFailed(false);
     invalidate();
@@ -204,6 +293,7 @@ export default function BusinessFlow({
       );
     setCredential(key);
     setConversation(created);
+    setUniversal(null);
     setMessages([]);
     invalidate();
     setAccessLost(false);
@@ -281,6 +371,16 @@ export default function BusinessFlow({
     body: unknown,
     key: Credential,
   ) {
+    if (industryEnabled && path === "/messages") {
+      const view = await request<IndustryView>(
+        `/api/v2/conversations/${key.id}/industry-profile/messages`,
+        { method, body, credential: key },
+      );
+      acceptIndustry(view);
+      invalidate();
+      setMessages(await history(key));
+      return { ...view.conversation, missing_fields: view.plan.missing_fields };
+    }
     const view = await request<Conversation>(
       `/api/v1/conversations/${key.id}${path}`,
       { method, body, credential: key },
@@ -298,6 +398,13 @@ export default function BusinessFlow({
           ? { key: credential, view: conversation }
           : await create();
       await ensureAssistant(current.key, explicitGrant);
+      if (industryEnabled && !universal)
+        acceptIndustry(
+          await request<IndustryView>(
+            `/api/v2/conversations/${current.key.id}/industry-profile`,
+            { credential: current.key },
+          ),
+        );
       setConsentDialog(false);
       setStage("chat");
       setWaitingForReply(true);
@@ -339,6 +446,21 @@ export default function BusinessFlow({
     void action(async () => {
       if (!credential || !conversation) return;
       await ensureAssistant(credential);
+      if (universal) {
+        const view = await request<IndustryView>(
+          `/api/v2/conversations/${credential.id}/industry-profile/confirm`,
+          {
+            credential,
+            method: "POST",
+            body: { expected_version: conversation.version },
+          },
+        );
+        acceptIndustry(view);
+        invalidate();
+        setMessages(await history(credential));
+        enterIndustry(view);
+        return;
+      }
       const view =
         conversation.profile.confirmation_state === "confirmed"
           ? conversation
@@ -352,6 +474,51 @@ export default function BusinessFlow({
         setLocationsVisited(true);
         setStage("location");
       }
+    });
+  }
+  function editIndustry(patch: Omit<IndustryEdit, "expected_version">) {
+    return action(async () => {
+      if (!credential || !conversation) return;
+      const view = await request<IndustryView>(
+        `/api/v2/conversations/${credential.id}/industry-profile`,
+        {
+          credential,
+          method: "PATCH",
+          body: { ...patch, expected_version: conversation.version },
+        },
+      );
+      acceptIndustry(view);
+      invalidate();
+      setMessages(await history(credential));
+      setStage("review");
+    }, true);
+  }
+  function downloadInputs() {
+    void action(async () => {
+      if (!credential || !universal) return;
+      const latest = await request<IndustryView>(
+        `/api/v2/conversations/${credential.id}/industry-profile`,
+        { credential },
+      );
+      acceptIndustry(latest);
+      if (
+        latest.profile.revision !== universal.profile.revision ||
+        latest.profile.confirmed_revision !== latest.profile.revision
+      ) {
+        invalidate();
+        enterIndustry(latest);
+        return;
+      }
+      const url = URL.createObjectURL(
+        new Blob([JSON.stringify(latest, null, 2)], {
+          type: "application/json",
+        }),
+      );
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "business-inputs.json";
+      a.click();
+      URL.revokeObjectURL(url);
     });
   }
   function newConversation() {
@@ -384,10 +551,14 @@ export default function BusinessFlow({
           : stage === "location"
             ? "review"
             : stage === "finance"
-              ? "location"
-              : stage === "banking"
-                ? "finance"
-                : "banking";
+              ? universal && !universal.plan.stages.includes("location")
+                ? "review"
+                : "location"
+              : stage === "partial"
+                ? "review"
+                : stage === "banking"
+                  ? "finance"
+                  : "banking";
   return (
     <div className="flow-app">
       <a className="skip-link" href="#main-content">
@@ -401,7 +572,7 @@ export default function BusinessFlow({
         >
           Business <span>AI</span>
         </button>
-        {stage !== "idea" && (
+        {stage !== "idea" && !universal && (
           <span className="progress" aria-label="Прогресс">
             Шаг {stepFor[stage]} из 5
           </span>
@@ -439,6 +610,23 @@ export default function BusinessFlow({
           <div className="alert vi-inline" role="alert">
             <ViAvatar emotion="error" />
             {error}
+            {industryEnabled === null && (
+              <button
+                className="text-button"
+                disabled={busy}
+                onClick={() => {
+                  void action(async () => {
+                    const catalog = await request<Schemas["IndustryCatalog"]>(
+                      "/api/v2/industry-capabilities",
+                    );
+                    setIndustryEnabled(catalog.enabled);
+                    setIndustries(catalog.industries);
+                  });
+                }}
+              >
+                Повторить загрузку возможностей
+              </button>
+            )}
             <button className="text-button" onClick={() => setError("")}>
               Закрыть
             </button>
@@ -461,6 +649,15 @@ export default function BusinessFlow({
                 Повторить загрузку
               </button>
             )}
+            {!accessLost && credential && !consentReady && (
+              <button
+                className="text-button"
+                onClick={() => setConsentDialog(true)}
+                disabled={busy}
+              >
+                Согласие на работу ассистента
+              </button>
+            )}
             <button className="button" onClick={newConversation}>
               Начать новый проект
             </button>
@@ -472,7 +669,7 @@ export default function BusinessFlow({
                 draft={draft}
                 onDraft={setDraft}
                 onSend={beginIdea}
-                busy={busy}
+                busy={busy || industryEnabled === null}
               />
             )}
             {stage === "chat" && (
@@ -500,7 +697,26 @@ export default function BusinessFlow({
                 }
               />
             )}
-            {stage === "review" && conversation && (
+            {stage === "review" && universal && (
+              <IndustryReview
+                key={universal.profile.revision}
+                view={universal}
+                industries={industries}
+                busy={busy}
+                onSave={editIndustry}
+                onConfirm={confirmProfile}
+                onChat={() => navigate("chat")}
+              />
+            )}
+            {stage === "partial" && universal && (
+              <IndustryResult
+                view={universal}
+                busy={busy}
+                onEdit={() => navigate("review")}
+                onDownload={downloadInputs}
+              />
+            )}
+            {stage === "review" && conversation && !universal && (
               <ProjectReview
                 conversation={conversation}
                 busy={busy}
@@ -544,6 +760,7 @@ export default function BusinessFlow({
                   key={`${financeContext}:${ranking?.request_fingerprint}:${selected}`}
                   profile={conversation?.profile || null}
                   zone={zone}
+                  confirmedDrivers={universal?.coffee_inputs}
                   onReport={receiveFinance}
                 />
                 <div className="step-action">
@@ -619,6 +836,14 @@ export default function BusinessFlow({
           busy={busy}
           onClose={() => setConsentDialog(false)}
           onContinue={() => {
+            if (restoreFailed && credential) {
+              void action(async () => {
+                await ensureAssistant(credential, true);
+                setConsentDialog(false);
+                await refresh(credential);
+              });
+              return;
+            }
             void sendIdea(draft, true).catch(() => {});
           }}
         />

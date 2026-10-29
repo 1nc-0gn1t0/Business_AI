@@ -1,5 +1,34 @@
 # Business AI — HANDOFF
 
+## Business AI 2.0 / U-04 · Universal Industry Engine · 30.10.2026
+
+- PR34 merged; base main `43f0f389a0b4fcdaadd2aead1f777c31d3ab4524`, initially clean.
+  Branch `codex/U-04-universal-industry-engine`; final SHA/PR/CI in delivery report.
+- [Implementation/API/limits](architecture/BUSINESS_AI_2_UNIVERSAL_INDUSTRY_ENGINE.md),
+  [checkpoint](architecture/U-04_CHECKPOINT.md), evidence `docs/qa/u-04/`.
+- ProfileV2 is a bounded one-to-one extension of the existing profile, same guest owner,
+  consent and conversation CAS. Migration0011 adds industry_profiles; old rows/reports
+  untouched. Complete coffee alone projects confirmation to legacy executors.
+- Four reviewed configurations: coffee/auto repair/online school/generic. Registry-driven
+  questions, typed drivers/units, U-01 coverage/sufficiency; unknown/deferred fields stay
+  unknown. Unsupported automotive/digital finance is not substituted with coffee.
+- One structured local Qwen proposal per message through H-03; independent field evidence
+  validation, strict IDs/methods, manual/clarification fallback. No new model/queue/import.
+- Opt-in `BA_INDUSTRY_ENABLED=0` default. Frontend reads actual stages, supports no-map
+  partial inputs/JSON and server reload. Existing coffee PDF/JSON and banking unchanged.
+- Real built Compose + local Qwen + PostGIS browser: online-school classification,
+  manual review/confirmation, no map/finance request, reload and JSON download PASS32.9s;
+  classification28.483s. Screenshots1440/768/390, page errors0, no mocks.
+- Earlier native live matrix classified four models/correction/ambiguity; initial failed
+  whole-proposal trials retained. Current classifier accepts independently grounded fields,
+  not arbitrary paraphrases. Qwen is not guaranteed to classify every request correctly.
+- v1 actual OpenAPI diff36paths/126recursive schemas unchanged. Populated/repeat migrations
+  and regression117PASS plus geo18PASS; final industry unit29PASS (overlap). Chromium
+  45PASS/1legacy mock failure fixed; targeted5PASS. UI targeted15PASS; final industry integration12PASS/6.43s. TS/lint/build PASS. Final prek/CI in delivery report.
+- Docker was restarted30.10 for final isolated DB checks
+  and cleanup. QA uses tmpfs only; existing working volumes/backups untouched.
+- Delivery SHA/PR/exact-HEAD CI are recorded in the final report. U-05 not started; no merge.
+
 ## Business AI 2.0 / U-03 · Qwen Tool Agent · 29.10.2026
 
 - PR33 merged/main aadf57e4c8a8a15e02950196063a98fd5151b923, synced clean;

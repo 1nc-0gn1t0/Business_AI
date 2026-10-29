@@ -303,3 +303,14 @@ visibility7days/410expiry, lazy terminal-row pruning at admission. Conflicts409,
 capacity429, invalid config503; tools expose typed per-call errors and partial results.
 No automatic continuation of expired runs or polling while a durable import runs.
 [Contracts, error handling and measurements](architecture/BUSINESS_AI_2_QWEN_TOOL_AGENT.md).
+
+## BA2/U-04 industry profile
+
+Опциональный v2 профиль использует те же owner/assistant consent и conversation CAS.
+Messages≤1600chars, extracted updates≤14, manual updates≤20, profile extension≤48KiB
+(одна на существующий профиль). Нет нового неограниченного хранилища диалогов.
+Один H-03 слот/одна попытка классификации, context4096/output≤768, предварительный
+prompt+context≤10000UTF-8bytes и последующая проверка model token count. Превышение —
+industry_context_limit422/ручная правка, без скрытого truncation/fallback на другую LLM.
+Финансовая/географическая операции не запускаются в процессе extraction. Политика
+U-02 imports не расширена. Feature BA_INDUSTRY_ENABLED по умолчанию0.

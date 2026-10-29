@@ -152,6 +152,10 @@ const messages: Record<string, string> = {
     "Профиль изменён другим запросом. Загружена актуальная версия; проверьте данные и повторите действие.",
   profile_incomplete:
     "Заполните обязательные поля профиля перед подтверждением.",
+  industry_config_changed:
+    "Правила анализа обновились. Сохраните параметры заново и подтвердите их.",
+  industry_context_limit:
+    "Вводных слишком много для одного ответа. Проверьте или измените параметры проекта вручную.",
   conversation_not_found:
     "Беседа не найдена или гостевой доступ утрачен. Можно начать новую беседу.",
 };
@@ -185,14 +189,21 @@ export async function request<T>(
     signal?: AbortSignal;
   } = {},
 ): Promise<T> {
-  if (!path.startsWith("/api/v1/") && path !== "/healthz")
+  if (
+    !path.startsWith("/api/v1/") &&
+    !path.startsWith("/api/v2/") &&
+    path !== "/healthz"
+  )
     throw new Error("Unsupported API path");
   const headers: Record<string, string> = { Accept: "application/json" };
   if (options.body !== undefined) headers["Content-Type"] = "application/json";
   // Guest keys only go to same-origin conversation routes; never URLs or logs.
   if (
     options.credential &&
-    path.startsWith(`/api/v1/conversations/${options.credential.id}`)
+    ["v1", "v2"].some((version) => {
+      const base = `/api/${version}/conversations/${options.credential!.id}`;
+      return path === base || path.startsWith(`${base}/`);
+    })
   )
     headers["X-Conversation-Token"] = options.credential.token;
   try {

@@ -37,7 +37,17 @@ describe("Vi and the real workspace boundary", () => {
     });
     const fetch = vi
       .spyOn(globalThis, "fetch")
-      .mockResolvedValue(new Response("[]", { status: 200 }));
+      .mockImplementation(
+        async (path) =>
+          new Response(
+            JSON.stringify(
+              String(path).endsWith("/industry-capabilities")
+                ? { enabled: false, industries: [] }
+                : [],
+            ),
+            { status: 200 },
+          ),
+      );
     render(<App />);
     fireEvent.click(screen.getByRole("button", { name: "Познакомьтесь с Ви" }));
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -46,8 +56,11 @@ describe("Vi and the real workspace boundary", () => {
     await screen.findByRole("heading", {
       name: "Какой бизнес вы хотите открыть?",
     });
-    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
-    expect(String(fetch.mock.calls[0][0])).toBe("/api/v1/consent-texts");
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+    expect(fetch.mock.calls.map(([path]) => String(path)).sort()).toEqual([
+      "/api/v1/consent-texts",
+      "/api/v2/industry-capabilities",
+    ]);
     expect(screen.queryByRole("dialog")).toBeNull();
   });
   it("distinguishes restoring the project from actually waiting for a reply", () => {

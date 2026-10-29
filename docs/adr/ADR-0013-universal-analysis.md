@@ -118,3 +118,26 @@ operator token не превращается в полноценную учёт�
 Каждый LLM step использует существующую H-03 queue, вне DB transaction; job polling
 не удерживает LLM-slot. Defaults4LLM/3tools/300s — измеряемые ограничители, не SLA.
 ProfileV2/industry planner/U-04 и свободный интернет-поиск остаются вне этого этапа.
+
+## Уточнение реализации U-04 · 30.10.2026
+
+Исторические дата/решение U-00 выше сохранены. Разрешённый владельцем U-04 реализует
+ProfileV2 как one-to-one JSONB extension к business_profiles с тем же conversation CAS,
+а не отдельный жизненный цикл. Additive0011 не меняет старые строки/DTO/snapshots.
+Вариант новой nullable колонки отвергнут после populated-upgrade regression: старые
+ORM-reads начинали требовать новую колонку. Таблица расширений изолирует v2 storage.
+
+Отраслевые конфигурации — типизированный reviewed Python registry; новые IDs/вопросы/
+требования/единицы не требуют переписывания универсального маршрутизатора. Исполняемые
+адаптеры остаются отдельным закрытым каталогом. Версия/hash/config snapshot связывают
+review с правилами; изменение конфигурации требует нового сохранения/подтверждения.
+
+Обоснованное отклонение от большого будущего ProfileV2: scalar text descriptions для
+общих revenue/costs плюс типизированные отраслевые драйверы; генерации сценариев/ranges
+нет до U-05. Unknown — отсутствие значения/deferred parameter, а не новый DataOrigin
+или0. Подтверждение сохраняет user_input; полный immutable report v2 не заявлен.
+No-map partial inputs JSON — рабочая проекция, старые immutable PDF/JSON не меняются.
+
+AnalysisRun не вводится: синхронный план проверяет текущие owner/consent/CAS перед
+публикацией. U-02 operator-only и единственная очередь H-03 остаются неизменными.
+[Конкретные контракты/rollout](../architecture/BUSINESS_AI_2_UNIVERSAL_INDUSTRY_ENGINE.md).

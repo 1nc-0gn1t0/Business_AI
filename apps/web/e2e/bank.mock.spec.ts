@@ -8,6 +8,9 @@ import type { Schemas } from "../src/api";
 test("demo catalogue, explicit needs, protected matching and mobile layout (mock API)", async ({
   page,
 }) => {
+  await page.route("**/api/v2/industry-capabilities", (r) =>
+    r.fulfill({ json: { enabled: false, industries: [] } }),
+  );
   const fixture = example.response;
   const credential = {
     id: fixture.profile_snapshot.conversation_id,
