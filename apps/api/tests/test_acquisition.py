@@ -1,6 +1,7 @@
 """Deterministic security tests; no public service requests."""
 
 import io
+import secrets
 import socket
 import ssl
 from dataclasses import dataclass
@@ -224,16 +225,15 @@ def test_operator_boundary_and_strict_input(monkeypatch: pytest.MonkeyPatch) -> 
             == 503
         )
         monkeypatch.setenv("BA_ACQUISITION_ENABLED", "1")
-        monkeypatch.setenv(
-            "BA_ACQUISITION_OPERATOR_TOKEN", "test-only-operator-token-32-characters"
-        )
+        token = secrets.token_urlsafe(32)
+        monkeypatch.setenv("BA_ACQUISITION_OPERATOR_TOKEN", token)
         result = client.post("/api/v2/acquisitions", json=request().model_dump(mode="json"))
         assert result.status_code == 401 and result.headers["X-Request-ID"]
         for extra in ("url", "owner", "path", "sql"):
             result = client.post(
                 "/api/v2/acquisitions",
                 json=request().model_dump(mode="json") | {extra: "forbidden"},
-                headers={"X-Acquisition-Token": "test-only-operator-token-32-characters"},
+                headers={"X-Acquisition-Token": token},
             )
             assert result.status_code == 422
     with pytest.raises(ValidationError):

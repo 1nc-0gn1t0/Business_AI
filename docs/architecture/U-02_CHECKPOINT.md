@@ -36,4 +36,11 @@
 - Hardened Compose smoke PASS after tmpfs UID999 fix; no persistent mounts. Optional
   overlay config quiet PASS. Two-container shared-state process exclusion PASS.
 - All owned QA containers/cluster/project network removed; existing volumes untouched.
-- Pending: mandatory prek during commit, push/PR/exact-HEAD CI. No U-03 work.
+- Commit c704abbd107e649f4e7c558deb982a3228ba19f0 pushed; PR33 open, not merged.
+  All7 automatic prek hooks PASS. Initial exact-HEAD CI8/10PASS; two audit jobs
+  failed solely on synthetic pytest-token false positive (U02-FP-001).
+- New tests use ephemeral random tokens; historical exception pins exact commit/file/value,
+  inherits default rule, no history rewrite/global exclusion. Pinned scanner self-test
+  proves other value/file/commit still detected. History+directory scans PASS;
+  focused acquisition/supply-chain34PASS. See docs/SUPPLY_CHAIN.md for triage/review date.
+- Pending: CI-fix commit/push and new exact-HEAD CI. No U-03 work.

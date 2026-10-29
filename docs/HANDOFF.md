@@ -26,7 +26,12 @@
   no repeat inference. [Evidence](qa/u-02/live-qwen.json).
 - Final worker/PostGIS18PASS/73.57s; focused86PASS. Existing DB run
   125PASS/1fixture failure (new tables empty); fixture now includes a cancelled job,
-  migration/report-byte preservation rerun PASS. Ruff/format/mypy139files PASS; prek/CI pending.
+  migration/report-byte preservation rerun PASS. Ruff/format/mypy139files PASS; all7 prek hooks PASS.
+- PR33 open, not merged; first commit c704abbd107e649f4e7c558deb982a3228ba19f0.
+  Initial CI8/10PASS: both audit runs flagged a synthetic pytest-only token, no deployed secret.
+  New fixtures use random tokens; exact historical rule-scoped exception has positive controls
+  for other values/files/commits. Scanner history/directory/self-test PASS; focused34PASS.
+  [Triage/review policy](SUPPLY_CHAIN.md#u02-fp-001--29102026); new exact-HEAD CI pending.
 - Cross-container lock PASS; v1 OpenAPI unchanged/v2 types regenerated; web build/
   Chromium coffee smoke PASS. U-03 not started; owner decision required after PR review.
 - Hardened Compose/tmpfs smoke PASS (UID999 mount), schema0009/ready/web200/catalog4/18;

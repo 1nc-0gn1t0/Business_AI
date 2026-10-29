@@ -2,6 +2,7 @@
 
 import json
 import os
+import secrets
 import time
 from collections.abc import Iterator
 from concurrent.futures import ThreadPoolExecutor
@@ -321,7 +322,7 @@ def test_operator_api_events_and_guest_isolation(
     app.dependency_overrides[get_session] = session
     app.dependency_overrides[load_registry] = approved
     monkeypatch.setenv("BA_ACQUISITION_ENABLED", "1")
-    token = "synthetic-operator-fixture-32-characters"
+    token = secrets.token_urlsafe(32)
     monkeypatch.setenv("BA_ACQUISITION_OPERATOR_TOKEN", token)
     headers = {"X-Acquisition-Token": token}
     try:

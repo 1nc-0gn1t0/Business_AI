@@ -294,7 +294,13 @@ Final local/CI results and actual commit are in the delivery report/HANDOFF.
   persistent/user volumes were created or removed by the smoke. Private temp context
   files remain outside Git; no active credentials/permission config is committed.
 
-Mandatory prek hooks run at commit; exact-HEAD CI/commit/PR are reported in delivery.
+All7 mandatory prek hooks passed at the first commit. Initial CI8/10PASS; two audit jobs
+flagged the same fixed synthetic pytest-only token. New fixtures use random tokens;
+an exact historical commit/file/value exception preserves the default detector and is
+checked with other-value/file/commit positive controls. No history rewrite or broad
+exclusion. Pinned scanner self-test/history/directory PASS; focused34tests PASS.
+See [U02-FP-001 triage](../SUPPLY_CHAIN.md#u02-fp-001--29102026).
+Final exact-HEAD CI/commit/PR are reported in delivery.
 SKIP is not PASS. Future city-wide acquisition/industry/agent scenarios are not tested here.
 
 ## Boundaries and U-03 interfaces
