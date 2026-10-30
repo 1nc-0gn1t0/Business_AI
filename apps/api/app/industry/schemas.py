@@ -115,6 +115,7 @@ class UniversalPatch(Contract):
 
 class IndustryCatalog(Contract):
     enabled: bool
+    finance_v2_enabled: bool = False
     revision: str = "u04-v1"
     industries: tuple[IndustryDefinition, ...]
 

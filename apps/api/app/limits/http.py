@@ -101,6 +101,7 @@ def heavy_request(path: str, method: str) -> bool:
             or path.startswith("/api/v2/acquisitions")
             or path.endswith("/agent")
             or path.endswith(("/messages", "/reports"))
+            or "/financial-scenarios/" in path
         )
     ) or (method == "GET" and "/reports/" in path)
 
@@ -158,7 +159,7 @@ class ApiLimits:
             else "request_body_too_large"
         )
         controller, admitted = CONTROLLER, False
-        model = method == "POST" and path.endswith(("/messages", "/agent"))
+        model = method == "POST" and path.endswith(("/messages", "/agent", "/propose"))
         # Message inference has its own 1-active bounded queue. Preserve H-02 heavy
         # frequency accounting without consuming the analytical concurrency slots.
         heavy = heavy_request(path, method) and not model

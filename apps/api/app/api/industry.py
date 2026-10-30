@@ -32,7 +32,13 @@ def require_enabled() -> None:
 
 @router.get("/industry-capabilities", response_model=IndustryCatalog)
 def catalog() -> IndustryCatalog:
-    return IndustryCatalog(enabled=enabled(), industries=tuple(INDUSTRIES.values()))
+    from app.finance.v2.registry import enabled as finance_enabled
+
+    return IndustryCatalog(
+        enabled=enabled(),
+        finance_v2_enabled=finance_enabled(),
+        industries=tuple(INDUSTRIES.values()),
+    )
 
 
 BASE = "/conversations/{conversation_id}/industry-profile"

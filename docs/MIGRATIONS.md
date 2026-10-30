@@ -1,5 +1,14 @@
 # Миграции и возврат совместимого приложения · H-04
 
+**U-05,30.10.2026:** head/readiness `0012_financial_scenarios`. Additive owner-FK
+tables `financial_workspaces/actions/results`, bounded JSON checks, owner/time indexes
+and idempotency/result fingerprint uniqueness. No v1 profile/finance/report bytes are
+rewritten. Populated/repeated upgrade and immutable old report regression PASS; new
+tables are seeded via real APIs on a separate generic fixture project. No user-data
+downgrade was run. Enable BA_FINANCE_V2_ENABLED only after upgrade and industry review;
+application rollback disables flags rather than dropping financial history.
+[Contracts and limits](architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md).
+
 **U-03,29.10.2026:** актуальный head/readiness `0010_agent_runs`, одна additive owner-FK
 таблица ограниченных traces/idempotency/grants. Profile/geo/finance/report данные не
 меняются. Populated upgrade/repeated head/report-byte preservation прошли целевую

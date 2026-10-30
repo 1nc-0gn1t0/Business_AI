@@ -3,6 +3,218 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { env } from "node:process";
 import type { Conversation, Ranking, Schemas } from "../src/api";
 
+test("U-05 real manual school: review, course finance, what-if and reload without Ollama", async ({
+  page,
+}) => {
+  test.skip(
+    env.BA_U05_REAL !== "1",
+    "Requires isolated U-05 Compose, no API mocks",
+  );
+  const directory = "../../docs/qa/u-05";
+  await mkdir(`${directory}/screenshots`, { recursive: true });
+  const created = await page.request.post("/api/v1/conversations", {
+    data: {},
+  });
+  expect(created.status()).toBe(201);
+  const key = await created.json();
+  const headers = { "X-Conversation-Token": key.access_token };
+  expect(
+    (
+      await page.request.put(
+        `/api/v1/conversations/${key.id}/consents/assistant`,
+        {
+          headers,
+          data: {
+            expected_revision: 0,
+            text_version: "assistant-demo-v1",
+            decision: "grant",
+          },
+        },
+      )
+    ).status(),
+  ).toBe(200);
+  const url = `/api/v2/conversations/${key.id}/industry-profile`;
+  const profile = await page.request.patch(url, {
+    headers,
+    data: {
+      expected_version: 0,
+      industry: "online_school",
+      updates: Object.entries({
+        budget: "1500000",
+        audience: "взрослые",
+        format: "онлайн",
+        payment_model: "за курс",
+        students: 20,
+      }).map(([field, value]) => ({ field, value })),
+    },
+  });
+  expect(profile.status()).toBe(200);
+  await page.addInitScript(
+    ({ id, token }) =>
+      sessionStorage.setItem(
+        "business-ai.guest.v1",
+        JSON.stringify({ id, token }),
+      ),
+    { id: key.id, token: key.access_token },
+  );
+  const errors: string[] = [],
+    excludedRequests: string[] = [];
+  const consoleErrors: string[] = [];
+  page.on("console", (m) => {
+    if (m.type() === "error") consoleErrors.push(m.text());
+  });
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("request", (r) => {
+    if (
+      /\/api\/v1\/(geo|finance)\//.test(r.url()) ||
+      r.url().endsWith("/propose")
+    )
+      excludedRequests.push(new URL(r.url()).pathname);
+  });
+  await page.goto("/#business-ai");
+  await expect(
+    page.getByRole("heading", { name: "Ваш проект", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Продолжить", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Сколько может приносить ваш бизнес?" }),
+  ).toBeVisible();
+  await page
+    .getByRole("combobox", { name: "Модель оплаты обучения" })
+    .selectOption("course");
+  const values: Record<string, string> = {
+    students: "20",
+    student_capacity: "30",
+    tuition: "10000",
+    course_months: "3",
+    variable_per_student: "1000",
+    fee_ratio: "0.05",
+    teachers: "60000",
+    platform: "10000",
+    marketing: "30000",
+    other_fixed: "50000",
+  };
+  const financialUrl = url.replace("industry-profile", "financial-scenarios");
+  const view = (await (
+    await page.request.get(financialUrl, { headers })
+  ).json()) as Schemas["FinancialView"];
+  for (const field of view.configuration.parameters) {
+    await page
+      .getByRole("textbox", { name: field.label, exact: true })
+      .fill(values[field.id]);
+    await page
+      .getByRole("combobox", {
+        name: `${field.label}: происхождение`,
+        exact: true,
+      })
+      .selectOption("user_assumption");
+  }
+  for (const [label, low, high] of [
+    ["Платящие ученики", "10", "30"],
+    ["Цена за выбранный период оплаты", "8000", "12000"],
+  ]) {
+    const fieldset = page.locator(".financial-input").filter({
+      has: page.getByRole("textbox", { name: label, exact: true }),
+    });
+    await fieldset.getByText("Сценарный диапазон", { exact: true }).click();
+    await page
+      .getByRole("textbox", { name: `${label}: минимум`, exact: true })
+      .fill(low);
+    await page
+      .getByRole("textbox", { name: `${label}: максимум`, exact: true })
+      .fill(high);
+  }
+  await page
+    .getByRole("button", { name: "Сохранить вводные для проверки" })
+    .click();
+  await expect(
+    page.getByRole("checkbox", { name: "Проверено: Платящие ученики" }),
+  ).toBeVisible();
+  for (const checkbox of await page.getByRole("checkbox").all())
+    await checkbox.check();
+  await page
+    .getByRole("button", { name: "Использовать выбранные значения" })
+    .click();
+  const started = Date.now();
+  const waiting = page.waitForResponse(
+    (r) => r.url().endsWith("/calculate") && r.request().method() === "POST",
+  );
+  await page.getByRole("button", { name: "Рассчитать три сценария" }).click();
+  const response = await waiting;
+  expect(response.status()).toBe(200);
+  const result = (await response.json()) as Schemas["FinancialView"];
+  expect(result.result!.result.scenarios[1].operating_result).toBe(
+    "-280000.00",
+  );
+  expect(result.result!.result.scenarios[1].period).toBe("course_cohort");
+  expect(result.result!.result.contains_assumptions).toBe(true);
+  expect(
+    result.result!.result.scenarios.map((s) => s.operating_result),
+  ).toEqual(["-384000.00", "-280000.00", "-138000.00"]);
+  const elapsed = Date.now() - started;
+  await page
+    .getByText("Ввести или проверить параметры", { exact: true })
+    .click();
+  await page
+    .getByRole("textbox", {
+      name: "Постоянные расходы на преподавателей",
+      exact: true,
+    })
+    .fill("70000");
+  const previewing = page.waitForResponse((r) => r.url().endsWith("/what-if"));
+  await page.getByRole("button", { name: "Проверить без сохранения" }).click();
+  const preview = (await (await previewing).json()) as Schemas["WhatIfResult"];
+  expect(preview.persisted).toBe(false);
+  expect(preview.result.scenarios[1].operating_result).toBe("-310000.00");
+  const beforeReload = (await (
+    await page.request.get(financialUrl, { headers })
+  ).json()) as Schemas["FinancialView"];
+  expect(beforeReload.document).toEqual(result.document);
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Базовый" })).toBeVisible();
+  for (const width of [1440, 768, 390]) {
+    await page.setViewportSize({ width, height: 950 });
+    expect(
+      await page.locator("body").evaluate((el) => el.scrollWidth <= innerWidth),
+    ).toBe(true);
+    await page.screenshot({
+      path: `${directory}/screenshots/real-school-${width}.png`,
+      fullPage: true,
+    });
+  }
+  const download = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Скачать сценарный JSON" }).click();
+  expect(await (await download).failure()).toBeNull();
+  await (await download).saveAs(`${directory}/real-school-scenarios.json`);
+  expect(errors).toEqual([]);
+  expect(consoleErrors).toEqual([]);
+  expect(excludedRequests).toEqual([]);
+  await writeFile(
+    `${directory}/browser-real-manual.json`,
+    JSON.stringify(
+      {
+        mode: "Built Compose/API/PostGIS; manual scenario inputs; no mocks; no Ollama calls",
+        calculation_http_ms: elapsed,
+        base_operating_result: "-280000.00",
+        preview_operating_result: "-310000.00",
+        what_if_persisted: false,
+        period: "course_cohort",
+        months: 3,
+        browser_errors: errors,
+        console_errors: consoleErrors,
+        scenarios: result.result!.result.scenarios.map(
+          (s) => s.operating_result,
+        ),
+        excluded_requests: excludedRequests,
+        widths: [1440, 768, 390],
+        download: "real-school-scenarios.json",
+      },
+      null,
+      2,
+    ),
+  );
+});
+
 test("U-04 real online school: Qwen, review, no-map, reload and JSON", async ({
   page,
 }) => {

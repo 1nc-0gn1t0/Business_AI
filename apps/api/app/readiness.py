@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from app.adapters.llm import LLMError, get_llm
 
-SCHEMA = "0011_industry_profile"
+SCHEMA = "0012_financial_scenarios"
 
 
 class Readiness(BaseModel):

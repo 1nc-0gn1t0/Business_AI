@@ -1,5 +1,44 @@
 # Business AI — HANDOFF
 
+## Business AI 2.0 / U-05 · financial scenarios · 30.10.2026 · PARTIAL / live blocked
+
+- PR35 merged; main `dd8503455b2c46c8387cd6411fa0f0276983b6a7`, initially clean.
+  Branch `codex/U-05-universal-financial-scenarios`; actual delivery SHA/PR/CI in report.
+- [Implementation/API/limits](architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md),
+  [checkpoint](architecture/U-05_CHECKPOINT.md), evidence `docs/qa/u-05/`.
+- Three reviewed Decimal adapters (auto/school/generic), explicit periods/capacities,
+  input ranges/review/provenance, three scenarios, break-even/sensitivity and no-save
+  what-if. Legacy coffee formulas/DTO/report bytes untouched. No market-data fallback.
+- Migration0012 adds owner-bound workspace/action/result tables; same conversation
+  owner/consent lock plus input CAS, durable idempotency/late-publication fencing.
+  Financial and profile config hashes bind confirmations; non-coffee configs u05-v1
+  require renewed review. Feature BA_FINANCE_V2_ENABLED=0, industry also required.
+- New UI follows server finance capability, no mandatory school map; manual review,
+  JSON snapshot/reload, stale output invalidation and existing Vi emotions.
+- Verified: final finance unit36PASS; targeted DB66PASS (finance/industry/agent/registry/
+  geo), generic/cache2PASS; populated/repeat migrations/reports41PASS (overlap).
+  Chromium full49PASS; real built Compose manual-school1PASS5.2s, no mocks/Ollama,
+  review→3different scenarios→unsaved what-if→reload→JSON; page/console errors0,
+  widths1440/768/390. Deep actual v1 OpenAPI36paths/126schemas unchanged.
+  Full API pytest538PASS/168SKIP/102deselected before2final unit additions; tests PASS,
+  initial hook exit1 due concurrent QA/docs writes. Final standalone7prek hooks PASS;
+  actual delivery commit hooks/CI in report.
+- Python100iterations/model: median0.377…0.649ms, max1.587ms; allocation trace36…43KiB
+  excludes interpreter/native/DB/Ollama. Browser-triggered calculation236ms includes
+  click/HTTP/DB/publication. No model RAM/GPU/inference performance claim.
+- Live harness tried existing localhost11434 and got503 for all3cases; no successful
+  hypothesis generation/confirmation claimed. Ollama binary/model not found in standard
+  Windows/both Ubuntu WSL paths. Owner asked for existing endpoint/location. **Do not
+  mark Completed until at least one full live scenario succeeds.** No replacement model.
+- Owner requested container lookup/start: both Docker contexts use the same engine;
+  no existing containers/volumes; all4available images scanned without finding Ollama/
+  Qwen. Official same-version0.40.8 digest verified, but automatic tool approval
+  rejected create/start/model-pull command as "blocked by policy" without details;
+  nothing downloaded/started. Explicit approval for new same-model container requested.
+- Isolated hardened Compose/PostGIS3.6/schema0012/ready+web200,0persistent volumes;
+  QA services stopped after evidence. No user volume,
+  production geo import, new financial data source, v1 PDF or U-06 changes. No merge.
+
 ## Business AI 2.0 / U-04 · Universal Industry Engine · 30.10.2026
 
 - PR34 merged; base main `43f0f389a0b4fcdaadd2aead1f777c31d3ab4524`, initially clean.

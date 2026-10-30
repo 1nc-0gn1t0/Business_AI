@@ -22,6 +22,7 @@ import {
   Summary,
 } from "./FlowUI";
 import Finance from "./Finance";
+import FinancialScenarios from "./FinancialScenarios";
 import BankProducts from "./BankProducts";
 import ReportExport from "./ReportExport";
 import {
@@ -756,22 +757,39 @@ export default function BusinessFlow({
             )}
             {financeVisited && (
               <div hidden={stage !== "finance"}>
-                <Finance
-                  key={`${financeContext}:${ranking?.request_fingerprint}:${selected}`}
-                  profile={conversation?.profile || null}
-                  zone={zone}
-                  confirmedDrivers={universal?.coffee_inputs}
-                  onReport={receiveFinance}
-                />
-                <div className="step-action">
-                  <button
-                    className="button"
-                    disabled={!canEnter("banking", flow)}
-                    onClick={() => navigate("banking")}
-                  >
-                    Продолжить
-                  </button>
-                </div>
+                {universal &&
+                credential &&
+                universal.plan.capabilities.some(
+                  (c) =>
+                    c.id === "finance.analysis" &&
+                    c.method?.startsWith("financial_v2."),
+                ) ? (
+                  <FinancialScenarios
+                    key={`${credential.id}:${conversation?.version}`}
+                    credential={credential}
+                    profileRevision={conversation!.version}
+                    onEdit={() => navigate("review")}
+                  />
+                ) : (
+                  <>
+                    <Finance
+                      key={`${financeContext}:${ranking?.request_fingerprint}:${selected}`}
+                      profile={conversation?.profile || null}
+                      zone={zone}
+                      confirmedDrivers={universal?.coffee_inputs}
+                      onReport={receiveFinance}
+                    />
+                    <div className="step-action">
+                      <button
+                        className="button"
+                        disabled={!canEnter("banking", flow)}
+                        onClick={() => navigate("banking")}
+                      >
+                        Продолжить
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             )}
             {bankVisited && (

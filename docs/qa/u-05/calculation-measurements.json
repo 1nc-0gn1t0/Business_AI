@@ -1,0 +1,27 @@
+{
+  "scope": "Synthetic mathematical fixtures only; CPU Decimal calculation, not Qwen/market forecast/system SLA",
+  "iterations_per_model": 100,
+  "models": {
+    "auto_repair": {
+      "median_ms": 0.648550019832328,
+      "max_ms": 1.586599973961711,
+      "cpu_seconds_for_100": 0.0625,
+      "single_calculation_tracemalloc_peak_bytes": 42696,
+      "note": "Python allocation tracing excludes interpreter/native libraries/DB/OS/Ollama; separate from timing loop"
+    },
+    "online_school": {
+      "median_ms": 0.4149999876972288,
+      "max_ms": 1.003999961540103,
+      "cpu_seconds_for_100": 0.046875,
+      "single_calculation_tracemalloc_peak_bytes": 37720,
+      "note": "Python allocation tracing excludes interpreter/native libraries/DB/OS/Ollama; separate from timing loop"
+    },
+    "generic": {
+      "median_ms": 0.3766999871004373,
+      "max_ms": 1.1202000314369798,
+      "cpu_seconds_for_100": 0.03125,
+      "single_calculation_tracemalloc_peak_bytes": 36856,
+      "note": "Python allocation tracing excludes interpreter/native libraries/DB/OS/Ollama; separate from timing loop"
+    }
+  }
+}

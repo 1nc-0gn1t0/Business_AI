@@ -1,0 +1,7 @@
+{
+  "base": "dd8503455b2c46c8387cd6411fa0f0276983b6a7",
+  "v1_paths": 36,
+  "recursive_schemas": 126,
+  "equal": true,
+  "method": "deep comparison of path objects and every recursively referenced schema"
+}

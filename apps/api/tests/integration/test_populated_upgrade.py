@@ -331,6 +331,8 @@ def test_populated_previous_upgrade_preserves_data_and_report_bytes(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setenv("LLM_PROVIDER", "stub")
+    monkeypatch.setenv("BA_INDUSTRY_ENABLED", "1")
+    monkeypatch.setenv("BA_FINANCE_V2_ENABLED", "1")
     monkeypatch.setattr("app.leads.service.today", lambda: date(2026, 10, 23))
     with isolated_database() as name:
         migrate(name, "upgrade", PREVIOUS)
@@ -352,6 +354,47 @@ def test_populated_previous_upgrade_preserves_data_and_report_bytes(
             migrate(name, "upgrade", "head")
             assert {k: v for k, v in fingerprints(name).items() if k in before} == before
             add_report(engine, state)
+            # U-05 exercises actual owner-bound writes on a NEW generic test project.
+            # No legacy profile or historical report is rewritten to seed new tables.
+            with api(engine) as client:
+                created, headers, _ = create(client)
+                endpoint = f"/api/v2/conversations/{created['id']}/industry-profile"
+                response = client.patch(
+                    endpoint,
+                    headers=headers,
+                    json=dict(
+                        expected_version=0,
+                        industry="generic",
+                        updates=[
+                            dict(field=k, value=v)
+                            for k, v in dict(
+                                budget="1000000",
+                                business_model="сервис",
+                                physical_premises=False,
+                                audience="фермеры",
+                                revenue_streams="обслуживание теплицы",
+                            ).items()
+                        ],
+                    ),
+                )
+                assert response.status_code == 200, response.text
+                assert (
+                    client.post(
+                        endpoint + "/confirm", headers=headers, json={"expected_version": 1}
+                    ).status_code
+                    == 200
+                )
+                response = client.post(
+                    endpoint.replace("industry-profile", "financial-scenarios") + "/calculate",
+                    headers=headers,
+                    json=dict(
+                        request_id=str(uuid4()),
+                        expected_profile_revision=2,
+                        expected_input_revision=0,
+                    ),
+                )
+                assert response.status_code == 200, response.text
+                assert response.json()["result"]["result"]["status"] == "partial"
             complete = fingerprints(name)
             assert all(v["rows"] > 0 for v in complete.values()), complete
             migrate(name, "upgrade", "head")

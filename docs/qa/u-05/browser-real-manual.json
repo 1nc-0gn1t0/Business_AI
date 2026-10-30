@@ -1,0 +1,23 @@
+{
+  "mode": "Built Compose/API/PostGIS; manual scenario inputs; no mocks; no Ollama calls",
+  "calculation_http_ms": 236,
+  "base_operating_result": "-280000.00",
+  "preview_operating_result": "-310000.00",
+  "what_if_persisted": false,
+  "period": "course_cohort",
+  "months": 3,
+  "browser_errors": [],
+  "console_errors": [],
+  "scenarios": [
+    "-384000.00",
+    "-280000.00",
+    "-138000.00"
+  ],
+  "excluded_requests": [],
+  "widths": [
+    1440,
+    768,
+    390
+  ],
+  "download": "real-school-scenarios.json"
+}

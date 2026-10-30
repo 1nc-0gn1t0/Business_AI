@@ -403,3 +403,56 @@
   text-align: right;
   overflow-wrap: anywhere;
 }
+.financial-input {
+  border: 0;
+  border-bottom: 1px solid #d8e4ee;
+  padding: 1.4rem 0;
+  margin: 0;
+}
+.financial-input legend {
+  font-weight: 600;
+  padding: 0;
+}
+.financial-input label {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.6rem 0;
+}
+.financial-input input:not([type="checkbox"]),
+.financial-input select {
+  max-width: 100%;
+  width: 100%;
+}
+.financial-input label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.financial-range,
+.financial-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.financial-comparison {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.financial-comparison article {
+  border-top: 2px solid #2673e8;
+  padding: 1rem 0;
+  min-width: 0;
+}
+.financial-comparison dd {
+  margin: 0.2rem 0 0.8rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.financial-scenarios small {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 700px) {
+  .financial-comparison,
+  .financial-range {
+    grid-template-columns: 1fr;
+  }
+}

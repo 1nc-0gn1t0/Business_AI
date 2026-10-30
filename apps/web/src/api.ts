@@ -39,6 +39,33 @@ export class ApiError extends Error {
   }
 }
 const messages: Record<string, string> = {
+  financial_profile_conflict:
+    "Проект изменился. Обновите вводные и проверьте расчёт.",
+  financial_input_conflict:
+    "Вводные изменились в другом запросе. Обновите их перед продолжением.",
+  financial_profile_confirmation_required:
+    "Сначала подтвердите параметры проекта.",
+  financial_profile_changed:
+    "Расчёт относится к прежнему профилю. Подготовьте вводные заново.",
+  financial_idempotency_conflict:
+    "Этот запрос уже использован для другого действия. Обновите проект.",
+  financial_proposal_in_progress:
+    "Предложения уже готовятся. Дождитесь ответа или обновите вводные.",
+  financial_capacity_exceeded:
+    "Число учеников превышает выбранную вместимость. Проверьте диапазоны.",
+  financial_value_outside_domain:
+    "Значение выходит за допустимые пределы. Проверьте вводные.",
+  financial_unit_mismatch:
+    "Единицы измерения не совпадают. Проверьте период и параметр.",
+  financial_billing_required: "Выберите модель оплаты обучения.",
+  financial_storage_limit:
+    "Достигнут лимит сохранённых изменений этого проекта.",
+  financial_result_storage_limit:
+    "Достигнут лимит сохранённых сценариев этого проекта.",
+  financial_operation_expired:
+    "Запрос прерван или устарел. Обновите вводные перед повтором.",
+  financial_unverified_source_claim:
+    "Предложение не прошло проверку происхождения. Введите значение самостоятельно.",
   database_capacity_busy:
     "Все соединения с базой заняты. Повторите действие позже.",
   llm_server_error:
