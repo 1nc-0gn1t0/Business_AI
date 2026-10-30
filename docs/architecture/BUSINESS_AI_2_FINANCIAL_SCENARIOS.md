@@ -256,6 +256,122 @@ Ollama containers, volumes, binary or model in the4available images; both contex
 refer to the same daemon. Automatic approval rejected restoring the same-version
 local container/model ("blocked by policy", no detailed reason). No download/start
 occurred; explicit creation authorization has been requested.
+
+### Environment-first follow-up requested by owner
+
+The owner subsequently **stopped all recreation/download** and requested diagnosis.
+That instruction supersedes the earlier creation question. No new Ollama, model,
+model volume, public listener, firewall rule or tunnel was installed/created.
+The historical U-03/U-04 successes are not disputed or re-labelled as mocks.
+Current reproducible observations are in
+[`ollama-environment-diagnostic.json`](../qa/u-05/ollama-environment-diagnostic.json).
+
+| Check | Observed now |
+|---|---|
+| Execution | Native Windows11 x64 / PowerShell7.6.5, Acer Nitro AN517-54; not a WSL/container process |
+| Remote sandbox | No remote Linux/SSH execution evidence; CODEX_CI=1 is not sufficient evidence of a remote host |
+| Native backend factory | OllamaLLM, `http://127.0.0.1:11434`, exact configured Qwen name |
+| Compose backend | `http://host.docker.internal:11434`; `.env.example`/Compose agree |
+| Current API process | None found; diagnostic process and actual API image were checked separately |
+| Native HTTP | `/api/version` and `/api/tags` fail on IPv4 loopback; no expected listener |
+| API-image HTTP | Host name resolves; host IPv4 TCP refuses connection, IPv6 has no route |
+| Binary / model files | Not located in accessible current storage/images/WSL locations; not proof of permanent absence |
+| Current version | Unknown until HTTP/installed CLI responds;0.40.8 is historical evidence only |
+
+This identifies a serving-endpoint availability problem **before** Qwen generation.
+It does not establish why the previous installation/storage changed or where it is
+currently located. The IPv6 diagnostic error does not justify changing network
+security; the independent IPv4 no-listener/refusal is recorded separately.
+
+Run these read-only checks in the owner's ordinary Windows terminal; they do not
+install, download, expose or reconfigure anything:
+
+```powershell
+Get-Command ollama.exe -All -ErrorAction SilentlyContinue | Select-Object Source
+Get-Process *ollama* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,Path
+Get-NetTCPConnection -State Listen -LocalPort 11434 -ErrorAction SilentlyContinue
+Invoke-RestMethod http://127.0.0.1:11434/api/version -TimeoutSec 5
+(Invoke-RestMethod http://127.0.0.1:11434/api/tags -TimeoutSec 5).models |
+  Select-Object name,digest,size
+[Environment]::GetEnvironmentVariable('OLLAMA_MODELS','User')
+[Environment]::GetEnvironmentVariable('OLLAMA_MODELS','Machine')
+```
+
+If an existing Windows executable is resolved and no server is running, start that
+executable, retaining its existing environment/model storage. Do not change
+OLLAMA_HOST/OLLAMA_MODELS or pull a replacement:
+
+```powershell
+$existingOllama = Get-Command ollama.exe -ErrorAction SilentlyContinue
+$existingBind = [Environment]::GetEnvironmentVariable('OLLAMA_HOST')
+if ($existingBind -and $existingBind -notmatch '^(https?://)?(127\.0\.0\.1|localhost|\[::1\])(:\d+)?/?$') {
+  throw 'Existing bind is not explicitly loopback: inspect it; do not expose or reconfigure automatically.'
+}
+if ($existingOllama) {
+  Start-Process -FilePath $existingOllama.Source -ArgumentList 'serve' -WindowStyle Hidden
+} else {
+  Write-Output 'Existing executable not resolved: locate its original path; do not reinstall or pull.'
+}
+```
+
+For WSL inspect the actual existing distribution/service first (both distributions
+below exist on the checked host). Only a loaded existing service may be started;
+`not-found` means stop diagnosis there, not create a new unit or install a model:
+
+```powershell
+wsl --list --verbose
+wsl -d Ubuntu-24.04 -- bash -lc 'command -v ollama; systemctl show ollama -p LoadState -p ActiveState -p FragmentPath; curl --noproxy "*" -fsS --max-time 5 http://127.0.0.1:11434/api/version'
+wsl -d Ubuntu -- bash -lc 'command -v ollama; systemctl show ollama -p LoadState -p ActiveState -p FragmentPath; curl --noproxy "*" -fsS --max-time 5 http://127.0.0.1:11434/api/version'
+# If the selected distribution reports LoadState=loaded:
+wsl -d Ubuntu-24.04 -- sudo systemctl start ollama
+```
+
+For an existing Docker setup inspect the **original** container and mounts/context;
+do not create a replacement container/volume or run Compose against working PGDATA:
+
+```powershell
+docker context ls
+docker ps -a --format '{{.Names}} {{.Image}} {{.Status}} {{.Ports}}'
+docker volume ls
+# Substitute the existing container name only after it is found:
+# docker inspect <existing-name> --format '{{json .HostConfig.PortBindings}} {{json .Mounts}}'
+# docker start <existing-name>  # only if the existing config does not expose Ollama publicly
+# docker exec <existing-name> ollama list
+# docker exec <existing-api-name> python -c "import os,urllib.request; u=os.environ.get('OLLAMA_BASE_URL','http://127.0.0.1:11434'); print(urllib.request.urlopen(u+'/api/version',timeout=5).read().decode())"
+```
+
+The last command checks from the API container, where localhost means that container,
+not Windows. If the old model does not appear after restoring its original server,
+inspect its original OLLAMA_MODELS/mount before any download. Once `/api/tags` lists
+the exact model, a short real probe can run without pulling or changing names:
+
+```powershell
+$wantedModel = 'qwen3:4b-instruct-2507-q4_K_M'
+$knownModels = (Invoke-RestMethod http://127.0.0.1:11434/api/tags -TimeoutSec 5).models.name
+if ($wantedModel -notin $knownModels) { throw 'Existing target model not visible; inspect original storage, do not pull.' }
+$probe = @{ model=$wantedModel; stream=$false; think=$false;
+  messages=@(@{role='user';content='Ответь одним словом: готов'});
+  options=@{temperature=0;num_ctx=4096;num_predict=32} } | ConvertTo-Json -Depth 6
+Invoke-RestMethod http://127.0.0.1:11434/api/chat -Method Post -ContentType 'application/json' -Body $probe -TimeoutSec 180
+```
+
+Exact read-only repro using the **already built** U-05 API image when no API container
+is running (no image pull, published ports, GPU/model process or persistent volume):
+
+```powershell
+$check = 'import urllib.request; from app.adapters.llm import get_llm; b=get_llm(); print(b.settings.base_url); h=urllib.request.build_opener(urllib.request.ProxyHandler({})); print(h.open(b.settings.base_url+"/api/version",timeout=5).read().decode())'
+docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges `
+  -e LLM_PROVIDER=ollama -e OLLAMA_BASE_URL=http://host.docker.internal:11434 `
+  --entrypoint python business-ai-u05-api:latest -c $check
+```
+
+Then run the existing U-05 live harness against an isolated PG server with the
+effective reachable base URL, preserving all prior failed evidence. While the
+original runtime cannot be reached, **live Qwen validation stays BLOCKED**; native
+manual/explicitly scripted integration tests are not substitutes for that gate.
+CLI/storage reference: [official CLI](https://github.com/ollama/ollama/blob/main/docs/cli.mdx),
+[model storage](https://github.com/ollama/ollama/blob/main/envconfig/config.go),
+[official Docker instructions](https://github.com/ollama/ollama/blob/main/docs/docker.mdx).
 Mock screenshots are explicitly named `financial-mock-*`; actual browser artifacts,
 when successful, are named `real-school-*`. Failed trials are retained.
 

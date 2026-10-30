@@ -35,6 +35,16 @@
   Qwen. Official same-version0.40.8 digest verified, but automatic tool approval
   rejected create/start/model-pull command as "blocked by policy" without details;
   nothing downloaded/started. Explicit approval for new same-model container requested.
+- Owner subsequently STOPPED any recreation/download and requested environment-first
+  diagnosis. That instruction supersedes the earlier creation question. Native commands
+  run on the Windows host (not WSL/Docker); no remote Linux sandbox evidence. Actual
+  get_llm defaults127.0.0.1:11434; Compose defaults host.docker.internal:11434. Both
+  native and existing API-image HTTP probes fail; host IPv4 connection refused, no
+  expected listener/Ollama process. WSL units not-found. Current binary/model lookup
+  is negative only within accessible storage; never claim historic Ollama did not exist.
+  [Sanitized evidence](qa/u-05/ollama-environment-diagnostic.json) and exact local recovery
+  commands in implementation doc. Live Qwen validation **BLOCKED**, not a model response
+  or proof of bad proposals. No reinstall, port exposure, network change or tunnel.
 - Isolated hardened Compose/PostGIS3.6/schema0012/ready+web200,0persistent volumes;
   QA services stopped after evidence. No user volume,
   production geo import, new financial data source, v1 PDF or U-06 changes. No merge.

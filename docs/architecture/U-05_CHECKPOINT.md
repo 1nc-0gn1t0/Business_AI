@@ -49,5 +49,13 @@
 - Status PARTIAL until existing local Qwen can generate/review a full valid scenario.
   Owner input still pending. Preserve failed live evidence; do not claim generation
   quality or install a replacement model. QA services stopped after evidence.
+- New owner steering supersedes pending creation request: NO installation/download.
+  Environment diagnosis completed: native Windows host, Compose/native base URLs
+  distinguished; HTTP unavailable from both native process and existing API image.
+  IPv4 refuses connection; no listener/process/WSL unit found. Accessible storage
+  lookup cannot establish what happened to historic runtime. Sanitized JSON evidence
+  and exact Windows/WSL/container recovery commands added. Do not retry model creation.
+  Current checkpoint commit905bf8743664307457138d86264eae58a268f6b5 pushed; PR form only
+  prepared, not submitted. Continue same branch; no merge/U-06.
 - Next after owner supplies endpoint: same branch/PR, run native live harness, inspect
   rejected hypotheses/manual corrections/timing; rerun only affected checks. No U-06.
