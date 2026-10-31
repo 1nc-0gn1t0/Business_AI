@@ -31,6 +31,9 @@
   live-qwen-final.json, live-qwen-recovered.json (rejections), coffee-regression/.
   Earlier unavailable-endpoint evidence retained as history, no longer a blocker.
 - Delivery gate: final commit/push/one PR/exact-HEAD CI. No merge or U-06 permission.
+  PR36 initial CI exposed7 advisories in dev-only pypdf6.21.2; narrow lock update
+  to6.21.4, no production dependency/formula changes. Hashed Python audit PASS;
+  PDF regressions rerun. Final CI is checked again on the updated PR HEAD.
   Actual final SHA and checks recorded in delivery report/PR (avoid self-reference).
   Next is owner review, not further roadmap implementation.
 

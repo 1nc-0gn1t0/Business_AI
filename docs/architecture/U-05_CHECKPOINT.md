@@ -23,6 +23,10 @@
 - Evidence: live-qwen-recovered.json (failed), live-qwen-final.json, live-browser/,
   coffee-regression/, openapi-compatibility.json. No credentials or owner data.
 - Delivery gate: final diff/secret check, hooks/commit/push/one PR/exact-HEAD CI.
+  PR36 initial HEAD passed both OS checks, Compose and image gates; dependency
+  audit found7 advisories in the existing dev-only pypdf6.21.2. Lock updated only
+  that package to6.21.4; production requirements/formulas unchanged. Full hashed
+  Python audit now reports no known vulnerabilities; PDF regression rerun.
   Never merge, integrate recovery or start U-06. Earlier blocked instructions below
   describe30October and are superseded by this owner-authorized restored runtime.
 
