@@ -1,0 +1,1139 @@
+{
+  "schema_version": "analysis-result-v2",
+  "conversation_id": "b4f7a247-3fa9-4075-8e19-71412e8d2dbe",
+  "profile_revision": 3,
+  "assessed_at": "2026-10-31T09:10:43.292296Z",
+  "state": "completed",
+  "profile": {
+    "schema_version": "business-profile-v2",
+    "id": "c121e20c-f23a-42cf-bdb2-0261464e31b2",
+    "conversation_id": "b4f7a247-3fa9-4075-8e19-71412e8d2dbe",
+    "revision": 3,
+    "idea": "Хочу открыть онлайн-школу программирования. Бюджет 1500000 рублей.",
+    "industry": "online_school",
+    "raw_industry": null,
+    "resolution": "known",
+    "industry_evidence": "Хочу открыть онлайн-школу программирования.",
+    "config_version": "u05-v1",
+    "config_sha256": "de59e957d22942ed5a6da1d85781dd0a670ed0feece4f07076f130f3b1419547",
+    "configuration_snapshot": {
+      "id": "online_school",
+      "label": "Онлайн-школа",
+      "version": "u05-v1",
+      "aliases": [
+        "онлайн-школа",
+        "онлайн-школу",
+        "онлайн школа"
+      ],
+      "business_models": [
+        "digital",
+        "subscription"
+      ],
+      "required": [
+        "budget",
+        "audience",
+        "format",
+        "payment_model",
+        "students"
+      ],
+      "fields": [
+        {
+          "id": "payment_model",
+          "label": "Модель оплаты",
+          "question": "Как будут платить ученики: за курс, подписку или занятия?",
+          "kind": "text",
+          "unit": "text",
+          "choices": [],
+          "maximum": 1000000,
+          "driver": "revenue"
+        },
+        {
+          "id": "students",
+          "label": "Число учеников",
+          "question": "Сколько учеников планируете на старте?",
+          "kind": "integer",
+          "unit": "students",
+          "choices": [],
+          "maximum": 1000000,
+          "driver": "capacity"
+        },
+        {
+          "id": "tuition",
+          "label": "Стоимость обучения",
+          "question": "Укажите стоимость обучения в рублях.",
+          "kind": "money",
+          "unit": "RUB/student/payment",
+          "choices": [],
+          "maximum": 10000000000000000,
+          "driver": "revenue"
+        },
+        {
+          "id": "payment_frequency",
+          "label": "Период оплаты",
+          "question": "Как часто оплачивают обучение?",
+          "kind": "text",
+          "unit": "text",
+          "choices": [],
+          "maximum": 1000000,
+          "driver": "context"
+        },
+        {
+          "id": "teachers",
+          "label": "Оплата преподавателей",
+          "question": "Укажите оплата преподавателей в рублях.",
+          "kind": "money",
+          "unit": "RUB/month",
+          "choices": [],
+          "maximum": 10000000000000000,
+          "driver": "fixed_cost"
+        },
+        {
+          "id": "marketing",
+          "label": "Маркетинг",
+          "question": "Укажите маркетинг в рублях.",
+          "kind": "money",
+          "unit": "RUB/month",
+          "choices": [],
+          "maximum": 10000000000000000,
+          "driver": "fixed_cost"
+        }
+      ],
+      "data_categories": [],
+      "optional_categories": [
+        "user.budget",
+        "user.costs"
+      ],
+      "geo_policy": "none",
+      "geo_adapter": null,
+      "finance_adapter": null,
+      "limitations": [
+        "Финансовые сценарии цифрового обучения требуют отдельной v2 capability и подтверждённых финансовых вводных."
+      ]
+    },
+    "values": {
+      "budget": {
+        "value": "1500000",
+        "unit": "RUB",
+        "origin": "user_input",
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "evidence": "Бюджет 1500000 рублей.",
+        "lineage": "user_message"
+      },
+      "format": {
+        "value": "онлайн",
+        "unit": "text",
+        "origin": "user_input",
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "evidence": "онлайн",
+        "lineage": "user_edit"
+      },
+      "audience": {
+        "value": "взрослые",
+        "unit": "text",
+        "origin": "user_input",
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "evidence": "взрослые",
+        "lineage": "user_edit"
+      },
+      "currency": {
+        "value": "RUB",
+        "unit": "text",
+        "origin": "user_input",
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "evidence": "Бюджет 1500000 рублей.",
+        "lineage": "user_message"
+      }
+    },
+    "extensions": {
+      "generic": {},
+      "online_school": {
+        "students": {
+          "value": 20,
+          "unit": "students",
+          "origin": "user_input",
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "evidence": "20",
+          "lineage": "user_edit"
+        },
+        "payment_model": {
+          "value": "помесячно",
+          "unit": "text",
+          "origin": "user_input",
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "evidence": "помесячно",
+          "lineage": "user_edit"
+        }
+      }
+    },
+    "confirmed_revision": 3,
+    "deferred_fields": [],
+    "legacy_snapshot": {
+      "id": "c121e20c-f23a-42cf-bdb2-0261464e31b2",
+      "conversation_id": "b4f7a247-3fa9-4075-8e19-71412e8d2dbe",
+      "city": null,
+      "category": "Онлайн-школа",
+      "budget": "1500000.00",
+      "funding": null,
+      "preferences": {
+        "format": "онлайн",
+        "preferred_districts": [],
+        "constraints": []
+      },
+      "confirmation_state": "draft"
+    }
+  },
+  "plan": {
+    "profile_revision": 3,
+    "industry_version": "u05-v1",
+    "outcome": "ready",
+    "missing_fields": [],
+    "next_question": null,
+    "geo_required": false,
+    "capabilities": [
+      {
+        "id": "data.coverage",
+        "status": "available",
+        "method": "app.data.coverage.coverage",
+        "reason": "Проверка metadata, без сетевого запроса."
+      },
+      {
+        "id": "data.sufficiency",
+        "status": "available",
+        "method": "app.data.coverage.assess_sufficiency",
+        "reason": "Техническая достаточность не доказывает качество бизнес-вывода."
+      },
+      {
+        "id": "geo.analysis",
+        "status": "not_required",
+        "method": null,
+        "reason": "Географический анализ не требуется."
+      },
+      {
+        "id": "finance.analysis",
+        "status": "available",
+        "method": "financial_v2.online_school",
+        "reason": "Предварительные финансовые сценарии по подтверждённым вводным."
+      },
+      {
+        "id": "profile.summary",
+        "status": "available",
+        "method": "profile_v2_projection",
+        "reason": "Структурированные вводные и ограничения, без выдуманных вычислений."
+      }
+    ],
+    "stages": [
+      "finance",
+      "banking",
+      "partial_result"
+    ],
+    "coverage": null,
+    "sufficiency": null
+  },
+  "financial": {
+    "id": "cfe985e9-941a-4ee1-b75f-f87705f50be6",
+    "created_at": "2026-10-31T09:10:41.126683Z",
+    "fingerprint": "f3566067d99bcecce5ddc11b42e68567a2092d87709ebb59996c633b164021b9",
+    "profile": {
+      "schema_version": "business-profile-v2",
+      "id": "c121e20c-f23a-42cf-bdb2-0261464e31b2",
+      "conversation_id": "b4f7a247-3fa9-4075-8e19-71412e8d2dbe",
+      "revision": 3,
+      "idea": "Хочу открыть онлайн-школу программирования. Бюджет 1500000 рублей.",
+      "industry": "online_school",
+      "raw_industry": null,
+      "resolution": "known",
+      "industry_evidence": "Хочу открыть онлайн-школу программирования.",
+      "config_version": "u05-v1",
+      "config_sha256": "de59e957d22942ed5a6da1d85781dd0a670ed0feece4f07076f130f3b1419547",
+      "configuration_snapshot": {
+        "id": "online_school",
+        "label": "Онлайн-школа",
+        "version": "u05-v1",
+        "aliases": [
+          "онлайн-школа",
+          "онлайн-школу",
+          "онлайн школа"
+        ],
+        "business_models": [
+          "digital",
+          "subscription"
+        ],
+        "required": [
+          "budget",
+          "audience",
+          "format",
+          "payment_model",
+          "students"
+        ],
+        "fields": [
+          {
+            "id": "payment_model",
+            "label": "Модель оплаты",
+            "question": "Как будут платить ученики: за курс, подписку или занятия?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "students",
+            "label": "Число учеников",
+            "question": "Сколько учеников планируете на старте?",
+            "kind": "integer",
+            "unit": "students",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "capacity"
+          },
+          {
+            "id": "tuition",
+            "label": "Стоимость обучения",
+            "question": "Укажите стоимость обучения в рублях.",
+            "kind": "money",
+            "unit": "RUB/student/payment",
+            "choices": [],
+            "maximum": 10000000000000000,
+            "driver": "revenue"
+          },
+          {
+            "id": "payment_frequency",
+            "label": "Период оплаты",
+            "question": "Как часто оплачивают обучение?",
+            "kind": "text",
+            "unit": "text",
+            "choices": [],
+            "maximum": 1000000,
+            "driver": "context"
+          },
+          {
+            "id": "teachers",
+            "label": "Оплата преподавателей",
+            "question": "Укажите оплата преподавателей в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 10000000000000000,
+            "driver": "fixed_cost"
+          },
+          {
+            "id": "marketing",
+            "label": "Маркетинг",
+            "question": "Укажите маркетинг в рублях.",
+            "kind": "money",
+            "unit": "RUB/month",
+            "choices": [],
+            "maximum": 10000000000000000,
+            "driver": "fixed_cost"
+          }
+        ],
+        "data_categories": [],
+        "optional_categories": [
+          "user.budget",
+          "user.costs"
+        ],
+        "geo_policy": "none",
+        "geo_adapter": null,
+        "finance_adapter": null,
+        "limitations": [
+          "Финансовые сценарии цифрового обучения требуют отдельной v2 capability и подтверждённых финансовых вводных."
+        ]
+      },
+      "values": {
+        "budget": {
+          "value": "1500000",
+          "unit": "RUB",
+          "origin": "user_input",
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "evidence": "Бюджет 1500000 рублей.",
+          "lineage": "user_message"
+        },
+        "format": {
+          "value": "онлайн",
+          "unit": "text",
+          "origin": "user_input",
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "evidence": "онлайн",
+          "lineage": "user_edit"
+        },
+        "audience": {
+          "value": "взрослые",
+          "unit": "text",
+          "origin": "user_input",
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "evidence": "взрослые",
+          "lineage": "user_edit"
+        },
+        "currency": {
+          "value": "RUB",
+          "unit": "text",
+          "origin": "user_input",
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "evidence": "Бюджет 1500000 рублей.",
+          "lineage": "user_message"
+        }
+      },
+      "extensions": {
+        "generic": {},
+        "online_school": {
+          "students": {
+            "value": 20,
+            "unit": "students",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "20",
+            "lineage": "user_edit"
+          },
+          "payment_model": {
+            "value": "помесячно",
+            "unit": "text",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "помесячно",
+            "lineage": "user_edit"
+          }
+        }
+      },
+      "confirmed_revision": 3,
+      "deferred_fields": [],
+      "legacy_snapshot": {
+        "id": "c121e20c-f23a-42cf-bdb2-0261464e31b2",
+        "conversation_id": "b4f7a247-3fa9-4075-8e19-71412e8d2dbe",
+        "city": null,
+        "category": "Онлайн-школа",
+        "budget": "1500000.00",
+        "funding": null,
+        "preferences": {
+          "format": "онлайн",
+          "preferred_districts": [],
+          "constraints": []
+        },
+        "confirmation_state": "draft"
+      }
+    },
+    "inputs": {
+      "profile_revision": 3,
+      "profile_config_sha256": "de59e957d22942ed5a6da1d85781dd0a670ed0feece4f07076f130f3b1419547",
+      "model": "online_school",
+      "adapter_version": "u05-decimal-v1",
+      "adapter_sha256": "4f8c9c537d1003273dbeec7dc06eece749c655a9e65cbee9982b476c6ba8367f",
+      "revision": 6,
+      "billing_model": "monthly",
+      "entries": {
+        "tuition": {
+          "base": "6500",
+          "low": "6000",
+          "high": "7500",
+          "unit": "RUB/student/payment",
+          "source": {
+            "origin": "synthetic",
+            "source_name": "Вводная пользователя",
+            "data_version": "financial-input-5",
+            "confidence": "not_applicable",
+            "limitations": [
+              "Не подтверждённая рыночная статистика. Требуется явный review."
+            ],
+            "observed_at": null,
+            "evidence_ref": "financial-input:5:tuition",
+            "source_attested": false
+          },
+          "epistemic": "assumed",
+          "review": "confirmed",
+          "method": "user_assumption",
+          "basis": "Редактирование пользователем",
+          "revision": 5,
+          "created_at": "2026-10-31T09:10:40.460980Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "platform": {
+          "base": "10000",
+          "low": "10000",
+          "high": "10000",
+          "unit": "RUB/month",
+          "source": {
+            "origin": "synthetic",
+            "source_name": "Вводная пользователя",
+            "data_version": "financial-input-1",
+            "confidence": "not_applicable",
+            "limitations": [
+              "Не подтверждённая рыночная статистика. Требуется явный review."
+            ],
+            "observed_at": null,
+            "evidence_ref": "financial-input:1:platform",
+            "source_attested": false
+          },
+          "epistemic": "assumed",
+          "review": "confirmed",
+          "method": "user_assumption",
+          "basis": "Редактирование пользователем",
+          "revision": 1,
+          "created_at": "2026-10-31T09:10:19.303454Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "students": {
+          "base": "100",
+          "low": "100",
+          "high": "100",
+          "unit": "students",
+          "source": {
+            "origin": "synthetic",
+            "source_name": "Qwen: исследовательская гипотеза",
+            "data_version": "financial-input-3",
+            "confidence": "not_applicable",
+            "limitations": [
+              "Не подтверждённая рыночная статистика. Требуется явный review."
+            ],
+            "observed_at": null,
+            "evidence_ref": "financial-input:3:students",
+            "source_attested": false
+          },
+          "epistemic": "assumed",
+          "review": "confirmed",
+          "method": "qwen_exploratory",
+          "basis": "Исследовательское допущение; требуется проверка.",
+          "revision": 3,
+          "created_at": "2026-10-31T09:10:39.831314Z",
+          "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+          "generation_prompt_version": "qwen-assumptions-u05-v2"
+        },
+        "teachers": {
+          "base": "60000",
+          "low": "60000",
+          "high": "60000",
+          "unit": "RUB/month",
+          "source": {
+            "origin": "synthetic",
+            "source_name": "Вводная пользователя",
+            "data_version": "financial-input-1",
+            "confidence": "not_applicable",
+            "limitations": [
+              "Не подтверждённая рыночная статистика. Требуется явный review."
+            ],
+            "observed_at": null,
+            "evidence_ref": "financial-input:1:teachers",
+            "source_attested": false
+          },
+          "epistemic": "assumed",
+          "review": "confirmed",
+          "method": "user_assumption",
+          "basis": "Редактирование пользователем",
+          "revision": 1,
+          "created_at": "2026-10-31T09:10:19.303418Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "fee_ratio": {
+          "base": "0.1",
+          "low": "0.05",
+          "high": "0.3",
+          "unit": "ratio",
+          "source": {
+            "origin": "synthetic",
+            "source_name": "Qwen: исследовательская гипотеза",
+            "data_version": "financial-input-3",
+            "confidence": "not_applicable",
+            "limitations": [
+              "Не подтверждённая рыночная статистика. Требуется явный review."
+            ],
+            "observed_at": null,
+            "evidence_ref": "financial-input:3:fee_ratio",
+            "source_attested": false
+          },
+          "epistemic": "assumed",
+          "review": "confirmed",
+          "method": "qwen_exploratory",
+          "basis": "Исследовательское допущение; требуется проверка.",
+          "revision": 3,
+          "created_at": "2026-10-31T09:10:39.831430Z",
+          "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+          "generation_prompt_version": "qwen-assumptions-u05-v2"
+        },
+        "marketing": {
+          "base": "30000",
+          "low": "30000",
+          "high": "30000",
+          "unit": "RUB/month",
+          "source": {
+            "origin": "synthetic",
+            "source_name": "Вводная пользователя",
+            "data_version": "financial-input-1",
+            "confidence": "not_applicable",
+            "limitations": [
+              "Не подтверждённая рыночная статистика. Требуется явный review."
+            ],
+            "observed_at": null,
+            "evidence_ref": "financial-input:1:marketing",
+            "source_attested": false
+          },
+          "epistemic": "assumed",
+          "review": "confirmed",
+          "method": "user_assumption",
+          "basis": "Редактирование пользователем",
+          "revision": 1,
+          "created_at": "2026-10-31T09:10:19.303551Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "other_fixed": {
+          "base": "10000",
+          "low": "10000",
+          "high": "10000",
+          "unit": "RUB/month",
+          "source": {
+            "origin": "synthetic",
+            "source_name": "Вводная пользователя",
+            "data_version": "financial-input-1",
+            "confidence": "not_applicable",
+            "limitations": [
+              "Не подтверждённая рыночная статистика. Требуется явный review."
+            ],
+            "observed_at": null,
+            "evidence_ref": "financial-input:1:other_fixed",
+            "source_attested": false
+          },
+          "epistemic": "assumed",
+          "review": "confirmed",
+          "method": "user_assumption",
+          "basis": "Редактирование пользователем",
+          "revision": 1,
+          "created_at": "2026-10-31T09:10:19.303597Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "student_capacity": {
+          "base": "100",
+          "low": "100",
+          "high": "100",
+          "unit": "students",
+          "source": {
+            "origin": "synthetic",
+            "source_name": "Вводная пользователя",
+            "data_version": "financial-input-1",
+            "confidence": "not_applicable",
+            "limitations": [
+              "Не подтверждённая рыночная статистика. Требуется явный review."
+            ],
+            "observed_at": null,
+            "evidence_ref": "financial-input:1:student_capacity",
+            "source_attested": false
+          },
+          "epistemic": "assumed",
+          "review": "confirmed",
+          "method": "user_assumption",
+          "basis": "Редактирование пользователем",
+          "revision": 1,
+          "created_at": "2026-10-31T09:10:19.303335Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "variable_per_student": {
+          "base": "5000",
+          "low": "1000",
+          "high": "10000",
+          "unit": "RUB/student/payment",
+          "source": {
+            "origin": "synthetic",
+            "source_name": "Qwen: исследовательская гипотеза",
+            "data_version": "financial-input-3",
+            "confidence": "not_applicable",
+            "limitations": [
+              "Не подтверждённая рыночная статистика. Требуется явный review."
+            ],
+            "observed_at": null,
+            "evidence_ref": "financial-input:3:variable_per_student",
+            "source_attested": false
+          },
+          "epistemic": "assumed",
+          "review": "confirmed",
+          "method": "qwen_exploratory",
+          "basis": "Исследовательское допущение; требуется проверка.",
+          "revision": 3,
+          "created_at": "2026-10-31T09:10:39.831402Z",
+          "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+          "generation_prompt_version": "qwen-assumptions-u05-v2"
+        }
+      }
+    },
+    "configuration": {
+      "id": "online_school",
+      "version": "u05-decimal-v1",
+      "parameters": [
+        {
+          "id": "students",
+          "label": "Платящие ученики",
+          "unit": "students",
+          "minimum": "0",
+          "maximum": "1000000",
+          "integer": true,
+          "direction": "revenue"
+        },
+        {
+          "id": "student_capacity",
+          "label": "Предельная вместимость",
+          "unit": "students",
+          "minimum": "1",
+          "maximum": "1000000",
+          "integer": true,
+          "direction": "context"
+        },
+        {
+          "id": "tuition",
+          "label": "Цена за выбранный период оплаты",
+          "unit": "RUB/student/payment",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "revenue"
+        },
+        {
+          "id": "course_months",
+          "label": "Длительность курса (для разовой оплаты)",
+          "unit": "months",
+          "minimum": "1",
+          "maximum": "36",
+          "integer": true,
+          "direction": "context"
+        },
+        {
+          "id": "variable_per_student",
+          "label": "Переменные расходы на ученика за период оплаты",
+          "unit": "RUB/student/payment",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "fee_ratio",
+          "label": "Комиссии с выручки (0–1)",
+          "unit": "ratio",
+          "minimum": "0",
+          "maximum": "1",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "teachers",
+          "label": "Постоянные расходы на преподавателей",
+          "unit": "RUB/month",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "platform",
+          "label": "Учебная платформа",
+          "unit": "RUB/month",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "marketing",
+          "label": "Маркетинг",
+          "unit": "RUB/month",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "other_fixed",
+          "label": "Другие постоянные расходы",
+          "unit": "RUB/month",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        }
+      ],
+      "limitations": [
+        "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+        "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+        "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+        "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+        "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+        "monthly/subscription: один выбранный месяц; продление, churn и CAC не прогнозируются.",
+        "course: одна оплаченная когорта за всю длительность курса; выручка не повторяется ежемесячно.",
+        "Переменная и постоянная оплата преподавателей не должны дублироваться."
+      ]
+    },
+    "result": {
+      "status": "calculated",
+      "missing": [],
+      "scenarios": [
+        {
+          "name": "conservative",
+          "drivers": {
+            "tuition": "6000",
+            "platform": "10000",
+            "students": "100",
+            "teachers": "60000",
+            "fee_ratio": "0.3",
+            "marketing": "30000",
+            "other_fixed": "10000",
+            "student_capacity": "100",
+            "variable_per_student": "10000"
+          },
+          "period": "month",
+          "months": "1",
+          "units": "100",
+          "volume_unit": "students",
+          "capacity": "100",
+          "revenue": "600000.00",
+          "variable_costs": "1180000.00",
+          "fixed_costs": "110000.00",
+          "contribution": "-580000.00",
+          "operating_result": "-690000.00",
+          "contribution_per_unit": "-5800.0",
+          "capacity_utilization": "1",
+          "safety_margin_ratio": null,
+          "break_even": {
+            "status": "nonpositive_margin",
+            "units": null,
+            "revenue": null,
+            "capacity_utilization": null
+          }
+        },
+        {
+          "name": "base",
+          "drivers": {
+            "tuition": "6500",
+            "platform": "10000",
+            "students": "100",
+            "teachers": "60000",
+            "fee_ratio": "0.1",
+            "marketing": "30000",
+            "other_fixed": "10000",
+            "student_capacity": "100",
+            "variable_per_student": "5000"
+          },
+          "period": "month",
+          "months": "1",
+          "units": "100",
+          "volume_unit": "students",
+          "capacity": "100",
+          "revenue": "650000.00",
+          "variable_costs": "565000.00",
+          "fixed_costs": "110000.00",
+          "contribution": "85000.00",
+          "operating_result": "-25000.00",
+          "contribution_per_unit": "850.0",
+          "capacity_utilization": "1",
+          "safety_margin_ratio": "-0.3",
+          "break_even": {
+            "status": "above_capacity",
+            "units": "130",
+            "revenue": "845000.00",
+            "capacity_utilization": "1.3"
+          }
+        },
+        {
+          "name": "optimistic",
+          "drivers": {
+            "tuition": "7500",
+            "platform": "10000",
+            "students": "100",
+            "teachers": "60000",
+            "fee_ratio": "0.05",
+            "marketing": "30000",
+            "other_fixed": "10000",
+            "student_capacity": "100",
+            "variable_per_student": "1000"
+          },
+          "period": "month",
+          "months": "1",
+          "units": "100",
+          "volume_unit": "students",
+          "capacity": "100",
+          "revenue": "750000.00",
+          "variable_costs": "137500.00",
+          "fixed_costs": "110000.00",
+          "contribution": "612500.00",
+          "operating_result": "502500.00",
+          "contribution_per_unit": "6125.00",
+          "capacity_utilization": "1",
+          "safety_margin_ratio": "0.82",
+          "break_even": {
+            "status": "calculated",
+            "units": "18",
+            "revenue": "135000.00",
+            "capacity_utilization": "0.18"
+          }
+        }
+      ],
+      "sensitivity": [
+        {
+          "parameter": "students",
+          "unit": "students",
+          "value": "90",
+          "status": "calculated",
+          "operating_result": "-33500.00",
+          "difference_from_base": "-8500.00"
+        },
+        {
+          "parameter": "students",
+          "unit": "students",
+          "value": "110",
+          "status": "outside_domain",
+          "operating_result": null,
+          "difference_from_base": null
+        },
+        {
+          "parameter": "tuition",
+          "unit": "RUB/student/payment",
+          "value": "5850.000000",
+          "status": "calculated",
+          "operating_result": "-83500.00",
+          "difference_from_base": "-58500.00"
+        },
+        {
+          "parameter": "tuition",
+          "unit": "RUB/student/payment",
+          "value": "7150.000000",
+          "status": "calculated",
+          "operating_result": "33500.00",
+          "difference_from_base": "58500.00"
+        },
+        {
+          "parameter": "variable_per_student",
+          "unit": "RUB/student/payment",
+          "value": "4500.000000",
+          "status": "calculated",
+          "operating_result": "25000.00",
+          "difference_from_base": "50000.00"
+        },
+        {
+          "parameter": "variable_per_student",
+          "unit": "RUB/student/payment",
+          "value": "5500.000000",
+          "status": "calculated",
+          "operating_result": "-75000.00",
+          "difference_from_base": "-50000.00"
+        },
+        {
+          "parameter": "fee_ratio",
+          "unit": "ratio",
+          "value": "0.090000",
+          "status": "calculated",
+          "operating_result": "-18500.00",
+          "difference_from_base": "6500.00"
+        },
+        {
+          "parameter": "fee_ratio",
+          "unit": "ratio",
+          "value": "0.110000",
+          "status": "calculated",
+          "operating_result": "-31500.00",
+          "difference_from_base": "-6500.00"
+        },
+        {
+          "parameter": "teachers",
+          "unit": "RUB/month",
+          "value": "54000.000000",
+          "status": "calculated",
+          "operating_result": "-19000.00",
+          "difference_from_base": "6000.00"
+        },
+        {
+          "parameter": "teachers",
+          "unit": "RUB/month",
+          "value": "66000.000000",
+          "status": "calculated",
+          "operating_result": "-31000.00",
+          "difference_from_base": "-6000.00"
+        },
+        {
+          "parameter": "platform",
+          "unit": "RUB/month",
+          "value": "9000.000000",
+          "status": "calculated",
+          "operating_result": "-24000.00",
+          "difference_from_base": "1000.00"
+        },
+        {
+          "parameter": "platform",
+          "unit": "RUB/month",
+          "value": "11000.000000",
+          "status": "calculated",
+          "operating_result": "-26000.00",
+          "difference_from_base": "-1000.00"
+        },
+        {
+          "parameter": "marketing",
+          "unit": "RUB/month",
+          "value": "27000.000000",
+          "status": "calculated",
+          "operating_result": "-22000.00",
+          "difference_from_base": "3000.00"
+        },
+        {
+          "parameter": "marketing",
+          "unit": "RUB/month",
+          "value": "33000.000000",
+          "status": "calculated",
+          "operating_result": "-28000.00",
+          "difference_from_base": "-3000.00"
+        },
+        {
+          "parameter": "other_fixed",
+          "unit": "RUB/month",
+          "value": "9000.000000",
+          "status": "calculated",
+          "operating_result": "-24000.00",
+          "difference_from_base": "1000.00"
+        },
+        {
+          "parameter": "other_fixed",
+          "unit": "RUB/month",
+          "value": "11000.000000",
+          "status": "calculated",
+          "operating_result": "-26000.00",
+          "difference_from_base": "-1000.00"
+        }
+      ],
+      "origin": "modelled",
+      "currency": "RUB",
+      "contains_assumptions": true,
+      "formulas": {
+        "generic": "units=unit_sales; months=1; revenue=units*unit_price",
+        "break_even": "ceil(fixed_costs/exact_unit_contribution); unavailable if margin<=0; compare capacity",
+        "auto_repair": "capacity=bays*working_days*orders_per_bay; units=capacity*utilization; months=1",
+        "fixed_costs": "round_HALF_UP(sum(monthly_fixed_items)*months,2)",
+        "contribution": "rounded_revenue-rounded_variable_costs",
+        "online_school": "units=paying_students; months=course_months if course else 1; revenue=units*tuition ONCE",
+        "variable_costs": "round_HALF_UP(units*variable_per_unit + revenue*fee_ratio,2)",
+        "operating_result": "contribution-fixed_costs",
+        "auto_variable_unit": "materials_per_order + labor_per_order",
+        "safety_margin_ratio": "(units-break_even_units)/units when units>0 and break-even defined",
+        "capacity_utilization": "units/capacity where known and >0",
+        "school_variable_unit": "variable_per_student + tuition*fee_ratio"
+      },
+      "metric_inputs": {
+        "units": [
+          "students"
+        ],
+        "revenue": [
+          "students",
+          "tuition"
+        ],
+        "capacity": [
+          "student_capacity"
+        ],
+        "break_even": [
+          "tuition",
+          "variable_per_student",
+          "fee_ratio",
+          "teachers",
+          "platform",
+          "marketing",
+          "other_fixed",
+          "student_capacity"
+        ],
+        "fixed_costs": [
+          "teachers",
+          "platform",
+          "marketing",
+          "other_fixed"
+        ],
+        "contribution": [
+          "students",
+          "tuition",
+          "variable_per_student",
+          "fee_ratio"
+        ],
+        "variable_costs": [
+          "students",
+          "tuition",
+          "variable_per_student",
+          "fee_ratio"
+        ],
+        "operating_result": [
+          "students",
+          "tuition",
+          "variable_per_student",
+          "fee_ratio",
+          "teachers",
+          "platform",
+          "marketing",
+          "other_fixed"
+        ],
+        "safety_margin_ratio": [
+          "students",
+          "tuition",
+          "variable_per_student",
+          "fee_ratio",
+          "teachers",
+          "platform",
+          "marketing",
+          "other_fixed"
+        ],
+        "capacity_utilization": [
+          "students",
+          "student_capacity"
+        ],
+        "contribution_per_unit": [
+          "tuition",
+          "variable_per_student",
+          "fee_ratio"
+        ]
+      },
+      "limitations": [
+        "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+        "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+        "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+        "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+        "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+        "monthly/subscription: один выбранный месяц; продление, churn и CAC не прогнозируются.",
+        "course: одна оплаченная когорта за всю длительность курса; выручка не повторяется ежемесячно.",
+        "Переменная и постоянная оплата преподавателей не должны дублироваться."
+      ],
+      "warnings": [],
+      "rounding": "Decimal precision 64 / HALF_UP; RUB rounded to kopecks before subtraction"
+    }
+  },
+  "sections": [
+    {
+      "id": "profile",
+      "state": "completed",
+      "explanation": "Подтверждённые вводные."
+    },
+    {
+      "id": "geography",
+      "state": "not_required",
+      "explanation": "Географический анализ не требуется."
+    },
+    {
+      "id": "finance",
+      "state": "completed",
+      "explanation": "Сценарная арифметика по сохранённым вводным, не прогноз спроса."
+    },
+    {
+      "id": "banking",
+      "state": "partial",
+      "explanation": "Отдельный подбор по заявленным потребностям; банковского одобрения нет. Mock-заявки новых отраслей не поддерживаются; данные никуда не отправлены."
+    }
+  ],
+  "limitations": [
+    "Гипотезы остаются предположениями после подтверждения пользователем.",
+    "Coverage оценён на assessed_at; он не является частью исторического финансового snapshot.",
+    "Для новых отраслей доступен JSON. PDF остаётся в прежнем маршруте кофейни.",
+    "Сценарные результаты не являются инвестиционным прогнозом или кредитным решением."
+  ]
+}

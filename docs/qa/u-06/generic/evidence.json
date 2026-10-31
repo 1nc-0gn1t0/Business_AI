@@ -1,0 +1,33 @@
+{
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "industry": "generic",
+  "classificationMs": 6779,
+  "proposalMs": null,
+  "calculationMs": 151,
+  "reloadMs": 916,
+  "totalMs": 11449,
+  "proposalRequests": 0,
+  "extraction": "ollama",
+  "state": "partial",
+  "financial": [
+    {
+      "name": "conservative",
+      "operating_result": "100000.00"
+    },
+    {
+      "name": "base",
+      "operating_result": "100000.00"
+    },
+    {
+      "name": "optimistic",
+      "operating_result": "100000.00"
+    }
+  ],
+  "reviewedAI": [],
+  "bankCreditDecision": "not_assessed",
+  "pageErrors": [],
+  "consoleErrors": [],
+  "geoRequests": [],
+  "correction": null,
+  "fixture": "Manual scenario inputs are synthetic, actual Qwen and deterministic services, no network mocks"
+}

@@ -1,0 +1,54 @@
+{
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "industry": "auto_repair",
+  "classificationMs": 8029,
+  "proposalMs": 23299,
+  "calculationMs": 163,
+  "reloadMs": 903,
+  "totalMs": 37423,
+  "proposalRequests": 1,
+  "extraction": "ollama",
+  "state": "partial",
+  "financial": [
+    {
+      "name": "conservative",
+      "operating_result": "-8400000.00"
+    },
+    {
+      "name": "base",
+      "operating_result": "400000.00"
+    },
+    {
+      "name": "optimistic",
+      "operating_result": "7600000.00"
+    }
+  ],
+  "reviewedAI": [
+    {
+      "epistemic": "assumed",
+      "origin": "synthetic",
+      "review": "confirmed"
+    },
+    {
+      "epistemic": "assumed",
+      "origin": "synthetic",
+      "review": "confirmed"
+    },
+    {
+      "epistemic": "assumed",
+      "origin": "synthetic",
+      "review": "confirmed"
+    },
+    {
+      "epistemic": "assumed",
+      "origin": "synthetic",
+      "review": "confirmed"
+    }
+  ],
+  "bankCreditDecision": "not_assessed",
+  "pageErrors": [],
+  "consoleErrors": [],
+  "geoRequests": [],
+  "correction": null,
+  "fixture": "Manual scenario inputs are synthetic, actual Qwen and deterministic services, no network mocks"
+}

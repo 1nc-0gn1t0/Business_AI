@@ -142,7 +142,9 @@ class AdaptivePlan(Contract):
     next_question: str | None
     geo_required: bool | None
     capabilities: tuple[CapabilityDecision, ...]
-    stages: tuple[Literal["clarify", "confirm", "location", "finance", "partial_result"], ...]
+    stages: tuple[
+        Literal["clarify", "confirm", "location", "finance", "banking", "partial_result"], ...
+    ]
     coverage: CoverageResult | None = None
     sufficiency: SufficiencyAssessment | None = None
 

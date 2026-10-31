@@ -163,3 +163,14 @@ does not persist; saving/review are separate actions. No probability distributio
 tax accounting, ROI or new PDF are claimed. Default finance flag0, industry required.
 Live validation remains a separate acceptance gate; initial existing endpoint503 is
 recorded as a failure, not proof of model proposal quality. [Implementation](../architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md).
+
+
+## Уточнение реализации U-06 · 31.10.2026
+
+После mergePR36 владелец разрешил заключительную интеграцию. Переиспользованы
+U04 applicability, U01 coverage и U05 action receipts/snapshots. Статус и отмена
+не создают вторую систему исполнения или искусственный глобальный event cursor.
+UI/JSON используют текущий финансовый snapshot; live coverage отделена assessed_at.
+Информационный bank adapter не подтверждает persisted v1 профиль/lead/geo права.
+Новые отрасли экспортируют JSON; исторические v1 PDF/JSON не переписываются.
+Подробности: [U-06](../architecture/BUSINESS_AI_2_END_TO_END.md).

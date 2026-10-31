@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
   useCallback,
+  useMemo,
 } from "react";
 import Chat from "./Chat";
 import {
@@ -23,6 +24,7 @@ import {
 } from "./FlowUI";
 import Finance from "./Finance";
 import FinancialScenarios from "./FinancialScenarios";
+import AnalysisResult from "./AnalysisResult";
 import BankProducts from "./BankProducts";
 import ReportExport from "./ReportExport";
 import {
@@ -63,6 +65,7 @@ export default function BusinessFlow({
   );
   const [messages, setMessages] = useState<Schemas["MessageView"][]>([]);
   const [waitingForReply, setWaitingForReply] = useState(false);
+  const [checkingData, setCheckingData] = useState(false);
   const [busy, setBusy] = useState(() => Boolean(readCredential()));
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -97,13 +100,16 @@ export default function BusinessFlow({
     null,
   );
   const lock = useRef(false);
-  const flow = {
-    conversation,
-    ranking,
-    selected,
-    finance: reportFinance,
-    universal,
-  };
+  const flow = useMemo(
+    () => ({
+      conversation,
+      ranking,
+      selected,
+      finance: reportFinance,
+      universal,
+    }),
+    [conversation, ranking, selected, reportFinance, universal],
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -146,8 +152,28 @@ export default function BusinessFlow({
     if (next === "finance") setFinanceVisited(true);
     if (next === "banking") setBankVisited(true);
     setNotice("");
+    window.history.pushState({ businessAI: credential?.id, stage: next }, "");
     setStage(next);
   }
+  useEffect(() => {
+    function back() {
+      const preferred = window.history.state as {
+        businessAI?: string;
+        stage?: Stage;
+      } | null;
+      if (
+        preferred?.businessAI === credential?.id &&
+        preferred?.stage &&
+        canEnter(preferred.stage, flow)
+      ) {
+        if (preferred.stage === "banking") setBankVisited(true);
+        if (preferred.stage === "finance") setFinanceVisited(true);
+        setStage(preferred.stage);
+      }
+    }
+    window.addEventListener("popstate", back);
+    return () => window.removeEventListener("popstate", back);
+  }, [flow, credential]);
   function invalidate() {
     if (industryEnabled) {
       setLocationsVisited(false);
@@ -218,6 +244,25 @@ export default function BusinessFlow({
         if (industry) {
           acceptIndustry(industry);
           enterIndustry(industry);
+          const preferred = window.history.state as {
+            businessAI?: string;
+            stage?: Stage;
+          } | null;
+          if (
+            preferred?.businessAI === industry.conversation.id &&
+            preferred.stage &&
+            canEnter(preferred.stage, {
+              conversation: industry.conversation,
+              universal: industry,
+              ranking: null,
+              selected: null,
+              finance: null,
+            })
+          ) {
+            if (preferred.stage === "banking") setBankVisited(true);
+            if (preferred.stage === "finance") setFinanceVisited(true);
+            setStage(preferred.stage);
+          }
         } else setStage(next);
         if (next === "location") {
           setLocationsVisited(true);
@@ -448,14 +493,20 @@ export default function BusinessFlow({
       if (!credential || !conversation) return;
       await ensureAssistant(credential);
       if (universal) {
-        const view = await request<IndustryView>(
-          `/api/v2/conversations/${credential.id}/industry-profile/confirm`,
-          {
-            credential,
-            method: "POST",
-            body: { expected_version: conversation.version },
-          },
-        );
+        setCheckingData(true);
+        let view: IndustryView;
+        try {
+          view = await request<IndustryView>(
+            `/api/v2/conversations/${credential.id}/industry-profile/confirm`,
+            {
+              credential,
+              method: "POST",
+              body: { expected_version: conversation.version },
+            },
+          );
+        } finally {
+          setCheckingData(false);
+        }
         acceptIndustry(view);
         invalidate();
         setMessages(await history(credential));
@@ -493,6 +544,18 @@ export default function BusinessFlow({
       setMessages(await history(credential));
       setStage("review");
     }, true);
+  }
+  function reviewCurrentProfile() {
+    void action(async () => {
+      if (!credential) return;
+      const latest = await request<IndustryView>(
+        `/api/v2/conversations/${credential.id}/industry-profile`,
+        { credential },
+      );
+      acceptIndustry(latest);
+      invalidate();
+      setStage("review");
+    });
   }
   function downloadInputs() {
     void action(async () => {
@@ -699,24 +762,42 @@ export default function BusinessFlow({
               />
             )}
             {stage === "review" && universal && (
-              <IndustryReview
-                key={universal.profile.revision}
-                view={universal}
-                industries={industries}
-                busy={busy}
-                onSave={editIndustry}
-                onConfirm={confirmProfile}
-                onChat={() => navigate("chat")}
-              />
+              <>
+                {checkingData && (
+                  <div className="vi-status" role="status">
+                    <ViAvatar emotion="search" />
+                    Проверяю вводные и доступность данных…
+                  </div>
+                )}
+                <IndustryReview
+                  key={universal.profile.revision}
+                  view={universal}
+                  industries={industries}
+                  busy={busy}
+                  onSave={editIndustry}
+                  onConfirm={confirmProfile}
+                  onChat={() => navigate("chat")}
+                />
+              </>
             )}
-            {stage === "partial" && universal && (
-              <IndustryResult
-                view={universal}
-                busy={busy}
-                onEdit={() => navigate("review")}
-                onDownload={downloadInputs}
-              />
-            )}
+            {stage === "partial" &&
+              universal &&
+              (universal.profile.industry !== "coffee_shop" && credential ? (
+                <AnalysisResult
+                  credential={credential}
+                  profileRevision={universal.profile.revision}
+                  onEdit={reviewCurrentProfile}
+                  onFinance={() => navigate("finance")}
+                  onBank={() => navigate("banking")}
+                />
+              ) : (
+                <IndustryResult
+                  view={universal}
+                  busy={busy}
+                  onEdit={() => navigate("review")}
+                  onDownload={downloadInputs}
+                />
+              ))}
             {stage === "review" && conversation && !universal && (
               <ProjectReview
                 conversation={conversation}
@@ -768,7 +849,8 @@ export default function BusinessFlow({
                     key={`${credential.id}:${conversation?.version}`}
                     credential={credential}
                     profileRevision={conversation!.version}
-                    onEdit={() => navigate("review")}
+                    onEdit={reviewCurrentProfile}
+                    onContinue={() => navigate("banking")}
                   />
                 ) : (
                   <>
@@ -799,6 +881,9 @@ export default function BusinessFlow({
                   active={stage === "banking"}
                   conversation={conversation}
                   credential={credential}
+                  universal={
+                    !!universal && universal.profile.industry !== "coffee_shop"
+                  }
                   onReport={setReportBank}
                   onProfileConflict={() => {
                     void action(refresh);
@@ -807,8 +892,21 @@ export default function BusinessFlow({
                 <div className="step-action">
                   <button
                     className={reportBank ? "button" : "text-button"}
-                    disabled={!canEnter("summary", flow)}
-                    onClick={() => navigate("summary")}
+                    disabled={
+                      !canEnter(
+                        universal?.plan.stages.includes("banking")
+                          ? "partial"
+                          : "summary",
+                        flow,
+                      )
+                    }
+                    onClick={() =>
+                      navigate(
+                        universal?.plan.stages.includes("banking")
+                          ? "partial"
+                          : "summary",
+                      )
+                    }
                   >
                     {reportBank ? "К результату" : "Продолжить без подбора"}
                   </button>
@@ -825,7 +923,7 @@ export default function BusinessFlow({
                 onEdit={() => navigate("review")}
               />
             )}
-            {financeVisited && (
+            {financeVisited && !universal?.plan.stages.includes("banking") && (
               <div hidden={stage !== "summary"}>
                 <ReportExport
                   key={conversation?.id || "none"}

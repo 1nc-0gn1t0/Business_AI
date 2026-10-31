@@ -22,6 +22,29 @@ for (const industry of [
     );
     await page.route("**/api/v2/conversations/**", async (r) => {
       const path = new URL(r.request().url()).pathname;
+      if (path.endsWith("/analysis-result")) {
+        await r.fulfill({
+          json: {
+            schema_version: "analysis-result-v2",
+            conversation_id: view.conversation.id,
+            profile_revision: view.profile.revision,
+            assessed_at: "2026-10-31T00:00:00Z",
+            state: "partial",
+            profile: view.profile,
+            plan: view.plan,
+            financial: null,
+            sections: [
+              {
+                id: "finance",
+                state: "missing",
+                explanation: "Недостаточно подтверждённых финансовых вводных.",
+              },
+            ],
+            limitations: ["Explicit mock fixture; not live evidence"],
+          },
+        });
+        return;
+      }
       if (r.request().method() !== "GET") {
         writes++;
         view = industryFixture(industry, writes > 1, path.endsWith("/confirm"));
@@ -72,10 +95,10 @@ for (const industry of [
       return;
     }
     await expect(
-      page.getByRole("heading", { name: "Вводные готовы" }),
+      page.getByRole("heading", { name: "Предварительный результат" }),
     ).toBeVisible();
     await expect(
-      page.getByText(/прибыль и отраслевой рейтинг пока не рассчитаны/),
+      page.getByText(/Недостаточно подтверждённых финансовых вводных/),
     ).toBeVisible();
     await expect(page.locator(".maplibregl-map")).toHaveCount(0);
     expect(
@@ -83,14 +106,14 @@ for (const industry of [
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
-    await mkdir("../../docs/qa/u-04/screenshots", { recursive: true });
+    await mkdir("../../docs/qa/u-06/mock", { recursive: true });
     await page.screenshot({
-      path: `../../docs/qa/u-04/screenshots/${industry}.png`,
+      path: `../../docs/qa/u-06/mock/${industry}.png`,
       fullPage: true,
     });
     await page.reload();
     await expect(
-      page.getByRole("heading", { name: "Вводные готовы" }),
+      page.getByRole("heading", { name: "Предварительный результат" }),
     ).toBeVisible();
     await page.getByRole("button", { name: "Изменить проект" }).click();
     await expect(

@@ -1,0 +1,44 @@
+{
+  "unchanged": true,
+  "before": {
+    "financial_results": {
+      "count": 6,
+      "sha256": "0af6797625a3c00ff44890f89c684844e0bdeec23b2574b5873edc60cde82985"
+    },
+    "legacy_reports": {
+      "count": 1,
+      "sha256": "94cb26e31654c56fbe976fc452edbe1e0afd3739fdaf01e85623fd906f4f8815"
+    },
+    "geo_datasets": {
+      "count": 1,
+      "sha256": "10faebf7bec9756fcb8c0d9840d0b954cfbfa065b3a6c4bf0399c3910a7fcf1d"
+    },
+    "walking_graphs": {
+      "count": 1,
+      "sha256": "cfa513f7c6e65749ba7099d6f4c920d177fad31c9bc9591805cbeeca3d4b99fc"
+    },
+    "schema": "0012_financial_scenarios",
+    "postgis": "3.6 USE_GEOS=1 USE_PROJ=1 USE_STATS=1"
+  },
+  "method": "Read-only counts/SHA256 of stored snapshots/reports/dataset versions before/after isolated API/web container recreation; no recovered service changed",
+  "after": {
+    "financial_results": {
+      "count": 6,
+      "sha256": "0af6797625a3c00ff44890f89c684844e0bdeec23b2574b5873edc60cde82985"
+    },
+    "legacy_reports": {
+      "count": 1,
+      "sha256": "94cb26e31654c56fbe976fc452edbe1e0afd3739fdaf01e85623fd906f4f8815"
+    },
+    "geo_datasets": {
+      "count": 1,
+      "sha256": "10faebf7bec9756fcb8c0d9840d0b954cfbfa065b3a6c4bf0399c3910a7fcf1d"
+    },
+    "walking_graphs": {
+      "count": 1,
+      "sha256": "cfa513f7c6e65749ba7099d6f4c920d177fad31c9bc9591805cbeeca3d4b99fc"
+    },
+    "schema": "0012_financial_scenarios",
+    "postgis": "3.6 USE_GEOS=1 USE_PROJ=1 USE_STATS=1"
+  }
+}

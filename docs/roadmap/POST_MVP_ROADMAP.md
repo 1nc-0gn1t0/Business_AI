@@ -1,5 +1,10 @@
 # Business AI · Post-MVP Master Roadmap
 
+**BA2/U-06,31.10.2026:** разрешена заключительная интеграция после mergePR36.
+[Маршруты, реальные проверки и границы](../architecture/BUSINESS_AI_2_END_TO_END.md).
+Сдача/PR/CI — в HANDOFF. Старые roadmap-v1/U-ID и статусы не переименованы;
+green scoped CI не закрывает отдельный release security baseline.
+
 **BA2/U-05,31.10.2026:** после mergePR35 разрешены финансовые сценарии и review
 гипотез. [Реализация/проверки/ограничения](../architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md).
 Статус исполнения в HANDOFF; live Qwen/review/scenarios и отдельный QA подтверждены. Старые roadmap-v1/U-ID и

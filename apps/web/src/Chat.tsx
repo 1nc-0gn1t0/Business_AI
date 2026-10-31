@@ -140,7 +140,7 @@ export default function Chat(props: ChatProps) {
         className="vi-chat"
         data-emotion={
           props.waitingForReply
-            ? "working"
+            ? "thinking"
             : props.messages.some((m) => m.role === "user")
               ? "curious"
               : props.busy
@@ -151,7 +151,7 @@ export default function Chat(props: ChatProps) {
         <ViAvatar
           emotion={
             props.waitingForReply
-              ? "working"
+              ? "thinking"
               : props.messages.some((m) => m.role === "user")
                 ? "curious"
                 : props.busy

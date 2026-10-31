@@ -9,13 +9,18 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.adapters.llm import LLMError
+from app.api.bank import current_catalogue
 from app.api.conversation_schemas import ConfirmRequest
 from app.api.conversations import Database, Token
+from app.bank.matching import match
+from app.bank.schemas import MatchRequest, MatchResult
 from app.db.session import get_session_factory
+from app.domain.enums import ConfirmationState
 from app.industry.llm import IndustryLLM, get_industry_llm, grounded
 from app.industry.registry import INDUSTRIES, missing
 from app.industry.schemas import IndustryCatalog, UniversalMessage, UniversalPatch, UniversalView
 from app.industry.service import IndustryProfiles
+from app.reporting.v2 import AnalysisResult, analysis_result
 from app.services.dialogue import blocking
 
 router = APIRouter(prefix="/api/v2", tags=["industry"])
@@ -42,6 +47,39 @@ def catalog() -> IndustryCatalog:
 
 
 BASE = "/conversations/{conversation_id}/industry-profile"
+
+
+@router.get(
+    "/conversations/{conversation_id}/analysis-result",
+    response_model=AnalysisResult,
+    dependencies=[Depends(require_enabled)],
+)
+def result(conversation_id: UUID, token: Token, session: Database) -> AnalysisResult:
+    return analysis_result(session, conversation_id, token)
+
+
+@router.post(
+    "/conversations/{conversation_id}/bank-products/matches",
+    response_model=MatchResult,
+    dependencies=[Depends(require_enabled)],
+)
+def bank_matches(
+    conversation_id: UUID, body: MatchRequest, token: Token, session: Database
+) -> MatchResult:
+    view = IndustryProfiles(session).view(conversation_id, token)
+    if view.profile.revision != body.expected_version:
+        raise HTTPException(409, detail={"code": "version_conflict"})
+    if view.profile.confirmed_revision != view.profile.revision:
+        raise HTTPException(409, detail={"code": "profile_confirmation_required"})
+    catalogue = current_catalogue()
+    if body.catalogue_fingerprint and body.catalogue_fingerprint != catalogue.fingerprint:
+        raise HTTPException(409, detail={"code": "bank_catalogue_version_conflict"})
+    # Read-only relevance adapter. No persisted v1 confirmation, geo permission,
+    # credit metrics or lead submission is granted by this projection.
+    profile = view.profile.legacy_snapshot.model_copy(
+        update={"confirmation_state": ConfirmationState.CONFIRMED}
+    )
+    return match(profile, view.profile.revision, body.needs, catalogue)
 
 
 @router.get(BASE, response_model=UniversalView, dependencies=[Depends(require_enabled)])

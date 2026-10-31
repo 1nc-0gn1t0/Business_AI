@@ -1,5 +1,12 @@
 # Business AI — Sab0tage
 
+**BA2/U-06:** [единый маршрут, состояния Ви и реальные проверки](docs/architecture/BUSINESS_AI_2_END_TO_END.md)
+· [показ для жюри](docs/DEMO_BUSINESS_AI_2.md). Opt-in industry/finance flags1;
+значения по умолчанию0 сохранены. Применимые расчёты → информационный банк → итоговый
+JSON v2, без обязательной карты. Неизвестные данные дают partial, убыток не скрывается.
+Отмена/reload/offline читают реальные состояния. PDF и mock-заявки остаются в прежнем
+маршруте кофейни; исторические отчёты не переписываются.
+
 **BA2/U-05:** [финансовые сценарии и подтверждение допущений](docs/architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md).
 Opt-in `BA_INDUSTRY_ENABLED=1` + `BA_FINANCE_V2_ENABLED=1` после migration0012;
 finance по умолчанию0. Автосервис/онлайн-школа/generic используют собственные
