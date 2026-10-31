@@ -1,0 +1,37 @@
+{
+  "mode": "real API/Ollama/PostGIS, no route mocks",
+  "base_main": "8fdeda3d8f59bbc664e01a404f15c87d6f978dec",
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "profile_version": 5,
+  "qwen_turns": [
+    {
+      "step": "qwen-turn-1",
+      "ms": 91781
+    },
+    {
+      "step": "qwen-turn-2",
+      "ms": 4495
+    },
+    {
+      "step": "qwen-turn-3",
+      "ms": 4284
+    },
+    {
+      "step": "qwen-turn-4",
+      "ms": 4559
+    }
+  ],
+  "zone_count": 5,
+  "data_version": "44157bdc66965a6239c3470d459668cf362a0e355f76893febf4556f838a8447",
+  "finance_algorithm": "business-finance-decimal-v1",
+  "base_before": "285000.00",
+  "base_after": "275000.00",
+  "catalogue_version": "vtb-demo-public-references-2026-10-23-v1",
+  "demonstration_matches": 2,
+  "credit_decision": "not_assessed",
+  "downloads": [
+    "pdf",
+    "json"
+  ],
+  "browser_errors": []
+}

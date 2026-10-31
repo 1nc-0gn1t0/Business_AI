@@ -67,6 +67,13 @@ def result(
     return FinancialService(session).result(conversation_id, token, result_id)
 
 
+@router.post("/cancel", response_model=FinancialView)
+def cancel(
+    conversation_id: UUID, body: FinancialCommand, token: Token, session: Database
+) -> FinancialView:
+    return FinancialService(session).cancel(conversation_id, token, body)
+
+
 @router.post("/what-if", response_model=WhatIfResult)
 def what_if(conversation_id: UUID, body: WhatIf, token: Token, session: Database) -> WhatIfResult:
     service = FinancialService(session)
@@ -140,7 +147,12 @@ async def operation(
 
         return await blocking(write, cancelled)
     except BaseException as error:
-        code = error.code if isinstance(error, LLMError) else "financial_operation_failed"
+        interrupted = isinstance(error, asyncio.CancelledError)
+        code = (
+            error.code
+            if isinstance(error, LLMError)
+            else ("request_cancelled" if interrupted else "financial_operation_failed")
+        )
 
         def fail() -> None:
             with factory.begin() as session:
@@ -148,7 +160,7 @@ async def operation(
                     FinancialActionRecord, (conversation_id, body.request_id), with_for_update=True
                 )
                 if row and row.state == "running":
-                    row.state, row.error_code = "failed", code
+                    row.state, row.error_code = "interrupted" if interrupted else "failed", code
 
         with anyio.CancelScope(shield=True):
             await anyio.to_thread.run_sync(fail)
@@ -172,8 +184,25 @@ async def watch_operation(
         cancelled.set()
 
     watch = asyncio.create_task(disconnected())
+
+    async def cancellation() -> None:
+        while True:
+            await asyncio.sleep(0.5)
+
+            def state() -> bool:
+                with factory() as session:
+                    row = session.get(FinancialActionRecord, (conversation_id, body.request_id))
+                    return row is not None and row.state == "cancelled"
+
+            if await anyio.to_thread.run_sync(state):
+                cancelled.set()
+                return
+
+    stop = asyncio.create_task(cancellation())
     try:
-        done, _ = await asyncio.wait((work, watch), return_when=asyncio.FIRST_COMPLETED)
+        done, _ = await asyncio.wait((work, watch, stop), return_when=asyncio.FIRST_COMPLETED)
+        if stop in done:
+            raise HTTPException(499, detail={"code": "financial_operation_cancelled"})
         if watch in done:
             raise HTTPException(499, detail={"code": "request_cancelled"})
         return await work
@@ -181,8 +210,9 @@ async def watch_operation(
         cancelled.set()
         work.cancel()
         watch.cancel()
+        stop.cancel()
         with anyio.CancelScope(shield=True):
-            await asyncio.gather(work, watch, return_exceptions=True)
+            await asyncio.gather(work, watch, stop, return_exceptions=True)
 
 
 @router.post("/propose", response_model=FinancialView)

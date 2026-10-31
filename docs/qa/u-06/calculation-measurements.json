@@ -1,0 +1,29 @@
+{
+  "method": "100 serial perf_counter measurements/model, native Windows Python3.12, current backend Decimal engine, exact saved live inputs; excludes DB/LLM and is not an SLA",
+  "cases": [
+    {
+      "model": "auto_repair",
+      "mean_ms": 0.7233480032300577,
+      "max_ms": 1.4694000128656626,
+      "iterations": 100,
+      "snapshot_id": "b1512025-b936-4295-89fd-df6bb6232a72",
+      "matches_saved_result": true
+    },
+    {
+      "model": "online_school",
+      "mean_ms": 0.5567369994241744,
+      "max_ms": 1.0167000000365078,
+      "iterations": 100,
+      "snapshot_id": "cfe985e9-941a-4ee1-b75f-f87705f50be6",
+      "matches_saved_result": true
+    },
+    {
+      "model": "generic",
+      "mean_ms": 0.5871990002924576,
+      "max_ms": 1.290899992454797,
+      "iterations": 100,
+      "snapshot_id": "b7f60eaa-736d-4f48-934e-25fba9441640",
+      "matches_saved_result": true
+    }
+  ]
+}

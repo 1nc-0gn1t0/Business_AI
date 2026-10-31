@@ -126,7 +126,7 @@ test("Vi uses actual pending/error/stale states, not success timers", async ({
   await page.getByLabel("Отправить сообщение").click();
   await expect(page.locator(".vi-chat")).toHaveAttribute(
     "data-emotion",
-    "working",
+    "thinking",
   );
   await expect(page.getByText("Обдумываю…")).toBeVisible();
   release();

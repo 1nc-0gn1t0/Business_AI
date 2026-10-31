@@ -7,6 +7,7 @@ import {
   type Schemas,
 } from "./api";
 import { ViAvatar } from "./Vi";
+import { financialVi } from "./viState";
 
 type View = Schemas["FinancialView"];
 type Calculation = Schemas["FinancialCalculation"];
@@ -43,14 +44,36 @@ const rub = (value: string | number) =>
     maximumFractionDigits: 2,
   }).format(Number(value));
 
+export function acceptsFinancialView(
+  previous: View | null,
+  next: View,
+): boolean {
+  return !(
+    previous &&
+    ((next.profile_revision ?? next.document.profile_revision) <
+      (previous.profile_revision ?? previous.document.profile_revision) ||
+      (next.document.profile_revision === previous.document.profile_revision &&
+        next.document.revision < previous.document.revision) ||
+      (next.operation &&
+        previous.operation &&
+        next.operation.created_at < previous.operation.created_at) ||
+      (next.operation?.request_id === previous.operation?.request_id &&
+        previous.operation &&
+        previous.operation.state !== "running" &&
+        next.operation?.state === "running"))
+  );
+}
+
 export default function FinancialScenarios({
   credential,
   profileRevision,
   onEdit,
+  onContinue,
 }: {
   credential: Credential;
   profileRevision: number;
   onEdit: () => void;
+  onContinue?: () => void;
 }) {
   const [view, setView] = useState<View | null>(null);
   const [draft, setDraft] = useState<Record<string, Draft>>({});
@@ -59,14 +82,20 @@ export default function FinancialScenarios({
   const [preview, setPreview] = useState<Calculation | null>(null);
   const [busy, setBusy] = useState(false);
   const [thinking, setThinking] = useState(false);
+  const [calculating, setCalculating] = useState(false);
+  const [pollError, setPollError] = useState("");
   const [error, setError] = useState("");
   const lock = useRef(false);
   const alive = useRef(true);
+  const pendingRequest = useRef<AbortController | null>(null);
+  const acceptedView = useRef<View | null>(null);
   const base = `/api/v2/conversations/${credential.id}/financial-scenarios`;
   const dirty =
     Object.keys(draft).length > 0 ||
     (!!view && billing !== (view.document.billing_model || ""));
   function accept(next: View) {
+    if (!acceptsFinancialView(acceptedView.current, next)) return;
+    acceptedView.current = next;
     setView(next);
     setDraft({});
     setSelected([]);
@@ -84,8 +113,83 @@ export default function FinancialScenarios({
     return () => {
       alive.current = false;
       controller.abort();
+      pendingRequest.current?.abort();
     };
   }, [base, credential]);
+  useEffect(() => {
+    const controller = new AbortController();
+    function refresh() {
+      request<View>(base, { credential, signal: controller.signal })
+        .then((next) => {
+          if (
+            controller.signal.aborted ||
+            !acceptsFinancialView(acceptedView.current, next)
+          )
+            return;
+          // Preserve unsaved local edits; server CAS still gates an explicit save.
+          acceptedView.current = next;
+          setView(next);
+          setPreview(null);
+          setSelected([]);
+          setError("");
+          setPollError("");
+        })
+        .catch((e) => {
+          if (!controller.signal.aborted) {
+            setView(null);
+            setPreview(null);
+            setError(errorText(e));
+          }
+        });
+    }
+    window.addEventListener("focus", refresh);
+    window.addEventListener("online", refresh);
+    return () => {
+      controller.abort();
+      window.removeEventListener("focus", refresh);
+      window.removeEventListener("online", refresh);
+    };
+  }, [base, credential]);
+  const serverRunning = view?.operation?.state === "running";
+  useEffect(() => {
+    if (!serverRunning && !thinking) return;
+    const controller = new AbortController();
+    let timer: ReturnType<typeof setTimeout>;
+    let attempts = 0;
+    async function poll() {
+      try {
+        const next = await request<View>(base, {
+          credential,
+          signal: controller.signal,
+        });
+        if (controller.signal.aborted) return;
+        setPollError("");
+        accept(next);
+        if (next.operation && next.operation.state !== "running") return;
+      } catch (e) {
+        if (controller.signal.aborted) return;
+        setPollError(errorText(e));
+        if (e instanceof ApiError && [401, 403, 404, 409].includes(e.status)) {
+          setView(null);
+          return;
+        }
+      }
+      if (++attempts < 45)
+        timer = setTimeout(
+          () => void poll(),
+          Math.min(5000, 2000 + attempts * 100),
+        );
+      else
+        setPollError(
+          "Проверка состояния приостановлена. Обновите страницу; повторный запрос модели не отправлен.",
+        );
+    }
+    timer = setTimeout(() => void poll(), 2000);
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [base, credential, serverRunning, thinking]);
   async function run(work: () => Promise<void>, model = false) {
     if (lock.current) return;
     lock.current = true;
@@ -95,7 +199,12 @@ export default function FinancialScenarios({
     try {
       await work();
     } catch (e) {
-      if (alive.current) {
+      if (
+        alive.current &&
+        !(e instanceof DOMException && e.name === "AbortError")
+      ) {
+        if (e instanceof ApiError && e.code === "financial_operation_cancelled")
+          return;
         setError(errorText(e));
         if (e instanceof ApiError && [401, 403, 404, 409].includes(e.status)) {
           setView(null);
@@ -107,6 +216,7 @@ export default function FinancialScenarios({
       if (alive.current) {
         setBusy(false);
         setThinking(false);
+        setCalculating(false);
       }
     }
   }
@@ -130,8 +240,37 @@ export default function FinancialScenarios({
     }));
   }
   async function send(path: string, body: unknown, method = "POST") {
-    const next = await request<View>(base + path, { method, credential, body });
+    const controller = new AbortController();
+    if (path === "/calculate") setCalculating(true);
+    pendingRequest.current = controller;
+    const next = await request<View>(base + path, {
+      method,
+      credential,
+      body,
+      signal: controller.signal,
+    });
     if (alive.current) accept(next);
+  }
+  async function cancel() {
+    if (!view?.operation || view.operation.state !== "running") return;
+    try {
+      const next = await request<View>(base + "/cancel", {
+        credential,
+        method: "POST",
+        body: {
+          ...command(),
+          request_id: view.operation.request_id,
+        },
+      });
+      pendingRequest.current?.abort();
+      if (alive.current) {
+        accept(next);
+        setError("");
+        setThinking(false);
+      }
+    } catch (e) {
+      if (alive.current) setError(errorText(e));
+    }
   }
   function field(key: string): Draft {
     const e = view?.document.entries?.[key];
@@ -156,24 +295,23 @@ export default function FinancialScenarios({
     !!view?.current && view.document.profile_revision === profileRevision;
   const calculated =
     preview || (!dirty && current ? view?.result?.result : null);
+  const status = financialVi(
+    view,
+    thinking ? "propose" : calculating ? "calculate" : null,
+    error || pollError,
+  );
+  const locked = busy || !!serverRunning;
   return (
     <section className="financial-scenarios">
       <div className="vi-inline">
-        <ViAvatar
-          emotion={
-            error
-              ? "error"
-              : thinking
-                ? "thinking"
-                : calculated?.status === "calculated"
-                  ? "idea"
-                  : "neutral"
-          }
-        />
-        {thinking && (
-          <span role="status">Готовлю сценарные предположения…</span>
-        )}
+        <ViAvatar emotion={status.emotion} />
+        <span role="status">{status.text}</span>
       </div>
+      {serverRunning && (
+        <button className="text-button" onClick={() => void cancel()}>
+          Отменить операцию
+        </button>
+      )}
       <h1>Сколько может приносить ваш бизнес?</h1>
       <p>
         Предварительный сценарный расчёт. Все существенные вводные выбираете вы.
@@ -194,7 +332,7 @@ export default function FinancialScenarios({
           </button>
           <button
             className="text-button"
-            disabled={busy}
+            disabled={locked}
             onClick={() =>
               void run(async () => {
                 const next = await request<View>(base, { credential });
@@ -207,7 +345,7 @@ export default function FinancialScenarios({
           {view && !current && (
             <button
               className="text-button"
-              disabled={busy}
+              disabled={locked}
               onClick={() =>
                 void run(() =>
                   send(
@@ -235,7 +373,7 @@ export default function FinancialScenarios({
               <select
                 aria-label="Модель оплаты обучения"
                 value={billing}
-                disabled={busy}
+                disabled={locked}
                 onChange={(e) => {
                   setBilling(e.target.value as Billing);
                   setPreview(null);
@@ -262,7 +400,7 @@ export default function FinancialScenarios({
             <button
               className="button"
               disabled={
-                busy ||
+                locked ||
                 !!dirty ||
                 (view.document.model === "online_school" && !billing)
               }
@@ -314,7 +452,7 @@ export default function FinancialScenarios({
                     <fieldset
                       key={p.id}
                       className="financial-input"
-                      disabled={busy}
+                      disabled={locked}
                     >
                       <legend>
                         {p.label}{" "}
@@ -407,7 +545,7 @@ export default function FinancialScenarios({
                     </fieldset>
                   );
                 })}
-              <button className="button" disabled={busy || !dirty}>
+              <button className="button" disabled={locked || !dirty}>
                 Сохранить вводные для проверки
               </button>
             </form>
@@ -416,7 +554,7 @@ export default function FinancialScenarios({
             <div className="actions">
               <button
                 className="button"
-                disabled={busy || !!dirty}
+                disabled={locked || !!dirty}
                 onClick={() =>
                   void run(() =>
                     send("/review", {
@@ -431,7 +569,7 @@ export default function FinancialScenarios({
               </button>
               <button
                 className="text-button"
-                disabled={busy || !!dirty}
+                disabled={locked || !!dirty}
                 onClick={() =>
                   void run(() =>
                     send("/review", {
@@ -453,7 +591,7 @@ export default function FinancialScenarios({
           <div className="actions">
             <button
               className="button"
-              disabled={busy || !!dirty}
+              disabled={locked || !!dirty}
               onClick={() => void run(() => send("/calculate", command()))}
             >
               {view.missing.length
@@ -464,12 +602,13 @@ export default function FinancialScenarios({
               <button
                 className="text-button"
                 disabled={
-                  busy ||
+                  locked ||
                   (billing !== view.document.billing_model &&
                     view.document.model === "online_school")
                 }
                 onClick={() =>
                   void run(async () => {
+                    setCalculating(true);
                     const result = await request<Schemas["WhatIfResult"]>(
                       base + "/what-if",
                       {
@@ -493,10 +632,21 @@ export default function FinancialScenarios({
               parameters={view.configuration.parameters}
             />
           )}
+          {onContinue && (
+            <div className="actions">
+              <button
+                className="button"
+                disabled={locked || !!dirty}
+                onClick={onContinue}
+              >
+                Продолжить к возможностям банка
+              </button>
+            </div>
+          )}
           {current && view.result && !dirty && (
             <button
               className="text-button"
-              disabled={busy}
+              disabled={locked}
               onClick={() =>
                 void run(async () => {
                   const latest = await request<View>(base, { credential });

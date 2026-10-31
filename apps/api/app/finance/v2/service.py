@@ -22,6 +22,7 @@ from app.finance.v2.schemas import (
     FinancialCommand,
     FinancialDocument,
     FinancialInput,
+    FinancialOperation,
     FinancialSnapshot,
     FinancialView,
     InputPatch,
@@ -189,6 +190,32 @@ class FinancialService:
             .order_by(Action.created_at.desc())
             .limit(1)
         )
+        latest = self.session.scalar(
+            sa.select(Action)
+            .where(Action.conversation_id == owner, Action.kind.in_(("propose", "calculate")))
+            .order_by(Action.created_at.desc(), Action.request_id.desc())
+            .limit(1)
+        )
+        operation = None
+        if latest:
+            recorded = FinancialDocument.model_validate(latest.snapshot)
+            state = latest.state
+            if state == "running" and (
+                latest.deadline_at <= datetime.now(UTC) or not current or recorded != doc
+            ):
+                state = "interrupted"
+            operation = FinancialOperation.model_validate(
+                dict(
+                    request_id=latest.request_id,
+                    kind=latest.kind,
+                    state=state,
+                    profile_revision=recorded.profile_revision,
+                    input_revision=recorded.revision,
+                    created_at=latest.created_at,
+                    deadline_at=latest.deadline_at,
+                    error_code=latest.error_code,
+                )
+            )
         status = "idle"
         if proposal:
             status = (
@@ -199,6 +226,7 @@ class FinancialService:
         return FinancialView.model_validate(
             dict(
                 configuration=configuration(doc.model),
+                profile_revision=profile.revision,
                 document=doc,
                 current=current,
                 missing=missing(doc),
@@ -210,6 +238,7 @@ class FinancialService:
                 result=snapshot,
                 proposal_status=status,
                 proposal_error=proposal.error_code if proposal else None,
+                operation=operation,
             )
         )
 
@@ -218,6 +247,17 @@ class FinancialService:
         if action and action.payload_hash != digest([kind, body.model_dump(mode="json")]):
             reject("financial_idempotency_conflict", 409)
         return action
+
+    def cancel(self, owner: UUID, token: str, body: FinancialCommand) -> FinancialView:
+        self.guard(owner, token, body)
+        action = self.session.get(Action, (owner, body.request_id), with_for_update=True)
+        if action is None or action.kind not in {"propose", "calculate"}:
+            reject("financial_operation_not_found", 404)
+        if action.state == "running":
+            action.state = "cancelled"
+            action.error_code = "financial_operation_cancelled"
+            self.session.flush()
+        return self.view(owner, token)
 
     def guard(
         self, owner: UUID, token: str, body: FinancialCommand, *, reset: bool = False

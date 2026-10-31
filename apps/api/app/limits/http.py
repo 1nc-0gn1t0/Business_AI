@@ -101,7 +101,7 @@ def heavy_request(path: str, method: str) -> bool:
             or path.startswith("/api/v2/acquisitions")
             or path.endswith("/agent")
             or path.endswith(("/messages", "/reports"))
-            or "/financial-scenarios/" in path
+            or ("/financial-scenarios/" in path and not path.endswith("/cancel"))
         )
     ) or (method == "GET" and "/reports/" in path)
 

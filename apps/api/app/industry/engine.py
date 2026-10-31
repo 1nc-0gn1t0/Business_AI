@@ -114,6 +114,8 @@ def plan(session: Session, profile: UniversalProfile) -> AdaptivePlan:
             stages.append("location")
         if (config.finance_adapter or v2_finance) and not absent:
             stages.append("finance")
+        if not config.finance_adapter:
+            stages.append("banking")
         stages.append("partial_result")
     return AdaptivePlan.model_validate(
         dict(

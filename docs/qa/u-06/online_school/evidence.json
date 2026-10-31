@@ -1,0 +1,49 @@
+{
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "industry": "online_school",
+  "classificationMs": 8507,
+  "proposalMs": 20786,
+  "calculationMs": 153,
+  "reloadMs": 920,
+  "totalMs": 34783,
+  "proposalRequests": 1,
+  "extraction": "ollama",
+  "state": "completed",
+  "financial": [
+    {
+      "name": "conservative",
+      "operating_result": "-690000.00"
+    },
+    {
+      "name": "base",
+      "operating_result": "-25000.00"
+    },
+    {
+      "name": "optimistic",
+      "operating_result": "502500.00"
+    }
+  ],
+  "reviewedAI": [
+    {
+      "epistemic": "assumed",
+      "origin": "synthetic",
+      "review": "confirmed"
+    },
+    {
+      "epistemic": "assumed",
+      "origin": "synthetic",
+      "review": "confirmed"
+    },
+    {
+      "epistemic": "assumed",
+      "origin": "synthetic",
+      "review": "confirmed"
+    }
+  ],
+  "bankCreditDecision": "not_assessed",
+  "pageErrors": [],
+  "consoleErrors": [],
+  "geoRequests": [],
+  "correction": "Rejected tuition, manually corrected 6500 (6000…7500), reviewed again",
+  "fixture": "Manual scenario inputs are synthetic, actual Qwen and deterministic services, no network mocks"
+}

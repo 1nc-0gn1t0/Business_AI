@@ -689,7 +689,7 @@ test("DESIGN03FU real coffee: idea → Qwen → profile → PostGIS → finance 
     if (first) {
       await expect(page.locator(".vi-chat")).toHaveAttribute(
         "data-emotion",
-        "working",
+        "thinking",
       );
       await shot("06-qwen-waiting");
     }

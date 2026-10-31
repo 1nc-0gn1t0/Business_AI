@@ -28,6 +28,7 @@ export function canEnter(stage: Stage, state: FlowState) {
     )
       return false;
     if (stage === "partial") return u.plan.stages.includes("partial_result");
+    if (stage === "banking" && u.plan.stages.includes("banking")) return true;
     if (stage === "location") return u.plan.stages.includes("location");
     if (
       stage === "finance" &&

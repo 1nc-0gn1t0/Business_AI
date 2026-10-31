@@ -72,7 +72,7 @@ def test_school_no_map_and_no_fake_finance(industry: TestClient) -> None:
     )
     assert result["plan"]["missing_fields"] == []
     result = industry.post(url + "/confirm", headers=headers, json={"expected_version": 1}).json()
-    assert result["plan"]["stages"] == ["partial_result"]
+    assert result["plan"]["stages"] == ["banking", "partial_result"]
     assert result["plan"]["coverage"] is None
     assert result["plan"]["geo_required"] is False
     assert result["profile"]["confirmed_revision"] == 2
@@ -278,7 +278,7 @@ def test_deferred_unknowns_allow_only_partial_confirmation(industry: TestClient)
     assert response.status_code == 200
     assert response.json()["plan"]["next_question"] is None
     result = industry.post(url + "/confirm", headers=headers, json={"expected_version": 1}).json()
-    assert result["plan"]["stages"] == ["partial_result"]
+    assert result["plan"]["stages"] == ["banking", "partial_result"]
     assert "budget" not in result["profile"]["values"]
     assert result["conversation"]["profile"]["budget"] is None
     assert result["profile"]["deferred_fields"]

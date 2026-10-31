@@ -1,0 +1,286 @@
+{
+  "method": "35 one-second samples from isolated API container; /proc/1/status, pg_stat_activity excluding sampler, autocommit connection; excludes model/PostgreSQL RAM; not a machine-wide SLA",
+  "elapsed_seconds": 35.09940675400139,
+  "samples": [
+    {
+      "at": "2026-10-31T08:59:57.869756+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T08:59:58.872057+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T08:59:59.874722+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:00.877410+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:01.880647+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:02.882870+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:03.885147+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:04.887668+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:05.888814+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:06.889893+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:07.892036+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:08.893886+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:09.895179+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:10.896237+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:11.897783+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:12.899022+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:13.900373+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:14.902331+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:15.903585+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:16.904800+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:17.906087+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:18.907579+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:19.910063+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:20.911812+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:21.913623+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:22.914742+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:23.915919+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:24.917379+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:26.849550+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:27.850882+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:28.852135+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:29.853552+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:30.855176+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101036,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:31.856773+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101032,
+      "api_peak_rss_kib": 101036
+    },
+    {
+      "at": "2026-10-31T09:00:32.858062+00:00",
+      "connections": 1,
+      "idle_in_transaction": 0,
+      "active": 0,
+      "api_rss_kib": 101032,
+      "api_peak_rss_kib": 101036
+    }
+  ]
+}

@@ -328,3 +328,18 @@ prompt+context≤10000UTF-8bytes и последующая проверка mode
 industry_context_limit422/ручная правка, без скрытого truncation/fallback на другую LLM.
 Финансовая/географическая операции не запускаются в процессе extraction. Политика
 U-02 imports не расширена. Feature BA_INDUSTRY_ENABLED по умолчанию0.
+
+
+## BA2/U-06 integration
+
+GET `/api/v2/conversations/{id}/analysis-result` is an owner/assistant-consent protected
+read of bounded current profile/metadata and one financial snapshot. No new storage.
+POST `/api/v2/conversations/{id}/bank-products/matches` reuses existing typed needs,
+CAS/catalogue fingerprint and matching; no external request, lead or persisted write.
+POST `.../financial-scenarios/cancel` uses existing FinancialCommand (target request_id,
+current profile/input revisions), owner/consent and row locks; repeat is harmless.
+Cancellation is ordinary admission, not heavy/model work, and creates no stock row.
+Existing request/body/JSON/rate/active caps remain enforced. Propose/calculate/review/
+what-if limits and H03 are unchanged. UI polling is2…5s/at most45reads, abortable;
+focus/online recovery reads state only and never automatically repeats model POST.
+See [U-06](architecture/BUSINESS_AI_2_END_TO_END.md) for actual states and limitations.

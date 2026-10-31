@@ -84,7 +84,7 @@ describe("Vi and the real workspace boundary", () => {
     rerender(<Chat {...props} waitingForReply />);
     expect(container.querySelector(".vi-chat")).toHaveAttribute(
       "data-emotion",
-      "working",
+      "thinking",
     );
     expect(screen.getByRole("status")).toHaveTextContent("Обдумываю…");
     rerender(<Chat {...props} busy={false} waitingForReply={false} />);

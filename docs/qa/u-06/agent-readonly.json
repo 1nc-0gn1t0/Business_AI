@@ -1,0 +1,151 @@
+{
+  "mode": "real Qwen, artificial geo fixture in disposable PostGIS; no Internet fetch",
+  "timestamp": "2026-10-31T09:26:43.087812+00:00",
+  "cases": [
+    {
+      "case": "moscow",
+      "request": {
+        "request_id": "9ab0e3e9-42ee-4982-8c5f-17c5c6923189",
+        "expected_version": 0,
+        "content": "Проверь POI и дорожную сеть автосервиса в Москве. Не запускай загрузку."
+      },
+      "http_status": 200,
+      "response": {
+        "schema_version": "agent-v2",
+        "request_id": "9ab0e3e9-42ee-4982-8c5f-17c5c6923189",
+        "conversation_id": "783d5885-6dbe-43d4-b61e-3bd005a60958",
+        "profile_version": 1,
+        "state": "succeeded",
+        "message": "Проверена территория: ru-moscow.\nОбъекты OSM: нет подтверждённого локального набора.\nДорожная сеть: нет подтверждённого локального набора.\nПокрытие относится к импортированным данным; полнота сведений о реальном рынке не подтверждена.",
+        "next_step": "data_unavailable",
+        "code": "ok",
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "traces": [
+          {
+            "sequence": 1,
+            "tool": "check_data_coverage",
+            "capability": "data.coverage",
+            "mutating": false,
+            "timestamp": "2026-10-31T09:26:56.788516Z",
+            "status": "succeeded",
+            "code": "ok",
+            "validation_ms": 4.014040998299606,
+            "execution_ms": 7.357423994108103,
+            "argument_sha256": "a51df0127598376166e7b1ad7ea21d0d75754741fa3a7a7fc87f3d81b5bdd90c",
+            "arguments": {
+              "territory": "ru-moscow",
+              "categories": [
+                "geo.mapped_poi",
+                "geo.vehicle_network"
+              ]
+            },
+            "reason": "Пользователь запросил проверку покрытия POI и дорожной сети для автосервиса в Москве, без запуска загрузки. Требуется проверка покрытия указанных категорий в указанной территории.",
+            "result": {
+              "schema_version": "coverage-v2",
+              "registry_revision": "u02-v1",
+              "config_sha256": "1b93dc0307b147d0aa8af3e7c7e079f6e3d9f5522dbea2dd8b1c0ef00d3f9bbe",
+              "evaluated_at": "2026-10-31T09:26:56.784571Z",
+              "query": {
+                "territory": "ru-moscow",
+                "aoi": null,
+                "categories": [
+                  "geo.mapped_poi",
+                  "geo.vehicle_network"
+                ],
+                "period": null,
+                "mode": "real",
+                "purpose": "local_analysis"
+              },
+              "assessments": [
+                {
+                  "category": "geo.mapped_poi",
+                  "local_status": "missing",
+                  "summary": "unknown",
+                  "availability": "missing",
+                  "freshness": "unknown",
+                  "completeness": "unknown",
+                  "object_quality": "unknown",
+                  "datasets": [],
+                  "acquisition": [
+                    {
+                      "source_id": "osm",
+                      "acquirability": "unknown",
+                      "reason": "permission_or_remote_availability_unknown",
+                      "network_permission": "review_required",
+                      "availability": "unknown",
+                      "potentially_available": true,
+                      "adapter_status": "ready",
+                      "license_status": "verified_local_use",
+                      "local_use_permitted": true,
+                      "automatic_acquisition_implemented": true
+                    }
+                  ],
+                  "reasons": [
+                    "territory_boundary_unknown"
+                  ],
+                  "dataset_count": 0,
+                  "evidence_truncated": false
+                },
+                {
+                  "category": "geo.vehicle_network",
+                  "local_status": "missing",
+                  "summary": "not_available_from_approved_sources",
+                  "availability": "missing",
+                  "freshness": "unknown",
+                  "completeness": "unknown",
+                  "object_quality": "unknown",
+                  "datasets": [],
+                  "acquisition": [],
+                  "reasons": [
+                    "territory_boundary_unknown"
+                  ],
+                  "dataset_count": 0,
+                  "evidence_truncated": false
+                }
+              ],
+              "metadata_complete": true,
+              "limitations": [
+                "Coverage describes imported snapshots, not completeness of the real market.",
+                "Source timestamp is not a real-world observation date. No external requests performed."
+              ]
+            }
+          }
+        ],
+        "model_timings": [
+          {
+            "purpose": "proposal",
+            "code": "ok",
+            "queue_ms": 0.17149100312963128,
+            "inference_ms": 8382.1225089996,
+            "elapsed_ms": null,
+            "load_ms": 6.178401,
+            "prompt_tokens": 887,
+            "output_tokens": 151
+          },
+          {
+            "purpose": "synthesis",
+            "code": "ok",
+            "queue_ms": 0.1474639939260669,
+            "inference_ms": 1962.3824330046773,
+            "elapsed_ms": null,
+            "load_ms": 1.740737,
+            "prompt_tokens": 805,
+            "output_tokens": 22
+          }
+        ],
+        "total_ms": 10409.766898003
+      },
+      "wall_seconds": 10.512858950001828,
+      "python_peak_rss_bytes": 122171392,
+      "gpu_used_mib_snapshot": "unavailable",
+      "profile_unchanged": true
+    }
+  ],
+  "geo_fixture": {
+    "slug": "kazan-fixture",
+    "data_version": "57a045c95fce2bc452d5053deb063bbfde29a7b276293ebf3d8441edcafff237",
+    "synthetic_test_material": true
+  },
+  "acquisition_jobs": [],
+  "status": "recorded; inspect each scenario, do not equate HTTP200 with success"
+}

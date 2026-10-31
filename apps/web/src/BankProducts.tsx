@@ -67,12 +67,14 @@ export default function BankProducts({
   credential,
   onProfileConflict,
   onReport,
+  universal = false,
 }: {
   active: boolean;
   conversation: Conversation | null;
   credential: Credential | null;
   onProfileConflict: () => void;
   onReport?: (value: Schemas["MatchResult"] | null) => void;
+  universal?: boolean;
 }) {
   const [catalogue, setCatalogue] = useState<Schemas["CatalogueView"] | null>(
     null,
@@ -125,7 +127,7 @@ export default function BankProducts({
     setResult(null);
     try {
       const response = await request<Schemas["MatchResult"]>(
-        `/api/v1/conversations/${credential.id}/bank-products/matches`,
+        `/api/${universal ? "v2" : "v1"}/conversations/${credential.id}/bank-products/matches`,
         {
           method: "POST",
           credential,
@@ -311,7 +313,7 @@ export default function BankProducts({
               ? "error"
               : busy
                 ? "thinking"
-                : result?.missing_fields.length
+                : result?.status !== "evaluated" || result.missing_fields.length
                   ? "uncertain"
                   : "confident"
           }
@@ -320,9 +322,13 @@ export default function BankProducts({
             ? "Не удалось получить варианты. Попробуйте обновить каталог."
             : busy
               ? "Сопоставляю ваши потребности…"
-              : result?.missing_fields.length
-                ? "Для точного подбора нужны уточнения."
-                : "Подбор завершён. Это не решение банка."}
+              : result?.status === "catalogue_unavailable"
+                ? "Нет подтверждённых доступных предложений в текущем каталоге."
+                : result?.status === "needs_confirmation"
+                  ? "Сначала подтвердите текущие параметры проекта."
+                  : result?.missing_fields.length
+                    ? "Для точного подбора нужны уточнения."
+                    : "Подбор завершён. Это не решение банка."}
         </ViStatus>
       )}
       <p className="model-note">Демонстрационный подбор. Не решение банка.</p>
@@ -372,7 +378,9 @@ export default function BankProducts({
                     type="submit"
                     disabled={
                       busy ||
-                      conversation?.profile.confirmation_state !== "confirmed"
+                      (!universal &&
+                        conversation?.profile.confirmation_state !==
+                          "confirmed")
                     }
                   >
                     {busy ? "Подбираем…" : "Показать варианты по этим ответам"}
@@ -390,7 +398,9 @@ export default function BankProducts({
                     disabled={
                       busy ||
                       !credential ||
-                      conversation?.profile.confirmation_state !== "confirmed"
+                      (!universal &&
+                        conversation?.profile.confirmation_state !==
+                          "confirmed")
                     }
                   >
                     {busy ? "Подбираем…" : "Подобрать по потребностям →"}
@@ -466,7 +476,8 @@ export default function BankProducts({
                 disabled={
                   busy ||
                   !credential ||
-                  conversation?.profile.confirmation_state !== "confirmed"
+                  (!universal &&
+                    conversation?.profile.confirmation_state !== "confirmed")
                 }
               >
                 Подобрать по потребностям →
@@ -508,7 +519,13 @@ export default function BankProducts({
               </pre>
             </details>
           </details>
-          {conversation && credential && (
+          {universal && (
+            <p>
+              Подбор носит информационный характер. Для новых отраслей
+              mock-заявка пока недоступна; данные никуда не отправлены.
+            </p>
+          )}
+          {conversation && credential && !universal && (
             <details className="mock-flow">
               <summary>Демонстрационная заявка и согласия</summary>
               <LeadFlow

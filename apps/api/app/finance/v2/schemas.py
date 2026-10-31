@@ -176,16 +176,31 @@ class FinancialSnapshot(Contract):
     result: FinancialCalculation
 
 
+class FinancialOperation(Contract):
+    request_id: UUID
+    kind: Literal["propose", "calculate"]
+    state: Literal["running", "completed", "failed", "interrupted", "cancelled"]
+    profile_revision: int
+    input_revision: int
+    created_at: datetime
+    deadline_at: datetime
+    error_code: str | None = None
+
+
 class FinancialView(Contract):
     enabled: bool = True
+    profile_revision: int = 0
     configuration: FinancialDefinition
     document: FinancialDocument
     current: bool
     missing: tuple[str, ...]
     needs_review: tuple[str, ...]
     result: FinancialSnapshot | None = None
-    proposal_status: Literal["idle", "running", "completed", "failed", "interrupted"] = "idle"
+    proposal_status: Literal[
+        "idle", "running", "completed", "failed", "interrupted", "cancelled"
+    ] = "idle"
     proposal_error: str | None = None
+    operation: FinancialOperation | None = None
 
 
 class WhatIf(FinancialCommand):

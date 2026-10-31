@@ -80,12 +80,19 @@ export function ViAvatar({
 export function ViStatus({
   emotion,
   children,
+  announce = false,
 }: {
   emotion: ViEmotion;
   children: React.ReactNode;
+  announce?: boolean;
 }) {
   return (
-    <div className="vi-status" data-emotion={emotion}>
+    <div
+      className="vi-status"
+      data-emotion={emotion}
+      role={announce ? "status" : undefined}
+      aria-live={announce ? "polite" : undefined}
+    >
       <ViAvatar emotion={emotion} size={64} />
       <p>{children}</p>
     </div>

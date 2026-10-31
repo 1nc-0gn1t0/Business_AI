@@ -23,6 +23,45 @@ const json = (value: unknown, status = 200) =>
   new Response(JSON.stringify(value), { status });
 
 describe("bank product interface with explicit mocked APIs", () => {
+  it("does not celebrate an unavailable catalogue returned with HTTP 200", async () => {
+    const unavailable = {
+      ...result,
+      status: "catalogue_unavailable",
+      decisions: [],
+      missing_fields: [],
+      recommended_ids: [],
+      demonstration_ids: [],
+    };
+    vi.spyOn(globalThis, "fetch").mockImplementation(async (_path, options) =>
+      json(options?.method === "POST" ? unavailable : result.catalogue),
+    );
+    render(
+      <BankProducts
+        active
+        conversation={conversation}
+        credential={credential}
+        onProfileConflict={vi.fn()}
+      />,
+    );
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "Показать варианты по этим ответам",
+      }),
+    );
+    await screen.findByText(
+      "Нет подтверждённых доступных предложений в текущем каталоге.",
+    );
+    expect(
+      screen
+        .getByText(
+          "Нет подтверждённых доступных предложений в текущем каталоге.",
+        )
+        .closest(".vi-status"),
+    ).toHaveAttribute("data-emotion", "uncertain");
+    expect(
+      screen.queryByText("Подбор завершён. Это не решение банка."),
+    ).not.toBeInTheDocument();
+  });
   it("does not request catalogue until the section is opened", () => {
     const fetch = vi.spyOn(globalThis, "fetch");
     render(

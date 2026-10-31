@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-10-31T10:43:27.890106+00:00",
+  "ollama": "0.40.11",
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+  "loaded_before": false,
+  "runs": [
+    {
+      "index": 1,
+      "kind": "cold_observed_unloaded",
+      "wall_ms": 79788.65,
+      "load_ms": 78558.704684,
+      "total_ms": 79732.980749,
+      "prompt_tokens": 16,
+      "output_tokens": 9,
+      "structured_response_valid": true
+    },
+    {
+      "index": 2,
+      "kind": "warm",
+      "wall_ms": 985.627,
+      "load_ms": 13.956026,
+      "total_ms": 958.017736,
+      "prompt_tokens": 16,
+      "output_tokens": 9,
+      "structured_response_valid": true
+    }
+  ],
+  "method": "Serial native diagnostic only; existing shared local server; no unload, download or config change. Tiny 48-token budget is not a cold business-analysis SLA."
+}

@@ -1,5 +1,35 @@
 # Business AI — HANDOFF
 
+## Business AI 2.0 / U-06 · 31.10.2026 · live verified; delivery gate in PR
+
+- PR36 merged, verified main8fdeda3d8f59bbc664e01a404f15c87d6f978dec; new branch
+  codex/U-06-end-to-end-vi-integration. No U05 history/recovery changes copied.
+- Existing U04 plan gates no-map/finance/bank/result; existing U05 action receipts
+  expose real running/interrupted/completed/failed/cancelled status and bounded
+  polling/cancel. Late writes fenced, no automatic model retry. No new DB/queue.
+- analysis-result-v2 uses current immutable financial snapshot for UI/JSON; live
+  coverage explicitly assessed_at. v1 reports untouched. v2 bank is informational,
+  no persisted v1 confirmation/lead rights. New-industry PDF/mock leads unsupported.
+- Original Vi assets/motion preserved; thinking/search/review/partial/error/cancel,
+  neutral losses. Guarded browser history is a preference, not permission.
+- Isolated business-ai-u06: NEW DB/volume/schema0012, API8016/web5186, unique DB alias;
+  recovered5173/DB0011 unchanged. Reuse existing Ollama0.40.11/exact Qwen, no download.
+  Ordinary QA flags industry/finance1, agent0; optional U03 probe process only agent1.
+- Live A coffee38.7s warm; final replay≈2.1min/first Qwen91.781s. B auto37.6s, C school34.9s (AI correction), D generic11.6s PASS;
+  real bank/reload/back/JSON,1440/768/390. Resilience10.1s PASS: cancel158ms, reload
+  interrupted61ms, offline same snapshot, stale hidden, foreign404/revoke403.
+  Read-only real U03 check_data_coverage10.513s; data_unavailable, no import/fetch/job.
+- Native cold79.789s/load78.559s and warm0.986s, no forced unload. API sampled peak
+ 98.668MiB, max1DB connection/0idle tx; pure Decimal means0.557…0.723ms. No SLA.
+- Mock Chromium49PASS, extended102PASS, actual v1 OpenAPI36/126 equal, Gitleaks dir
+  and scanner fixtures PASS. Full PostGIS174PASS/2old stage assertions failed;
+  expectations updated, affected module12PASS. All7prek hooks/final build/Alembic
+  drift/container-recreation persistence PASS; full exact-HEAD CI in delivery/PR.
+- [Integration/QA/limits](architecture/BUSINESS_AI_2_END_TO_END.md),
+  [checkpoint](architecture/U-06_CHECKPOINT.md), evidence docs/qa/u-06/.
+  Final SHA/push/one PR/exact-HEAD CI are recorded in delivery/PR to avoid a
+  self-referential commit. No merge/next initiative. Next: owner review and release preparation.
+
 ## Business AI 2.0 / U-05 · 31.10.2026 · live verified, PR review pending
 
 - Continued existing branch `codex/U-05-universal-financial-scenarios` at82774e3,
