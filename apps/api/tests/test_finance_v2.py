@@ -2,6 +2,7 @@
 
 from datetime import UTC, datetime
 from decimal import Decimal, Inexact, Rounded, localcontext
+from fractions import Fraction
 
 import pytest
 from fastapi import HTTPException
@@ -210,6 +211,73 @@ def test_independent_rounding_and_ambient_context() -> None:
         assert calculate(doc) == result
 
 
+@pytest.mark.parametrize(
+    "model,billing,months",
+    [
+        ("auto_repair", None, 1),
+        ("generic", None, 1),
+        ("online_school", "monthly", 1),
+        ("online_school", "course", 3),
+    ],
+)
+@pytest.mark.parametrize("price", ["1.015", "101.325", "3650.005"])
+def test_fraction_oracle_for_all_adapters_and_periods(
+    model: str, billing: str | None, months: int, price: str
+) -> None:
+    def kopecks(value: Fraction) -> Fraction:
+        quotient, remainder = divmod(value.numerator * 100, value.denominator)
+        return Fraction(quotient + (2 * remainder >= value.denominator), 100)
+
+    doc = document(model)
+    for key in ("rent", "payroll", "utilities", "marketing", "other_fixed", "teachers", "platform"):
+        if key in doc.entries:
+            doc.entries[key] = entry(0, doc.entries[key].unit)
+    fixed_key = "teachers" if model == "online_school" else "rent"
+    doc.entries[fixed_key] = entry("1.005", "RUB/month")
+    if model == "auto_repair":
+        for key, value in {
+            "service_bays": "3",
+            "working_days": "25",
+            "orders_per_bay": "2.5",
+            "utilization": "0.63",
+            "average_order": price,
+            "materials_per_order": "0.005",
+            "labor_per_order": "0",
+        }.items():
+            doc.entries[key] = entry(value, doc.entries[key].unit)
+        units, fee = Fraction(3 * 25) * Fraction("2.5") * Fraction("0.63"), Fraction(0)
+    elif model == "online_school":
+        doc = doc.model_copy(update={"billing_model": billing})
+        for key, value in {
+            "students": "17",
+            "tuition": price,
+            "variable_per_student": "0.005",
+            "fee_ratio": "0.075",
+        }.items():
+            doc.entries[key] = entry(value, doc.entries[key].unit)
+        units, fee = Fraction(17), Fraction("0.075")
+    else:
+        for key, value in {
+            "unit_sales": "13.25",
+            "unit_price": price,
+            "variable_per_unit": "0.005",
+        }.items():
+            doc.entries[key] = entry(value, doc.entries[key].unit)
+        units, fee = Fraction("13.25"), Fraction(0)
+    revenue = kopecks(units * Fraction(price))
+    variable = kopecks(units * Fraction("0.005") + revenue * fee)
+    fixed = kopecks(Fraction("1.005") * months)
+    result = calculate(doc).scenarios[1]
+    assert Fraction(result.revenue) == revenue
+    assert Fraction(result.variable_costs) == variable
+    assert Fraction(result.fixed_costs) == fixed
+    assert Fraction(result.operating_result) == revenue - variable - fixed
+    threshold = fixed / (Fraction(price) * (1 - fee) - Fraction("0.005"))
+    assert result.break_even.units == -(-threshold.numerator // threshold.denominator)
+    doc.entries[fixed_key] = entry("1.015", "RUB/month")
+    assert calculate(doc).scenarios[1].operating_result < result.operating_result
+
+
 def test_sensitivity_holds_other_inputs_and_does_not_mutate() -> None:
     doc = document()
     before = doc.model_dump_json()
@@ -335,3 +403,32 @@ def test_invalid_ollama_envelopes_fail_safely(raw: bytes, monkeypatch: pytest.Mo
     del doc.entries["rent"]
     with pytest.raises(LLMError, match="llm_invalid_response"):
         asyncio.run(AssumptionLLM(backend).propose(profile, doc))
+
+
+def test_decoder_rejects_live_domain_and_capacity_failures_before_review() -> None:
+    import re
+
+    from app.finance.v2.llm import proposal_schema
+
+    auto = document()
+    for key in ("working_days", "utilization"):
+        del auto.entries[key]
+    branches = proposal_schema(auto)["properties"]["assumptions"]["items"]["anyOf"]
+    parameters = {b["properties"]["parameter"]["enum"][0]: b["properties"] for b in branches}
+    # Actual rejected live response used 100000 days and utilization 2.0.
+    for key, valid, invalid in (
+        ("working_days", ("1", "22", "31"), ("0", "32", "100000")),
+        ("utilization", ("0", "0.5", "1.000000"), ("2.0", "1.000001")),
+    ):
+        pattern = parameters[key]["base"]["pattern"]
+        assert all(re.fullmatch(pattern, s) for s in valid)
+        assert not any(re.fullmatch(pattern, s) for s in invalid)
+    school = document("online_school")
+    del school.entries["students"]
+    schema = proposal_schema(school)
+    branch = schema["properties"]["assumptions"]["items"]["anyOf"][0]
+    pattern = branch["properties"]["high"]["pattern"]
+    capacity = int(school.entries["student_capacity"].low)
+    assert re.fullmatch(pattern, str(capacity))
+    assert not re.fullmatch(pattern, str(capacity + 1))
+    assert branch["properties"]["unit"]["enum"] == ["students"]

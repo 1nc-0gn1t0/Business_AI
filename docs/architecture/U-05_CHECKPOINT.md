@@ -1,4 +1,32 @@
-# BA2/U-05 checkpoint · 30.10.2026
+# BA2/U-05 checkpoint · 31.10.2026
+
+- Continued existing clean branch at82774e3 (implementation905bf87), main stilldd850345.
+  No recovery changes cherry-picked; recovery worktree/DB/volumes/project untouched.
+- Existing Ollama0.40.11/exact Qwen0edcdef34593 reused over internal Docker network.
+  NEW `business-ai-u05-final` DB/volume, unique PGHOSTu05-finance-db, migration0012;
+  no download/second server/public Ollama listener. Private QA configs outside Git.
+- First actual recovered proposals: auto422domain and school422capacity, generic200.
+  Failed trials preserved. Root fix: semantic parameter/unit-first per-driver JSON
+  schema/domain patterns/known capacity; prompt metadata v2; backend remains strict.
+- Final real matrix3/3proposal+review+saved calculation PASS, replay0extra model calls.
+  32.727/19.917/16.229s; original assumed origins preserved. Point ranges may produce
+  equal scenarios; no automatic synthetic variation or market-accuracy claim.
+- Real Chromium Qwen-school PASS44.9s: real classification,4hypotheses/24.082s,
+  partial before approval, reject/correct tuition, confirm3other AI values,3distinct
+  saved scenarios, reload/JSON and1440/768/390, no page/console errors/no map.
+  Separate manual/course/what-if PASS7.5s; real legacy coffee PDF/JSON PASS38.8s.
+- Finance unit49PASS (Fraction oracle + actual live-domain regressions); final
+  PostGIS172PASS/283.17s including populated0011→0012/repeat/check and immutable files.
+  Chromium mock49PASS; actual OpenAPI36paths/126schemas deep-equal to base main.
+  Ruff/mypy174files/TS/ESLint PASS; seven prek hooks PASS before final docs/new tests;
+  final commit hooks/build/exact-HEAD CI are recorded in delivery/PR.
+- Evidence: live-qwen-recovered.json (failed), live-qwen-final.json, live-browser/,
+  coffee-regression/, openapi-compatibility.json. No credentials or owner data.
+- Delivery gate: final diff/secret check, hooks/commit/push/one PR/exact-HEAD CI.
+  Never merge, integrate recovery or start U-06. Earlier blocked instructions below
+  describe30October and are superseded by this owner-authorized restored runtime.
+
+## Historical checkpoint · 30.10.2026
 
 - PR35 verified merged; main dd8503455b2c46c8387cd6411fa0f0276983b6a7,
   clean before branch codex/U-05-universal-financial-scenarios.

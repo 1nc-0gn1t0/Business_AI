@@ -1,9 +1,8 @@
 # BA2/U-05 · Scenario assumptions and universal financial scenarios
 
-30.10.2026. Base: merged PR35/main `dd8503455b2c46c8387cd6411fa0f0276983b6a7`.
-Branch `codex/U-05-universal-financial-scenarios`. **Partial: live Qwen is blocked
-by an unavailable existing Ollama endpoint. Do not
-interpret mocked proposals as successful live generation.** Final delivery/CI is
+31.10.2026. Base: merged PR35/main `dd8503455b2c46c8387cd6411fa0f0276983b6a7`.
+Branch `codex/U-05-universal-financial-scenarios`. Real Qwen proposals, review,
+three scenarios, persistence and Chromium validation now pass. Final delivery/CI is
 recorded in HANDOFF and the PR. U-06 is not started.
 
 ## Architecture and compatibility
@@ -235,7 +234,88 @@ These are independently specified **test scenarios**, not observations of Moscow
 
 ## Verification and local operation
 
-Current evidence: `docs/qa/u-05/`. Initial live harness tried the actual configured
+### Completion on the recovered runtime · 31 October
+
+No recovery worktree changes are included in U-05. The existing model/server is
+reused read-only for configuration, with inference requests only: Ollama**0.40.11**,
+`qwen3:4b-instruct-2507-q4_K_M`, manifest
+`0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0`.
+The server has no host11434 listener: QA connects through the existing Docker network
+to `http://business-ai-recovered-ollama-1:11434`. No model pull/new LLM/queue/tunnel.
+The recovered DB remains0011 and its Compose project/volumes/config are untouched.
+
+`business-ai-u05-final` owns a NEW PostgreSQL/PostGIS database/volume and8015/5185
+loopback ports. API/test containers join the model network; their PGHOST is the
+unique **u05-finance-db** alias on their own network, never the ambiguous shared `db`.
+Migration0012 is applied only there or in temporary test databases.
+
+The first recovered live trial is retained in `live-qwen-recovered.json`:
+auto hypotheses had100000working days/utilization2.0; school exceeded capacity.
+Both were rejected422 without publishing values. Generic completed successfully.
+These are real model failures, not transport failures or mock successes.
+
+Prompt/schema `qwen-assumptions-u05-v2` now puts parameter/unit before the numeric
+values and provides a per-parameter anyOf schema: exact IDs/units, decimal-string
+domain patterns, integer domains and confirmed school-capacity bound. Fixed-context
+ranges are explained explicitly. Backend validation still independently rejects
+range order/context/capacity/source claims. No generated value is automatically
+repaired, confirmed or widened into an invented interval.
+
+Final live API matrix (`live-qwen-final.json`): all3models propose/review/calculate
+successfully,32.727/19.917/16.229s; replay added0model calls in each case.
+Auto/generic returned point ranges in this trial, so their three outputs coincide.
+This is an honest consequence of identical inputs, not profit multiplication.
+Point ranges may be edited by the user; hypothesis validity is not market realism.
+
+Real Chromium (`live-browser/evidence.json`): actual U-04 Qwen classification and
+4financial hypotheses,24.082s proposal; unreviewed calculation remains partial;
+tuition explicitly rejected then corrected to6500/6000/7500RUB/student/payment;
+3other Qwen assumptions confirmed while retaining synthetic/assumed origin.
+Three saved outcomes **-630000/-25000/502500RUB**, reload and JSON pass;
+1440/768/390screenshots, page/console errors0, geo/coffee requests0.
+Separate real manual-school test checks full-course periods, unsaved what-if and
+reload; real legacy coffee checks local Qwen→PostGIS→v1finance→bank→PDF/JSON.
+
+Validation:49finance unit tests including independent Fraction oracle for all
+adapters/month/cohort periods;172PostGIS integration tests, including a populated
+0011→0012/repeat/check and byte-identical legacy files;49mock Chromium tests,
+3separate real browser scenarios. Sets overlap with full pytest/prek and are not
+summed as unique tests. Seven hooks passed; final commit/CI state is in the PR.
+Actual v1 OpenAPI36paths/126recursive schemas remains deep-equal to main.
+
+Current Linux live-harness Python peak RSS116867072bytes excludes the Ollama server,
+PostgreSQL, native GPU allocations and full machine. Twenty pure calculations/model:
+mean0.580/0.654/0.722ms, max3.325ms. HTTP/TestClient calculation48…55ms includes DB
+and publication. Host GPU snapshot2348MiB/4096MiB includes desktop and the shared
+model; it is not an isolated peak. No whole-city/throughput/SLA claim.
+
+Tested local commands (private QA env/overlay contain credentials, never Git):
+
+```powershell
+$qa = Join-Path $env:USERPROFILE '.cache/business-ai/u05-final'
+$compose = @('compose','--env-file',"$qa/qa.env",'-p','business-ai-u05-final',
+  '-f','compose.yaml','-f',"$qa/qa.yaml")
+docker @compose up -d --wait db api web
+docker @compose run --rm --no-deps -T -e LLM_PROVIDER=ollama `
+  -v "${PWD}/docs/qa/u-05:/evidence" db-tests /app/.venv/bin/python `
+  -m tests.integration.u05_live --output /evidence/live-qwen-final.json
+$env:BA010_REAL='1'; $env:BA_U05_QWEN_REAL='1'
+$env:BA_TEST_WEB_URL='http://127.0.0.1:5185'
+npm --prefix apps/web run test:e2e -- --grep 'U-05 real Qwen school'
+# Stop this QA project only; do not operate on business-ai-recovered.
+docker @compose stop
+```
+
+For a different installation, create its own isolated QA env/DB and use the actual
+existing model endpoint. Do not copy this machine's network assumption blindly.
+Build current API/db-tests images before the harness; enable both industry/finance
+flags in the private QA env. No recovery backup/installation files are required by
+the feature PR. CPU-only model performance and general economic plausibility remain
+unverified. CI intentionally uses scripted fixtures, never downloads model weights.
+
+### Historical evidence and diagnosis · 30 October (superseded)
+
+Evidence at that checkpoint: `docs/qa/u-05/`. Initial live harness tried the configured
 Ollama endpoint; all3proposal calls returned503 `llm_unavailable`, with no hypotheses
 or financial live success. Windows standard paths and both Ubuntu WSL distributions
 had no accessible Ollama binary/service/model. Existing endpoint/location requested

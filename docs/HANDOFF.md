@@ -1,53 +1,38 @@
 # Business AI — HANDOFF
 
-## Business AI 2.0 / U-05 · financial scenarios · 30.10.2026 · PARTIAL / live blocked
+## Business AI 2.0 / U-05 · 31.10.2026 · live verified, PR review pending
 
-- PR35 merged; main `dd8503455b2c46c8387cd6411fa0f0276983b6a7`, initially clean.
-  Branch `codex/U-05-universal-financial-scenarios`; actual delivery SHA/PR/CI in report.
-- [Implementation/API/limits](architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md),
-  [checkpoint](architecture/U-05_CHECKPOINT.md), evidence `docs/qa/u-05/`.
-- Three reviewed Decimal adapters (auto/school/generic), explicit periods/capacities,
-  input ranges/review/provenance, three scenarios, break-even/sensitivity and no-save
-  what-if. Legacy coffee formulas/DTO/report bytes untouched. No market-data fallback.
-- Migration0012 adds owner-bound workspace/action/result tables; same conversation
-  owner/consent lock plus input CAS, durable idempotency/late-publication fencing.
-  Financial and profile config hashes bind confirmations; non-coffee configs u05-v1
-  require renewed review. Feature BA_FINANCE_V2_ENABLED=0, industry also required.
-- New UI follows server finance capability, no mandatory school map; manual review,
-  JSON snapshot/reload, stale output invalidation and existing Vi emotions.
-- Verified: final finance unit36PASS; targeted DB66PASS (finance/industry/agent/registry/
-  geo), generic/cache2PASS; populated/repeat migrations/reports41PASS (overlap).
-  Chromium full49PASS; real built Compose manual-school1PASS5.2s, no mocks/Ollama,
-  review→3different scenarios→unsaved what-if→reload→JSON; page/console errors0,
-  widths1440/768/390. Deep actual v1 OpenAPI36paths/126schemas unchanged.
-  Full API pytest538PASS/168SKIP/102deselected before2final unit additions; tests PASS,
-  initial hook exit1 due concurrent QA/docs writes. Final standalone7prek hooks PASS;
-  actual delivery commit hooks/CI in report.
-- Python100iterations/model: median0.377…0.649ms, max1.587ms; allocation trace36…43KiB
-  excludes interpreter/native/DB/Ollama. Browser-triggered calculation236ms includes
-  click/HTTP/DB/publication. No model RAM/GPU/inference performance claim.
-- Live harness tried existing localhost11434 and got503 for all3cases; no successful
-  hypothesis generation/confirmation claimed. Ollama binary/model not found in standard
-  Windows/both Ubuntu WSL paths. Owner asked for existing endpoint/location. **Do not
-  mark Completed until at least one full live scenario succeeds.** No replacement model.
-- Owner requested container lookup/start: both Docker contexts use the same engine;
-  no existing containers/volumes; all4available images scanned without finding Ollama/
-  Qwen. Official same-version0.40.8 digest verified, but automatic tool approval
-  rejected create/start/model-pull command as "blocked by policy" without details;
-  nothing downloaded/started. Explicit approval for new same-model container requested.
-- Owner subsequently STOPPED any recreation/download and requested environment-first
-  diagnosis. That instruction supersedes the earlier creation question. Native commands
-  run on the Windows host (not WSL/Docker); no remote Linux sandbox evidence. Actual
-  get_llm defaults127.0.0.1:11434; Compose defaults host.docker.internal:11434. Both
-  native and existing API-image HTTP probes fail; host IPv4 connection refused, no
-  expected listener/Ollama process. WSL units not-found. Current binary/model lookup
-  is negative only within accessible storage; never claim historic Ollama did not exist.
-  [Sanitized evidence](qa/u-05/ollama-environment-diagnostic.json) and exact local recovery
-  commands in implementation doc. Live Qwen validation **BLOCKED**, not a model response
-  or proof of bad proposals. No reinstall, port exposure, network change or tunnel.
-- Isolated hardened Compose/PostGIS3.6/schema0012/ready+web200,0persistent volumes;
-  QA services stopped after evidence. No user volume,
-  production geo import, new financial data source, v1 PDF or U-06 changes. No merge.
+- Continued existing branch `codex/U-05-universal-financial-scenarios` at82774e3,
+  implementation905bf87; base main remainsdd8503455b2c46c8387cd6411fa0f0276983b6a7.
+  Recovery worktree/DB/volumes/project unchanged; no recovery files in this PR.
+- Three Decimal adapters, input review/provenance, conservative/base/optimistic,
+  break-even/sensitivity and unsaved what-if; v1 coffee engine/reports unchanged.
+  Additive0012 financial_workspaces/actions/results, owner/consent/profile+input CAS,
+  idempotent receipts/late-result fencing. Both industry/finance flags default0.
+- Reused existing Ollama0.40.11/exact Qwen0edcdef34593 over internal Docker network;
+  no model pull/second server/public port/queue. NEW QA project business-ai-u05-final,
+  unique PGHOSTu05-finance-db, DB0012. Recovered DB stays0011, app stays5173.
+- First recovered real trial: auto422domain, school422capacity, generic200. Preserved
+  failures. Root fix: parameter/unit-first per-driver schema, numeric domains/known
+  capacity and explicit context ranges; prompt revisionv2, independent backend checks.
+- Final real matrix3/3 propose/review/calculate PASS,32.727/19.917/16.229s;
+  replay0extra model calls. Point ranges may yield identical outputs, no fake widening.
+- Real Chromium Qwen school PASS44.9s: real classification,4AI hypotheses/24.082s;
+  partial before review; reject/correct tuition; retain3confirmed synthetic AI values;
+  results -630000/-25000/502500RUB; reload/JSON/1440/768/390; console/page errors0.
+  Manual course/what-if browser PASS7.5s; real legacy coffee PDF/JSON PASS38.8s.
+- Tests:49finance unit (independent Fraction oracle and live-domain regressions);
+  final PostGIS172PASS/283.17s including populated0011→0012/repeat/check/immutable
+  files. Mock Chromium49PASS. OpenAPI36v1paths/126recursive schemas deep-equal.
+  Ruff/mypy174files/TS/ESLint PASS; prior7prek hooks PASS; final commit hooks/CI in PR.
+  Counts overlap with full pytest/CI, never sum them as unique tests.
+- [Implementation/runbook/limits](architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md),
+  [checkpoint](architecture/U-05_CHECKPOINT.md); evidence docs/qa/u-05/live-browser/,
+  live-qwen-final.json, live-qwen-recovered.json (rejections), coffee-regression/.
+  Earlier unavailable-endpoint evidence retained as history, no longer a blocker.
+- Delivery gate: final commit/push/one PR/exact-HEAD CI. No merge or U-06 permission.
+  Actual final SHA and checks recorded in delivery report/PR (avoid self-reference).
+  Next is owner review, not further roadmap implementation.
 
 ## Business AI 2.0 / U-04 · Universal Industry Engine · 30.10.2026
 

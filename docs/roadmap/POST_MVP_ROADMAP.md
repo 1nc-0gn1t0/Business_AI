@@ -1,8 +1,8 @@
 # Business AI · Post-MVP Master Roadmap
 
-**BA2/U-05,30.10.2026:** после mergePR35 разрешены финансовые сценарии и review
+**BA2/U-05,31.10.2026:** после mergePR35 разрешены финансовые сценарии и review
 гипотез. [Реализация/проверки/ограничения](../architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md).
-Статус исполнения в HANDOFF; live Qwen пока blocked. Старые roadmap-v1/U-ID и
+Статус исполнения в HANDOFF; live Qwen/review/scenarios и отдельный QA подтверждены. Старые roadmap-v1/U-ID и
 их статусы сохранены; это не разрешение U-06 и не закрытие release baseline.
 
 Версия: **v1**, 25.10.2026 (МСК). Roadmap утверждён владельцем после PR #17;

@@ -1,6 +1,6 @@
 {
   "mode": "Built Compose/API/PostGIS; manual scenario inputs; no mocks; no Ollama calls",
-  "calculation_http_ms": 236,
+  "calculation_http_ms": 280,
   "base_operating_result": "-280000.00",
   "preview_operating_result": "-310000.00",
   "what_if_persisted": false,

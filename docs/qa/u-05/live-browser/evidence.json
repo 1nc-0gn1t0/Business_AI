@@ -1,0 +1,36 @@
+{
+  "mode": "Real Chromium/API/PostGIS/Qwen; no mocks",
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "prompt": "qwen-assumptions-u05-v2",
+  "inferenceMs": 24082,
+  "hypotheses": [
+    "tuition",
+    "students",
+    "fee_ratio",
+    "variable_per_student"
+  ],
+  "rejected": "tuition",
+  "corrected": "6500",
+  "unreviewed_calculation": "partial",
+  "confirmed_ai_values": 3,
+  "scenarios": [
+    {
+      "name": "conservative",
+      "result": "-630000.00"
+    },
+    {
+      "name": "base",
+      "result": "-25000.00"
+    },
+    {
+      "name": "optimistic",
+      "result": "502500.00"
+    }
+  ],
+  "reload": true,
+  "json": true,
+  "proposals": 1,
+  "errors": [],
+  "consoleErrors": [],
+  "excluded": []
+}

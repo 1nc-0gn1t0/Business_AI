@@ -368,7 +368,7 @@ class FinancialService:
         generation_model: str,
     ) -> FinancialView:
         _, doc, action = self.fence(owner, token, body, "propose", consent)
-        from app.finance.v2.llm import validate_proposal
+        from app.finance.v2.llm import PROMPT_VERSION, validate_proposal
 
         validate_proposal(proposal, doc)
         entries = dict(doc.entries)
@@ -381,7 +381,7 @@ class FinancialService:
             ).model_copy(
                 update={
                     "generation_model": generation_model,
-                    "generation_prompt_version": "qwen-assumptions-u05-v1",
+                    "generation_prompt_version": PROMPT_VERSION,
                 }
             )
         doc = doc.model_copy(update={"entries": entries, "revision": doc.revision + 1})

@@ -1,11 +1,11 @@
 {
-  "id": "7eb6740b-9813-4a90-9f77-eaa123bf297c",
-  "created_at": "2026-10-29T23:38:53.374239Z",
-  "fingerprint": "68be52f71e7f7fa0c840c4ca65183a87013a62977e8211344181aaebe5e273a0",
+  "id": "96b9c635-a25f-4e25-94c1-667042c44e7a",
+  "created_at": "2026-10-31T07:07:58.889242Z",
+  "fingerprint": "28c88ddbd560cf1bb7679f50e58f2f6a82662fb44ee6ae0cefb5be2f3a22d181",
   "profile": {
     "schema_version": "business-profile-v2",
-    "id": "f2049d98-9ea5-4838-91b7-d7bd1d145e0a",
-    "conversation_id": "dab265be-5fa9-4746-9d2e-a059b7dba2e5",
+    "id": "7516c22d-6d9d-42d1-a84b-7f3eb137b624",
+    "conversation_id": "935b4fd3-2ec9-4793-94e2-74df8b352b8b",
     "revision": 2,
     "idea": "",
     "industry": "online_school",
@@ -163,8 +163,8 @@
     "confirmed_revision": 2,
     "deferred_fields": [],
     "legacy_snapshot": {
-      "id": "f2049d98-9ea5-4838-91b7-d7bd1d145e0a",
-      "conversation_id": "dab265be-5fa9-4746-9d2e-a059b7dba2e5",
+      "id": "7516c22d-6d9d-42d1-a84b-7f3eb137b624",
+      "conversation_id": "935b4fd3-2ec9-4793-94e2-74df8b352b8b",
       "city": null,
       "category": "Онлайн-школа",
       "budget": "1500000.00",
@@ -208,7 +208,7 @@
         "method": "user_assumption",
         "basis": "Редактирование пользователем",
         "revision": 1,
-        "created_at": "2026-10-29T23:38:52.546830Z",
+        "created_at": "2026-10-31T07:07:58.162895Z",
         "generation_model": null,
         "generation_prompt_version": null
       },
@@ -234,7 +234,7 @@
         "method": "user_assumption",
         "basis": "Редактирование пользователем",
         "revision": 1,
-        "created_at": "2026-10-29T23:38:52.547046Z",
+        "created_at": "2026-10-31T07:07:58.162991Z",
         "generation_model": null,
         "generation_prompt_version": null
       },
@@ -260,7 +260,7 @@
         "method": "user_assumption",
         "basis": "Редактирование пользователем",
         "revision": 1,
-        "created_at": "2026-10-29T23:38:52.546720Z",
+        "created_at": "2026-10-31T07:07:58.162700Z",
         "generation_model": null,
         "generation_prompt_version": null
       },
@@ -286,7 +286,7 @@
         "method": "user_assumption",
         "basis": "Редактирование пользователем",
         "revision": 1,
-        "created_at": "2026-10-29T23:38:52.547017Z",
+        "created_at": "2026-10-31T07:07:58.162975Z",
         "generation_model": null,
         "generation_prompt_version": null
       },
@@ -312,7 +312,7 @@
         "method": "user_assumption",
         "basis": "Редактирование пользователем",
         "revision": 1,
-        "created_at": "2026-10-29T23:38:52.546967Z",
+        "created_at": "2026-10-31T07:07:58.162959Z",
         "generation_model": null,
         "generation_prompt_version": null
       },
@@ -338,7 +338,7 @@
         "method": "user_assumption",
         "basis": "Редактирование пользователем",
         "revision": 1,
-        "created_at": "2026-10-29T23:38:52.547070Z",
+        "created_at": "2026-10-31T07:07:58.163005Z",
         "generation_model": null,
         "generation_prompt_version": null
       },
@@ -364,7 +364,7 @@
         "method": "user_assumption",
         "basis": "Редактирование пользователем",
         "revision": 1,
-        "created_at": "2026-10-29T23:38:52.547097Z",
+        "created_at": "2026-10-31T07:07:58.163020Z",
         "generation_model": null,
         "generation_prompt_version": null
       },
@@ -390,7 +390,7 @@
         "method": "user_assumption",
         "basis": "Редактирование пользователем",
         "revision": 1,
-        "created_at": "2026-10-29T23:38:52.546864Z",
+        "created_at": "2026-10-31T07:07:58.162916Z",
         "generation_model": null,
         "generation_prompt_version": null
       },
@@ -416,7 +416,7 @@
         "method": "user_assumption",
         "basis": "Редактирование пользователем",
         "revision": 1,
-        "created_at": "2026-10-29T23:38:52.546797Z",
+        "created_at": "2026-10-31T07:07:58.162867Z",
         "generation_model": null,
         "generation_prompt_version": null
       },
@@ -442,7 +442,7 @@
         "method": "user_assumption",
         "basis": "Редактирование пользователем",
         "revision": 1,
-        "created_at": "2026-10-29T23:38:52.546931Z",
+        "created_at": "2026-10-31T07:07:58.162942Z",
         "generation_model": null,
         "generation_prompt_version": null
       }
@@ -891,6 +891,7 @@
       "course: одна оплаченная когорта за всю длительность курса; выручка не повторяется ежемесячно.",
       "Переменная и постоянная оплата преподавателей не должны дублироваться."
     ],
+    "warnings": [],
     "rounding": "Decimal precision 64 / HALF_UP; RUB rounded to kopecks before subtraction"
   }
 }

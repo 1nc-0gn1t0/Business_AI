@@ -4,7 +4,8 @@
 Opt-in `BA_INDUSTRY_ENABLED=1` + `BA_FINANCE_V2_ENABLED=1` после migration0012;
 finance по умолчанию0. Автосервис/онлайн-школа/generic используют собственные
 драйверы, явный review и Decimal-сценарии. Перерасчёт работает без модели;
-успешная live-генерация гипотез Qwen пока не подтверждена (endpoint недоступен).
+Live-предложения точной локальной Qwen проверены для всех трёх адаптеров;
+Chromium проверяет review, отклонение/исправление, расчёт, reload и JSON без моков.
 Старые финансы/отчёты кофейни сохраняются. Это сценарная арифметика, не прогноз рынка.
 
 **BA2/U-04:** [Universal Industry Engine](docs/architecture/BUSINESS_AI_2_UNIVERSAL_INDUSTRY_ENGINE.md)
