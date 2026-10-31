@@ -27,6 +27,13 @@
   audit found7 advisories in the existing dev-only pypdf6.21.2. Lock updated only
   that package to6.21.4; production requirements/formulas unchanged. Full hashed
   Python audit now reports no known vulnerabilities; PDF regression rerun.
+  Subsequent npm audit exposed GHSA-g3hv-75wg-m249 in minimatch. Override11.0.1
+  uses the patched upstream engine. Redocly1.34.22's legacy callable import needs
+  one version-guarded, idempotent postinstall adaptation to its named export;
+  fail closed on unexpected source/version. Resolver header-origin cases are
+  checked with synthetic fetch, no network; generated actual API types byte-identical.
+  No Redocly major upgrade. npm audit0; native build PASS. Docker copies the same
+  patch before npm ci. Remove adaptation when generator upgrades Redocly.
   Never merge, integrate recovery or start U-06. Earlier blocked instructions below
   describe30October and are superseded by this owner-authorized restored runtime.
 

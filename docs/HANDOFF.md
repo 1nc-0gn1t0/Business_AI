@@ -34,6 +34,9 @@
   PR36 initial CI exposed7 advisories in dev-only pypdf6.21.2; narrow lock update
   to6.21.4, no production dependency/formula changes. Hashed Python audit PASS;
   PDF regressions rerun. Final CI is checked again on the updated PR HEAD.
+  npm then exposed minimatch GHSA-g3hv-75wg-m249: pinned11.0.1 plus guarded
+  Redocly1.x import adaptation, no major generator upgrade/audit waiver. npm audit0;
+  actual generated types byte-identical and resolver header-origin checks PASS.
   Actual final SHA and checks recorded in delivery report/PR (avoid self-reference).
   Next is owner review, not further roadmap implementation.
 

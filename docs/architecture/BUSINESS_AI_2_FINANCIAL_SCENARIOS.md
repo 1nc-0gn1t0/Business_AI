@@ -5,6 +5,17 @@ Branch `codex/U-05-universal-financial-scenarios`. Real Qwen proposals, review,
 three scenarios, persistence and Chromium validation now pass. Final delivery/CI is
 recorded in HANDOFF and the PR. U-06 is not started.
 
+CI dependency maintenance: dev-only pypdf6.21.2→6.21.4 fixes seven advisories;
+production Python requirements are unchanged. The existing frontend toolchain's
+[minimatch advisory](https://github.com/advisories/GHSA-g3hv-75wg-m249) requires11.0.1.
+`package.json` pins that engine for all consumers. Redocly1.34.22 still expects a
+callable CommonJS export: `tools/patch-redocly-minimatch.cjs` adapts only that import
+to the public named export during npm ci, checks the exact version/source, and
+tests resolver header matching without network. It is idempotent and fails closed
+if upstream changes; Docker executes the same script. Actual generated API types
+are byte-identical. Remove this temporary adapter once openapi-typescript supports
+a modern Redocly; do not disable audits or force an incompatible Redocly upgrade.
+
 ## Architecture and compatibility
 
 `ProfileV2 → reviewed FinancialDefinition → input resolution/review → Decimal ledger
