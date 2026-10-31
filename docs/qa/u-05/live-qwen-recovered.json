@@ -1,0 +1,3010 @@
+{
+  "timestamp": "2026-10-31T06:50:36.419622+00:00",
+  "cases": [
+    {
+      "model": "auto_repair",
+      "request": "Хочу открыть автосервис в Москве, бюджет 8 миллионов рублей, четыре поста. Предложи предварительные сценарные параметры для финансового анализа.",
+      "manual_testing_values": {
+        "rent": [
+          "100000",
+          "RUB/month"
+        ],
+        "payroll": [
+          "200000",
+          "RUB/month"
+        ],
+        "utilities": [
+          "20000",
+          "RUB/month"
+        ],
+        "marketing": [
+          "30000",
+          "RUB/month"
+        ],
+        "other_fixed": [
+          "50000",
+          "RUB/month"
+        ]
+      },
+      "classification_seconds": 90.5253160559987,
+      "classification_status": 200,
+      "profile": {
+        "schema_version": "business-profile-v2",
+        "id": "f3c75e98-2f7b-43dd-a150-b008ec4a8a10",
+        "conversation_id": "35a0b543-220d-4f50-847b-1bc6177a1738",
+        "revision": 3,
+        "idea": "Хочу открыть автосервис в Москве, бюджет 8 миллионов рублей, четыре поста. Предложи предварительные сценарные параметры для финансового анализа.",
+        "industry": "auto_repair",
+        "raw_industry": "автосервис",
+        "resolution": "known",
+        "industry_evidence": "Хочу открыть автосервис в Москве",
+        "config_version": "u05-v1",
+        "config_sha256": "ef4423ca6ca9712810038f0e86de954b8571ec9562d08d0393a70e9da6b55b3f",
+        "configuration_snapshot": {
+          "id": "auto_repair",
+          "label": "Автосервис",
+          "version": "u05-v1",
+          "aliases": [
+            "автосервис",
+            "автосервиса",
+            "СТО"
+          ],
+          "business_models": [
+            "service"
+          ],
+          "required": [
+            "city",
+            "budget",
+            "specialization",
+            "service_bays",
+            "physical_premises"
+          ],
+          "fields": [
+            {
+              "id": "service_bays",
+              "label": "Ремонтные посты",
+              "question": "Сколько ремонтных постов планируете?",
+              "kind": "integer",
+              "unit": "bays",
+              "choices": [],
+              "maximum": 1000,
+              "driver": "capacity"
+            },
+            {
+              "id": "services",
+              "label": "Услуги",
+              "question": "Какие услуги планируете?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "context"
+            },
+            {
+              "id": "utilization",
+              "label": "Загрузка",
+              "question": "Какую загрузку предполагаете?",
+              "kind": "ratio",
+              "unit": "ratio",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "context"
+            },
+            {
+              "id": "working_days",
+              "label": "Рабочие дни",
+              "question": "Сколько рабочих дней в месяц?",
+              "kind": "integer",
+              "unit": "days/month",
+              "choices": [],
+              "maximum": 31,
+              "driver": "capacity"
+            },
+            {
+              "id": "orders_per_bay",
+              "label": "Заказов на пост",
+              "question": "Сколько заказов на пост в день планируете?",
+              "kind": "integer",
+              "unit": "orders/bay/day",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "capacity"
+            },
+            {
+              "id": "average_order",
+              "label": "Средний заказ",
+              "question": "Укажите средний заказ в рублях.",
+              "kind": "money",
+              "unit": "RUB/order",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "revenue"
+            },
+            {
+              "id": "payroll",
+              "label": "Расходы на персонал",
+              "question": "Укажите расходы на персонал в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            },
+            {
+              "id": "materials",
+              "label": "Материалы",
+              "question": "Укажите материалы в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "variable_cost"
+            },
+            {
+              "id": "rent",
+              "label": "Аренда",
+              "question": "Укажите аренда в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            }
+          ],
+          "data_categories": [
+            "geo.mapped_poi",
+            "geo.vehicle_network"
+          ],
+          "optional_categories": [
+            "geo.buildings",
+            "geo.parking"
+          ],
+          "geo_policy": "required",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Автомобильный рейтинг пока не реализован; финансовые сценарии требуют отдельной v2 capability.",
+            "OSM POI не подтверждает дорожную сеть или автомобильный трафик."
+          ]
+        },
+        "values": {
+          "city": {
+            "value": "Москва",
+            "unit": "text",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "Хочу открыть автосервис в Москве",
+            "lineage": "user_message"
+          },
+          "budget": {
+            "value": "8000000",
+            "unit": "RUB",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "бюджет 8 миллионов рублей",
+            "lineage": "user_message"
+          },
+          "specialization": {
+            "value": "ремонт",
+            "unit": "text",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "ремонт",
+            "lineage": "user_edit"
+          },
+          "physical_premises": {
+            "value": true,
+            "unit": "boolean",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "True",
+            "lineage": "user_edit"
+          }
+        },
+        "extensions": {
+          "generic": {},
+          "auto_repair": {
+            "service_bays": {
+              "value": 4,
+              "unit": "bays",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "confirmed",
+              "evidence": "четыре поста",
+              "lineage": "user_message"
+            }
+          }
+        },
+        "confirmed_revision": 3,
+        "deferred_fields": [],
+        "legacy_snapshot": {
+          "id": "f3c75e98-2f7b-43dd-a150-b008ec4a8a10",
+          "conversation_id": "35a0b543-220d-4f50-847b-1bc6177a1738",
+          "city": "Москва",
+          "category": "Автосервис",
+          "budget": "8000000.00",
+          "funding": null,
+          "preferences": {
+            "format": null,
+            "preferred_districts": [],
+            "constraints": []
+          },
+          "confirmation_state": "draft"
+        }
+      },
+      "before_proposal": {
+        "enabled": true,
+        "configuration": {
+          "id": "auto_repair",
+          "version": "u05-decimal-v1",
+          "parameters": [
+            {
+              "id": "service_bays",
+              "label": "Ремонтные посты",
+              "unit": "bays",
+              "minimum": "1",
+              "maximum": "1000",
+              "integer": true,
+              "direction": "context"
+            },
+            {
+              "id": "working_days",
+              "label": "Рабочие дни",
+              "unit": "days/month",
+              "minimum": "1",
+              "maximum": "31",
+              "integer": true,
+              "direction": "context"
+            },
+            {
+              "id": "orders_per_bay",
+              "label": "Мощность поста в день (при полной загрузке)",
+              "unit": "orders/bay/day",
+              "minimum": "1",
+              "maximum": "100",
+              "integer": false,
+              "direction": "context"
+            },
+            {
+              "id": "utilization",
+              "label": "Загрузка (0–1)",
+              "unit": "ratio",
+              "minimum": "0",
+              "maximum": "1",
+              "integer": false,
+              "direction": "revenue"
+            },
+            {
+              "id": "average_order",
+              "label": "Выручка на заказ, включая запчасти",
+              "unit": "RUB/order",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "revenue"
+            },
+            {
+              "id": "materials_per_order",
+              "label": "Материалы на заказ",
+              "unit": "RUB/order",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "labor_per_order",
+              "label": "Переменная оплата труда на заказ",
+              "unit": "RUB/order",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "rent",
+              "label": "Аренда",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "payroll",
+              "label": "Постоянная оплата труда",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "utilities",
+              "label": "Коммунальные расходы",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "marketing",
+              "label": "Маркетинг",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "other_fixed",
+              "label": "Другие постоянные расходы",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            }
+          ],
+          "limitations": [
+            "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+            "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+            "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+            "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+            "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+            "Мощность = посты × дни × заказы на пост при полной загрузке. Загрузка применяется один раз.",
+            "Материалы и переменная оплата не должны дублироваться в постоянных расходах."
+          ]
+        },
+        "document": {
+          "profile_revision": 3,
+          "profile_config_sha256": "ef4423ca6ca9712810038f0e86de954b8571ec9562d08d0393a70e9da6b55b3f",
+          "model": "auto_repair",
+          "adapter_version": "u05-decimal-v1",
+          "adapter_sha256": "8b2fea9899bd30a5d8d4e58581d77c861e91a9cd0d7f37c459f0217c386ac3f7",
+          "revision": 2,
+          "billing_model": null,
+          "entries": {
+            "rent": {
+              "base": "100000",
+              "low": "100000",
+              "high": "100000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:rent",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:52:14.350713Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "payroll": {
+              "base": "200000",
+              "low": "200000",
+              "high": "200000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:payroll",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:52:14.350832Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "marketing": {
+              "base": "30000",
+              "low": "30000",
+              "high": "30000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:marketing",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:52:14.351039Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "utilities": {
+              "base": "20000",
+              "low": "20000",
+              "high": "20000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:utilities",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:52:14.350963Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "other_fixed": {
+              "base": "50000",
+              "low": "50000",
+              "high": "50000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:other_fixed",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:52:14.351103Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "service_bays": {
+              "base": "4",
+              "low": "4",
+              "high": "4",
+              "unit": "bays",
+              "source": {
+                "origin": "user_input",
+                "source_name": "Подтверждённые вводные ProfileV2",
+                "data_version": "profile-v2-3",
+                "confidence": "low",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "profile:f3c75e98-2f7b-43dd-a150-b008ec4a8a10:3:auto_repair.service_bays",
+                "source_attested": false
+              },
+              "epistemic": "user_provided",
+              "review": "confirmed",
+              "method": "profile_v2",
+              "basis": "четыре поста",
+              "revision": 0,
+              "created_at": "2026-10-31T06:52:14.350160Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            }
+          }
+        },
+        "current": true,
+        "missing": [
+          "working_days",
+          "orders_per_bay",
+          "utilization",
+          "average_order",
+          "materials_per_order",
+          "labor_per_order"
+        ],
+        "needs_review": [],
+        "result": null,
+        "proposal_status": "idle",
+        "proposal_error": null
+      },
+      "proposal_seconds": 30.523740166001517,
+      "proposal_status": 422,
+      "proposal_checks": [
+        {
+          "proposal": {
+            "model": "auto_repair",
+            "assumptions": [
+              {
+                "base": "100000",
+                "low": "50000",
+                "high": "150000",
+                "parameter": "working_days",
+                "unit": "days/month",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "2.0",
+                "low": "0.5",
+                "high": "3.5",
+                "parameter": "utilization",
+                "unit": "ratio",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "50000",
+                "low": "10000",
+                "high": "100000",
+                "parameter": "average_order",
+                "unit": "RUB/order",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "15000",
+                "low": "5000",
+                "high": "30000",
+                "parameter": "materials_per_order",
+                "unit": "RUB/order",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "10000",
+                "low": "5000",
+                "high": "20000",
+                "parameter": "labor_per_order",
+                "unit": "RUB/order",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "4",
+                "low": "2",
+                "high": "6",
+                "parameter": "orders_per_bay",
+                "unit": "orders/bay/day",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              }
+            ]
+          },
+          "accepted": false,
+          "error": {
+            "code": "financial_value_outside_domain"
+          }
+        }
+      ],
+      "proposal_response": {
+        "detail": {
+          "code": "financial_value_outside_domain"
+        },
+        "code": "financial_value_outside_domain",
+        "message": "Проверьте вводные или дождитесь восстановления сервиса.",
+        "request_id": "aba2bafe2dfd4946977e70d4587b4a4c"
+      }
+    },
+    {
+      "model": "online_school",
+      "request": "Хочу открыть онлайн-школу программирования. Бюджет 1,5 миллиона рублей. Помоги рассчитать экономику.",
+      "manual_testing_values": {
+        "student_capacity": [
+          "100",
+          "students"
+        ],
+        "teachers": [
+          "60000",
+          "RUB/month"
+        ],
+        "platform": [
+          "10000",
+          "RUB/month"
+        ],
+        "marketing": [
+          "30000",
+          "RUB/month"
+        ],
+        "other_fixed": [
+          "10000",
+          "RUB/month"
+        ]
+      },
+      "classification_seconds": 8.624586284000543,
+      "classification_status": 200,
+      "profile": {
+        "schema_version": "business-profile-v2",
+        "id": "b74c91dc-038a-4c41-b071-64f3498f277f",
+        "conversation_id": "aba29f33-598c-47ee-9d61-0eae2905c342",
+        "revision": 3,
+        "idea": "Хочу открыть онлайн-школу программирования. Бюджет 1,5 миллиона рублей. Помоги рассчитать экономику.",
+        "industry": "online_school",
+        "raw_industry": null,
+        "resolution": "known",
+        "industry_evidence": "Хочу открыть онлайн-школу программирования",
+        "config_version": "u05-v1",
+        "config_sha256": "de59e957d22942ed5a6da1d85781dd0a670ed0feece4f07076f130f3b1419547",
+        "configuration_snapshot": {
+          "id": "online_school",
+          "label": "Онлайн-школа",
+          "version": "u05-v1",
+          "aliases": [
+            "онлайн-школа",
+            "онлайн-школу",
+            "онлайн школа"
+          ],
+          "business_models": [
+            "digital",
+            "subscription"
+          ],
+          "required": [
+            "budget",
+            "audience",
+            "format",
+            "payment_model",
+            "students"
+          ],
+          "fields": [
+            {
+              "id": "payment_model",
+              "label": "Модель оплаты",
+              "question": "Как будут платить ученики: за курс, подписку или занятия?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "revenue"
+            },
+            {
+              "id": "students",
+              "label": "Число учеников",
+              "question": "Сколько учеников планируете на старте?",
+              "kind": "integer",
+              "unit": "students",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "capacity"
+            },
+            {
+              "id": "tuition",
+              "label": "Стоимость обучения",
+              "question": "Укажите стоимость обучения в рублях.",
+              "kind": "money",
+              "unit": "RUB/student/payment",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "revenue"
+            },
+            {
+              "id": "payment_frequency",
+              "label": "Период оплаты",
+              "question": "Как часто оплачивают обучение?",
+              "kind": "text",
+              "unit": "text",
+              "choices": [],
+              "maximum": 1000000,
+              "driver": "context"
+            },
+            {
+              "id": "teachers",
+              "label": "Оплата преподавателей",
+              "question": "Укажите оплата преподавателей в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            },
+            {
+              "id": "marketing",
+              "label": "Маркетинг",
+              "question": "Укажите маркетинг в рублях.",
+              "kind": "money",
+              "unit": "RUB/month",
+              "choices": [],
+              "maximum": 9999999999999999,
+              "driver": "fixed_cost"
+            }
+          ],
+          "data_categories": [],
+          "optional_categories": [
+            "user.budget",
+            "user.costs"
+          ],
+          "geo_policy": "none",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Финансовые сценарии цифрового обучения требуют отдельной v2 capability и подтверждённых финансовых вводных."
+          ]
+        },
+        "values": {
+          "budget": {
+            "value": "1500000",
+            "unit": "RUB",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "Бюджет 1,5 миллиона рублей",
+            "lineage": "user_message"
+          },
+          "format": {
+            "value": "онлайн",
+            "unit": "text",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "онлайн",
+            "lineage": "user_edit"
+          },
+          "audience": {
+            "value": "взрослые",
+            "unit": "text",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "взрослые",
+            "lineage": "user_edit"
+          }
+        },
+        "extensions": {
+          "generic": {},
+          "online_school": {
+            "students": {
+              "value": 20,
+              "unit": "students",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "confirmed",
+              "evidence": "20",
+              "lineage": "user_edit"
+            },
+            "payment_model": {
+              "value": "помесячно",
+              "unit": "text",
+              "origin": "user_input",
+              "epistemic": "user_provided",
+              "review": "confirmed",
+              "evidence": "помесячно",
+              "lineage": "user_edit"
+            }
+          }
+        },
+        "confirmed_revision": 3,
+        "deferred_fields": [],
+        "legacy_snapshot": {
+          "id": "b74c91dc-038a-4c41-b071-64f3498f277f",
+          "conversation_id": "aba29f33-598c-47ee-9d61-0eae2905c342",
+          "city": null,
+          "category": "Онлайн-школа",
+          "budget": "1500000.00",
+          "funding": null,
+          "preferences": {
+            "format": "онлайн",
+            "preferred_districts": [],
+            "constraints": []
+          },
+          "confirmation_state": "draft"
+        }
+      },
+      "before_proposal": {
+        "enabled": true,
+        "configuration": {
+          "id": "online_school",
+          "version": "u05-decimal-v1",
+          "parameters": [
+            {
+              "id": "students",
+              "label": "Платящие ученики",
+              "unit": "students",
+              "minimum": "0",
+              "maximum": "1000000",
+              "integer": true,
+              "direction": "revenue"
+            },
+            {
+              "id": "student_capacity",
+              "label": "Предельная вместимость",
+              "unit": "students",
+              "minimum": "1",
+              "maximum": "1000000",
+              "integer": true,
+              "direction": "context"
+            },
+            {
+              "id": "tuition",
+              "label": "Цена за выбранный период оплаты",
+              "unit": "RUB/student/payment",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "revenue"
+            },
+            {
+              "id": "course_months",
+              "label": "Длительность курса (для разовой оплаты)",
+              "unit": "months",
+              "minimum": "1",
+              "maximum": "36",
+              "integer": true,
+              "direction": "context"
+            },
+            {
+              "id": "variable_per_student",
+              "label": "Переменные расходы на ученика за период оплаты",
+              "unit": "RUB/student/payment",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "fee_ratio",
+              "label": "Комиссии с выручки (0–1)",
+              "unit": "ratio",
+              "minimum": "0",
+              "maximum": "1",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "teachers",
+              "label": "Постоянные расходы на преподавателей",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "platform",
+              "label": "Учебная платформа",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "marketing",
+              "label": "Маркетинг",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "other_fixed",
+              "label": "Другие постоянные расходы",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            }
+          ],
+          "limitations": [
+            "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+            "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+            "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+            "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+            "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+            "monthly/subscription: один выбранный месяц; продление, churn и CAC не прогнозируются.",
+            "course: одна оплаченная когорта за всю длительность курса; выручка не повторяется ежемесячно.",
+            "Переменная и постоянная оплата преподавателей не должны дублироваться."
+          ]
+        },
+        "document": {
+          "profile_revision": 3,
+          "profile_config_sha256": "de59e957d22942ed5a6da1d85781dd0a670ed0feece4f07076f130f3b1419547",
+          "model": "online_school",
+          "adapter_version": "u05-decimal-v1",
+          "adapter_sha256": "4f8c9c537d1003273dbeec7dc06eece749c655a9e65cbee9982b476c6ba8367f",
+          "revision": 2,
+          "billing_model": "monthly",
+          "entries": {
+            "platform": {
+              "base": "10000",
+              "low": "10000",
+              "high": "10000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:platform",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:52:55.124717Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "teachers": {
+              "base": "60000",
+              "low": "60000",
+              "high": "60000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:teachers",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:52:55.124678Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "marketing": {
+              "base": "30000",
+              "low": "30000",
+              "high": "30000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:marketing",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:52:55.124837Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "other_fixed": {
+              "base": "10000",
+              "low": "10000",
+              "high": "10000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:other_fixed",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:52:55.124882Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "student_capacity": {
+              "base": "100",
+              "low": "100",
+              "high": "100",
+              "unit": "students",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:student_capacity",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:52:55.124550Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            }
+          }
+        },
+        "current": true,
+        "missing": [
+          "students",
+          "tuition",
+          "variable_per_student",
+          "fee_ratio"
+        ],
+        "needs_review": [],
+        "result": null,
+        "proposal_status": "idle",
+        "proposal_error": null
+      },
+      "proposal_seconds": 18.81708066200008,
+      "proposal_status": 422,
+      "proposal_checks": [
+        {
+          "proposal": {
+            "model": "online_school",
+            "assumptions": [
+              {
+                "base": "10000",
+                "low": "5000",
+                "high": "15000",
+                "parameter": "tuition",
+                "unit": "RUB/student/payment",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "60000",
+                "low": "30000",
+                "high": "90000",
+                "parameter": "variable_per_student",
+                "unit": "RUB/student/payment",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "100",
+                "low": "50",
+                "high": "200",
+                "parameter": "students",
+                "unit": "students",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "0.1",
+                "low": "0.05",
+                "high": "0.2",
+                "parameter": "fee_ratio",
+                "unit": "ratio",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              }
+            ]
+          },
+          "accepted": false,
+          "error": {
+            "code": "financial_capacity_exceeded"
+          }
+        }
+      ],
+      "proposal_response": {
+        "detail": {
+          "code": "financial_capacity_exceeded"
+        },
+        "code": "financial_capacity_exceeded",
+        "message": "Проверьте вводные или дождитесь восстановления сервиса.",
+        "request_id": "96f04c70a5fc4117b76cea3afb0ed8f5"
+      }
+    },
+    {
+      "model": "generic",
+      "request": "Хочу открыть сервис по обслуживанию автономных роботизированных теплиц.",
+      "manual_testing_values": {
+        "rent": [
+          "10000",
+          "RUB/month"
+        ],
+        "payroll": [
+          "100000",
+          "RUB/month"
+        ],
+        "utilities": [
+          "5000",
+          "RUB/month"
+        ],
+        "marketing": [
+          "10000",
+          "RUB/month"
+        ],
+        "other_fixed": [
+          "5000",
+          "RUB/month"
+        ]
+      },
+      "classification_seconds": 2.7467972470003588,
+      "classification_status": 200,
+      "profile": {
+        "schema_version": "business-profile-v2",
+        "id": "c5e4536d-8aeb-4e10-9ba9-3b515cee6505",
+        "conversation_id": "2504b190-8584-4987-bb3a-4ea3cd301220",
+        "revision": 3,
+        "idea": "Хочу открыть сервис по обслуживанию автономных роботизированных теплиц.",
+        "industry": "generic",
+        "raw_industry": null,
+        "resolution": "unknown",
+        "industry_evidence": "Хочу открыть сервис по обслуживанию автономных роботизированных теплиц.",
+        "config_version": "u05-v1",
+        "config_sha256": "ac6fb5a1b2cded8d1ac201c28a85fcbd36acdfa74587928225e1ba2f056ff09a",
+        "configuration_snapshot": {
+          "id": "generic",
+          "label": "Бизнес-проект",
+          "version": "u05-v1",
+          "aliases": [],
+          "business_models": [
+            "other",
+            "mixed"
+          ],
+          "required": [
+            "business_model",
+            "physical_premises",
+            "budget",
+            "audience",
+            "revenue_streams"
+          ],
+          "fields": [],
+          "data_categories": [],
+          "optional_categories": [
+            "user.budget",
+            "user.costs"
+          ],
+          "geo_policy": "optional",
+          "geo_adapter": null,
+          "finance_adapter": null,
+          "limitations": [
+            "Специализированная модель не выбрана. Базовая финансовая v2 capability работает только по явно заданным совместимым вводным."
+          ]
+        },
+        "values": {
+          "budget": {
+            "value": "2000000",
+            "unit": "RUB",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "2000000",
+            "lineage": "user_edit"
+          },
+          "audience": {
+            "value": "фермеры",
+            "unit": "text",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "фермеры",
+            "lineage": "user_edit"
+          },
+          "business_model": {
+            "value": "сервис",
+            "unit": "text",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "сервис",
+            "lineage": "user_edit"
+          },
+          "revenue_streams": {
+            "value": "обслуживание одной теплицы",
+            "unit": "text",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "обслуживание одной теплицы",
+            "lineage": "user_edit"
+          },
+          "physical_premises": {
+            "value": false,
+            "unit": "boolean",
+            "origin": "user_input",
+            "epistemic": "user_provided",
+            "review": "confirmed",
+            "evidence": "False",
+            "lineage": "user_edit"
+          }
+        },
+        "extensions": {
+          "generic": {}
+        },
+        "confirmed_revision": 3,
+        "deferred_fields": [],
+        "legacy_snapshot": {
+          "id": "c5e4536d-8aeb-4e10-9ba9-3b515cee6505",
+          "conversation_id": "2504b190-8584-4987-bb3a-4ea3cd301220",
+          "city": null,
+          "category": "Неизвестный бизнес",
+          "budget": "2000000.00",
+          "funding": null,
+          "preferences": {
+            "format": null,
+            "preferred_districts": [],
+            "constraints": []
+          },
+          "confirmation_state": "draft"
+        }
+      },
+      "before_proposal": {
+        "enabled": true,
+        "configuration": {
+          "id": "generic",
+          "version": "u05-decimal-v1",
+          "parameters": [
+            {
+              "id": "unit_sales",
+              "label": "Количество однородных услуг/продаж за месяц",
+              "unit": "units/month",
+              "minimum": "0",
+              "maximum": "1000000",
+              "integer": false,
+              "direction": "revenue"
+            },
+            {
+              "id": "unit_price",
+              "label": "Цена одной услуги/единицы",
+              "unit": "RUB/unit",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "revenue"
+            },
+            {
+              "id": "variable_per_unit",
+              "label": "Переменные расходы на единицу",
+              "unit": "RUB/unit",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "rent",
+              "label": "Аренда",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "payroll",
+              "label": "Постоянная оплата труда",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "utilities",
+              "label": "Коммунальные расходы",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "marketing",
+              "label": "Маркетинг",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "other_fixed",
+              "label": "Другие постоянные расходы",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            }
+          ],
+          "limitations": [
+            "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+            "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+            "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+            "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+            "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+            "Одна однородная единица продажи. Разнородные потоки с разными маржами не агрегируются автоматически.",
+            "Физическая мощность неизвестна; расчёт не доказывает реализуемость объёма продаж."
+          ]
+        },
+        "document": {
+          "profile_revision": 3,
+          "profile_config_sha256": "ac6fb5a1b2cded8d1ac201c28a85fcbd36acdfa74587928225e1ba2f056ff09a",
+          "model": "generic",
+          "adapter_version": "u05-decimal-v1",
+          "adapter_sha256": "914046b912fa41f7407dd90cb75d68eab6cd6cc6138efa38b61402d5efd7da13",
+          "revision": 2,
+          "billing_model": null,
+          "entries": {
+            "rent": {
+              "base": "10000",
+              "low": "10000",
+              "high": "10000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:rent",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746689Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "payroll": {
+              "base": "100000",
+              "low": "100000",
+              "high": "100000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:payroll",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746732Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "marketing": {
+              "base": "10000",
+              "low": "10000",
+              "high": "10000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:marketing",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746768Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "utilities": {
+              "base": "5000",
+              "low": "5000",
+              "high": "5000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:utilities",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746751Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "other_fixed": {
+              "base": "5000",
+              "low": "5000",
+              "high": "5000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:other_fixed",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746783Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            }
+          }
+        },
+        "current": true,
+        "missing": [
+          "unit_sales",
+          "unit_price",
+          "variable_per_unit"
+        ],
+        "needs_review": [],
+        "result": null,
+        "proposal_status": "idle",
+        "proposal_error": null
+      },
+      "proposal_seconds": 13.86534059800033,
+      "proposal_status": 200,
+      "proposal_checks": [
+        {
+          "proposal": {
+            "model": "generic",
+            "assumptions": [
+              {
+                "base": "10000",
+                "low": "10000",
+                "high": "10000",
+                "parameter": "unit_sales",
+                "unit": "units/month",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "100000",
+                "low": "50000",
+                "high": "150000",
+                "parameter": "unit_price",
+                "unit": "RUB/unit",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "5000",
+                "low": "0",
+                "high": "10000",
+                "parameter": "variable_per_unit",
+                "unit": "RUB/unit",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              }
+            ]
+          },
+          "accepted": true
+        },
+        {
+          "proposal": {
+            "model": "generic",
+            "assumptions": [
+              {
+                "base": "10000",
+                "low": "10000",
+                "high": "10000",
+                "parameter": "unit_sales",
+                "unit": "units/month",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "100000",
+                "low": "50000",
+                "high": "150000",
+                "parameter": "unit_price",
+                "unit": "RUB/unit",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              },
+              {
+                "base": "5000",
+                "low": "0",
+                "high": "10000",
+                "parameter": "variable_per_unit",
+                "unit": "RUB/unit",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "epistemic": "assumed",
+                "source": "exploratory_no_market_evidence"
+              }
+            ]
+          },
+          "accepted": true
+        }
+      ],
+      "proposal_response": {
+        "enabled": true,
+        "configuration": {
+          "id": "generic",
+          "version": "u05-decimal-v1",
+          "parameters": [
+            {
+              "id": "unit_sales",
+              "label": "Количество однородных услуг/продаж за месяц",
+              "unit": "units/month",
+              "minimum": "0",
+              "maximum": "1000000",
+              "integer": false,
+              "direction": "revenue"
+            },
+            {
+              "id": "unit_price",
+              "label": "Цена одной услуги/единицы",
+              "unit": "RUB/unit",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "revenue"
+            },
+            {
+              "id": "variable_per_unit",
+              "label": "Переменные расходы на единицу",
+              "unit": "RUB/unit",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "rent",
+              "label": "Аренда",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "payroll",
+              "label": "Постоянная оплата труда",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "utilities",
+              "label": "Коммунальные расходы",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "marketing",
+              "label": "Маркетинг",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "other_fixed",
+              "label": "Другие постоянные расходы",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            }
+          ],
+          "limitations": [
+            "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+            "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+            "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+            "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+            "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+            "Одна однородная единица продажи. Разнородные потоки с разными маржами не агрегируются автоматически.",
+            "Физическая мощность неизвестна; расчёт не доказывает реализуемость объёма продаж."
+          ]
+        },
+        "document": {
+          "profile_revision": 3,
+          "profile_config_sha256": "ac6fb5a1b2cded8d1ac201c28a85fcbd36acdfa74587928225e1ba2f056ff09a",
+          "model": "generic",
+          "adapter_version": "u05-decimal-v1",
+          "adapter_sha256": "914046b912fa41f7407dd90cb75d68eab6cd6cc6138efa38b61402d5efd7da13",
+          "revision": 3,
+          "billing_model": null,
+          "entries": {
+            "rent": {
+              "base": "10000",
+              "low": "10000",
+              "high": "10000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:rent",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746689Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "payroll": {
+              "base": "100000",
+              "low": "100000",
+              "high": "100000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:payroll",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746732Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "marketing": {
+              "base": "10000",
+              "low": "10000",
+              "high": "10000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:marketing",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746768Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "utilities": {
+              "base": "5000",
+              "low": "5000",
+              "high": "5000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:utilities",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746751Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "unit_price": {
+              "base": "100000",
+              "low": "50000",
+              "high": "150000",
+              "unit": "RUB/unit",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Qwen: исследовательская гипотеза",
+                "data_version": "financial-input-3",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:3:unit_price",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "proposed",
+              "method": "qwen_exploratory",
+              "basis": "Исследовательское допущение; требуется проверка.",
+              "revision": 3,
+              "created_at": "2026-10-31T06:53:31.643934Z",
+              "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+              "generation_prompt_version": "qwen-assumptions-u05-v1"
+            },
+            "unit_sales": {
+              "base": "10000",
+              "low": "10000",
+              "high": "10000",
+              "unit": "units/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Qwen: исследовательская гипотеза",
+                "data_version": "financial-input-3",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:3:unit_sales",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "proposed",
+              "method": "qwen_exploratory",
+              "basis": "Исследовательское допущение; требуется проверка.",
+              "revision": 3,
+              "created_at": "2026-10-31T06:53:31.643788Z",
+              "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+              "generation_prompt_version": "qwen-assumptions-u05-v1"
+            },
+            "other_fixed": {
+              "base": "5000",
+              "low": "5000",
+              "high": "5000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:other_fixed",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746783Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "variable_per_unit": {
+              "base": "5000",
+              "low": "0",
+              "high": "10000",
+              "unit": "RUB/unit",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Qwen: исследовательская гипотеза",
+                "data_version": "financial-input-3",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:3:variable_per_unit",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "proposed",
+              "method": "qwen_exploratory",
+              "basis": "Исследовательское допущение; требуется проверка.",
+              "revision": 3,
+              "created_at": "2026-10-31T06:53:31.644028Z",
+              "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+              "generation_prompt_version": "qwen-assumptions-u05-v1"
+            }
+          }
+        },
+        "current": true,
+        "missing": [
+          "unit_sales",
+          "unit_price",
+          "variable_per_unit"
+        ],
+        "needs_review": [
+          "unit_sales",
+          "unit_price",
+          "variable_per_unit"
+        ],
+        "result": null,
+        "proposal_status": "completed",
+        "proposal_error": null
+      },
+      "hypotheses": [
+        "unit_price",
+        "unit_sales",
+        "variable_per_unit"
+      ],
+      "replay_status": 200,
+      "replay_added_model_calls": 0,
+      "calculation_http_seconds": 0.08860031700169202,
+      "calculation_status": 200,
+      "result": {
+        "enabled": true,
+        "configuration": {
+          "id": "generic",
+          "version": "u05-decimal-v1",
+          "parameters": [
+            {
+              "id": "unit_sales",
+              "label": "Количество однородных услуг/продаж за месяц",
+              "unit": "units/month",
+              "minimum": "0",
+              "maximum": "1000000",
+              "integer": false,
+              "direction": "revenue"
+            },
+            {
+              "id": "unit_price",
+              "label": "Цена одной услуги/единицы",
+              "unit": "RUB/unit",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "revenue"
+            },
+            {
+              "id": "variable_per_unit",
+              "label": "Переменные расходы на единицу",
+              "unit": "RUB/unit",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "rent",
+              "label": "Аренда",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "payroll",
+              "label": "Постоянная оплата труда",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "utilities",
+              "label": "Коммунальные расходы",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "marketing",
+              "label": "Маркетинг",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            },
+            {
+              "id": "other_fixed",
+              "label": "Другие постоянные расходы",
+              "unit": "RUB/month",
+              "minimum": "0",
+              "maximum": "1000000000",
+              "integer": false,
+              "direction": "cost"
+            }
+          ],
+          "limitations": [
+            "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+            "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+            "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+            "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+            "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+            "Одна однородная единица продажи. Разнородные потоки с разными маржами не агрегируются автоматически.",
+            "Физическая мощность неизвестна; расчёт не доказывает реализуемость объёма продаж."
+          ]
+        },
+        "document": {
+          "profile_revision": 3,
+          "profile_config_sha256": "ac6fb5a1b2cded8d1ac201c28a85fcbd36acdfa74587928225e1ba2f056ff09a",
+          "model": "generic",
+          "adapter_version": "u05-decimal-v1",
+          "adapter_sha256": "914046b912fa41f7407dd90cb75d68eab6cd6cc6138efa38b61402d5efd7da13",
+          "revision": 4,
+          "billing_model": null,
+          "entries": {
+            "rent": {
+              "base": "10000",
+              "low": "10000",
+              "high": "10000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:rent",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746689Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "payroll": {
+              "base": "100000",
+              "low": "100000",
+              "high": "100000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:payroll",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746732Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "marketing": {
+              "base": "10000",
+              "low": "10000",
+              "high": "10000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:marketing",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746768Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "utilities": {
+              "base": "5000",
+              "low": "5000",
+              "high": "5000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:utilities",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746751Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "unit_price": {
+              "base": "100000",
+              "low": "50000",
+              "high": "150000",
+              "unit": "RUB/unit",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Qwen: исследовательская гипотеза",
+                "data_version": "financial-input-3",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:3:unit_price",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "qwen_exploratory",
+              "basis": "Исследовательское допущение; требуется проверка.",
+              "revision": 3,
+              "created_at": "2026-10-31T06:53:31.643934Z",
+              "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+              "generation_prompt_version": "qwen-assumptions-u05-v1"
+            },
+            "unit_sales": {
+              "base": "10000",
+              "low": "10000",
+              "high": "10000",
+              "unit": "units/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Qwen: исследовательская гипотеза",
+                "data_version": "financial-input-3",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:3:unit_sales",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "qwen_exploratory",
+              "basis": "Исследовательское допущение; требуется проверка.",
+              "revision": 3,
+              "created_at": "2026-10-31T06:53:31.643788Z",
+              "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+              "generation_prompt_version": "qwen-assumptions-u05-v1"
+            },
+            "other_fixed": {
+              "base": "5000",
+              "low": "5000",
+              "high": "5000",
+              "unit": "RUB/month",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Вводная пользователя",
+                "data_version": "financial-input-1",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:1:other_fixed",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "user_assumption",
+              "basis": "Явно заданное тестовое сценарное значение",
+              "revision": 1,
+              "created_at": "2026-10-31T06:53:17.746783Z",
+              "generation_model": null,
+              "generation_prompt_version": null
+            },
+            "variable_per_unit": {
+              "base": "5000",
+              "low": "0",
+              "high": "10000",
+              "unit": "RUB/unit",
+              "source": {
+                "origin": "synthetic",
+                "source_name": "Qwen: исследовательская гипотеза",
+                "data_version": "financial-input-3",
+                "confidence": "not_applicable",
+                "limitations": [
+                  "Не подтверждённая рыночная статистика. Требуется явный review."
+                ],
+                "observed_at": null,
+                "evidence_ref": "financial-input:3:variable_per_unit",
+                "source_attested": false
+              },
+              "epistemic": "assumed",
+              "review": "confirmed",
+              "method": "qwen_exploratory",
+              "basis": "Исследовательское допущение; требуется проверка.",
+              "revision": 3,
+              "created_at": "2026-10-31T06:53:31.644028Z",
+              "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+              "generation_prompt_version": "qwen-assumptions-u05-v1"
+            }
+          }
+        },
+        "current": true,
+        "missing": [],
+        "needs_review": [],
+        "result": {
+          "id": "768918d0-1435-4525-86ce-3c09d9b08755",
+          "created_at": "2026-10-31T06:53:31.788438Z",
+          "fingerprint": "d098dce9ce98b31814a9375a444d5f284d8925d4fd826b09c0d3711477c10e68",
+          "profile": {
+            "schema_version": "business-profile-v2",
+            "id": "c5e4536d-8aeb-4e10-9ba9-3b515cee6505",
+            "conversation_id": "2504b190-8584-4987-bb3a-4ea3cd301220",
+            "revision": 3,
+            "idea": "Хочу открыть сервис по обслуживанию автономных роботизированных теплиц.",
+            "industry": "generic",
+            "raw_industry": null,
+            "resolution": "unknown",
+            "industry_evidence": "Хочу открыть сервис по обслуживанию автономных роботизированных теплиц.",
+            "config_version": "u05-v1",
+            "config_sha256": "ac6fb5a1b2cded8d1ac201c28a85fcbd36acdfa74587928225e1ba2f056ff09a",
+            "configuration_snapshot": {
+              "id": "generic",
+              "label": "Бизнес-проект",
+              "version": "u05-v1",
+              "aliases": [],
+              "business_models": [
+                "other",
+                "mixed"
+              ],
+              "required": [
+                "business_model",
+                "physical_premises",
+                "budget",
+                "audience",
+                "revenue_streams"
+              ],
+              "fields": [],
+              "data_categories": [],
+              "optional_categories": [
+                "user.budget",
+                "user.costs"
+              ],
+              "geo_policy": "optional",
+              "geo_adapter": null,
+              "finance_adapter": null,
+              "limitations": [
+                "Специализированная модель не выбрана. Базовая финансовая v2 capability работает только по явно заданным совместимым вводным."
+              ]
+            },
+            "values": {
+              "budget": {
+                "value": "2000000",
+                "unit": "RUB",
+                "origin": "user_input",
+                "epistemic": "user_provided",
+                "review": "confirmed",
+                "evidence": "2000000",
+                "lineage": "user_edit"
+              },
+              "audience": {
+                "value": "фермеры",
+                "unit": "text",
+                "origin": "user_input",
+                "epistemic": "user_provided",
+                "review": "confirmed",
+                "evidence": "фермеры",
+                "lineage": "user_edit"
+              },
+              "business_model": {
+                "value": "сервис",
+                "unit": "text",
+                "origin": "user_input",
+                "epistemic": "user_provided",
+                "review": "confirmed",
+                "evidence": "сервис",
+                "lineage": "user_edit"
+              },
+              "revenue_streams": {
+                "value": "обслуживание одной теплицы",
+                "unit": "text",
+                "origin": "user_input",
+                "epistemic": "user_provided",
+                "review": "confirmed",
+                "evidence": "обслуживание одной теплицы",
+                "lineage": "user_edit"
+              },
+              "physical_premises": {
+                "value": false,
+                "unit": "boolean",
+                "origin": "user_input",
+                "epistemic": "user_provided",
+                "review": "confirmed",
+                "evidence": "False",
+                "lineage": "user_edit"
+              }
+            },
+            "extensions": {
+              "generic": {}
+            },
+            "confirmed_revision": 3,
+            "deferred_fields": [],
+            "legacy_snapshot": {
+              "id": "c5e4536d-8aeb-4e10-9ba9-3b515cee6505",
+              "conversation_id": "2504b190-8584-4987-bb3a-4ea3cd301220",
+              "city": null,
+              "category": "Неизвестный бизнес",
+              "budget": "2000000.00",
+              "funding": null,
+              "preferences": {
+                "format": null,
+                "preferred_districts": [],
+                "constraints": []
+              },
+              "confirmation_state": "draft"
+            }
+          },
+          "inputs": {
+            "profile_revision": 3,
+            "profile_config_sha256": "ac6fb5a1b2cded8d1ac201c28a85fcbd36acdfa74587928225e1ba2f056ff09a",
+            "model": "generic",
+            "adapter_version": "u05-decimal-v1",
+            "adapter_sha256": "914046b912fa41f7407dd90cb75d68eab6cd6cc6138efa38b61402d5efd7da13",
+            "revision": 4,
+            "billing_model": null,
+            "entries": {
+              "rent": {
+                "base": "10000",
+                "low": "10000",
+                "high": "10000",
+                "unit": "RUB/month",
+                "source": {
+                  "origin": "synthetic",
+                  "source_name": "Вводная пользователя",
+                  "data_version": "financial-input-1",
+                  "confidence": "not_applicable",
+                  "limitations": [
+                    "Не подтверждённая рыночная статистика. Требуется явный review."
+                  ],
+                  "observed_at": null,
+                  "evidence_ref": "financial-input:1:rent",
+                  "source_attested": false
+                },
+                "epistemic": "assumed",
+                "review": "confirmed",
+                "method": "user_assumption",
+                "basis": "Явно заданное тестовое сценарное значение",
+                "revision": 1,
+                "created_at": "2026-10-31T06:53:17.746689Z",
+                "generation_model": null,
+                "generation_prompt_version": null
+              },
+              "payroll": {
+                "base": "100000",
+                "low": "100000",
+                "high": "100000",
+                "unit": "RUB/month",
+                "source": {
+                  "origin": "synthetic",
+                  "source_name": "Вводная пользователя",
+                  "data_version": "financial-input-1",
+                  "confidence": "not_applicable",
+                  "limitations": [
+                    "Не подтверждённая рыночная статистика. Требуется явный review."
+                  ],
+                  "observed_at": null,
+                  "evidence_ref": "financial-input:1:payroll",
+                  "source_attested": false
+                },
+                "epistemic": "assumed",
+                "review": "confirmed",
+                "method": "user_assumption",
+                "basis": "Явно заданное тестовое сценарное значение",
+                "revision": 1,
+                "created_at": "2026-10-31T06:53:17.746732Z",
+                "generation_model": null,
+                "generation_prompt_version": null
+              },
+              "marketing": {
+                "base": "10000",
+                "low": "10000",
+                "high": "10000",
+                "unit": "RUB/month",
+                "source": {
+                  "origin": "synthetic",
+                  "source_name": "Вводная пользователя",
+                  "data_version": "financial-input-1",
+                  "confidence": "not_applicable",
+                  "limitations": [
+                    "Не подтверждённая рыночная статистика. Требуется явный review."
+                  ],
+                  "observed_at": null,
+                  "evidence_ref": "financial-input:1:marketing",
+                  "source_attested": false
+                },
+                "epistemic": "assumed",
+                "review": "confirmed",
+                "method": "user_assumption",
+                "basis": "Явно заданное тестовое сценарное значение",
+                "revision": 1,
+                "created_at": "2026-10-31T06:53:17.746768Z",
+                "generation_model": null,
+                "generation_prompt_version": null
+              },
+              "utilities": {
+                "base": "5000",
+                "low": "5000",
+                "high": "5000",
+                "unit": "RUB/month",
+                "source": {
+                  "origin": "synthetic",
+                  "source_name": "Вводная пользователя",
+                  "data_version": "financial-input-1",
+                  "confidence": "not_applicable",
+                  "limitations": [
+                    "Не подтверждённая рыночная статистика. Требуется явный review."
+                  ],
+                  "observed_at": null,
+                  "evidence_ref": "financial-input:1:utilities",
+                  "source_attested": false
+                },
+                "epistemic": "assumed",
+                "review": "confirmed",
+                "method": "user_assumption",
+                "basis": "Явно заданное тестовое сценарное значение",
+                "revision": 1,
+                "created_at": "2026-10-31T06:53:17.746751Z",
+                "generation_model": null,
+                "generation_prompt_version": null
+              },
+              "unit_price": {
+                "base": "100000",
+                "low": "50000",
+                "high": "150000",
+                "unit": "RUB/unit",
+                "source": {
+                  "origin": "synthetic",
+                  "source_name": "Qwen: исследовательская гипотеза",
+                  "data_version": "financial-input-3",
+                  "confidence": "not_applicable",
+                  "limitations": [
+                    "Не подтверждённая рыночная статистика. Требуется явный review."
+                  ],
+                  "observed_at": null,
+                  "evidence_ref": "financial-input:3:unit_price",
+                  "source_attested": false
+                },
+                "epistemic": "assumed",
+                "review": "confirmed",
+                "method": "qwen_exploratory",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "revision": 3,
+                "created_at": "2026-10-31T06:53:31.643934Z",
+                "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+                "generation_prompt_version": "qwen-assumptions-u05-v1"
+              },
+              "unit_sales": {
+                "base": "10000",
+                "low": "10000",
+                "high": "10000",
+                "unit": "units/month",
+                "source": {
+                  "origin": "synthetic",
+                  "source_name": "Qwen: исследовательская гипотеза",
+                  "data_version": "financial-input-3",
+                  "confidence": "not_applicable",
+                  "limitations": [
+                    "Не подтверждённая рыночная статистика. Требуется явный review."
+                  ],
+                  "observed_at": null,
+                  "evidence_ref": "financial-input:3:unit_sales",
+                  "source_attested": false
+                },
+                "epistemic": "assumed",
+                "review": "confirmed",
+                "method": "qwen_exploratory",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "revision": 3,
+                "created_at": "2026-10-31T06:53:31.643788Z",
+                "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+                "generation_prompt_version": "qwen-assumptions-u05-v1"
+              },
+              "other_fixed": {
+                "base": "5000",
+                "low": "5000",
+                "high": "5000",
+                "unit": "RUB/month",
+                "source": {
+                  "origin": "synthetic",
+                  "source_name": "Вводная пользователя",
+                  "data_version": "financial-input-1",
+                  "confidence": "not_applicable",
+                  "limitations": [
+                    "Не подтверждённая рыночная статистика. Требуется явный review."
+                  ],
+                  "observed_at": null,
+                  "evidence_ref": "financial-input:1:other_fixed",
+                  "source_attested": false
+                },
+                "epistemic": "assumed",
+                "review": "confirmed",
+                "method": "user_assumption",
+                "basis": "Явно заданное тестовое сценарное значение",
+                "revision": 1,
+                "created_at": "2026-10-31T06:53:17.746783Z",
+                "generation_model": null,
+                "generation_prompt_version": null
+              },
+              "variable_per_unit": {
+                "base": "5000",
+                "low": "0",
+                "high": "10000",
+                "unit": "RUB/unit",
+                "source": {
+                  "origin": "synthetic",
+                  "source_name": "Qwen: исследовательская гипотеза",
+                  "data_version": "financial-input-3",
+                  "confidence": "not_applicable",
+                  "limitations": [
+                    "Не подтверждённая рыночная статистика. Требуется явный review."
+                  ],
+                  "observed_at": null,
+                  "evidence_ref": "financial-input:3:variable_per_unit",
+                  "source_attested": false
+                },
+                "epistemic": "assumed",
+                "review": "confirmed",
+                "method": "qwen_exploratory",
+                "basis": "Исследовательское допущение; требуется проверка.",
+                "revision": 3,
+                "created_at": "2026-10-31T06:53:31.644028Z",
+                "generation_model": "qwen3:4b-instruct-2507-q4_K_M",
+                "generation_prompt_version": "qwen-assumptions-u05-v1"
+              }
+            }
+          },
+          "configuration": {
+            "id": "generic",
+            "version": "u05-decimal-v1",
+            "parameters": [
+              {
+                "id": "unit_sales",
+                "label": "Количество однородных услуг/продаж за месяц",
+                "unit": "units/month",
+                "minimum": "0",
+                "maximum": "1000000",
+                "integer": false,
+                "direction": "revenue"
+              },
+              {
+                "id": "unit_price",
+                "label": "Цена одной услуги/единицы",
+                "unit": "RUB/unit",
+                "minimum": "0",
+                "maximum": "1000000000",
+                "integer": false,
+                "direction": "revenue"
+              },
+              {
+                "id": "variable_per_unit",
+                "label": "Переменные расходы на единицу",
+                "unit": "RUB/unit",
+                "minimum": "0",
+                "maximum": "1000000000",
+                "integer": false,
+                "direction": "cost"
+              },
+              {
+                "id": "rent",
+                "label": "Аренда",
+                "unit": "RUB/month",
+                "minimum": "0",
+                "maximum": "1000000000",
+                "integer": false,
+                "direction": "cost"
+              },
+              {
+                "id": "payroll",
+                "label": "Постоянная оплата труда",
+                "unit": "RUB/month",
+                "minimum": "0",
+                "maximum": "1000000000",
+                "integer": false,
+                "direction": "cost"
+              },
+              {
+                "id": "utilities",
+                "label": "Коммунальные расходы",
+                "unit": "RUB/month",
+                "minimum": "0",
+                "maximum": "1000000000",
+                "integer": false,
+                "direction": "cost"
+              },
+              {
+                "id": "marketing",
+                "label": "Маркетинг",
+                "unit": "RUB/month",
+                "minimum": "0",
+                "maximum": "1000000000",
+                "integer": false,
+                "direction": "cost"
+              },
+              {
+                "id": "other_fixed",
+                "label": "Другие постоянные расходы",
+                "unit": "RUB/month",
+                "minimum": "0",
+                "maximum": "1000000000",
+                "integer": false,
+                "direction": "cost"
+              }
+            ],
+            "limitations": [
+              "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+              "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+              "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+              "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+              "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+              "Одна однородная единица продажи. Разнородные потоки с разными маржами не агрегируются автоматически.",
+              "Физическая мощность неизвестна; расчёт не доказывает реализуемость объёма продаж."
+            ]
+          },
+          "result": {
+            "status": "calculated",
+            "missing": [],
+            "scenarios": [
+              {
+                "name": "conservative",
+                "drivers": {
+                  "rent": "10000",
+                  "payroll": "100000",
+                  "marketing": "10000",
+                  "utilities": "5000",
+                  "unit_price": "50000",
+                  "unit_sales": "10000",
+                  "other_fixed": "5000",
+                  "variable_per_unit": "10000"
+                },
+                "period": "month",
+                "months": "1",
+                "units": "10000",
+                "volume_unit": "units",
+                "capacity": null,
+                "revenue": "500000000.00",
+                "variable_costs": "100000000.00",
+                "fixed_costs": "130000.00",
+                "contribution": "400000000.00",
+                "operating_result": "399870000.00",
+                "contribution_per_unit": "40000",
+                "capacity_utilization": null,
+                "safety_margin_ratio": "0.9996",
+                "break_even": {
+                  "status": "calculated",
+                  "units": "4",
+                  "revenue": "200000.00",
+                  "capacity_utilization": null
+                }
+              },
+              {
+                "name": "base",
+                "drivers": {
+                  "rent": "10000",
+                  "payroll": "100000",
+                  "marketing": "10000",
+                  "utilities": "5000",
+                  "unit_price": "100000",
+                  "unit_sales": "10000",
+                  "other_fixed": "5000",
+                  "variable_per_unit": "5000"
+                },
+                "period": "month",
+                "months": "1",
+                "units": "10000",
+                "volume_unit": "units",
+                "capacity": null,
+                "revenue": "1000000000.00",
+                "variable_costs": "50000000.00",
+                "fixed_costs": "130000.00",
+                "contribution": "950000000.00",
+                "operating_result": "949870000.00",
+                "contribution_per_unit": "95000",
+                "capacity_utilization": null,
+                "safety_margin_ratio": "0.9998",
+                "break_even": {
+                  "status": "calculated",
+                  "units": "2",
+                  "revenue": "200000.00",
+                  "capacity_utilization": null
+                }
+              },
+              {
+                "name": "optimistic",
+                "drivers": {
+                  "rent": "10000",
+                  "payroll": "100000",
+                  "marketing": "10000",
+                  "utilities": "5000",
+                  "unit_price": "150000",
+                  "unit_sales": "10000",
+                  "other_fixed": "5000",
+                  "variable_per_unit": "0"
+                },
+                "period": "month",
+                "months": "1",
+                "units": "10000",
+                "volume_unit": "units",
+                "capacity": null,
+                "revenue": "1500000000.00",
+                "variable_costs": "0.00",
+                "fixed_costs": "130000.00",
+                "contribution": "1500000000.00",
+                "operating_result": "1499870000.00",
+                "contribution_per_unit": "150000",
+                "capacity_utilization": null,
+                "safety_margin_ratio": "0.9999",
+                "break_even": {
+                  "status": "calculated",
+                  "units": "1",
+                  "revenue": "150000.00",
+                  "capacity_utilization": null
+                }
+              }
+            ],
+            "sensitivity": [
+              {
+                "parameter": "unit_sales",
+                "unit": "units/month",
+                "value": "9000.000000",
+                "status": "calculated",
+                "operating_result": "854870000.00",
+                "difference_from_base": "-95000000.00"
+              },
+              {
+                "parameter": "unit_sales",
+                "unit": "units/month",
+                "value": "11000.000000",
+                "status": "calculated",
+                "operating_result": "1044870000.00",
+                "difference_from_base": "95000000.00"
+              },
+              {
+                "parameter": "unit_price",
+                "unit": "RUB/unit",
+                "value": "90000.000000",
+                "status": "calculated",
+                "operating_result": "849870000.00",
+                "difference_from_base": "-100000000.00"
+              },
+              {
+                "parameter": "unit_price",
+                "unit": "RUB/unit",
+                "value": "110000.000000",
+                "status": "calculated",
+                "operating_result": "1049870000.00",
+                "difference_from_base": "100000000.00"
+              },
+              {
+                "parameter": "variable_per_unit",
+                "unit": "RUB/unit",
+                "value": "4500.000000",
+                "status": "calculated",
+                "operating_result": "954870000.00",
+                "difference_from_base": "5000000.00"
+              },
+              {
+                "parameter": "variable_per_unit",
+                "unit": "RUB/unit",
+                "value": "5500.000000",
+                "status": "calculated",
+                "operating_result": "944870000.00",
+                "difference_from_base": "-5000000.00"
+              },
+              {
+                "parameter": "rent",
+                "unit": "RUB/month",
+                "value": "9000.000000",
+                "status": "calculated",
+                "operating_result": "949871000.00",
+                "difference_from_base": "1000.00"
+              },
+              {
+                "parameter": "rent",
+                "unit": "RUB/month",
+                "value": "11000.000000",
+                "status": "calculated",
+                "operating_result": "949869000.00",
+                "difference_from_base": "-1000.00"
+              },
+              {
+                "parameter": "payroll",
+                "unit": "RUB/month",
+                "value": "90000.000000",
+                "status": "calculated",
+                "operating_result": "949880000.00",
+                "difference_from_base": "10000.00"
+              },
+              {
+                "parameter": "payroll",
+                "unit": "RUB/month",
+                "value": "110000.000000",
+                "status": "calculated",
+                "operating_result": "949860000.00",
+                "difference_from_base": "-10000.00"
+              },
+              {
+                "parameter": "utilities",
+                "unit": "RUB/month",
+                "value": "4500.000000",
+                "status": "calculated",
+                "operating_result": "949870500.00",
+                "difference_from_base": "500.00"
+              },
+              {
+                "parameter": "utilities",
+                "unit": "RUB/month",
+                "value": "5500.000000",
+                "status": "calculated",
+                "operating_result": "949869500.00",
+                "difference_from_base": "-500.00"
+              },
+              {
+                "parameter": "marketing",
+                "unit": "RUB/month",
+                "value": "9000.000000",
+                "status": "calculated",
+                "operating_result": "949871000.00",
+                "difference_from_base": "1000.00"
+              },
+              {
+                "parameter": "marketing",
+                "unit": "RUB/month",
+                "value": "11000.000000",
+                "status": "calculated",
+                "operating_result": "949869000.00",
+                "difference_from_base": "-1000.00"
+              },
+              {
+                "parameter": "other_fixed",
+                "unit": "RUB/month",
+                "value": "4500.000000",
+                "status": "calculated",
+                "operating_result": "949870500.00",
+                "difference_from_base": "500.00"
+              },
+              {
+                "parameter": "other_fixed",
+                "unit": "RUB/month",
+                "value": "5500.000000",
+                "status": "calculated",
+                "operating_result": "949869500.00",
+                "difference_from_base": "-500.00"
+              }
+            ],
+            "origin": "modelled",
+            "currency": "RUB",
+            "contains_assumptions": true,
+            "formulas": {
+              "generic": "units=unit_sales; months=1; revenue=units*unit_price",
+              "break_even": "ceil(fixed_costs/exact_unit_contribution); unavailable if margin<=0; compare capacity",
+              "auto_repair": "capacity=bays*working_days*orders_per_bay; units=capacity*utilization; months=1",
+              "fixed_costs": "round_HALF_UP(sum(monthly_fixed_items)*months,2)",
+              "contribution": "rounded_revenue-rounded_variable_costs",
+              "online_school": "units=paying_students; months=course_months if course else 1; revenue=units*tuition ONCE",
+              "variable_costs": "round_HALF_UP(units*variable_per_unit + revenue*fee_ratio,2)",
+              "operating_result": "contribution-fixed_costs",
+              "auto_variable_unit": "materials_per_order + labor_per_order",
+              "safety_margin_ratio": "(units-break_even_units)/units when units>0 and break-even defined",
+              "capacity_utilization": "units/capacity where known and >0",
+              "school_variable_unit": "variable_per_student + tuition*fee_ratio"
+            },
+            "metric_inputs": {
+              "units": [
+                "unit_sales"
+              ],
+              "revenue": [
+                "unit_sales",
+                "unit_price"
+              ],
+              "capacity": [],
+              "break_even": [
+                "unit_price",
+                "variable_per_unit",
+                "rent",
+                "payroll",
+                "utilities",
+                "marketing",
+                "other_fixed"
+              ],
+              "fixed_costs": [
+                "rent",
+                "payroll",
+                "utilities",
+                "marketing",
+                "other_fixed"
+              ],
+              "contribution": [
+                "unit_sales",
+                "unit_price",
+                "variable_per_unit"
+              ],
+              "variable_costs": [
+                "unit_sales",
+                "unit_price",
+                "variable_per_unit"
+              ],
+              "operating_result": [
+                "unit_sales",
+                "unit_price",
+                "variable_per_unit",
+                "rent",
+                "payroll",
+                "utilities",
+                "marketing",
+                "other_fixed"
+              ],
+              "safety_margin_ratio": [
+                "unit_sales",
+                "unit_price",
+                "variable_per_unit",
+                "rent",
+                "payroll",
+                "utilities",
+                "marketing",
+                "other_fixed"
+              ],
+              "capacity_utilization": [
+                "unit_sales"
+              ],
+              "contribution_per_unit": [
+                "unit_price",
+                "variable_per_unit"
+              ]
+            },
+            "limitations": [
+              "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+              "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+              "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+              "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+              "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+              "Одна однородная единица продажи. Разнородные потоки с разными маржами не агрегируются автоматически.",
+              "Физическая мощность неизвестна; расчёт не доказывает реализуемость объёма продаж."
+            ],
+            "warnings": [],
+            "rounding": "Decimal precision 64 / HALF_UP; RUB rounded to kopecks before subtraction"
+          }
+        },
+        "proposal_status": "completed",
+        "proposal_error": null
+      },
+      "python_calculation_ms": {
+        "min": 0.5138359992997721,
+        "max": 0.9870239991869312,
+        "mean": 0.6855904492113041
+      }
+    }
+  ],
+  "scope": "Real local Qwen; user costs below are explicit testing assumptions, not market observations. No data import.",
+  "python_peak_memory": 120197120,
+  "gpu_snapshot": "unavailable"
+}

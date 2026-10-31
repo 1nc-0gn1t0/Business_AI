@@ -27,6 +27,57 @@ class Base(DeclarativeBase):
     pass
 
 
+class FinancialWorkspaceRecord(Base):
+    __tablename__ = "financial_workspaces"
+    __table_args__ = (
+        sa.CheckConstraint(
+            "jsonb_typeof(document) = 'object' AND octet_length(document::text) <= 65536",
+            name="ck_financial_workspace_size",
+        ),
+    )
+    conversation_id: Mapped[UUID] = mapped_column(
+        sa.ForeignKey("conversations.id"), primary_key=True
+    )
+    document: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
+class FinancialActionRecord(Base):
+    __tablename__ = "financial_actions"
+    __table_args__ = (
+        sa.CheckConstraint(
+            "octet_length(snapshot::text) <= 65536", name="ck_financial_action_size"
+        ),
+        sa.Index("ix_financial_action_owner_created", "conversation_id", "created_at"),
+    )
+    conversation_id: Mapped[UUID] = mapped_column(
+        sa.ForeignKey("conversations.id"), primary_key=True
+    )
+    request_id: Mapped[UUID] = mapped_column(primary_key=True)
+    payload_hash: Mapped[str] = mapped_column(sa.String(64))
+    kind: Mapped[str] = mapped_column(sa.Text)
+    state: Mapped[str] = mapped_column(sa.Text)
+    error_code: Mapped[str | None] = mapped_column(sa.Text)
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    deadline_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    snapshot: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
+class FinancialResultRecord(Base):
+    __tablename__ = "financial_results"
+    __table_args__ = (
+        sa.CheckConstraint(
+            "octet_length(snapshot::text) <= 196608", name="ck_financial_result_size"
+        ),
+        sa.UniqueConstraint("conversation_id", "fingerprint"),
+        sa.Index("ix_financial_result_owner_created", "conversation_id", "created_at"),
+    )
+    id: Mapped[UUID] = mapped_column(primary_key=True)
+    conversation_id: Mapped[UUID] = mapped_column(sa.ForeignKey("conversations.id"))
+    fingerprint: Mapped[str] = mapped_column(sa.String(64))
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    snapshot: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
 class AgentRunRecord(Base):
     __tablename__ = "agent_runs"
     __table_args__ = (

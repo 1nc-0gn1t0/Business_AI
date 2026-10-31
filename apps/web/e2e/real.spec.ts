@@ -3,6 +3,508 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { env } from "node:process";
 import type { Conversation, Ranking, Schemas } from "../src/api";
 
+test("U-05 real Qwen school: proposals, rejection, correction and saved scenarios", async ({
+  page,
+}) => {
+  test.skip(
+    env.BA_U05_QWEN_REAL !== "1",
+    "Requires isolated U-05 API and the existing real Qwen",
+  );
+  const directory = "../../docs/qa/u-05/live-browser";
+  await mkdir(directory, { recursive: true });
+  const errors: string[] = [],
+    consoleErrors: string[] = [],
+    excluded: string[] = [];
+  let proposals = 0;
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("console", (m) => {
+    if (m.type() === "error") consoleErrors.push(m.text());
+  });
+  page.on("request", (r) => {
+    if (/\/api\/v1\/(geo|finance)\//.test(r.url()))
+      excluded.push(new URL(r.url()).pathname);
+    if (r.url().endsWith("/propose")) proposals++;
+  });
+  const created = await page.request.post("/api/v1/conversations", {
+    data: {},
+  });
+  expect(created.status()).toBe(201);
+  const key = await created.json();
+  const headers = { "X-Conversation-Token": key.access_token };
+  expect(
+    (
+      await page.request.put(
+        `/api/v1/conversations/${key.id}/consents/assistant`,
+        {
+          headers,
+          data: {
+            expected_revision: 0,
+            text_version: "assistant-demo-v1",
+            decision: "grant",
+          },
+        },
+      )
+    ).status(),
+  ).toBe(200);
+  const profileUrl = `/api/v2/conversations/${key.id}/industry-profile`;
+  const classified = await page.request.post(profileUrl + "/messages", {
+    headers,
+    data: {
+      expected_version: 0,
+      content:
+        "Хочу открыть онлайн-школу программирования. Бюджет 1,5 миллиона рублей.",
+    },
+    timeout: 180000,
+  });
+  expect(classified.status()).toBe(200);
+  const classification = await classified.json();
+  expect(classification.extraction).toBe("ollama");
+  expect(classification.profile.industry).toBe("online_school");
+  expect(
+    (
+      await page.request.patch(profileUrl, {
+        headers,
+        data: {
+          expected_version: classification.profile.revision,
+          industry: "online_school",
+          updates: Object.entries({
+            budget: "1500000",
+            audience: "взрослые",
+            format: "онлайн",
+            payment_model: "помесячно",
+            students: 20,
+          }).map(([field, value]) => ({ field, value })),
+        },
+      })
+    ).status(),
+  ).toBe(200);
+  await page.addInitScript(
+    ({ id, token }) =>
+      sessionStorage.setItem(
+        "business-ai.guest.v1",
+        JSON.stringify({ id, token }),
+      ),
+    { id: key.id, token: key.access_token },
+  );
+  await page.goto("/#business-ai");
+  await expect(
+    page.getByRole("heading", { name: "Ваш проект", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Продолжить", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Сколько может приносить ваш бизнес?" }),
+  ).toBeVisible();
+  const financialUrl = profileUrl.replace(
+    "industry-profile",
+    "financial-scenarios",
+  );
+  type View = Schemas["FinancialView"];
+  let view = (await (
+    await page.request.get(financialUrl, { headers })
+  ).json()) as View;
+  const command = () => ({
+    request_id: crypto.randomUUID(),
+    expected_profile_revision: view.document.profile_revision,
+    expected_input_revision: view.document.revision,
+  });
+  const seeded = await page.request.patch(financialUrl, {
+    headers,
+    data: {
+      ...command(),
+      billing_model: "monthly",
+      updates: Object.entries({
+        student_capacity: ["100", "students"],
+        teachers: ["60000", "RUB/month"],
+        platform: ["10000", "RUB/month"],
+        marketing: ["30000", "RUB/month"],
+        other_fixed: ["10000", "RUB/month"],
+      }).map(([parameter, [value, unit]]) => ({
+        parameter,
+        base: value,
+        low: value,
+        high: value,
+        unit,
+        kind: "user_assumption",
+        basis: "Явные тестовые вводные пользователя; не рыночная статистика",
+      })),
+    },
+  });
+  expect(seeded.status()).toBe(200);
+  view = (await seeded.json()) as View;
+  const reviewed = await page.request.post(financialUrl + "/review", {
+    headers,
+    data: { ...command(), confirm: Object.keys(view.document.entries) },
+  });
+  expect(reviewed.status()).toBe(200);
+  await page.reload();
+  const waiting = page.waitForResponse((r) => r.url().endsWith("/propose"), {
+    timeout: 180000,
+  });
+  const started = Date.now();
+  await page.getByRole("button", { name: "Предложить допущения с Ви" }).click();
+  const response = await waiting;
+  expect(response.status()).toBe(200);
+  const inferenceMs = Date.now() - started;
+  view = (await response.json()) as View;
+  const suggestions = Object.entries(view.document.entries).filter(
+    ([, e]) => e.method === "qwen_exploratory",
+  );
+  expect(suggestions.length).toBeGreaterThanOrEqual(2);
+  expect(view.document.entries.tuition.method).toBe("qwen_exploratory");
+  for (const [, entry] of suggestions) {
+    expect(entry.review).toBe("proposed");
+    expect(entry.source.origin).toBe("synthetic");
+    expect(entry.generation_model).toBe("qwen3:4b-instruct-2507-q4_K_M");
+  }
+  await page.screenshot({
+    path: `${directory}/proposal-review.png`,
+    fullPage: true,
+  });
+  const partial = await page.request.post(financialUrl + "/calculate", {
+    headers,
+    data: command(),
+  });
+  expect(partial.status()).toBe(200);
+  expect(((await partial.json()) as View).result!.result.status).toBe(
+    "partial",
+  );
+  const price = view.configuration.parameters.find(
+    (p) => p.id === "tuition",
+  )!.label;
+  await page
+    .getByRole("checkbox", { name: `Проверено: ${price}`, exact: true })
+    .check();
+  let saved = page.waitForResponse((r) => r.url().endsWith("/review"));
+  await page
+    .getByRole("button", { name: "Отклонить выбранные", exact: true })
+    .click();
+  expect(
+    ((await (await saved).json()) as View).document.entries.tuition.review,
+  ).toBe("rejected");
+  await page.getByRole("textbox", { name: price, exact: true }).fill("6500");
+  const field = page
+    .locator(".financial-input")
+    .filter({ has: page.getByRole("textbox", { name: price, exact: true }) });
+  await field.getByText("Сценарный диапазон", { exact: true }).click();
+  await page
+    .getByRole("textbox", { name: `${price}: минимум`, exact: true })
+    .fill("6000");
+  await page
+    .getByRole("textbox", { name: `${price}: максимум`, exact: true })
+    .fill("7500");
+  saved = page.waitForResponse(
+    (r) =>
+      r.url().endsWith("financial-scenarios") &&
+      r.request().method() === "PATCH",
+  );
+  await page
+    .getByRole("button", { name: "Сохранить вводные для проверки" })
+    .click();
+  expect((await saved).status()).toBe(200);
+  await expect(
+    page.getByRole("checkbox", { name: `Проверено: ${price}`, exact: true }),
+  ).toBeEnabled();
+  for (const checkbox of await page.getByRole("checkbox").all())
+    await checkbox.check();
+  saved = page.waitForResponse((r) => r.url().endsWith("/review"));
+  await page
+    .getByRole("button", { name: "Использовать выбранные значения" })
+    .click();
+  view = (await (await saved).json()) as View;
+  const retained = Object.values(view.document.entries).filter(
+    (e) => e.method === "qwen_exploratory",
+  );
+  expect(retained.length).toBeGreaterThan(0);
+  expect(
+    retained.every(
+      (e) =>
+        e.review === "confirmed" &&
+        e.epistemic === "assumed" &&
+        e.source.origin === "synthetic",
+    ),
+  ).toBe(true);
+  saved = page.waitForResponse((r) => r.url().endsWith("/calculate"));
+  await page.getByRole("button", { name: "Рассчитать три сценария" }).click();
+  view = (await (await saved).json()) as View;
+  expect(view.result!.result.status).toBe("calculated");
+  expect(view.result!.result.scenarios.map((s) => s.name)).toEqual([
+    "conservative",
+    "base",
+    "optimistic",
+  ]);
+  expect(view.result!.result.sensitivity.length).toBeGreaterThan(0);
+  const snapshot = view.result!;
+  for (const width of [1440, 768, 390]) {
+    await page.setViewportSize({ width, height: 950 });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page.screenshot({
+      path: `${directory}/scenarios-${width}.png`,
+      fullPage: true,
+    });
+  }
+  await page.reload();
+  await expect(
+    page.getByRole("heading", { name: "Базовый", exact: true }),
+  ).toBeVisible();
+  expect(
+    ((await (await page.request.get(financialUrl, { headers })).json()) as View)
+      .result,
+  ).toEqual(snapshot);
+  const download = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Скачать сценарный JSON" }).click();
+  const file = await download;
+  expect(await file.failure()).toBeNull();
+  await file.saveAs(`${directory}/scenarios.json`);
+  expect(proposals).toBe(1);
+  expect(errors).toEqual([]);
+  expect(consoleErrors).toEqual([]);
+  expect(excluded).toEqual([]);
+  await writeFile(
+    `${directory}/evidence.json`,
+    JSON.stringify(
+      {
+        mode: "Real Chromium/API/PostGIS/Qwen; no mocks",
+        model: retained[0].generation_model,
+        prompt: retained[0].generation_prompt_version,
+        inferenceMs,
+        hypotheses: suggestions.map(([id]) => id),
+        rejected: "tuition",
+        corrected: "6500",
+        unreviewed_calculation: "partial",
+        confirmed_ai_values: retained.length,
+        scenarios: snapshot.result.scenarios.map((s) => ({
+          name: s.name,
+          result: s.operating_result,
+        })),
+        reload: true,
+        json: true,
+        proposals,
+        errors,
+        consoleErrors,
+        excluded,
+      },
+      null,
+      2,
+    ),
+  );
+});
+
+test("U-05 real manual school: review, course finance, what-if and reload without Ollama", async ({
+  page,
+}) => {
+  test.skip(
+    env.BA_U05_REAL !== "1",
+    "Requires isolated U-05 Compose, no API mocks",
+  );
+  const directory = "../../docs/qa/u-05";
+  await mkdir(`${directory}/screenshots`, { recursive: true });
+  const created = await page.request.post("/api/v1/conversations", {
+    data: {},
+  });
+  expect(created.status()).toBe(201);
+  const key = await created.json();
+  const headers = { "X-Conversation-Token": key.access_token };
+  expect(
+    (
+      await page.request.put(
+        `/api/v1/conversations/${key.id}/consents/assistant`,
+        {
+          headers,
+          data: {
+            expected_revision: 0,
+            text_version: "assistant-demo-v1",
+            decision: "grant",
+          },
+        },
+      )
+    ).status(),
+  ).toBe(200);
+  const url = `/api/v2/conversations/${key.id}/industry-profile`;
+  const profile = await page.request.patch(url, {
+    headers,
+    data: {
+      expected_version: 0,
+      industry: "online_school",
+      updates: Object.entries({
+        budget: "1500000",
+        audience: "взрослые",
+        format: "онлайн",
+        payment_model: "за курс",
+        students: 20,
+      }).map(([field, value]) => ({ field, value })),
+    },
+  });
+  expect(profile.status()).toBe(200);
+  await page.addInitScript(
+    ({ id, token }) =>
+      sessionStorage.setItem(
+        "business-ai.guest.v1",
+        JSON.stringify({ id, token }),
+      ),
+    { id: key.id, token: key.access_token },
+  );
+  const errors: string[] = [],
+    excludedRequests: string[] = [];
+  const consoleErrors: string[] = [];
+  page.on("console", (m) => {
+    if (m.type() === "error") consoleErrors.push(m.text());
+  });
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("request", (r) => {
+    if (
+      /\/api\/v1\/(geo|finance)\//.test(r.url()) ||
+      r.url().endsWith("/propose")
+    )
+      excludedRequests.push(new URL(r.url()).pathname);
+  });
+  await page.goto("/#business-ai");
+  await expect(
+    page.getByRole("heading", { name: "Ваш проект", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Продолжить", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Сколько может приносить ваш бизнес?" }),
+  ).toBeVisible();
+  await page
+    .getByRole("combobox", { name: "Модель оплаты обучения" })
+    .selectOption("course");
+  const values: Record<string, string> = {
+    students: "20",
+    student_capacity: "30",
+    tuition: "10000",
+    course_months: "3",
+    variable_per_student: "1000",
+    fee_ratio: "0.05",
+    teachers: "60000",
+    platform: "10000",
+    marketing: "30000",
+    other_fixed: "50000",
+  };
+  const financialUrl = url.replace("industry-profile", "financial-scenarios");
+  const view = (await (
+    await page.request.get(financialUrl, { headers })
+  ).json()) as Schemas["FinancialView"];
+  for (const field of view.configuration.parameters) {
+    await page
+      .getByRole("textbox", { name: field.label, exact: true })
+      .fill(values[field.id]);
+    await page
+      .getByRole("combobox", {
+        name: `${field.label}: происхождение`,
+        exact: true,
+      })
+      .selectOption("user_assumption");
+  }
+  for (const [label, low, high] of [
+    ["Платящие ученики", "10", "30"],
+    ["Цена за выбранный период оплаты", "8000", "12000"],
+  ]) {
+    const fieldset = page.locator(".financial-input").filter({
+      has: page.getByRole("textbox", { name: label, exact: true }),
+    });
+    await fieldset.getByText("Сценарный диапазон", { exact: true }).click();
+    await page
+      .getByRole("textbox", { name: `${label}: минимум`, exact: true })
+      .fill(low);
+    await page
+      .getByRole("textbox", { name: `${label}: максимум`, exact: true })
+      .fill(high);
+  }
+  await page
+    .getByRole("button", { name: "Сохранить вводные для проверки" })
+    .click();
+  await expect(
+    page.getByRole("checkbox", { name: "Проверено: Платящие ученики" }),
+  ).toBeVisible();
+  for (const checkbox of await page.getByRole("checkbox").all())
+    await checkbox.check();
+  await page
+    .getByRole("button", { name: "Использовать выбранные значения" })
+    .click();
+  const started = Date.now();
+  const waiting = page.waitForResponse(
+    (r) => r.url().endsWith("/calculate") && r.request().method() === "POST",
+  );
+  await page.getByRole("button", { name: "Рассчитать три сценария" }).click();
+  const response = await waiting;
+  expect(response.status()).toBe(200);
+  const result = (await response.json()) as Schemas["FinancialView"];
+  expect(result.result!.result.scenarios[1].operating_result).toBe(
+    "-280000.00",
+  );
+  expect(result.result!.result.scenarios[1].period).toBe("course_cohort");
+  expect(result.result!.result.contains_assumptions).toBe(true);
+  expect(
+    result.result!.result.scenarios.map((s) => s.operating_result),
+  ).toEqual(["-384000.00", "-280000.00", "-138000.00"]);
+  const elapsed = Date.now() - started;
+  await page
+    .getByText("Ввести или проверить параметры", { exact: true })
+    .click();
+  await page
+    .getByRole("textbox", {
+      name: "Постоянные расходы на преподавателей",
+      exact: true,
+    })
+    .fill("70000");
+  const previewing = page.waitForResponse((r) => r.url().endsWith("/what-if"));
+  await page.getByRole("button", { name: "Проверить без сохранения" }).click();
+  const preview = (await (await previewing).json()) as Schemas["WhatIfResult"];
+  expect(preview.persisted).toBe(false);
+  expect(preview.result.scenarios[1].operating_result).toBe("-310000.00");
+  const beforeReload = (await (
+    await page.request.get(financialUrl, { headers })
+  ).json()) as Schemas["FinancialView"];
+  expect(beforeReload.document).toEqual(result.document);
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Базовый" })).toBeVisible();
+  for (const width of [1440, 768, 390]) {
+    await page.setViewportSize({ width, height: 950 });
+    expect(
+      await page.locator("body").evaluate((el) => el.scrollWidth <= innerWidth),
+    ).toBe(true);
+    await page.screenshot({
+      path: `${directory}/screenshots/real-school-${width}.png`,
+      fullPage: true,
+    });
+  }
+  const download = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Скачать сценарный JSON" }).click();
+  expect(await (await download).failure()).toBeNull();
+  await (await download).saveAs(`${directory}/real-school-scenarios.json`);
+  expect(errors).toEqual([]);
+  expect(consoleErrors).toEqual([]);
+  expect(excludedRequests).toEqual([]);
+  await writeFile(
+    `${directory}/browser-real-manual.json`,
+    JSON.stringify(
+      {
+        mode: "Built Compose/API/PostGIS; manual scenario inputs; no mocks; no Ollama calls",
+        calculation_http_ms: elapsed,
+        base_operating_result: "-280000.00",
+        preview_operating_result: "-310000.00",
+        what_if_persisted: false,
+        period: "course_cohort",
+        months: 3,
+        browser_errors: errors,
+        console_errors: consoleErrors,
+        scenarios: result.result!.result.scenarios.map(
+          (s) => s.operating_result,
+        ),
+        excluded_requests: excludedRequests,
+        widths: [1440, 768, 390],
+        download: "real-school-scenarios.json",
+      },
+      null,
+      2,
+    ),
+  );
+});
+
 test("U-04 real online school: Qwen, review, no-map, reload and JSON", async ({
   page,
 }) => {
@@ -397,7 +899,7 @@ test("DESIGN03FU real coffee: idea → Qwen → profile → PostGIS → finance 
     JSON.stringify(
       {
         mode: "real API/Ollama/PostGIS, no route mocks",
-        base_main: "718bcf936966fe5465ea67ca4e0806bc0cf16372",
+        base_main: env.BA_TEST_BASE_MAIN || "not_recorded",
         model: "qwen3:4b-instruct-2507-q4_K_M",
         profile_version: confirmedView.version,
         qwen_turns: timings,

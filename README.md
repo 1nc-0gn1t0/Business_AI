@@ -1,5 +1,13 @@
 # Business AI — Sab0tage
 
+**BA2/U-05:** [финансовые сценарии и подтверждение допущений](docs/architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md).
+Opt-in `BA_INDUSTRY_ENABLED=1` + `BA_FINANCE_V2_ENABLED=1` после migration0012;
+finance по умолчанию0. Автосервис/онлайн-школа/generic используют собственные
+драйверы, явный review и Decimal-сценарии. Перерасчёт работает без модели;
+Live-предложения точной локальной Qwen проверены для всех трёх адаптеров;
+Chromium проверяет review, отклонение/исправление, расчёт, reload и JSON без моков.
+Старые финансы/отчёты кофейни сохраняются. Это сценарная арифметика, не прогноз рынка.
+
 **BA2/U-04:** [Universal Industry Engine](docs/architecture/BUSINESS_AI_2_UNIVERSAL_INDUSTRY_ENGINE.md)
 добавляет ProfileV2, отраслевые вопросы и маршрут без карты. Opt-in
 `BA_INDUSTRY_ENABLED=1` после migration0011; по умолчанию0. Автосервис/онлайн-школа

@@ -124,6 +124,7 @@ CONFIGS = (
     ),
     IndustryDefinition(
         id="auto_repair",
+        version="u05-v1",
         label="Автосервис",
         aliases=("автосервис", "автосервиса", "СТО"),
         business_models=("service",),
@@ -162,12 +163,14 @@ CONFIGS = (
         optional_categories=("geo.buildings", "geo.parking"),
         geo_policy="required",
         limitations=(
-            "Автомобильный рейтинг и финансовый адаптер пока не реализованы.",
+            "Автомобильный рейтинг пока не реализован; "
+            "финансовые сценарии требуют отдельной v2 capability.",
             "OSM POI не подтверждает дорожную сеть или автомобильный трафик.",
         ),
     ),
     IndustryDefinition(
         id="online_school",
+        version="u05-v1",
         label="Онлайн-школа",
         aliases=("онлайн-школа", "онлайн-школу", "онлайн школа"),
         business_models=("digital", "subscription"),
@@ -195,12 +198,13 @@ CONFIGS = (
         optional_categories=("user.budget", "user.costs"),
         geo_policy="none",
         limitations=(
-            "Финансовый адаптер цифрового обучения пока не реализован; "
-            "прогноз прибыли не рассчитан.",
+            "Финансовые сценарии цифрового обучения требуют отдельной v2 capability "
+            "и подтверждённых финансовых вводных.",
         ),
     ),
     IndustryDefinition(
         id="generic",
+        version="u05-v1",
         label="Бизнес-проект",
         aliases=(),
         business_models=("other", "mixed"),
@@ -210,7 +214,8 @@ CONFIGS = (
         optional_categories=("user.budget", "user.costs"),
         geo_policy="optional",
         limitations=(
-            "Специализированная модель не выбрана. Доступны профиль и проверка наличия данных.",
+            "Специализированная модель не выбрана. Базовая финансовая v2 capability "
+            "работает только по явно заданным совместимым вводным.",
         ),
     ),
 )

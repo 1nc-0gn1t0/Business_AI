@@ -278,6 +278,109 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v2/conversations/{conversation_id}/financial-scenarios": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get */
+    get: operations["get_api_v2_conversations__conversation_id__financial_scenarios_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Patch */
+    patch: operations["patch_api_v2_conversations__conversation_id__financial_scenarios_patch"];
+    trace?: never;
+  };
+  "/api/v2/conversations/{conversation_id}/financial-scenarios/review": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Review */
+    post: operations["review_api_v2_conversations__conversation_id__financial_scenarios_review_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/conversations/{conversation_id}/financial-scenarios/results/{result_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Result */
+    get: operations["result_api_v2_conversations__conversation_id__financial_scenarios_results__result_id__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/conversations/{conversation_id}/financial-scenarios/what-if": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** What If */
+    post: operations["what_if_api_v2_conversations__conversation_id__financial_scenarios_what_if_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/conversations/{conversation_id}/financial-scenarios/propose": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Propose */
+    post: operations["propose_api_v2_conversations__conversation_id__financial_scenarios_propose_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v2/conversations/{conversation_id}/financial-scenarios/calculate": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Run */
+    post: operations["run_api_v2_conversations__conversation_id__financial_scenarios_calculate_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/bank-products": {
     parameters: {
       query?: never;
@@ -954,11 +1057,7 @@ export interface components {
        * @enum {string}
        */
       availability:
-        | "ready"
-        | "degraded"
-        | "unavailable"
-        | "not_integrated"
-        | "unknown";
+        "ready" | "degraded" | "unavailable" | "not_integrated" | "unknown";
       /** Potentially Available */
       potentially_available: boolean;
       /**
@@ -1030,11 +1129,7 @@ export interface components {
       capabilities: components["schemas"]["CapabilityDecision"][];
       /** Stages */
       stages: (
-        | "clarify"
-        | "confirm"
-        | "location"
-        | "finance"
-        | "partial_result"
+        "clarify" | "confirm" | "location" | "finance" | "partial_result"
       )[];
       coverage?: components["schemas"]["CoverageResult"] | null;
       sufficiency?: components["schemas"]["SufficiencyAssessment"] | null;
@@ -1196,6 +1291,21 @@ export interface components {
       /** North */
       north: number;
     };
+    /** BreakEven */
+    BreakEven: {
+      /**
+       * Status
+       * @enum {string}
+       */
+      status:
+        "calculated" | "nonpositive_margin" | "above_capacity" | "unavailable";
+      /** Units */
+      units?: string | null;
+      /** Revenue */
+      revenue?: string | null;
+      /** Capacity Utilization */
+      capacity_utilization?: string | null;
+    };
     /** BudgetComparison */
     BudgetComparison: {
       /**
@@ -1203,9 +1313,7 @@ export interface components {
        * @enum {string}
        */
       status:
-        | "within_model_budget"
-        | "model_budget_shortfall"
-        | "budget_unknown";
+        "within_model_budget" | "model_budget_shortfall" | "budget_unknown";
       /** Budget */
       budget: string | null;
       /**
@@ -1968,10 +2076,7 @@ export interface components {
        * @enum {string}
        */
       freshness_basis:
-        | "source_timestamp"
-        | "period_end"
-        | "generated_at"
-        | "unknown";
+        "source_timestamp" | "period_end" | "generated_at" | "unknown";
       /** Observed At */
       observed_at?: string | null;
       /** Source Timestamp */
@@ -2258,11 +2363,7 @@ export interface components {
        * @enum {string}
        */
       driver:
-        | "revenue"
-        | "fixed_cost"
-        | "variable_cost"
-        | "capacity"
-        | "context";
+        "revenue" | "fixed_cost" | "variable_cost" | "capacity" | "context";
     };
     /** FieldUpdate */
     FieldUpdate: {
@@ -2344,6 +2445,164 @@ export interface components {
        */
       zone_reference_status: "not_provided" | "not_verified_by_finance_service";
     };
+    /** FinancialCalculation */
+    FinancialCalculation: {
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: "calculated" | "partial";
+      /** Missing */
+      missing: string[];
+      /**
+       * Scenarios
+       * @default []
+       */
+      scenarios: components["schemas"]["FinancialScenario"][];
+      /**
+       * Sensitivity
+       * @default []
+       */
+      sensitivity: components["schemas"]["FinancialSensitivity"][];
+      /**
+       * Origin
+       * @default modelled
+       * @constant
+       */
+      origin: "modelled";
+      /**
+       * Currency
+       * @default RUB
+       * @constant
+       */
+      currency: "RUB";
+      /** Contains Assumptions */
+      contains_assumptions: boolean;
+      /** Formulas */
+      formulas: {
+        [key: string]: string;
+      };
+      /** Metric Inputs */
+      metric_inputs?: {
+        [key: string]: string[];
+      };
+      /** Limitations */
+      limitations: string[];
+      /**
+       * Warnings
+       * @default []
+       */
+      warnings: string[];
+      /**
+       * Rounding
+       * @default Decimal precision 64 / HALF_UP; RUB rounded to kopecks before subtraction
+       */
+      rounding: string;
+    };
+    /** FinancialCommand */
+    FinancialCommand: {
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /** Expected Profile Revision */
+      expected_profile_revision: number;
+      /** Expected Input Revision */
+      expected_input_revision: number;
+    };
+    /** FinancialDefinition */
+    FinancialDefinition: {
+      /**
+       * Id
+       * @enum {string}
+       */
+      id: "auto_repair" | "online_school" | "generic";
+      /**
+       * Version
+       * @default u05-decimal-v1
+       */
+      version: string;
+      /** Parameters */
+      parameters: components["schemas"]["FinancialParameter"][];
+      /** Limitations */
+      limitations: string[];
+    };
+    /** FinancialDocument */
+    FinancialDocument: {
+      /** Profile Revision */
+      profile_revision: number;
+      /** Profile Config Sha256 */
+      profile_config_sha256: string;
+      /**
+       * Model
+       * @enum {string}
+       */
+      model: "auto_repair" | "online_school" | "generic";
+      /**
+       * Adapter Version
+       * @default u05-decimal-v1
+       */
+      adapter_version: string;
+      /**
+       * Adapter Sha256
+       * @default
+       */
+      adapter_sha256: string;
+      /**
+       * Revision
+       * @default 0
+       */
+      revision: number;
+      /** Billing Model */
+      billing_model?: ("monthly" | "subscription" | "course") | null;
+      /** Entries */
+      entries?: {
+        [key: string]: components["schemas"]["FinancialInput"];
+      };
+    };
+    /** FinancialInput */
+    FinancialInput: {
+      /** Base */
+      base: string;
+      /** Low */
+      low: string;
+      /** High */
+      high: string;
+      /** Unit */
+      unit: string;
+      source: components["schemas"]["InputSource"];
+      /**
+       * Epistemic
+       * @enum {string}
+       */
+      epistemic: "user_provided" | "assumed";
+      /**
+       * Review
+       * @default proposed
+       * @enum {string}
+       */
+      review: "proposed" | "confirmed" | "rejected";
+      /**
+       * Method
+       * @enum {string}
+       */
+      method:
+        "profile_v2" | "user_input" | "qwen_exploratory" | "user_assumption";
+      /** Basis */
+      basis: string;
+      /** Revision */
+      revision: number;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** Generation Model */
+      generation_model?: string | null;
+      /** Generation Prompt Version */
+      generation_prompt_version?: string | null;
+    };
     /** FinancialMetric */
     FinancialMetric: {
       /** Value */
@@ -2383,6 +2642,143 @@ export interface components {
         | "break_even_sales_per_day";
       /** Input Paths */
       input_paths: string[];
+    };
+    /** FinancialParameter */
+    FinancialParameter: {
+      /** Id */
+      id: string;
+      /** Label */
+      label: string;
+      /** Unit */
+      unit: string;
+      /**
+       * Minimum
+       * @default 0
+       */
+      minimum: string;
+      /**
+       * Maximum
+       * @default 1000000000
+       */
+      maximum: string;
+      /**
+       * Integer
+       * @default false
+       */
+      integer: boolean;
+      /**
+       * Direction
+       * @enum {string}
+       */
+      direction: "revenue" | "cost" | "context";
+    };
+    /** FinancialScenario */
+    FinancialScenario: {
+      /**
+       * Name
+       * @enum {string}
+       */
+      name: "conservative" | "base" | "optimistic";
+      /** Drivers */
+      drivers: {
+        [key: string]: string;
+      };
+      /**
+       * Period
+       * @enum {string}
+       */
+      period: "month" | "course_cohort";
+      /** Months */
+      months: string;
+      /** Units */
+      units: string;
+      /**
+       * Volume Unit
+       * @enum {string}
+       */
+      volume_unit: "orders" | "students" | "units";
+      /** Capacity */
+      capacity: string | null;
+      /** Revenue */
+      revenue: string;
+      /** Variable Costs */
+      variable_costs: string;
+      /** Fixed Costs */
+      fixed_costs: string;
+      /** Contribution */
+      contribution: string;
+      /** Operating Result */
+      operating_result: string;
+      /** Contribution Per Unit */
+      contribution_per_unit: string;
+      /** Capacity Utilization */
+      capacity_utilization: string | null;
+      /** Safety Margin Ratio */
+      safety_margin_ratio: string | null;
+      break_even: components["schemas"]["BreakEven"];
+    };
+    /** FinancialSensitivity */
+    FinancialSensitivity: {
+      /** Parameter */
+      parameter: string;
+      /** Unit */
+      unit: string;
+      /** Value */
+      value: string;
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: "calculated" | "outside_domain";
+      /** Operating Result */
+      operating_result: string | null;
+      /** Difference From Base */
+      difference_from_base: string | null;
+    };
+    /** FinancialSnapshot */
+    FinancialSnapshot: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** Fingerprint */
+      fingerprint: string;
+      profile: components["schemas"]["UniversalProfile"];
+      inputs: components["schemas"]["FinancialDocument"];
+      configuration: components["schemas"]["FinancialDefinition"];
+      result: components["schemas"]["FinancialCalculation"];
+    };
+    /** FinancialView */
+    FinancialView: {
+      /**
+       * Enabled
+       * @default true
+       */
+      enabled: boolean;
+      configuration: components["schemas"]["FinancialDefinition"];
+      document: components["schemas"]["FinancialDocument"];
+      /** Current */
+      current: boolean;
+      /** Missing */
+      missing: string[];
+      /** Needs Review */
+      needs_review: string[];
+      result?: components["schemas"]["FinancialSnapshot"] | null;
+      /**
+       * Proposal Status
+       * @default idle
+       * @enum {string}
+       */
+      proposal_status:
+        "idle" | "running" | "completed" | "failed" | "interrupted";
+      /** Proposal Error */
+      proposal_error?: string | null;
     };
     /** FixedCosts */
     "FixedCosts-Input": {
@@ -2510,6 +2906,11 @@ export interface components {
       /** Enabled */
       enabled: boolean;
       /**
+       * Finance V2 Enabled
+       * @default false
+       */
+      finance_v2_enabled: boolean;
+      /**
        * Revision
        * @default u04-v1
        */
@@ -2554,6 +2955,30 @@ export interface components {
       finance_adapter?: "coffee_finance_v1" | null;
       /** Limitations */
       limitations: string[];
+    };
+    /** InputPatch */
+    InputPatch: {
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /** Expected Profile Revision */
+      expected_profile_revision: number;
+      /** Expected Input Revision */
+      expected_input_revision: number;
+      /**
+       * Updates
+       * @default []
+       */
+      updates: components["schemas"]["ParameterUpdate"][];
+      /** Billing Model */
+      billing_model?: ("monthly" | "subscription" | "course") | null;
+      /**
+       * Reset For Profile
+       * @default false
+       */
+      reset_for_profile: boolean;
     };
     /** InputSource */
     InputSource: {
@@ -3021,6 +3446,30 @@ export interface components {
       /** Distance M */
       distance_m: number | null;
     };
+    /** ParameterUpdate */
+    ParameterUpdate: {
+      /** Base */
+      base: number | string;
+      /** Low */
+      low: number | string;
+      /** High */
+      high: number | string;
+      /** Parameter */
+      parameter: string;
+      /** Unit */
+      unit: string;
+      /**
+       * Kind
+       * @default user_input
+       * @enum {string}
+       */
+      kind: "user_input" | "user_assumption";
+      /**
+       * Basis
+       * @default Вводная пользователя
+       */
+      basis: string;
+    };
     /** PatchRequest */
     PatchRequest: {
       patch: components["schemas"]["ProfilePatch"];
@@ -3355,8 +3804,7 @@ export interface components {
        * @enum {string}
        */
       distance_method:
-        | "geodesic_straight_line"
-        | "walking_network_with_connectors";
+        "geodesic_straight_line" | "walking_network_with_connectors";
       /** Coverage Margin M */
       coverage_margin_m: number;
       /** Fully Covered */
@@ -3594,6 +4042,28 @@ export interface components {
       /** Weight Rationale */
       weight_rationale: string;
     };
+    /** ReviewCommand */
+    ReviewCommand: {
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /** Expected Profile Revision */
+      expected_profile_revision: number;
+      /** Expected Input Revision */
+      expected_input_revision: number;
+      /**
+       * Confirm
+       * @default []
+       */
+      confirm: string[];
+      /**
+       * Reject
+       * @default []
+       */
+      reject: string[];
+    };
     /** RevisionView */
     RevisionView: {
       /** Version */
@@ -3780,10 +4250,7 @@ export interface components {
        * @enum {string}
        */
       driver:
-        | "average_check"
-        | "sales_per_day"
-        | "rent"
-        | "variable_cost_ratio";
+        "average_check" | "sales_per_day" | "rent" | "variable_cost_ratio";
       /** Relative Change */
       relative_change: string;
       /** Actual Value */
@@ -3825,12 +4292,7 @@ export interface components {
        * @enum {string}
        */
       source_type:
-        | "open"
-        | "licensed"
-        | "official"
-        | "user"
-        | "scenario"
-        | "placeholder";
+        "open" | "licensed" | "official" | "user" | "scenario" | "placeholder";
       origin: components["schemas"]["DataOrigin"];
       /**
        * Adapter Status
@@ -3841,9 +4303,7 @@ export interface components {
       categories: string[];
       /** Acquisition Methods */
       acquisition_methods: (
-        | "local_read"
-        | "offline_import"
-        | "operator_fetch"
+        "local_read" | "offline_import" | "operator_fetch"
       )[];
       /**
        * Geographic Scope
@@ -3871,11 +4331,7 @@ export interface components {
        * @enum {string}
        */
       availability:
-        | "ready"
-        | "degraded"
-        | "unavailable"
-        | "not_integrated"
-        | "unknown";
+        "ready" | "degraded" | "unavailable" | "not_integrated" | "unknown";
       /** Freshness Policies */
       freshness_policies: {
         [key: string]: string;
@@ -4154,8 +4610,7 @@ export interface components {
       /** Config Sha256 */
       config_sha256?: string | null;
       configuration_snapshot?:
-        | components["schemas"]["IndustryDefinition"]
-        | null;
+        components["schemas"]["IndustryDefinition"] | null;
       /** Values */
       values?: {
         [key: string]: components["schemas"]["ProfileValue"];
@@ -4365,6 +4820,32 @@ export interface components {
        * @default Separate opt-in comparison; BA-008 remains straight-line. Identical weights/min-max, different explicitly versioned network inputs.
        */
       methodology: string;
+    };
+    /** WhatIf */
+    WhatIf: {
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /** Expected Profile Revision */
+      expected_profile_revision: number;
+      /** Expected Input Revision */
+      expected_input_revision: number;
+      /** Updates */
+      updates: components["schemas"]["ParameterUpdate"][];
+    };
+    /** WhatIfResult */
+    WhatIfResult: {
+      /**
+       * Persisted
+       * @default false
+       * @constant
+       */
+      persisted: false;
+      /** Input Revision */
+      input_revision: number;
+      result: components["schemas"]["FinancialCalculation"];
     };
     /** WorkingDays */
     WorkingDays: {
@@ -4997,6 +5478,244 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["FinanceResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  get_api_v2_conversations__conversation_id__financial_scenarios_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FinancialView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  patch_api_v2_conversations__conversation_id__financial_scenarios_patch: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["InputPatch"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FinancialView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  review_api_v2_conversations__conversation_id__financial_scenarios_review_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ReviewCommand"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FinancialView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  result_api_v2_conversations__conversation_id__financial_scenarios_results__result_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+        result_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FinancialSnapshot"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  what_if_api_v2_conversations__conversation_id__financial_scenarios_what_if_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["WhatIf"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WhatIfResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  propose_api_v2_conversations__conversation_id__financial_scenarios_propose_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["FinancialCommand"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FinancialView"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  run_api_v2_conversations__conversation_id__financial_scenarios_calculate_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["FinancialCommand"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FinancialView"];
         };
       };
       /** @description Validation Error */

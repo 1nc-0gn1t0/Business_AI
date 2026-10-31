@@ -23,7 +23,7 @@ def profile() -> UniversalProfile:
 def test_config_references(industry: str) -> None:
     config = INDUSTRIES[industry]
     assert set(config.required) <= definitions(industry).keys()
-    assert config.version == "u04-v1"
+    assert config.version == ("u04-v1" if industry == "coffee_shop" else "u05-v1")
     assert config.finance_adapter is None or industry == "coffee_shop"
 
 

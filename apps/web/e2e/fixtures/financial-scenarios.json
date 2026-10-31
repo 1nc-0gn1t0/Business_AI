@@ -1,0 +1,1324 @@
+{
+  "enabled": true,
+  "configuration": {
+    "id": "auto_repair",
+    "version": "u05-decimal-v1",
+    "parameters": [
+      {
+        "id": "service_bays",
+        "label": "Ремонтные посты",
+        "unit": "bays",
+        "minimum": "1",
+        "maximum": "1000",
+        "integer": true,
+        "direction": "context"
+      },
+      {
+        "id": "working_days",
+        "label": "Рабочие дни",
+        "unit": "days/month",
+        "minimum": "1",
+        "maximum": "31",
+        "integer": true,
+        "direction": "context"
+      },
+      {
+        "id": "orders_per_bay",
+        "label": "Мощность поста в день (при полной загрузке)",
+        "unit": "orders/bay/day",
+        "minimum": "1",
+        "maximum": "100",
+        "integer": false,
+        "direction": "context"
+      },
+      {
+        "id": "utilization",
+        "label": "Загрузка (0–1)",
+        "unit": "ratio",
+        "minimum": "0",
+        "maximum": "1",
+        "integer": false,
+        "direction": "revenue"
+      },
+      {
+        "id": "average_order",
+        "label": "Выручка на заказ, включая запчасти",
+        "unit": "RUB/order",
+        "minimum": "0",
+        "maximum": "1000000000",
+        "integer": false,
+        "direction": "revenue"
+      },
+      {
+        "id": "materials_per_order",
+        "label": "Материалы на заказ",
+        "unit": "RUB/order",
+        "minimum": "0",
+        "maximum": "1000000000",
+        "integer": false,
+        "direction": "cost"
+      },
+      {
+        "id": "labor_per_order",
+        "label": "Переменная оплата труда на заказ",
+        "unit": "RUB/order",
+        "minimum": "0",
+        "maximum": "1000000000",
+        "integer": false,
+        "direction": "cost"
+      },
+      {
+        "id": "rent",
+        "label": "Аренда",
+        "unit": "RUB/month",
+        "minimum": "0",
+        "maximum": "1000000000",
+        "integer": false,
+        "direction": "cost"
+      },
+      {
+        "id": "payroll",
+        "label": "Постоянная оплата труда",
+        "unit": "RUB/month",
+        "minimum": "0",
+        "maximum": "1000000000",
+        "integer": false,
+        "direction": "cost"
+      },
+      {
+        "id": "utilities",
+        "label": "Коммунальные расходы",
+        "unit": "RUB/month",
+        "minimum": "0",
+        "maximum": "1000000000",
+        "integer": false,
+        "direction": "cost"
+      },
+      {
+        "id": "marketing",
+        "label": "Маркетинг",
+        "unit": "RUB/month",
+        "minimum": "0",
+        "maximum": "1000000000",
+        "integer": false,
+        "direction": "cost"
+      },
+      {
+        "id": "other_fixed",
+        "label": "Другие постоянные расходы",
+        "unit": "RUB/month",
+        "minimum": "0",
+        "maximum": "1000000000",
+        "integer": false,
+        "direction": "cost"
+      }
+    ],
+    "limitations": [
+      "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+      "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+      "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+      "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+      "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+      "Мощность = посты × дни × заказы на пост при полной загрузке. Загрузка применяется один раз.",
+      "Материалы и переменная оплата не должны дублироваться в постоянных расходах."
+    ]
+  },
+  "document": {
+    "profile_revision": 2,
+    "profile_config_sha256": "fixture",
+    "model": "auto_repair",
+    "adapter_version": "u05-decimal-v1",
+    "adapter_sha256": "",
+    "revision": 2,
+    "billing_model": null,
+    "entries": {
+      "service_bays": {
+        "base": "4",
+        "low": "4",
+        "high": "4",
+        "unit": "bays",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "working_days": {
+        "base": "25",
+        "low": "25",
+        "high": "25",
+        "unit": "days/month",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "orders_per_bay": {
+        "base": "2",
+        "low": "2",
+        "high": "2",
+        "unit": "orders/bay/day",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "utilization": {
+        "base": "0.75",
+        "low": "0.5",
+        "high": "1",
+        "unit": "ratio",
+        "source": {
+          "origin": "synthetic",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "not_applicable",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "assumed",
+        "review": "confirmed",
+        "method": "user_assumption",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "average_order": {
+        "base": "10000",
+        "low": "10000",
+        "high": "10000",
+        "unit": "RUB/order",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "materials_per_order": {
+        "base": "3000",
+        "low": "3000",
+        "high": "3000",
+        "unit": "RUB/order",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "labor_per_order": {
+        "base": "1000",
+        "low": "1000",
+        "high": "1000",
+        "unit": "RUB/order",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "rent": {
+        "base": "100000",
+        "low": "100000",
+        "high": "100000",
+        "unit": "RUB/month",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "payroll": {
+        "base": "200000",
+        "low": "200000",
+        "high": "200000",
+        "unit": "RUB/month",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "utilities": {
+        "base": "20000",
+        "low": "20000",
+        "high": "20000",
+        "unit": "RUB/month",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "marketing": {
+        "base": "30000",
+        "low": "30000",
+        "high": "30000",
+        "unit": "RUB/month",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      },
+      "other_fixed": {
+        "base": "50000",
+        "low": "50000",
+        "high": "50000",
+        "unit": "RUB/month",
+        "source": {
+          "origin": "user_input",
+          "source_name": "Test fixture",
+          "data_version": "test-v1",
+          "confidence": "low",
+          "limitations": [
+            "Explicit artificial scenario, not market data"
+          ],
+          "observed_at": null,
+          "evidence_ref": null,
+          "source_attested": false
+        },
+        "epistemic": "user_provided",
+        "review": "confirmed",
+        "method": "user_input",
+        "basis": "Test",
+        "revision": 1,
+        "created_at": "2026-10-29T23:36:05.427802Z",
+        "generation_model": null,
+        "generation_prompt_version": null
+      }
+    }
+  },
+  "current": true,
+  "missing": [],
+  "needs_review": [],
+  "result": {
+    "id": "295a544d-a4ef-4350-bd4f-1948c5bd38c7",
+    "created_at": "2026-10-29T23:36:05.427802Z",
+    "fingerprint": "84bf2959f6224a248335fa510ff373a8e78a14620df55046d4fbd59dba3ae5cc",
+    "profile": {
+      "schema_version": "business-profile-v2",
+      "id": "277a1a92-c5e6-46e6-8a69-244006ef97eb",
+      "conversation_id": "9f0dfc24-0cf3-420c-9242-01f402380414",
+      "revision": 2,
+      "idea": "",
+      "industry": "auto_repair",
+      "raw_industry": null,
+      "resolution": "unknown",
+      "industry_evidence": null,
+      "config_version": "u04-v1",
+      "config_sha256": null,
+      "configuration_snapshot": null,
+      "values": {},
+      "extensions": {},
+      "confirmed_revision": 2,
+      "deferred_fields": [],
+      "legacy_snapshot": {
+        "id": "277a1a92-c5e6-46e6-8a69-244006ef97eb",
+        "conversation_id": "9f0dfc24-0cf3-420c-9242-01f402380414",
+        "city": null,
+        "category": null,
+        "budget": null,
+        "funding": null,
+        "preferences": {
+          "format": null,
+          "preferred_districts": [],
+          "constraints": []
+        },
+        "confirmation_state": "draft"
+      }
+    },
+    "inputs": {
+      "profile_revision": 2,
+      "profile_config_sha256": "fixture",
+      "model": "auto_repair",
+      "adapter_version": "u05-decimal-v1",
+      "adapter_sha256": "",
+      "revision": 2,
+      "billing_model": null,
+      "entries": {
+        "service_bays": {
+          "base": "4",
+          "low": "4",
+          "high": "4",
+          "unit": "bays",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "working_days": {
+          "base": "25",
+          "low": "25",
+          "high": "25",
+          "unit": "days/month",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "orders_per_bay": {
+          "base": "2",
+          "low": "2",
+          "high": "2",
+          "unit": "orders/bay/day",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "utilization": {
+          "base": "0.75",
+          "low": "0.5",
+          "high": "1",
+          "unit": "ratio",
+          "source": {
+            "origin": "synthetic",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "not_applicable",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "assumed",
+          "review": "confirmed",
+          "method": "user_assumption",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "average_order": {
+          "base": "10000",
+          "low": "10000",
+          "high": "10000",
+          "unit": "RUB/order",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "materials_per_order": {
+          "base": "3000",
+          "low": "3000",
+          "high": "3000",
+          "unit": "RUB/order",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "labor_per_order": {
+          "base": "1000",
+          "low": "1000",
+          "high": "1000",
+          "unit": "RUB/order",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "rent": {
+          "base": "100000",
+          "low": "100000",
+          "high": "100000",
+          "unit": "RUB/month",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "payroll": {
+          "base": "200000",
+          "low": "200000",
+          "high": "200000",
+          "unit": "RUB/month",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "utilities": {
+          "base": "20000",
+          "low": "20000",
+          "high": "20000",
+          "unit": "RUB/month",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "marketing": {
+          "base": "30000",
+          "low": "30000",
+          "high": "30000",
+          "unit": "RUB/month",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        },
+        "other_fixed": {
+          "base": "50000",
+          "low": "50000",
+          "high": "50000",
+          "unit": "RUB/month",
+          "source": {
+            "origin": "user_input",
+            "source_name": "Test fixture",
+            "data_version": "test-v1",
+            "confidence": "low",
+            "limitations": [
+              "Explicit artificial scenario, not market data"
+            ],
+            "observed_at": null,
+            "evidence_ref": null,
+            "source_attested": false
+          },
+          "epistemic": "user_provided",
+          "review": "confirmed",
+          "method": "user_input",
+          "basis": "Test",
+          "revision": 1,
+          "created_at": "2026-10-29T23:36:05.427802Z",
+          "generation_model": null,
+          "generation_prompt_version": null
+        }
+      }
+    },
+    "configuration": {
+      "id": "auto_repair",
+      "version": "u05-decimal-v1",
+      "parameters": [
+        {
+          "id": "service_bays",
+          "label": "Ремонтные посты",
+          "unit": "bays",
+          "minimum": "1",
+          "maximum": "1000",
+          "integer": true,
+          "direction": "context"
+        },
+        {
+          "id": "working_days",
+          "label": "Рабочие дни",
+          "unit": "days/month",
+          "minimum": "1",
+          "maximum": "31",
+          "integer": true,
+          "direction": "context"
+        },
+        {
+          "id": "orders_per_bay",
+          "label": "Мощность поста в день (при полной загрузке)",
+          "unit": "orders/bay/day",
+          "minimum": "1",
+          "maximum": "100",
+          "integer": false,
+          "direction": "context"
+        },
+        {
+          "id": "utilization",
+          "label": "Загрузка (0–1)",
+          "unit": "ratio",
+          "minimum": "0",
+          "maximum": "1",
+          "integer": false,
+          "direction": "revenue"
+        },
+        {
+          "id": "average_order",
+          "label": "Выручка на заказ, включая запчасти",
+          "unit": "RUB/order",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "revenue"
+        },
+        {
+          "id": "materials_per_order",
+          "label": "Материалы на заказ",
+          "unit": "RUB/order",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "labor_per_order",
+          "label": "Переменная оплата труда на заказ",
+          "unit": "RUB/order",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "rent",
+          "label": "Аренда",
+          "unit": "RUB/month",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "payroll",
+          "label": "Постоянная оплата труда",
+          "unit": "RUB/month",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "utilities",
+          "label": "Коммунальные расходы",
+          "unit": "RUB/month",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "marketing",
+          "label": "Маркетинг",
+          "unit": "RUB/month",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        },
+        {
+          "id": "other_fixed",
+          "label": "Другие постоянные расходы",
+          "unit": "RUB/month",
+          "minimum": "0",
+          "maximum": "1000000000",
+          "integer": false,
+          "direction": "cost"
+        }
+      ],
+      "limitations": [
+        "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+        "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+        "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+        "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+        "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+        "Мощность = посты × дни × заказы на пост при полной загрузке. Загрузка применяется один раз.",
+        "Материалы и переменная оплата не должны дублироваться в постоянных расходах."
+      ]
+    },
+    "result": {
+      "status": "calculated",
+      "missing": [],
+      "scenarios": [
+        {
+          "name": "conservative",
+          "drivers": {
+            "service_bays": "4",
+            "working_days": "25",
+            "orders_per_bay": "2",
+            "utilization": "0.5",
+            "average_order": "10000",
+            "materials_per_order": "3000",
+            "labor_per_order": "1000",
+            "rent": "100000",
+            "payroll": "200000",
+            "utilities": "20000",
+            "marketing": "30000",
+            "other_fixed": "50000"
+          },
+          "period": "month",
+          "months": "1",
+          "units": "100.0",
+          "volume_unit": "orders",
+          "capacity": "200",
+          "revenue": "1000000.00",
+          "variable_costs": "400000.00",
+          "fixed_costs": "400000.00",
+          "contribution": "600000.00",
+          "operating_result": "200000.00",
+          "contribution_per_unit": "6000",
+          "capacity_utilization": "0.5",
+          "safety_margin_ratio": "0.33",
+          "break_even": {
+            "status": "calculated",
+            "units": "67",
+            "revenue": "670000.00",
+            "capacity_utilization": "0.335"
+          }
+        },
+        {
+          "name": "base",
+          "drivers": {
+            "service_bays": "4",
+            "working_days": "25",
+            "orders_per_bay": "2",
+            "utilization": "0.75",
+            "average_order": "10000",
+            "materials_per_order": "3000",
+            "labor_per_order": "1000",
+            "rent": "100000",
+            "payroll": "200000",
+            "utilities": "20000",
+            "marketing": "30000",
+            "other_fixed": "50000"
+          },
+          "period": "month",
+          "months": "1",
+          "units": "150.00",
+          "volume_unit": "orders",
+          "capacity": "200",
+          "revenue": "1500000.00",
+          "variable_costs": "600000.00",
+          "fixed_costs": "400000.00",
+          "contribution": "900000.00",
+          "operating_result": "500000.00",
+          "contribution_per_unit": "6000",
+          "capacity_utilization": "0.75",
+          "safety_margin_ratio": "0.5533333333333333333333333333333333333333333333333333333333333333",
+          "break_even": {
+            "status": "calculated",
+            "units": "67",
+            "revenue": "670000.00",
+            "capacity_utilization": "0.335"
+          }
+        },
+        {
+          "name": "optimistic",
+          "drivers": {
+            "service_bays": "4",
+            "working_days": "25",
+            "orders_per_bay": "2",
+            "utilization": "1",
+            "average_order": "10000",
+            "materials_per_order": "3000",
+            "labor_per_order": "1000",
+            "rent": "100000",
+            "payroll": "200000",
+            "utilities": "20000",
+            "marketing": "30000",
+            "other_fixed": "50000"
+          },
+          "period": "month",
+          "months": "1",
+          "units": "200",
+          "volume_unit": "orders",
+          "capacity": "200",
+          "revenue": "2000000.00",
+          "variable_costs": "800000.00",
+          "fixed_costs": "400000.00",
+          "contribution": "1200000.00",
+          "operating_result": "800000.00",
+          "contribution_per_unit": "6000",
+          "capacity_utilization": "1",
+          "safety_margin_ratio": "0.665",
+          "break_even": {
+            "status": "calculated",
+            "units": "67",
+            "revenue": "670000.00",
+            "capacity_utilization": "0.335"
+          }
+        }
+      ],
+      "sensitivity": [
+        {
+          "parameter": "utilization",
+          "unit": "ratio",
+          "value": "0.675000",
+          "status": "calculated",
+          "operating_result": "410000.00",
+          "difference_from_base": "-90000.00"
+        },
+        {
+          "parameter": "utilization",
+          "unit": "ratio",
+          "value": "0.825000",
+          "status": "calculated",
+          "operating_result": "590000.00",
+          "difference_from_base": "90000.00"
+        },
+        {
+          "parameter": "average_order",
+          "unit": "RUB/order",
+          "value": "9000.000000",
+          "status": "calculated",
+          "operating_result": "350000.00",
+          "difference_from_base": "-150000.00"
+        },
+        {
+          "parameter": "average_order",
+          "unit": "RUB/order",
+          "value": "11000.000000",
+          "status": "calculated",
+          "operating_result": "650000.00",
+          "difference_from_base": "150000.00"
+        },
+        {
+          "parameter": "materials_per_order",
+          "unit": "RUB/order",
+          "value": "2700.000000",
+          "status": "calculated",
+          "operating_result": "545000.00",
+          "difference_from_base": "45000.00"
+        },
+        {
+          "parameter": "materials_per_order",
+          "unit": "RUB/order",
+          "value": "3300.000000",
+          "status": "calculated",
+          "operating_result": "455000.00",
+          "difference_from_base": "-45000.00"
+        },
+        {
+          "parameter": "labor_per_order",
+          "unit": "RUB/order",
+          "value": "900.000000",
+          "status": "calculated",
+          "operating_result": "515000.00",
+          "difference_from_base": "15000.00"
+        },
+        {
+          "parameter": "labor_per_order",
+          "unit": "RUB/order",
+          "value": "1100.000000",
+          "status": "calculated",
+          "operating_result": "485000.00",
+          "difference_from_base": "-15000.00"
+        },
+        {
+          "parameter": "rent",
+          "unit": "RUB/month",
+          "value": "90000.000000",
+          "status": "calculated",
+          "operating_result": "510000.00",
+          "difference_from_base": "10000.00"
+        },
+        {
+          "parameter": "rent",
+          "unit": "RUB/month",
+          "value": "110000.000000",
+          "status": "calculated",
+          "operating_result": "490000.00",
+          "difference_from_base": "-10000.00"
+        },
+        {
+          "parameter": "payroll",
+          "unit": "RUB/month",
+          "value": "180000.000000",
+          "status": "calculated",
+          "operating_result": "520000.00",
+          "difference_from_base": "20000.00"
+        },
+        {
+          "parameter": "payroll",
+          "unit": "RUB/month",
+          "value": "220000.000000",
+          "status": "calculated",
+          "operating_result": "480000.00",
+          "difference_from_base": "-20000.00"
+        },
+        {
+          "parameter": "utilities",
+          "unit": "RUB/month",
+          "value": "18000.000000",
+          "status": "calculated",
+          "operating_result": "502000.00",
+          "difference_from_base": "2000.00"
+        },
+        {
+          "parameter": "utilities",
+          "unit": "RUB/month",
+          "value": "22000.000000",
+          "status": "calculated",
+          "operating_result": "498000.00",
+          "difference_from_base": "-2000.00"
+        },
+        {
+          "parameter": "marketing",
+          "unit": "RUB/month",
+          "value": "27000.000000",
+          "status": "calculated",
+          "operating_result": "503000.00",
+          "difference_from_base": "3000.00"
+        },
+        {
+          "parameter": "marketing",
+          "unit": "RUB/month",
+          "value": "33000.000000",
+          "status": "calculated",
+          "operating_result": "497000.00",
+          "difference_from_base": "-3000.00"
+        },
+        {
+          "parameter": "other_fixed",
+          "unit": "RUB/month",
+          "value": "45000.000000",
+          "status": "calculated",
+          "operating_result": "505000.00",
+          "difference_from_base": "5000.00"
+        },
+        {
+          "parameter": "other_fixed",
+          "unit": "RUB/month",
+          "value": "55000.000000",
+          "status": "calculated",
+          "operating_result": "495000.00",
+          "difference_from_base": "-5000.00"
+        }
+      ],
+      "origin": "modelled",
+      "currency": "RUB",
+      "contains_assumptions": true,
+      "formulas": {
+        "auto_variable_unit": "materials_per_order + labor_per_order",
+        "school_variable_unit": "variable_per_student + tuition*fee_ratio",
+        "capacity_utilization": "units/capacity where known and >0",
+        "auto_repair": "capacity=bays*working_days*orders_per_bay; units=capacity*utilization; months=1",
+        "online_school": "units=paying_students; months=course_months if course else 1; revenue=units*tuition ONCE",
+        "generic": "units=unit_sales; months=1; revenue=units*unit_price",
+        "variable_costs": "round_HALF_UP(units*variable_per_unit + revenue*fee_ratio,2)",
+        "fixed_costs": "round_HALF_UP(sum(monthly_fixed_items)*months,2)",
+        "contribution": "rounded_revenue-rounded_variable_costs",
+        "operating_result": "contribution-fixed_costs",
+        "break_even": "ceil(fixed_costs/exact_unit_contribution); unavailable if margin<=0; compare capacity",
+        "safety_margin_ratio": "(units-break_even_units)/units when units>0 and break-even defined"
+      },
+      "metric_inputs": {
+        "units": [
+          "service_bays",
+          "working_days",
+          "orders_per_bay",
+          "utilization"
+        ],
+        "capacity": [
+          "service_bays",
+          "working_days",
+          "orders_per_bay"
+        ],
+        "revenue": [
+          "service_bays",
+          "working_days",
+          "orders_per_bay",
+          "utilization",
+          "average_order"
+        ],
+        "variable_costs": [
+          "service_bays",
+          "working_days",
+          "orders_per_bay",
+          "utilization",
+          "average_order",
+          "materials_per_order",
+          "labor_per_order"
+        ],
+        "fixed_costs": [
+          "rent",
+          "payroll",
+          "utilities",
+          "marketing",
+          "other_fixed"
+        ],
+        "contribution": [
+          "service_bays",
+          "working_days",
+          "orders_per_bay",
+          "utilization",
+          "average_order",
+          "materials_per_order",
+          "labor_per_order"
+        ],
+        "operating_result": [
+          "service_bays",
+          "working_days",
+          "orders_per_bay",
+          "utilization",
+          "average_order",
+          "materials_per_order",
+          "labor_per_order",
+          "rent",
+          "payroll",
+          "utilities",
+          "marketing",
+          "other_fixed"
+        ],
+        "contribution_per_unit": [
+          "average_order",
+          "materials_per_order",
+          "labor_per_order"
+        ],
+        "capacity_utilization": [
+          "service_bays",
+          "working_days",
+          "orders_per_bay",
+          "utilization",
+          "service_bays",
+          "working_days",
+          "orders_per_bay"
+        ],
+        "safety_margin_ratio": [
+          "service_bays",
+          "working_days",
+          "orders_per_bay",
+          "utilization",
+          "average_order",
+          "materials_per_order",
+          "labor_per_order",
+          "rent",
+          "payroll",
+          "utilities",
+          "marketing",
+          "other_fixed"
+        ],
+        "break_even": [
+          "average_order",
+          "materials_per_order",
+          "labor_per_order",
+          "rent",
+          "payroll",
+          "utilities",
+          "marketing",
+          "other_fixed",
+          "service_bays",
+          "working_days",
+          "orders_per_bay"
+        ]
+      },
+      "limitations": [
+        "Предварительный сценарный расчёт при заданных вводных, не рыночный прогноз.",
+        "Операционный результат до налогов, амортизации и процентов; не чистая прибыль и не денежный поток.",
+        "Бюджет не является выручкой. CAPEX, окупаемость и runway без графика инвестиций не рассчитаны.",
+        "Диапазоны не являются доверительными интервалами; вероятность сценариев неизвестна.",
+        "Нулевые расходы допустимы только как явно введённые и подтверждённые значения.",
+        "Мощность = посты × дни × заказы на пост при полной загрузке. Загрузка применяется один раз.",
+        "Материалы и переменная оплата не должны дублироваться в постоянных расходах."
+      ],
+      "rounding": "Decimal precision 64 / HALF_UP; RUB rounded to kopecks before subtraction"
+    }
+  },
+  "proposal_status": "idle",
+  "proposal_error": null
+}

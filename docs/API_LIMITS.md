@@ -1,5 +1,19 @@
 # H-02 · API limits и квоты локального deployment
 
+## BA2/U-05 · financial scenarios
+
+`/api/v2/conversations/{id}/financial-scenarios`: existing token/assistant consent,
+confirmed ProfileV2 revision plus separate input CAS. Commands use owner-scoped UUID
+receipts; max24updates/review IDs, at most8Qwen hypotheses, no client source attestation.
+Existing64KiB body/JSON/rate caps apply. POSTpropose uses H-03, one attempt/output1536;
+inference has no DB connection. Calculation/what-if consume normal analytical admission.
+Workspace/action/result JSON caps64/64/192KiB;100actions/owner,2000global;
+20results/owner,200global, enforced under short PostgreSQL stock lock. No automatic
+deletion/unknown0/fallback, no operator/network right expansion. Default finance flag0;
+industry must also be enabled. Profile/input conflicts409, consent403, stock429,
+unsupported units/domains/source claims422. Details/runbook:
+[U-05](architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md).
+
 ## Дополнение H-03 · действующее управление inference · 26.10.2026
 
 Body/DTO/stock quotas H-02 и 18 write API не меняются. POST messages учитывается в

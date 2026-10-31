@@ -1,5 +1,45 @@
 # Business AI — HANDOFF
 
+## Business AI 2.0 / U-05 · 31.10.2026 · live verified, PR review pending
+
+- Continued existing branch `codex/U-05-universal-financial-scenarios` at82774e3,
+  implementation905bf87; base main remainsdd8503455b2c46c8387cd6411fa0f0276983b6a7.
+  Recovery worktree/DB/volumes/project unchanged; no recovery files in this PR.
+- Three Decimal adapters, input review/provenance, conservative/base/optimistic,
+  break-even/sensitivity and unsaved what-if; v1 coffee engine/reports unchanged.
+  Additive0012 financial_workspaces/actions/results, owner/consent/profile+input CAS,
+  idempotent receipts/late-result fencing. Both industry/finance flags default0.
+- Reused existing Ollama0.40.11/exact Qwen0edcdef34593 over internal Docker network;
+  no model pull/second server/public port/queue. NEW QA project business-ai-u05-final,
+  unique PGHOSTu05-finance-db, DB0012. Recovered DB stays0011, app stays5173.
+- First recovered real trial: auto422domain, school422capacity, generic200. Preserved
+  failures. Root fix: parameter/unit-first per-driver schema, numeric domains/known
+  capacity and explicit context ranges; prompt revisionv2, independent backend checks.
+- Final real matrix3/3 propose/review/calculate PASS,32.727/19.917/16.229s;
+  replay0extra model calls. Point ranges may yield identical outputs, no fake widening.
+- Real Chromium Qwen school PASS44.9s: real classification,4AI hypotheses/24.082s;
+  partial before review; reject/correct tuition; retain3confirmed synthetic AI values;
+  results -630000/-25000/502500RUB; reload/JSON/1440/768/390; console/page errors0.
+  Manual course/what-if browser PASS7.5s; real legacy coffee PDF/JSON PASS38.8s.
+- Tests:49finance unit (independent Fraction oracle and live-domain regressions);
+  final PostGIS172PASS/283.17s including populated0011→0012/repeat/check/immutable
+  files. Mock Chromium49PASS. OpenAPI36v1paths/126recursive schemas deep-equal.
+  Ruff/mypy174files/TS/ESLint PASS; prior7prek hooks PASS; final commit hooks/CI in PR.
+  Counts overlap with full pytest/CI, never sum them as unique tests.
+- [Implementation/runbook/limits](architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md),
+  [checkpoint](architecture/U-05_CHECKPOINT.md); evidence docs/qa/u-05/live-browser/,
+  live-qwen-final.json, live-qwen-recovered.json (rejections), coffee-regression/.
+  Earlier unavailable-endpoint evidence retained as history, no longer a blocker.
+- Delivery gate: final commit/push/one PR/exact-HEAD CI. No merge or U-06 permission.
+  PR36 initial CI exposed7 advisories in dev-only pypdf6.21.2; narrow lock update
+  to6.21.4, no production dependency/formula changes. Hashed Python audit PASS;
+  PDF regressions rerun. Final CI is checked again on the updated PR HEAD.
+  npm then exposed minimatch GHSA-g3hv-75wg-m249: pinned11.0.1 plus guarded
+  Redocly1.x import adaptation, no major generator upgrade/audit waiver. npm audit0;
+  actual generated types byte-identical and resolver header-origin checks PASS.
+  Actual final SHA and checks recorded in delivery report/PR (avoid self-reference).
+  Next is owner review, not further roadmap implementation.
+
 ## Business AI 2.0 / U-04 · Universal Industry Engine · 30.10.2026
 
 - PR34 merged; base main `43f0f389a0b4fcdaadd2aead1f777c31d3ab4524`, initially clean.

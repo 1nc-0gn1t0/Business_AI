@@ -141,3 +141,25 @@ No-map partial inputs JSON — рабочая проекция, старые imm
 AnalysisRun не вводится: синхронный план проверяет текущие owner/consent/CAS перед
 публикацией. U-02 operator-only и единственная очередь H-03 остаются неизменными.
 [Конкретные контракты/rollout](../architecture/BUSINESS_AI_2_UNIVERSAL_INDUSTRY_ENGINE.md).
+
+## Уточнение реализации BA2/U-05 · 30.10.2026
+
+Financial adapters use U-04 industry IDs; no competing classifier/profile lifecycle.
+The coffee v1 executor and immutable reports remain unchanged. Auto/school/generic
+need typed v2 periods/capacities and share one deterministic Decimal ledger, money
+rounding and InputSource/DataOrigin. School course revenue is counted once per cohort,
+not repeated monthly. Generic supports a single explicitly compatible sale unit.
+
+Separate financial-input CAS remains under the existing conversation row lock and
+is bound to a current confirmed profile/config. Additive0012 provides bounded owner
+workspaces/action receipts/history and append-only result snapshots; ownerless
+AnalysisRun is not reused for user results. Stale profile/config/input or changed
+consent fences publication. Model inference runs outside DB transactions via H-03.
+
+One explicit bounded structured proposal produces synthetic/assumed values requiring
+owner review; confirmation never turns them into observations. No arbitrary formulas,
+network/source rights, hidden defaults or source assertions are introduced. What-if
+does not persist; saving/review are separate actions. No probability distributions,
+tax accounting, ROI or new PDF are claimed. Default finance flag0, industry required.
+Live validation remains a separate acceptance gate; initial existing endpoint503 is
+recorded as a failure, not proof of model proposal quality. [Implementation](../architecture/BUSINESS_AI_2_FINANCIAL_SCENARIOS.md).

@@ -10,7 +10,11 @@ from app.industry.schemas import AdaptivePlan, CapabilityDecision, UniversalProf
 
 
 def plan(session: Session, profile: UniversalProfile) -> AdaptivePlan:
+    from app.finance.v2.registry import DEFINITIONS
+    from app.finance.v2.registry import enabled as finance_enabled
+
     config = configuration(profile.industry)
+    v2_finance = finance_enabled() and profile.industry in DEFINITIONS
     absent = missing(profile)
     unanswered = tuple(k for k in absent if k not in profile.deferred_fields)
     ambiguous = profile.resolution == "ambiguous"
@@ -83,14 +87,16 @@ def plan(session: Session, profile: UniversalProfile) -> AdaptivePlan:
         CapabilityDecision(
             id="finance.analysis",
             status="available"
-            if confirmed and config.finance_adapter and not absent
+            if confirmed and (config.finance_adapter or v2_finance) and not absent
             else "unavailable"
-            if confirmed and absent and config.finance_adapter
+            if confirmed and absent and (config.finance_adapter or v2_finance)
             else "needs_confirmation"
-            if config.finance_adapter
+            if config.finance_adapter or v2_finance
             else "unsupported",
-            method=config.finance_adapter,
-            reason="Проверенный финансовый движок кофейни; вводные задаются явно."
+            method=f"financial_v2.{profile.industry}" if v2_finance else config.finance_adapter,
+            reason="Предварительные финансовые сценарии по подтверждённым вводным."
+            if v2_finance
+            else "Проверенный финансовый движок кофейни; вводные задаются явно."
             if config.finance_adapter
             else "Отраслевой финансовый адаптер пока не поддерживается. Прибыль не рассчитана.",
         ),
@@ -106,7 +112,7 @@ def plan(session: Session, profile: UniversalProfile) -> AdaptivePlan:
         stages = []
         if not absent and config.geo_adapter and geo_status in {"partial", "available"}:
             stages.append("location")
-        if config.finance_adapter and not absent:
+        if (config.finance_adapter or v2_finance) and not absent:
             stages.append("finance")
         stages.append("partial_result")
     return AdaptivePlan.model_validate(
@@ -117,7 +123,7 @@ def plan(session: Session, profile: UniversalProfile) -> AdaptivePlan:
             if unanswered or ambiguous
             else "partial"
             if absent
-            or not config.finance_adapter
+            or not (config.finance_adapter or v2_finance)
             or geo_status in {"partial", "unavailable", "unsupported"}
             else "ready",
             missing_fields=("industry", *absent) if ambiguous else absent,

@@ -1,0 +1,70 @@
+{
+  "status": "BLOCKED",
+  "observed_date_moscow": "2026-10-30",
+  "scope": "Read-only runtime diagnosis; no installation, model download, firewall change or tunnel",
+  "execution": {
+    "os": "Windows 11 10.0.26200 x64",
+    "shell": "PowerShell 7.6.5",
+    "hardware_reported_by_cim": "Acer Nitro AN517-54",
+    "native_windows_process": true,
+    "inside_wsl": false,
+    "inside_docker": false,
+    "ssh_session_variable_present": false,
+    "remote_linux_sandbox_evidence": false,
+    "qualification": "CODEX_CI=1 alone does not establish remote execution; HypervisorPresent is consistent with WSL2/Docker Desktop"
+  },
+  "configuration": {
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "native_factory_base_url": "http://127.0.0.1:11434",
+    "compose_base_url": "http://host.docker.internal:11434",
+    "native_provider": "ollama",
+    "selected_process_user_machine_overrides_found": false,
+    "checked_dotenv_override_files_found": false,
+    "live_api_process_found_at_observation": false,
+    "qualification": "Native get_llm settings and an existing API runtime image with Compose-equivalent settings were checked; no claim to reading an absent long-running API process environment"
+  },
+  "availability": {
+    "native_ipv4_api_version": "connection_refused_10061",
+    "native_ipv4_api_tags": "connection_refused_10061",
+    "native_expected_port_listener_found": false,
+    "ollama_process_found": false,
+    "windows_ollama_service_or_scheduled_task_found": false,
+    "api_image_host_docker_internal_dns": "resolved",
+    "api_image_host_docker_internal_ipv4_tcp": "connection_refused_111",
+    "api_image_host_docker_internal_ipv6_tcp": "network_unreachable_101",
+    "api_image_host_docker_internal_api_version": "unavailable",
+    "api_image_host_docker_internal_api_tags": "unavailable",
+    "api_image_own_loopback": "connection_refused_111",
+    "native_localhost_ipv6": "permission_denied_10013; no security change attempted",
+    "conclusion": "The configured local serving endpoint is not providing Ollama HTTP API. This is an availability/address/runtime issue before model generation, not evidence that the historic installation never existed."
+  },
+  "installation_lookup": {
+    "docker_contexts": ["default", "desktop-linux"],
+    "contexts_use_same_daemon": true,
+    "existing_containers_at_observation": 0,
+    "existing_volumes_at_observation": 0,
+    "visible_images": ["business-ai-u05-api", "business-ai-u05-web", "business-ai-u05-postgis", "postgis/postgis:17-3.5"],
+    "ollama_or_target_model_found_in_visible_images": false,
+    "windows_visible_executable_or_target_manifest_search": "no match in accessible files",
+    "wsl_distributions_checked": ["Ubuntu-24.04", "Ubuntu"],
+    "wsl_service_load_state": "not-found in both",
+    "wsl_standard_and_root_model_directories_found": false,
+    "qualification": "Negative lookup is limited to accessible current storage/engines. Do not infer removal, permanent absence, or justify downloading a replacement."
+  },
+  "historical_evidence": {
+    "source": "docs/qa/u-03/runtime-audit.json and docs/qa/u-04/",
+    "reported_ollama_version": "0.40.8",
+    "model_digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+    "current_ollama_version": null,
+    "qualification": "Historic successful probes are retained; current version cannot be obtained without a responding server."
+  },
+  "actions": {
+    "model_downloaded": false,
+    "ollama_installed_or_replaced": false,
+    "new_model_volume_created": false,
+    "model_name_changed": false,
+    "network_security_changed": false,
+    "public_binding_or_tunnel_created": false,
+    "owner_instruction": "Do not reinstall or redownload. Restore existing runtime/address, then run a short real probe and U-05 live validation."
+  }
+}
